@@ -1,10 +1,22 @@
+import { hasLocale } from "next-intl";
 import { getRequestConfig } from "next-intl/server";
+import { routing } from "./routing";
 
-// Temporary stub (Plan A Task A.2); replaced by the full locale-aware
-// implementation in Task A.6.
-export default getRequestConfig(async () => {
+export default getRequestConfig(async ({ requestLocale }) => {
+  const requested = await requestLocale;
+  const locale = hasLocale(routing.locales, requested)
+    ? requested
+    : routing.defaultLocale;
+
+  // Namespaced per file so Wave 2 plans can extend their own namespace
+  // without write conflicts (shell -> Plan B, home -> Plan C).
+  const [shell, home] = await Promise.all([
+    import(`../messages/${locale}/shell.json`).then((m) => m.default),
+    import(`../messages/${locale}/home.json`).then((m) => m.default),
+  ]);
+
   return {
-    locale: "zh",
-    messages: {},
+    locale,
+    messages: { shell, home },
   };
 });

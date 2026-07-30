@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { fontVariables } from "@/lib/fonts";
 import "../globals.css";
 
 export const metadata: Metadata = {
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
 // root layout in Task A.6.
 export default function LocaleLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="zh">
+    <html lang="zh" className={fontVariables}>
       <body>{children}</body>
     </html>
   );

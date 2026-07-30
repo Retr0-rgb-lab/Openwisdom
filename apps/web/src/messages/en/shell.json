@@ -1,0 +1,9 @@
+{
+  "meta": {
+    "siteName": "Openwisdom",
+    "tagline": "Open-source social-science Agent Skills library"
+  },
+  "test": {
+    "button": "Install skills"
+  }
+}

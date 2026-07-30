@@ -1,0 +1,9 @@
+{
+  "meta": {
+    "siteName": "Openwisdom",
+    "tagline": "社会科学 Agent Skills 开源库"
+  },
+  "test": {
+    "button": "安装技能"
+  }
+}

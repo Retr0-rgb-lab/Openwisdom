@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="100%" height="100%">
+  <defs>
+    <!-- 全局样式，使用 multiply 混合模式再现多层透视叠加效果 -->
+    <style>
+      .blend-layer {
+        mix-blend-mode: multiply;
+      }
+    </style>
+
+    <!-- 极简阴影效果，让整个图形带有悬浮的立体感 -->
+    <filter id="soft-shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="15" stdDeviation="25" flood-color="#002" flood-opacity="0.06"/>
+    </filter>
+  </defs>
+
+  <!-- 干净的背景 -->
+  <rect width="100%" height="100%" fill="#F8F9FA"/>
+
+  <!-- 整体图形居中 (平移到画布正中) -->
+  <g transform="translate(280, 225)" filter="url(#soft-shadow)">
+    
+    <!-- ========================================== -->
+    <!-- 1. 核心形状叠加层 (利用正片叠底再现色彩交叉) -->
+    <!-- ========================================== -->
+    <g class="blend-layer">
+      
+      <!-- 底层浅蓝透明方块 (5x5网格的基底) -->
+      <rect x="0" y="0" width="350" height="350" rx="6" fill="#88ADC0" opacity="0.35"/>
+      
+      <!-- 蓝色大圆 (社会学/整体视角) -->
+      <!-- 中心点偏左，半径刚好等于网格高度的一半 -->
+      <circle cx="70" cy="175" r="175" fill="#1C4BD1" opacity="0.9"/>
+      
+      <!-- 墨绿色正方形 (经济学/结构视角) -->
+      <!-- 缩进1个网格单位，占据中间的 3x3 区域 -->
+      <rect x="70" y="70" width="210" height="210" rx="8" fill="#2E6975" opacity="0.85"/>
+      
+      <!-- 橙黄色直角三角形 (心理学/个体视角) -->
+      <!-- 占据右下角的对角线切割区域。使用 stroke 让尖角微微圆润 -->
+      <polygon points="4,346 346,346 346,4" fill="#E69622" opacity="0.9" stroke="#E69622" stroke-width="8" stroke-linejoin="round"/>
+      
+    </g>
+
+    <!-- ========================================== -->
+    <!-- 2. 半透明透视网格层 (磨砂玻璃面板效果)       -->
+    <!-- ========================================== -->
+    <g>
+      <!-- 网格最外层高光与暗部描边，形成玻璃质感 -->
+      <rect x="1" y="1" width="348" height="348" rx="6" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+      <rect x="0" y="0" width="350" height="350" rx="6" fill="none" stroke="rgba(0,0,0,0.12)" stroke-width="1.5"/>
+      
+      <!-- 内部网格线 - 5x5 矩阵 (每个网格 70x70) -->
+      
+      <!-- 白色高光线 (略微偏移产生厚度感) -->
+      <g stroke="rgba(255,255,255,0.3)" stroke-width="1" transform="translate(1, 1)">
+        <!-- 垂直线 -->
+        <path d="M70,0 v350 M140,0 v350 M210,0 v350 M280,0 v350"/>
+        <!-- 水平线 -->
+        <path d="M0,70 h350 M0,140 h350 M0,210 h350 M0,280 h350"/>
+      </g>
+      
+      <!-- 深色实线 (主网格线) -->
+      <g stroke="rgba(0,0,0,0.12)" stroke-width="1.2">
+        <!-- 垂直线 -->
+        <path d="M70,0 v350 M140,0 v350 M210,0 v350 M280,0 v350"/>
+        <!-- 水平线 -->
+        <path d="M0,70 h350 M0,140 h350 M0,210 h350 M0,280 h350"/>
+      </g>
+    </g>
+    
+  </g>
+</svg>

@@ -125,8 +125,8 @@ describe("openwisdom_search Spec 31", () => {
     }>;
     expect(skills.length).toBeGreaterThan(0);
     expect(skills.every((s) => s.layer === "scenario")).toBe(true);
-    // Official v1 has 3 scenarios
-    expect(skills.length).toBe(3);
+    // Full web catalog materialize includes official + community scenarios
+    expect(skills.length).toBeGreaterThanOrEqual(3);
     for (const s of skills) {
       expect(Array.isArray(s.tags)).toBe(true);
       expect(Array.isArray(s.references)).toBe(true);
@@ -181,7 +181,7 @@ describe("openwisdom_list Spec 31", () => {
     expect(isErrorResult(r)).toBe(false);
     const payload = parsePayload(r);
     const skills = payload.skills as Array<{ layer: string }>;
-    expect(skills.length).toBe(3);
+    expect(skills.length).toBeGreaterThanOrEqual(3);
     expect(skills.every((s) => s.layer === "scenario")).toBe(true);
   });
 });

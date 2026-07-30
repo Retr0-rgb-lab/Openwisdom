@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "pnpm --filter web dev",
     "build": "pnpm --filter @openwisdom/schema build && pnpm --filter @openwisdom/providers build && pnpm --filter @openwisdom/catalog build && pnpm --filter @openwisdom/core build && pnpm --filter openwisdom build && node ./scripts/run-if-package.mjs packages/mcp \"pnpm --filter openwisdom-mcp build\" && pnpm --filter web build",
+    "catalog:materialize": "pnpm --filter web exec tsx ../../scripts/materialize-web-catalog-skills.mts",
     "catalog:build": "pnpm --filter @openwisdom/catalog build",
+    "catalog:sync-web": "pnpm catalog:materialize && pnpm catalog:build",
     "lint": "pnpm --filter web lint",
     "test": "pnpm --filter @openwisdom/schema test && pnpm --filter @openwisdom/providers test && pnpm --filter @openwisdom/core test && pnpm --filter openwisdom test && node ./scripts/run-if-package.mjs packages/mcp \"pnpm --filter openwisdom-mcp test\"",
     "cli": "pnpm --filter openwisdom exec node ./dist/cli.js",

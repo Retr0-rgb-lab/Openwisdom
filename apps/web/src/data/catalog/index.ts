@@ -129,7 +129,31 @@ export function getCatalog(): CatalogEntry[] {
     ...PHILOSOPHY_SEED,
   ];
   for (const seed of curatedSeeds) {
-    if (!map.has(seed.slug)) {
+    const existing = map.get(seed.slug);
+    if (existing && existing.source === "catalog") {
+      // Registry has installable pack (often materialized community skill):
+      // keep install truth, retain seed UI + honest curated provenance.
+      map.set(seed.slug, {
+        ...seed,
+        id: existing.id,
+        slug: existing.slug,
+        source: "catalog",
+        scope: existing.scope,
+        version: existing.version || seed.version,
+        updated: existing.updated || seed.updated,
+        repoPath: existing.repoPath ?? seed.repoPath,
+        install: existing.install,
+        installMode: "cli",
+        contentAvailability:
+          seed.contentAvailability === "external-only"
+            ? "summary-only"
+            : (seed.contentAvailability ?? "full-body"),
+        provenance: seed.provenance ?? "curated-external",
+        externalUrl: seed.externalUrl ?? existing.externalUrl,
+        references: seed.references ?? existing.references,
+      });
+    } else if (!existing) {
+      // Not yet in machine registry — discovery-only until materialize + catalog:build
       map.set(seed.slug, asCuratedDiscovery(seed));
     }
   }

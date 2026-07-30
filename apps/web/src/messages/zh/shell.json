@@ -5,5 +5,78 @@
   },
   "test": {
     "button": "安装技能"
+  },
+  "nav": {
+    "skills": "Skills",
+    "install": "安装",
+    "docs": "文档",
+    "contribute": "贡献",
+    "githubLabel": "Openwisdom 的 GitHub 仓库",
+    "openMenu": "打开导航菜单",
+    "menuTitle": "导航"
+  },
+  "localeSwitcher": {
+    "label": "界面语言",
+    "shortZh": "中",
+    "shortEn": "EN",
+    "zh": "中文",
+    "en": "English"
+  },
+  "footer": {
+    "product": {
+      "title": "产品",
+      "home": "首页",
+      "skills": "Skills",
+      "install": "安装"
+    },
+    "resources": {
+      "title": "资源",
+      "docs": "文档"
+    },
+    "community": {
+      "title": "社区",
+      "github": "GitHub",
+      "contribute": "贡献",
+      "issues": "Issues"
+    },
+    "legal": {
+      "title": "许可",
+      "license": "MIT License"
+    },
+    "meta": {
+      "title": "站点",
+      "slogan": "分析在你的 Agent 中运行，不在本站。"
+    }
+  },
+  "placeholder": {
+    "badge": "即将推出",
+    "backHome": "返回首页",
+    "github": "在 GitHub 上跟踪进展",
+    "skills": {
+      "title": "Skills 目录",
+      "description": "场景 skill 与学科 reference 的统一目录：发现、筛选、搜索与安装。目录索引管道就绪后在此上线。"
+    },
+    "install": {
+      "title": "安装中枢",
+      "description": "一条命令把技能装进你的 Agent。CLI 用法、手动路径与各 harness 的安装矩阵将在此汇总。"
+    },
+    "docs": {
+      "title": "文档",
+      "description": "从首次在自己的 Agent 中跑通 macro-scan，到贡献编写规范：入门、概念、CLI 参考与常见问题将在此归档。"
+    },
+    "contribute": {
+      "title": "贡献",
+      "description": "fork、模板、PR：向 community/ 提交场景 skill 或学科 reference 的引导页，在此之前可直接到 GitHub 查看仓库。"
+    },
+    "about": {
+      "title": "关于",
+      "description": "Openwisdom 的定位、五大学科，以及明确不做的事：不托管对话，CLI 不调用模型。"
+    }
+  },
+  "notFound": {
+    "title": "页面不存在",
+    "description": "这个坐标上没有内容。返回首页，或前往 Skills 目录继续浏览。",
+    "backHome": "返回首页",
+    "browseSkills": "浏览 Skills"
   }
 }

@@ -5,5 +5,78 @@
   },
   "test": {
     "button": "Install skills"
+  },
+  "nav": {
+    "skills": "Skills",
+    "install": "Install",
+    "docs": "Docs",
+    "contribute": "Contribute",
+    "githubLabel": "Openwisdom on GitHub",
+    "openMenu": "Open navigation menu",
+    "menuTitle": "Navigation"
+  },
+  "localeSwitcher": {
+    "label": "Interface language",
+    "shortZh": "中",
+    "shortEn": "EN",
+    "zh": "中文",
+    "en": "English"
+  },
+  "footer": {
+    "product": {
+      "title": "Product",
+      "home": "Home",
+      "skills": "Skills",
+      "install": "Install"
+    },
+    "resources": {
+      "title": "Resources",
+      "docs": "Docs"
+    },
+    "community": {
+      "title": "Community",
+      "github": "GitHub",
+      "contribute": "Contribute",
+      "issues": "Issues"
+    },
+    "legal": {
+      "title": "Legal",
+      "license": "MIT License"
+    },
+    "meta": {
+      "title": "Meta",
+      "slogan": "Analysis runs in your agent, not on this site."
+    }
+  },
+  "placeholder": {
+    "badge": "Coming soon",
+    "backHome": "Back to home",
+    "github": "Follow progress on GitHub",
+    "skills": {
+      "title": "Skills catalog",
+      "description": "One catalog for scenario skills and discipline references: discover, filter, search, and install. It goes live here once the catalog pipeline is in place."
+    },
+    "install": {
+      "title": "Install hub",
+      "description": "One command to put skills into your agent. CLI usage, manual paths, and the install matrix for each harness will be collected here."
+    },
+    "docs": {
+      "title": "Docs",
+      "description": "From running macro-scan in your own agent for the first time to the authoring spec: getting started, concepts, CLI reference, and FAQ will live here."
+    },
+    "contribute": {
+      "title": "Contribute",
+      "description": "Fork, template, PR: a guided path for submitting scenario skills or discipline references to community/. Until then, the repository is on GitHub."
+    },
+    "about": {
+      "title": "About",
+      "description": "What Openwisdom is, the five disciplines behind it, and what it deliberately does not do: no hosted conversations, and the CLI never calls a model."
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "There is nothing at this coordinate. Head back home, or keep browsing in the Skills catalog.",
+    "backHome": "Back to home",
+    "browseSkills": "Browse Skills"
   }
 }

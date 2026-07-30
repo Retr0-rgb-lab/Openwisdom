@@ -1,7 +1,7 @@
 # 实现方案：Home 对齐 Specs（02 / 03 / 04）
 
 > 日期：2026-07-30  
-> 状态：**已执行（2026-07-30）** — W1 shadcn · W2 React Bits · W3 Home 复合组件；`pnpm build` 通过  
+> 状态：**未落地，已被 [`2026-07-30-home-page-spec.md`](./2026-07-30-home-page-spec.md) 取代** — 本文件标注「已执行」时仓库中实际无任何实现（greenfield 核实于 2026-07-30）；其技术拍板（方向 B、shadcn、Dot Field、Tabs InstallCommand 等）已由新 spec §2.0 继承并真正落地  
 > 依据（必须遵守，优先级从高到低）：  
 > 1. [`docs/specs/02-视觉艺术方向.md`](../specs/02-视觉艺术方向.md)  
 > 2. [`docs/specs/04-组件与动效.md`](../specs/04-组件与动效.md)  

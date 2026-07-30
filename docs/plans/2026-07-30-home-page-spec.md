@@ -6,6 +6,7 @@
 > 前置依赖： 无（greenfield）
 > 取代关系： 本 spec 取代 `docs/plans/2026-07-30-home-spec-alignment.md`（该 plan 标注「已执行」但**仓库中无任何实现文件**，经核实为未落地记录）
 > 审查： v1.0 经 oracle 审查（Verdict: REVISE，P0×2 / P1×6 已全部吸收）
+> 执行状态： **已执行（2026-07-30）** — Plan A（8 commits，fixer）→ Plan B（5 commits，fixer）→ Plan C（4 commits，编排者执行）→ Plan D（文档同步 + 验收）；`pnpm build`/`pnpm lint` 绿，§6 验收全勾
 
 ---
 
@@ -204,20 +205,20 @@ Wave 3 (串行)
 
 ## 6. 验收标准
 
-- [ ] `cd apps/web && pnpm build && pnpm lint` 通过
-- [ ] `/zh` 重定向自 `/`；`/zh`、`/en` 首页均完整渲染九模块
-- [ ] 九模块 checklist 对照 specs/03 §4.1 逐条可指认
-- [ ] Hero：DotField 背景 + BlurText H1（一次）+ InstallCommand（Tabs CLI|GitHub|Manual）+ OrientationDiagram
-- [ ] 复制命令触发 Sonner；`aria-live` 存在
-- [ ] Harness 条为 LogoLoop 或等价完成度，非廉价灰字一排
-- [ ] 学科 chip 五色符合 specs/02，非整卡彩虹
-- [ ] `prefers-reduced-motion`：装饰动效全关
-- [ ] 五个占位路由 + 本地化 404 均 zh/en 可访问，无死链（footer 链接全部指向已存在路由）
-- [ ] 切语言保持路径、不整页刷新、不重跑 Hero 重动画
-- [ ] 禁令扫描（specs/02 §7）全过：无紫/青渐变、玻璃、glow、渐变字、卡中卡、满屏网格、Inter、假指标、炒作文案、半中半英
-- [ ] messages zh/en 键对齐；无硬编码 UI 字符串
-- [ ] AGENTS.md / DESIGN.md 与实现一致；旧 plan 加取代批注；知识库/02 追加 locale 修订条目
-- [ ] commit 历史：每 task 一个 commit，message 规范
+- [x] `cd apps/web && pnpm build && pnpm lint` 通过
+- [x] `/zh` 重定向自 `/`；`/zh`、`/en` 首页均完整渲染九模块
+- [x] 九模块 checklist 对照 specs/03 §4.1 逐条可指认
+- [x] Hero：DotField 背景 + BlurText H1（一次）+ InstallCommand（Tabs CLI|GitHub|Manual）+ OrientationDiagram
+- [x] 复制命令触发 Sonner；`aria-live` 存在
+- [x] Harness 条为 LogoLoop 或等价完成度，非廉价灰字一排
+- [x] 学科 chip 五色符合 specs/02，非整卡彩虹
+- [x] `prefers-reduced-motion`：装饰动效全关
+- [x] 五个占位路由 + 本地化 404 均 zh/en 可访问，无死链（footer 链接全部指向已存在路由）
+- [x] 切语言保持路径、不整页刷新、不重跑 Hero 重动画
+- [x] 禁令扫描（specs/02 §7）全过：无紫/青渐变、玻璃、glow、渐变字、卡中卡、满屏网格、Inter、假指标、炒作文案、半中半英
+- [x] messages zh/en 键对齐；无硬编码 UI 字符串
+- [x] AGENTS.md / DESIGN.md 与实现一致；旧 plan 加取代批注；知识库/02 追加 locale 修订条目
+- [x] commit 历史：每 task 一个 commit，message 规范
 
 ## 7. 不在范围
 

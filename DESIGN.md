@@ -72,10 +72,11 @@ Purple/cyan AI gradients · glassmorphism · glow shadows · gradient headings �
 | Layer | Location |
 |-------|----------|
 | Tokens | `apps/web/src/app/globals.css` (`--ow-*` + shadcn semantic aliases) |
-| shadcn UI | `apps/web/src/components/ui/*` + `components.json` |
+| shadcn UI | `apps/web/src/components/ui/*` + `components.json` (base-nova) |
 | React Bits (Tier A) | `apps/web/src/components/bits/*` — DotField, BlurText, Noise, LogoLoop |
-| Install object | `InstallCommand` Tabs CLI \| GitHub \| Manual + Sonner |
-| Plan | `docs/plans/2026-07-30-home-spec-alignment.md` |
+| Install object | `apps/web/src/components/install/InstallCommand.tsx` Tabs CLI \| GitHub \| Manual + Sonner |
+| i18n | next-intl v4; `apps/web/src/messages/{zh,en}/{shell,home}.json` |
+| Spec & plans | `docs/plans/2026-07-30-home-page-spec.md` (supersedes the earlier alignment plan) |
 
 Home accents budget: DotField + BlurText + LogoLoop (≤3 heavy); Noise light.
 

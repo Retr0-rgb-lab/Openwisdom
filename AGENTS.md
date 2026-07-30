@@ -97,20 +97,22 @@ Openwisdom/
 └── package.json              ← PLANNED monorepo root (optional today)
 ```
 
-**Implemented today:** `apps/web` Home at `/zh` and `/en`.  
-**Not implemented yet:** Skills catalog pages, Install/Docs/Contribute pages, CLI package, `skills/` tree, stats API.
+**Implemented today:** `apps/web` Home at `/zh` and `/en` (nine modules), site shell, placeholder routes for `/skills` `/install` `/docs` `/contribute` `/about`.  
+**Not implemented yet:** Real Skills catalog/detail pages, docs content, CLI package, `skills/` tree, stats API.
 
 ### Web (`apps/web`)
 
 | Item | Detail |
 |------|--------|
-| Stack | Next.js 16 App Router, React 19, Tailwind 4, TypeScript |
-| Locales | `/zh`, `/en`; middleware prefixes missing locale; default `zh` |
-| Copy | `src/messages/zh.ts`, `en.ts`, `getMessages()` |
-| Design tokens | `src/app/globals.css` (`--ow-*`), fonts in `src/lib/fonts.ts` |
-| Home | `src/components/home/*` + `src/app/[locale]/page.tsx` |
-| Shell | `src/components/site/*`, `src/components/ui/*` |
-| Install snippet | `src/components/install/InstallCommand.tsx` |
+| Stack | Next.js 16 App Router, React 19, Tailwind 4, TypeScript, shadcn/ui (base-nova), motion |
+| Locales | next-intl v4: `/zh`, `/en`; middleware prefixes missing locale; default `zh` |
+| i18n wiring | `src/i18n/{routing,request,navigation}.ts`; internal links via `@/i18n/navigation` only |
+| Copy | `src/messages/{zh,en}/shell.json` (chrome) + `{zh,en}/home.json` (home), namespaced `shell`/`home` |
+| Design tokens | `src/app/globals.css` (`--ow-*` + shadcn aliases), fonts in `src/lib/fonts.ts` |
+| Home | `src/components/home/*` (nine modules) + `src/app/[locale]/page.tsx` |
+| Shell | `src/components/site/*`, `src/components/ui/*` (shadcn) |
+| Bits (Tier A) | `src/components/bits/*` — DotField, BlurText, Noise, LogoLoop (all restrained) |
+| Install snippet | `src/components/install/InstallCommand.tsx` (Tabs CLI \| GitHub \| Manual + Sonner) |
 
 **Commands:**
 

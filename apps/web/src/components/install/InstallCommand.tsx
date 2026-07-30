@@ -214,21 +214,29 @@ export function InstallCommand({
           </div>
         </div>
 
-        {/* AI install prompt — primary path for agents */}
+        {/* AI install prompt — one-line marquee row, horizontal scroll */}
         <div className="flex flex-col gap-1.5">
           <p className="font-mono text-[0.7rem] tracking-wide text-ink-muted">
             {t("promptLabel")}
           </p>
           <div
             className={cn(
-              "flex flex-col gap-2 rounded-lg border px-3.5 py-3 sm:flex-row sm:items-start sm:gap-3",
+              "flex items-center gap-2 rounded-lg border px-4 py-3",
               emphasis ? "border-primary/25 bg-field" : "border-line bg-field",
             )}
           >
-            <p className="min-w-0 flex-1 text-left text-sm leading-relaxed text-ink">
+            <p
+              className={cn(
+                "min-w-0 flex-1 overflow-x-auto overscroll-x-contain",
+                "whitespace-nowrap text-sm text-ink",
+                // touch-friendly horizontal pan; hide scrollbar chrome lightly
+                "[scrollbar-width:thin] [-webkit-overflow-scrolling:touch]",
+              )}
+              title={prompt}
+            >
               {prompt}
             </p>
-            <div className="shrink-0 self-end sm:self-start">
+            <div className="shrink-0">
               <CopyControl
                 active={copied === "prompt"}
                 onClick={() => onCopy("prompt")}

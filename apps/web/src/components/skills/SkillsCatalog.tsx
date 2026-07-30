@@ -2,13 +2,14 @@
 
 import { ChevronDown, Filter, X } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { useCallback, useMemo, useTransition } from "react";
+import { useCallback, useMemo, useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import { Stagger, StaggerItem } from "@/components/bits/Stagger";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
+  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
@@ -31,6 +32,7 @@ import {
   parseSortParam,
   parseSourceParam,
   queryCatalog,
+  type CatalogEntry,
   type CatalogQuery,
   type ContentLang,
   type DisciplineId,
@@ -45,6 +47,8 @@ import { DISCIPLINE_CSS } from "./disciplineStyles";
 import { SkillCard } from "./SkillCard";
 import { SkillsEmpty } from "./SkillsEmpty";
 
+const EXPLORE_PREVIEW = 12;
+
 function buildQueryString(q: CatalogQuery): string {
   const params = new URLSearchParams();
   if (q.q?.trim()) params.set("q", q.q.trim());
@@ -57,6 +61,18 @@ function buildQueryString(q: CatalogQuery): string {
   if (q.sort && q.sort !== "featured") params.set("sort", q.sort);
   const s = params.toString();
   return s ? `?${s}` : "";
+}
+
+function isOfficialScenario(entry: CatalogEntry): boolean {
+  return entry.scope === "official" && entry.layer === "scenario";
+}
+
+/** Pack hubs: slug *-pack, principle-skill-pack, or top featured with pack tag. */
+function isFeaturedPack(entry: CatalogEntry): boolean {
+  if (entry.slug.endsWith("-pack")) return true;
+  if (entry.id === "principle-skill-pack") return true;
+  const rank = entry.featuredRank ?? Number.POSITIVE_INFINITY;
+  return rank <= 10 && entry.tags.includes("pack");
 }
 
 /** Compact chip — sticky toolbar density (not min-h-9 stacks). */
@@ -87,6 +103,44 @@ function Chip({
     >
       {children}
     </button>
+  );
+}
+
+function SkillGrid({ entries }: { entries: CatalogEntry[] }) {
+  return (
+    <Stagger
+      className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
+      stagger={0.06}
+    >
+      {entries.map((entry) => (
+        <StaggerItem key={entry.slug} className="h-full min-h-0">
+          <div id={`skill-${entry.slug}`} className="h-full scroll-mt-28">
+            <SkillCard entry={entry} />
+          </div>
+        </StaggerItem>
+      ))}
+    </Stagger>
+  );
+}
+
+function CatalogSection({
+  title,
+  children,
+  className,
+}: {
+  title: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <section className={cn("border-b border-line", className)}>
+      <div className="mx-auto max-w-6xl px-6 py-8 md:py-10">
+        <h2 className="mb-5 font-serif text-lg font-semibold tracking-[-0.02em] text-ink md:text-xl">
+          {title}
+        </h2>
+        {children}
+      </div>
+    </section>
   );
 }
 
@@ -236,6 +290,7 @@ function FiltersPanel({
 /**
  * Compact sticky toolbar — single row (wraps once max on narrow md).
  * Does NOT embed FiltersPanel / FiltersBody. Spec 16 layout fix.
+ * Disciplines collapsed into multi-select dropdown (chips remain in Sheet).
  */
 function SkillsToolbar({
   query,
@@ -256,8 +311,9 @@ function SkillsToolbar({
     ? ["featured", "name", "updated", "popular"]
     : ["featured", "name", "updated"];
 
-  // Sheet badge: language only (disciplines are first-class on bar)
+  // Sheet badge: language only (disciplines live in bar dropdown)
   const sheetExtraCount = query.lang ? 1 : 0;
+  const disciplineCount = query.disciplines?.length ?? 0;
 
   function toggleDiscipline(id: DisciplineId) {
     const current = query.disciplines ?? [];
@@ -300,31 +356,52 @@ function SkillsToolbar({
 
       <span className="hidden h-4 w-px shrink-0 bg-line sm:block" aria-hidden />
 
-      {/* Disciplines — first-class product facet (Openwisdom atlas) */}
-      <div
-        className="flex shrink-0 items-center gap-1"
-        role="group"
-        aria-label={t("filters.discipline")}
-      >
-        <span className="hidden shrink-0 text-[0.7rem] font-semibold tracking-wide text-structure sm:inline">
-          {t("filters.discipline")}
-        </span>
-        {DISCIPLINE_IDS.map((id) => {
-          const active = query.disciplines?.includes(id);
-          return (
-            <Chip key={id} active={active} onClick={() => toggleDiscipline(id)}>
-              <span
-                className="size-1.5 rounded-full"
-                style={{ backgroundColor: DISCIPLINE_CSS[id] }}
-                aria-hidden
-              />
-              <span className="max-w-[4.5rem] truncate sm:max-w-none">
+      {/* Discipline multi-select — replaces 6 chips on bar */}
+      <DropdownMenu>
+        <DropdownMenuTrigger
+          render={
+            <Button
+              variant="outline"
+              size="sm"
+              className={cn(
+                "h-8 shrink-0 gap-1 px-2.5 text-[0.8125rem]",
+                disciplineCount > 0 &&
+                  "border-primary/40 bg-primary/8 font-medium text-primary",
+              )}
+            />
+          }
+        >
+          {t("sections.disciplineMenu")}
+          {disciplineCount > 0 ? (
+            <Badge
+              variant="secondary"
+              className="h-5 min-w-5 justify-center px-1.5 text-[0.7rem]"
+            >
+              {disciplineCount}
+            </Badge>
+          ) : null}
+          <ChevronDown className="size-3.5 opacity-60" />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start" className="min-w-48">
+          {DISCIPLINE_IDS.map((id) => {
+            const checked = query.disciplines?.includes(id) ?? false;
+            return (
+              <DropdownMenuCheckboxItem
+                key={id}
+                checked={checked}
+                onCheckedChange={() => toggleDiscipline(id)}
+              >
+                <span
+                  className="size-1.5 shrink-0 rounded-full"
+                  style={{ backgroundColor: DISCIPLINE_CSS[id] }}
+                  aria-hidden
+                />
                 {t(`disciplines.${id}`)}
-              </span>
-            </Chip>
-          );
-        })}
-      </div>
+              </DropdownMenuCheckboxItem>
+            );
+          })}
+        </DropdownMenuContent>
+      </DropdownMenu>
 
       <span className="hidden h-4 w-px shrink-0 bg-line md:block" aria-hidden />
 
@@ -385,7 +462,7 @@ function SkillsToolbar({
         </DropdownMenuContent>
       </DropdownMenu>
 
-      {/* More → Sheet (full form + language) */}
+      {/* More → Sheet (full form + language + discipline chips) */}
       <Sheet>
         <SheetTrigger
           render={
@@ -465,6 +542,7 @@ export function SkillsCatalog() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [, startTransition] = useTransition();
+  const [exploreExpanded, setExploreExpanded] = useState(false);
 
   const query: CatalogQuery = useMemo(() => {
     return {
@@ -488,6 +566,7 @@ export function SkillsCatalog() {
     [query, locale],
   );
 
+  /** Empty-state featured strip only (official scenarios). */
   const featured = useMemo(
     () =>
       queryCatalog(
@@ -516,6 +595,33 @@ export function SkillsCatalog() {
       (query.disciplines?.length ?? 0) > 0,
   );
 
+  /** Distill layout: official scenarios → packs → rest of catalog. */
+  const sections = useMemo(() => {
+    if (hardFiltersActive) {
+      return {
+        official: [] as CatalogEntry[],
+        packs: [] as CatalogEntry[],
+        explore: [] as CatalogEntry[],
+      };
+    }
+
+    const official = results.filter(isOfficialScenario);
+    const officialSlugs = new Set(official.map((e) => e.slug));
+    const packs = results.filter(
+      (e) => isFeaturedPack(e) && !officialSlugs.has(e.slug),
+    );
+    const packSlugs = new Set(packs.map((e) => e.slug));
+    const explore = results.filter(
+      (e) => !officialSlugs.has(e.slug) && !packSlugs.has(e.slug),
+    );
+    return { official, packs, explore };
+  }, [hardFiltersActive, results]);
+
+  const exploreVisible = useMemo(() => {
+    if (exploreExpanded) return sections.explore;
+    return sections.explore.slice(0, EXPLORE_PREVIEW);
+  }, [exploreExpanded, sections.explore]);
+
   const pushQuery = useCallback(
     (next: CatalogQuery) => {
       const qs = buildQueryString(next);
@@ -536,6 +642,7 @@ export function SkillsCatalog() {
   );
 
   const clearAll = useCallback(() => {
+    setExploreExpanded(false);
     pushQuery({ sort: "featured" });
   }, [pushQuery]);
 
@@ -582,59 +689,62 @@ export function SkillsCatalog() {
         />
       </div>
 
-      {!hardFiltersActive && featured.length > 0 ? (
-        <section className="border-b border-line bg-surface-muted/40">
-          <div className="mx-auto max-w-6xl px-6 py-6 md:py-8">
-            <div className="mb-4">
-              <h2 className="font-serif text-lg font-semibold tracking-[-0.02em] text-ink md:text-xl">
-                {t("featured.title")}
-              </h2>
-              <p className="mt-1 text-sm text-ink-muted">
-                {t("featured.subtitle")}
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {featured.map((entry) => (
-                <a
-                  key={entry.slug}
-                  href={`#skill-${entry.slug}`}
-                  className="inline-flex min-h-9 items-center rounded-md border border-line bg-surface px-3 py-1.5 font-mono text-xs text-ink-muted transition-colors hover:border-primary/30 hover:text-primary"
-                >
-                  {entry.slug}
-                </a>
-              ))}
-            </div>
-          </div>
-        </section>
-      ) : null}
-
-      <section className="border-b border-line">
-        <div className="mx-auto max-w-6xl px-6 py-8 md:py-10">
-          {results.length === 0 ? (
+      {results.length === 0 ? (
+        <section className="border-b border-line">
+          <div className="mx-auto max-w-6xl px-6 py-8 md:py-10">
             <SkillsEmpty
               communityOnly={communityOnly}
               featured={featured}
               onClear={clearAll}
             />
-          ) : (
-            <Stagger
-              className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
-              stagger={0.06}
+          </div>
+        </section>
+      ) : hardFiltersActive ? (
+        <section className="border-b border-line">
+          <div className="mx-auto max-w-6xl px-6 py-8 md:py-10">
+            <SkillGrid entries={results} />
+          </div>
+        </section>
+      ) : (
+        <>
+          {sections.official.length > 0 ? (
+            <CatalogSection
+              title={t("sections.officialTitle")}
+              className="bg-surface-muted/40"
             >
-              {results.map((entry) => (
-                <StaggerItem key={entry.slug} className="h-full min-h-0">
-                  <div
-                    id={`skill-${entry.slug}`}
-                    className="h-full scroll-mt-28"
+              <SkillGrid entries={sections.official} />
+            </CatalogSection>
+          ) : null}
+
+          {sections.packs.length > 0 ? (
+            <CatalogSection title={t("sections.packsTitle")}>
+              <SkillGrid entries={sections.packs} />
+            </CatalogSection>
+          ) : null}
+
+          {sections.explore.length > 0 ? (
+            <CatalogSection title={t("sections.exploreTitle")}>
+              <SkillGrid entries={exploreVisible} />
+              {!exploreExpanded && sections.explore.length > EXPLORE_PREVIEW ? (
+                <div className="mt-6 flex justify-center">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="h-9 gap-1.5 px-4 text-[0.8125rem]"
+                    onClick={() => setExploreExpanded(true)}
                   >
-                    <SkillCard entry={entry} />
-                  </div>
-                </StaggerItem>
-              ))}
-            </Stagger>
-          )}
-        </div>
-      </section>
+                    {t("sections.showAll")}
+                    <span className="tabular-nums text-ink-muted">
+                      ({sections.explore.length})
+                    </span>
+                  </Button>
+                </div>
+              ) : null}
+            </CatalogSection>
+          ) : null}
+        </>
+      )}
     </div>
   );
 }

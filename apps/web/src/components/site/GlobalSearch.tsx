@@ -214,6 +214,9 @@ function CommandPalette({
   }
 
   const skillCount = q.trim() ? skillHits.length : featured.length;
+  const listboxId = "gs-listbox";
+  const activeOptionId =
+    rows.length > 0 ? `gs-opt-${active}` : undefined;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -237,28 +240,47 @@ function CommandPalette({
             className="h-12 border-0 bg-transparent shadow-none focus-visible:ring-0"
             autoComplete="off"
             spellCheck={false}
+            role="combobox"
+            aria-expanded={open}
+            aria-controls={listboxId}
+            aria-activedescendant={activeOptionId}
+            aria-autocomplete="list"
           />
           <Kbd className="shrink-0">Esc</Kbd>
         </div>
 
-        <div className="max-h-[min(70vh,28rem)] overflow-y-auto p-2">
+        <div
+          id={listboxId}
+          role="listbox"
+          aria-label={tSearch("dialogTitle")}
+          className="max-h-[min(70vh,28rem)] overflow-y-auto p-2"
+        >
           {skillCount > 0 ? (
-            <div className="mb-1 px-2 py-1.5 text-[0.7rem] font-semibold tracking-wide text-structure uppercase">
+            <div
+              className="mb-1 px-2 py-1.5 text-[0.7rem] font-semibold tracking-wide text-structure uppercase"
+              role="presentation"
+            >
               {tSearch("groupSkills")}
             </div>
           ) : null}
 
           {rows.map((row, i) => {
+            const optionId = `gs-opt-${i}`;
+            const selected = i === active;
+
             if (row.kind === "skill") {
               const title = pickLocalized(row.entry.title, locale);
               const summary = pickLocalized(row.entry.summary, locale);
               return (
                 <button
                   key={`skill-${row.entry.slug}`}
+                  id={optionId}
                   type="button"
+                  role="option"
+                  aria-selected={selected}
                   className={cn(
                     "flex w-full flex-col gap-0.5 rounded-lg px-3 py-2.5 text-left transition-colors",
-                    i === active
+                    selected
                       ? "bg-primary/8 text-ink"
                       : "text-ink hover:bg-field",
                   )}
@@ -286,17 +308,23 @@ function CommandPalette({
               const isFirstJump =
                 rows.findIndex((r) => r.kind === "jump") === i;
               return (
-                <div key={`jump-${row.key}`}>
+                <div key={`jump-${row.key}`} role="presentation">
                   {isFirstJump ? (
-                    <div className="mt-2 mb-1 px-2 py-1.5 text-[0.7rem] font-semibold tracking-wide text-structure uppercase">
+                    <div
+                      className="mt-2 mb-1 px-2 py-1.5 text-[0.7rem] font-semibold tracking-wide text-structure uppercase"
+                      role="presentation"
+                    >
                       {tSearch("groupJump")}
                     </div>
                   ) : null}
                   <button
+                    id={optionId}
                     type="button"
+                    role="option"
+                    aria-selected={selected}
                     className={cn(
                       "flex w-full items-center rounded-lg px-3 py-2 text-left text-sm transition-colors",
-                      i === active
+                      selected
                         ? "bg-primary/8 text-ink"
                         : "text-ink-muted hover:bg-field hover:text-ink",
                     )}
@@ -312,10 +340,13 @@ function CommandPalette({
             return (
               <button
                 key="search-catalog"
+                id={optionId}
                 type="button"
+                role="option"
+                aria-selected={selected}
                 className={cn(
                   "mt-1 flex w-full items-center justify-between rounded-lg border border-dashed border-line px-3 py-2.5 text-left text-sm transition-colors",
-                  i === active
+                  selected
                     ? "border-primary/40 bg-primary/8 text-ink"
                     : "text-ink-muted hover:bg-field hover:text-ink",
                 )}
@@ -331,7 +362,7 @@ function CommandPalette({
           })}
 
           {q.trim() && skillHits.length === 0 ? (
-            <p className="px-3 py-4 text-sm text-ink-muted">
+            <p className="px-3 py-4 text-sm text-ink-muted" role="status">
               {tSearch("noSkills")}
             </p>
           ) : null}

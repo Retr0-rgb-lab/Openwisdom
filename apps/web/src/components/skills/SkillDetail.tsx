@@ -63,6 +63,9 @@ export function SkillDetail({
     ? SHAPE_ACCENT[entry.shape]
     : "var(--ow-primary)";
   const provenance = entryProvenance(entry);
+  const linkOnly =
+    entry.installMode === "link-only" ||
+    entry.contentAvailability === "external-only";
   const githubHref =
     entry.externalUrl ||
     (entry.repoPath
@@ -70,6 +73,7 @@ export function SkillDetail({
       : GITHUB_URL);
 
   async function onCopy() {
+    if (!entry.install?.cli) return;
     const ok = await copyText(entry.install.cli);
     if (ok) {
       setCopied(true);
@@ -233,6 +237,7 @@ export function SkillDetail({
             githubHref={githubHref}
             copied={copied}
             onCopy={onCopy}
+            linkOnly={linkOnly}
           />
         </div>
       </div>
@@ -292,13 +297,38 @@ export function SkillDetail({
       {/* Mobile bottom dock */}
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/95 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-sm md:hidden">
         <div className="mx-auto flex max-w-6xl gap-2">
-          <Button type="button" className="min-h-11 flex-1 gap-1.5" onClick={onCopy}>
-            {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
-            {t("card.copyInstall")}
-          </Button>
+          {entry.externalUrl ? (
+            <Button
+              className="min-h-11 flex-1 gap-1.5"
+              render={
+                <a
+                  href={entry.externalUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                />
+              }
+            >
+              <ExternalLink className="size-4" />
+              {t("detail.openUpstream")}
+            </Button>
+          ) : (
+            <Button
+              type="button"
+              className="min-h-11 flex-1 gap-1.5"
+              onClick={onCopy}
+            >
+              {copied ? (
+                <Check className="size-4" />
+              ) : (
+                <Copy className="size-4" />
+              )}
+              {t("card.copyInstall")}
+            </Button>
+          )}
           <Button
             variant="outline"
             className="min-h-11 gap-1.5 px-3"
+            aria-label={t("actions.github")}
             render={
               <a href={githubHref} target="_blank" rel="noreferrer" />
             }
@@ -307,7 +337,7 @@ export function SkillDetail({
           </Button>
         </div>
         <p className="mx-auto mt-2 max-w-6xl text-[0.7rem] leading-snug text-ink-muted">
-          {t("actions.installNote")}
+          {linkOnly ? t("detail.cliPreviewNote") : t("actions.installNote")}
         </p>
       </div>
     </div>
@@ -319,50 +349,72 @@ function InstallTabs({
   githubHref,
   copied,
   onCopy,
+  linkOnly,
 }: {
   entry: CatalogEntry;
   githubHref: string;
   copied: boolean;
   onCopy: () => void;
+  linkOnly: boolean;
 }) {
   const t = useTranslations("skills");
+  const defaultTab = linkOnly ? "github" : "cli";
+  const hasCli = Boolean(entry.install?.cli);
 
   return (
-    <Tabs defaultValue="cli">
+    <Tabs defaultValue={defaultTab}>
       <TabsList variant="line" className="mb-3">
         <TabsTrigger value="cli">{t("detail.tabCli")}</TabsTrigger>
         <TabsTrigger value="github">{t("detail.tabGithub")}</TabsTrigger>
         <TabsTrigger value="manual">{t("detail.tabManual")}</TabsTrigger>
       </TabsList>
       <TabsContent value="cli" className="outline-none">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <code className="truncate rounded-md border border-line bg-field px-3 py-2 font-mono text-xs text-ink sm:text-sm">
-            {entry.install.cli}
-          </code>
-          <div className="flex flex-wrap gap-2">
-            <Button type="button" className="min-h-10 gap-1.5" onClick={onCopy}>
-              {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
-              {t("card.copyInstall")}
-            </Button>
-            <Button
-              variant="outline"
-              className="min-h-10 gap-1.5"
-              render={
-                <a href={githubHref} target="_blank" rel="noreferrer" />
-              }
-            >
-              <GithubMark className="size-4" />
-              {t("actions.github")}
-            </Button>
+        {hasCli ? (
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <code className="truncate rounded-md border border-line bg-field px-3 py-2 font-mono text-xs text-ink sm:text-sm">
+              {entry.install.cli}
+            </code>
+            <div className="flex flex-wrap gap-2">
+              <Button
+                type="button"
+                className="min-h-10 gap-1.5"
+                variant={linkOnly ? "outline" : "default"}
+                onClick={onCopy}
+              >
+                {copied ? (
+                  <Check className="size-4" />
+                ) : (
+                  <Copy className="size-4" />
+                )}
+                {linkOnly ? t("card.copyCliPreview") : t("card.copyInstall")}
+              </Button>
+              <Button
+                variant="outline"
+                className="min-h-10 gap-1.5"
+                render={
+                  <a href={githubHref} target="_blank" rel="noreferrer" />
+                }
+              >
+                <GithubMark className="size-4" />
+                {t("actions.github")}
+              </Button>
+            </div>
           </div>
-        </div>
-        <p className="mt-2 text-xs text-ink-muted">{t("actions.installNote")}</p>
+        ) : null}
+        <p className="mt-2 text-xs text-ink-muted">
+          {linkOnly ? t("detail.cliPreviewNote") : t("actions.installNote")}
+        </p>
       </TabsContent>
       <TabsContent value="github" className="outline-none">
         <p className="text-sm text-ink-muted">{t("detail.githubTabBody")}</p>
+        {linkOnly ? (
+          <p className="mt-1 text-xs text-ink-muted">
+            {t("detail.defaultGitHubTab")}
+          </p>
+        ) : null}
         <Button
           className="mt-3 min-h-10 gap-1.5"
-          variant="outline"
+          variant={linkOnly ? "default" : "outline"}
           render={
             <a href={githubHref} target="_blank" rel="noreferrer" />
           }

@@ -61,6 +61,9 @@
   "card": {
     "open": "Open detail",
     "copyInstall": "Copy install command",
+    "viewUpstream": "Open upstream",
+    "copyCliPreview": "Copy CLI (preview)",
+    "whenLabel": "When",
     "contentLang": "Body {lang}",
     "moreTags": "+{count}"
   },
@@ -84,6 +87,13 @@
   "featured": {
     "title": "Featured scenarios",
     "subtitle": "Three official analysis workflows for v1"
+  },
+  "sections": {
+    "officialTitle": "Official scenarios",
+    "packsTitle": "Featured packs",
+    "exploreTitle": "Explore catalog",
+    "showAll": "Show all",
+    "disciplineMenu": "Discipline"
   },
   "detail": {
     "breadcrumbSkills": "Skills",
@@ -112,6 +122,8 @@
     "tabManual": "Manual",
     "githubTabBody": "Browse SKILL.md upstream or in the monorepo path; clone and copy into your harness skills directory.",
     "openUpstream": "Open source",
+    "cliPreviewNote": "CLI name is preview-only: body lives upstream; install from GitHub until the CLI ships.",
+    "defaultGitHubTab": "External skills default to the GitHub tab; CLI remains available as a preview.",
     "manual1": "Open the skill folder on GitHub or clone the repo.",
     "manual2": "Place the skill folder in your agent skills path (e.g. .claude/skills/).",
     "manual3": "Reload the agent and invoke per the skill docs.",

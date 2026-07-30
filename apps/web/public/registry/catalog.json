@@ -1,0 +1,205 @@
+{
+  "schemaVersion": 1,
+  "skills": [
+    {
+      "id": "collective-action",
+      "name": "collective-action",
+      "description": "Reference card for collective action problems: free-riding, selective incentives, and how groups organize (or fail to) under shared goals. Load when mapping who benefits, who pays, and who can veto or free-ride.",
+      "layer": "reference",
+      "scope": "official",
+      "disciplines": [
+        "sociology",
+        "political-science"
+      ],
+      "language": "zh",
+      "tags": [
+        "free-rider",
+        "public-goods",
+        "organization",
+        "olson"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-07-30",
+      "repoPath": "skills/official/references/collective-action",
+      "install": {
+        "cli": "npx openwisdom install collective-action"
+      }
+    },
+    {
+      "id": "confirmation-bias",
+      "name": "confirmation-bias",
+      "description": "Reference card for confirmation bias: seeking, interpreting, and remembering evidence in ways that favor an already preferred conclusion. Load when auditing search strategy, counter-evidence, and motivated updating.",
+      "layer": "reference",
+      "scope": "official",
+      "disciplines": [
+        "psychology"
+      ],
+      "language": "zh",
+      "tags": [
+        "bias",
+        "evidence",
+        "motivated-reasoning",
+        "audit"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-07-30",
+      "repoPath": "skills/official/references/confirmation-bias",
+      "install": {
+        "cli": "npx openwisdom install confirmation-bias"
+      }
+    },
+    {
+      "id": "macro-scan",
+      "name": "macro-scan",
+      "description": "Break a situation, industry, or system into structure: actors, incentives, constraints, and trajectories. Use when a complex picture needs a macro/system read before judging or deciding.",
+      "layer": "scenario",
+      "scope": "official",
+      "disciplines": [
+        "political-science",
+        "economics",
+        "sociology"
+      ],
+      "language": "zh",
+      "tags": [
+        "macro",
+        "structure",
+        "systems"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-07-30",
+      "repoPath": "skills/official/scenarios/macro-scan",
+      "references": [
+        "path-dependence",
+        "collective-action"
+      ],
+      "install": {
+        "cli": "npx openwisdom install macro-scan"
+      }
+    },
+    {
+      "id": "metacognition-audit",
+      "name": "metacognition-audit",
+      "description": "Audit a line of thinking: expose biases, blind spots, and evidence gaps instead of polishing conclusions. Use after a conclusion forms and before it ships, when thought quality matters.",
+      "layer": "scenario",
+      "scope": "official",
+      "disciplines": [
+        "psychology"
+      ],
+      "language": "zh",
+      "tags": [
+        "metacognition",
+        "bias",
+        "audit"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-07-30",
+      "repoPath": "skills/official/scenarios/metacognition-audit",
+      "references": [
+        "confirmation-bias",
+        "prospect-theory"
+      ],
+      "install": {
+        "cli": "npx openwisdom install metacognition-audit"
+      }
+    },
+    {
+      "id": "path-dependence",
+      "name": "path-dependence",
+      "description": "Reference card for path dependence: how early choices and increasing returns lock systems into trajectories that are costly to reverse. Load when mapping lock-in, sunk commitments, or why \"better\" options stay unused.",
+      "layer": "reference",
+      "scope": "official",
+      "disciplines": [
+        "economics",
+        "history"
+      ],
+      "language": "zh",
+      "tags": [
+        "history",
+        "institutions",
+        "lock-in",
+        "increasing-returns"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-07-30",
+      "repoPath": "skills/official/references/path-dependence",
+      "install": {
+        "cli": "npx openwisdom install path-dependence"
+      }
+    },
+    {
+      "id": "personal-anchor",
+      "name": "personal-anchor",
+      "description": "Place a personal situation on historical and social coordinates: which curve you are on, which stratum you stand on. Use for long-horizon choices—career, city, direction—when orientation matters more than pep talk.",
+      "layer": "scenario",
+      "scope": "official",
+      "disciplines": [
+        "history",
+        "sociology"
+      ],
+      "language": "zh",
+      "tags": [
+        "anchor",
+        "history",
+        "orientation"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-07-30",
+      "repoPath": "skills/official/scenarios/personal-anchor",
+      "references": [
+        "social-stratification"
+      ],
+      "install": {
+        "cli": "npx openwisdom install personal-anchor"
+      }
+    },
+    {
+      "id": "prospect-theory",
+      "name": "prospect-theory",
+      "description": "Reference card for prospect theory: reference points, loss aversion, and probability weighting that shape choices under risk. Load when auditing framing, asymmetric risk attitudes, or over-weighted small probabilities.",
+      "layer": "reference",
+      "scope": "official",
+      "disciplines": [
+        "psychology",
+        "economics"
+      ],
+      "language": "zh",
+      "tags": [
+        "risk",
+        "loss-aversion",
+        "framing",
+        "behavioral",
+        "kahneman-tversky"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-07-30",
+      "repoPath": "skills/official/references/prospect-theory",
+      "install": {
+        "cli": "npx openwisdom install prospect-theory"
+      }
+    },
+    {
+      "id": "social-stratification",
+      "name": "social-stratification",
+      "description": "Reference card for social stratification: layered positions in education, occupation, wealth, status, and networks. Load when locating a person or group on structural coordinates without reducing them to a slogan.",
+      "layer": "reference",
+      "scope": "official",
+      "disciplines": [
+        "sociology"
+      ],
+      "language": "zh",
+      "tags": [
+        "class",
+        "status",
+        "mobility",
+        "inequality",
+        "education"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-07-30",
+      "repoPath": "skills/official/references/social-stratification",
+      "install": {
+        "cli": "npx openwisdom install social-stratification"
+      }
+    }
+  ]
+}

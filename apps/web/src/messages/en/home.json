@@ -19,15 +19,20 @@
     }
   },
   "install": {
-    "cliStatus": "The CLI is not published to npm yet. Copy the command for later — interactive install works after publish.",
-    "cliNote": "After publish: interactively pick agents (project or global). This command is not available yet.",
+    "surfacesLabel": "Install surface",
+    "tabCli": "CLI",
+    "tabMcp": "MCP",
+    "cliStatus": "CLI is not on npm yet. You can copy the command for later.",
+    "cliNote": "After publish, pick agents interactively (project or global).",
+    "mcpStatus": "MCP is not on npm yet. You can copy the command for later.",
+    "mcpNote": "In-session package manager: search / list / install / update. No model calls.",
     "copied": "Copied to clipboard",
     "copyFailed": "Copy failed. Select and copy the command manually."
   },
   "harness": {
     "label": "Into the agent you already use",
     "subtitle": "A compatibility inventory — not a marquee of logos.",
-    "paths": ".claude/skills/ · .cursor/ · harness skill dirs",
+    "paths": ".claude/skills/ · .cursor/ · agent skill dirs",
     "items": ["Claude Code", "Cursor", "Codex", "Gemini CLI", "GitHub Copilot", "Grok"]
   },
   "scenarios": {
@@ -140,13 +145,18 @@
   },
   "paths": {
     "eyebrow": "Install",
-    "title": "Three paths, one source of truth",
-    "subtitle": "Whichever path you take, the content comes from the same GitHub repository.",
+    "title": "Four paths, one source of truth",
+    "subtitle": "CLI and MCP share the same package-manager core; GitHub and manual still point at the same repository.",
     "primary": "Primary",
     "cli": {
       "title": "Openwisdom CLI",
       "desc": "One command, interactively installed into multiple agents.",
-      "cta": "Visit the install hub"
+      "cta": "Browse installable skills"
+    },
+    "mcp": {
+      "title": "Openwisdom MCP",
+      "desc": "stdio tools inside your agent session: search / install / update.",
+      "cta": "Browse installable skills"
     },
     "github": {
       "title": "GitHub repo",
@@ -155,8 +165,8 @@
     },
     "manual": {
       "title": "Manual copy",
-      "desc": "Download a zip or copy skill directories into your harness.",
-      "cta": "See the manual path"
+      "desc": "Download a zip or copy skill directories into your agent.",
+      "cta": "Get from GitHub"
     }
   },
   "provenance": {

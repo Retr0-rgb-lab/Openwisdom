@@ -8,15 +8,16 @@ export default getRequestConfig(async ({ requestLocale }) => {
     ? requested
     : routing.defaultLocale;
 
-  // Namespaced per file (shell / home / skills) to avoid write conflicts.
-  const [shell, home, skills] = await Promise.all([
+  // Namespaced per file (shell / home / skills / pages) to avoid write conflicts.
+  const [shell, home, skills, pages] = await Promise.all([
     import(`../messages/${locale}/shell.json`).then((m) => m.default),
     import(`../messages/${locale}/home.json`).then((m) => m.default),
     import(`../messages/${locale}/skills.json`).then((m) => m.default),
+    import(`../messages/${locale}/pages.json`).then((m) => m.default),
   ]);
 
   return {
     locale,
-    messages: { shell, home, skills },
+    messages: { shell, home, skills, pages },
   };
 });

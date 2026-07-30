@@ -36,7 +36,11 @@ export function SiteHeader() {
         </Link>
 
         <NavigationMenu className="hidden shrink-0 lg:flex">
-          <NavigationMenuList className="gap-0.5">
+          {/* key forces remount when nav set changes (avoids stale CompositeList slots after HMR) */}
+          <NavigationMenuList
+            key={NAV_ITEMS.map((i) => i.href).join("|")}
+            className="gap-0.5"
+          >
             {NAV_ITEMS.map((item) => {
               const active =
                 pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -93,9 +97,9 @@ export function SiteHeader() {
             variant="default"
             size="default"
             className="hidden h-10 px-3.5 sm:inline-flex"
-            render={<Link href="/install" />}
+            render={<Link href="/skills" />}
           >
-            {t("nav.install")}
+            {t("nav.skills")}
           </Button>
           <MobileNav />
         </div>

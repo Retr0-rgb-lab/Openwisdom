@@ -24,9 +24,9 @@ Openwisdom is an **open-source social-science Agent Skills library** with three 
 
 1. **GitHub** — skills source of truth (`official/` + `community/`, planned)
 2. **Bilingual catalog website** — discover / download / contribute guide (`apps/web`)
-3. **CLI** — skill package manager only (`search` / `install` / `update` / `list`) — multi-agent install like Impeccable
+3. **CLI + MCP** — skill package managers only (`search` / `install` / `update` / `list`); CLI for humans, MCP stdio tools for agents — shared core, no LLMs
 
-**Not** a hosted analysis chatbot. **Not** a CLI that calls LLMs. Analysis runs in the **user’s** coding agent.
+**Not** a hosted analysis chatbot. **Not** a CLI/MCP that calls LLMs. Analysis runs in the **user’s** coding agent.
 
 Primary users: knowledge workers already on Claude Code, Cursor, Codex, Grok, etc.
 
@@ -37,7 +37,7 @@ License: **MIT**
 
 1. **Agent-native analysis** — Never implement web chat / hosted sessions / `openwisdom run` that calls a model in v1 scope.
 2. **One content truth** — Skills live under git `skills/` (when present). Site and CLI share a generated catalog index. **Do not** invent skill metadata only on the website.
-3. **Heat is a side channel** — Install telemetry (web download + CLI install success) must not write into `SKILL.md`. Fail open: install works if stats API is down. Copy-command is funnel-only, not primary popularity.
+3. **Heat is a side channel** — Install telemetry (web download + CLI/MCP install success) must not write into `SKILL.md`. Fail open: install works if stats API is down. Copy-command is funnel-only, not primary popularity.
 4. **Layered content** — **Scenario skills** (workflows) cite **discipline references** (theory cards). Official vs community is provenance, not a second product.
 5. **UI zh/en; skill body language = contributor** — Don’t force bilingual skill bodies.
 6. **Design world = Overlay Atlas (logo-aligned)** — Field `#F8F9FA`, primary `#1C4BD1`, structure `#2E6975`, signal `#E69622`; logo at `apps/web/public/brand/logo.svg`. Specs **07–11** + `DESIGN.md` win over old copper Direction B. No purple AI-SaaS skin, no fake testimonials/metrics.
@@ -51,8 +51,10 @@ License: **MIT**
 | Visual system tokens & bans | [`DESIGN.md`](./DESIGN.md) (Overlay Atlas; logo tokens) · authority specs [`07`](./docs/specs/07-品牌与Logo对齐视觉系统.md)–[`11`](./docs/specs/11-视觉整改总控-SPE.md) |
 | Product decisions log | [`docs/知识库/02-产品决策记录.md`](./docs/知识库/02-产品决策记录.md) |
 | v1 scope checklist | [`docs/知识库/03-v1交付范围.md`](./docs/知识库/03-v1交付范围.md) |
-| Specs index | [`docs/specs/00-索引.md`](./docs/specs/00-索引.md) |
-| Architecture / monorepo / catalog pipeline | [`docs/specs/01-架构方案.md`](./docs/specs/01-架构方案.md) |
+| Repo status map | [`docs/知识库/05-系统现状与实现地图.md`](./docs/知识库/05-系统现状与实现地图.md) |
+| Doc governance | [`docs/知识库/06-文档治理与规格分层.md`](./docs/知识库/06-文档治理与规格分层.md) |
+| Specs index (live) | [`docs/specs/00-索引.md`](./docs/specs/00-索引.md) · archive under `docs/specs/archive/` |
+| Architecture / monorepo / catalog pipeline | [`docs/specs/01-架构方案.md`](./docs/specs/01-架构方案.md) · MCP dual-surface: Specs **22–24** |
 | Page IA / routes | [`docs/specs/03-页面信息架构.md`](./docs/specs/03-页面信息架构.md) |
 | Components + motion policy | [`docs/specs/04-组件与动效.md`](./docs/specs/04-组件与动效.md) |
 | Install heat / telemetry | [`docs/specs/06-热度与遥测.md`](./docs/specs/06-热度与遥测.md) |
@@ -73,8 +75,9 @@ Pick the task row; load **only** the linked L2 material.
 | **Home page only** | `apps/web` home components + `PRODUCT`/`DESIGN` | Already implemented (see L2 Web) |
 | **Skills catalog / detail / install pages** | `docs/specs/03` then implement under `apps/web` | Routes linked from Home may 404 until built |
 | **Author official skills / references** | `docs/specs/01` skill frontmatter + v1 content in `docs/知识库/03` | Three scenarios + five disciplines |
-| **CLI install / providers** | `docs/specs/01` § CLI + providers list | No LLM; interactive multi-harness |
-| **Telemetry / heat ranking** | `docs/specs/06-热度与遥测.md` | Third tier: web download + CLI success |
+| **CLI install / providers** | **`docs/specs/17`–`20`（执行权威）** · 调研 `21` · 背景 `01` §7 | No LLM; interactive multi-harness; 实现前先读 17 总控 |
+| **MCP install surface / core extract** | **`docs/specs/22`–`24`（执行权威）** · 调研 `25` · plan `docs/plans/2026-07-30-mcp/` | Dual surface with CLI; package manager only; no LLM; stdio tools |
+| **Telemetry / heat ranking** | Spec **06**（语义）+ **27–29**（API 实现） | Third tier; fail-open; copy not on main rank |
 | **i18n copy** | `apps/web/src/messages/{zh,en}.ts` | Keep parity between locales |
 | **Impeccable design commands** | `PRODUCT.md` / `DESIGN.md` already present | Don’t re-init unless stale |
 
@@ -137,11 +140,20 @@ pnpm lint
 - Frontmatter validated by planned `packages/schema`; catalog build feeds web + CLI.
 - Details: `docs/specs/01-架构方案.md` § skill unit + pipeline.
 
-### CLI (planned)
+### CLI + MCP (install surfaces)
 
-- Package manager only: install into many harness dirs with interactive multi-select.
-- Telemetry after successful write; `--no-telemetry` / CI off.
-- Do not add model API keys or analysis runners.
+Dual package-manager surfaces (**no LLM**, no analysis runners)—same catalog/install semantics, two adapters:
+
+| Surface | Role | Authority | Package (planned / implementing) |
+|---------|------|-----------|----------------------------------|
+| **CLI** | Human terminal; interactive multi-harness | Specs **17–20** (+ research **21**) | `packages/cli` |
+| **MCP** | Agent session tools over **stdio** | Specs **22–24** (+ research **25**) | `packages/mcp` |
+| **Core** | Shared non-interactive search / list / install / update / telemetry | Spec **24** | `packages/core` |
+
+- Skilldex-style *two interfaces, one core*: extract install/catalog into `packages/core`; CLI and MCP are thin adapters only.
+- CLI: multi-provider interactive install; non-interactive flags for scripts; `--no-telemetry` / CI off.
+- MCP: non-interactive tools; explicit providers; telemetry `source: "mcp"`; no TTY prompts; stdout reserved for protocol.
+- Do not add model API keys, hosted sessions, or `run`/analysis tools.
 
 ### Design / Impeccable
 
@@ -184,7 +196,8 @@ Only if you must audit history or research trail:
 | Understand the product in 2 minutes | L0 + `PRODUCT.md` |
 | Ship the next website page | L1 UI/IA rows + `apps/web` |
 | Design / rebrand | Stop → `DESIGN.md` + Specs **07–11** first |
-| Build CLI | `docs/specs/01` + hard rule #1 |
+| Build CLI | Specs **17–20** + hard rule #1（`01` 仅背景） |
+| Build MCP / extract core | Specs **22–24** (+ **25**) + hard rule #1 · plan `docs/plans/2026-07-30-mcp/` |
 | Add a skill | Wait for / create `skills/` per § Skills + schema in `01` |
 | Change install heat | `docs/specs/06` only |
 

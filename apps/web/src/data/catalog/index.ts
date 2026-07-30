@@ -1,38 +1,139 @@
-import { BOOTSTRAP_CATALOG } from "./bootstrap";
+import { BOOTSTRAP_CATALOG, REFERENCE_BOOTSTRAP } from "./bootstrap";
 import { DISCIPLINE_SEED } from "./discipline-seed";
 import { EXTERNAL_SEED } from "./external-seed";
+import { loadRegistrySkills, mapRegistryToEntry } from "./load-registry";
+import { HISTORY_SEED } from "./history-seed";
 import { PHILOSOPHY_SEED } from "./philosophy-seed";
 import { PRINCIPLE_SEED } from "./principle-seed";
 import type {
   CatalogEntry,
   CatalogQuery,
+  CatalogSourceFilter,
   ContentLang,
   DisciplineId,
   SkillLayer,
   SkillScope,
   SortKey,
 } from "./types";
-import { pickLocalized } from "./types";
+import { entryProvenance, pickLocalized } from "./types";
 
 export * from "./types";
-export { BOOTSTRAP_CATALOG } from "./bootstrap";
+export { BOOTSTRAP_CATALOG, REFERENCE_BOOTSTRAP } from "./bootstrap";
 export { EXTERNAL_SEED } from "./external-seed";
 export { DISCIPLINE_SEED } from "./discipline-seed";
+export { HISTORY_SEED } from "./history-seed";
 export { PHILOSOPHY_SEED } from "./philosophy-seed";
 export { PRINCIPLE_SEED } from "./principle-seed";
+export {
+  loadRegistrySkills,
+  mapRegistryToEntry,
+  parseRegistrySkill,
+} from "./load-registry";
 
-/** De-dupe by slug; official bootstrap wins over later seeds. */
+/**
+ * Curated discovery seeds: always honest external provenance.
+ * CLI install strings may remain as preview only; UI treats as link-only.
+ */
+function asCuratedDiscovery(entry: CatalogEntry): CatalogEntry {
+  return {
+    ...entry,
+    provenance: "curated-external",
+    installMode: "link-only",
+    contentAvailability: "external-only",
+    // Discovery layer — not machine registry
+    source: entry.source === "catalog" ? "catalog" : "bootstrap",
+  };
+}
+
+/**
+ * Overlay bootstrap UI richness onto a registry (installable) entry.
+ * Preserves source: "catalog" and install truth from registry.
+ */
+function overlayBootstrap(
+  registryEntry: CatalogEntry,
+  boot: CatalogEntry,
+): CatalogEntry {
+  return {
+    ...boot,
+    // Installable truth from registry
+    id: registryEntry.id,
+    slug: registryEntry.slug,
+    layer: registryEntry.layer,
+    scope: registryEntry.scope,
+    version: registryEntry.version || boot.version,
+    updated: registryEntry.updated || boot.updated,
+    repoPath: registryEntry.repoPath ?? boot.repoPath,
+    install: registryEntry.install,
+    source: "catalog",
+    provenance:
+      registryEntry.provenance ??
+      (registryEntry.scope === "official" ? "official" : "community"),
+    installMode: "cli",
+    contentAvailability:
+      registryEntry.contentAvailability ?? "summary-only",
+    disciplines:
+      registryEntry.disciplines.length > 0
+        ? registryEntry.disciplines
+        : boot.disciplines,
+    tags: registryEntry.tags.length > 0 ? registryEntry.tags : boot.tags,
+    language: registryEntry.language || boot.language,
+    // Prefer bilingual bootstrap copy when present
+    title: boot.title,
+    summary: boot.summary,
+    when: boot.when,
+    steps: boot.steps,
+    output: boot.output,
+    bias: boot.bias,
+    shape: boot.shape,
+    axis: boot.axis,
+    references: boot.references ?? registryEntry.references,
+    featuredRank: boot.featuredRank ?? registryEntry.featuredRank,
+  };
+}
+
+/**
+ * Single catalog truth for web UI.
+ *
+ * Merge order:
+ * 1. Machine registry (installable) — source: "catalog"
+ * 2. Bootstrap overlay for UI fields on matching slugs (keeps source: "catalog")
+ * 3. Curated seeds (principle/external/discipline/philosophy) as discovery only
+ *
+ * If registry missing/empty: bootstrap three scenarios + curated seeds + honesty banner.
+ */
 export function getCatalog(): CatalogEntry[] {
   const map = new Map<string, CatalogEntry>();
-  for (const entry of [
-    ...BOOTSTRAP_CATALOG,
+
+  const registrySkills = loadRegistrySkills();
+  for (const skill of registrySkills) {
+    const entry = mapRegistryToEntry(skill);
+    map.set(entry.slug, entry);
+  }
+
+  // Scenarios + official reference UI overlays (bilingual title/summary/when)
+  for (const boot of [...BOOTSTRAP_CATALOG, ...REFERENCE_BOOTSTRAP]) {
+    const existing = map.get(boot.slug);
+    if (existing && existing.source === "catalog") {
+      map.set(boot.slug, overlayBootstrap(existing, boot));
+    } else if (!existing) {
+      // Registry gap: product seed still discoverable
+      map.set(boot.slug, { ...boot, source: "bootstrap" });
+    }
+  }
+
+  const curatedSeeds = [
     ...PRINCIPLE_SEED,
+    ...HISTORY_SEED,
     ...EXTERNAL_SEED,
     ...DISCIPLINE_SEED,
     ...PHILOSOPHY_SEED,
-  ]) {
-    if (!map.has(entry.slug)) map.set(entry.slug, entry);
+  ];
+  for (const seed of curatedSeeds) {
+    if (!map.has(seed.slug)) {
+      map.set(seed.slug, asCuratedDiscovery(seed));
+    }
   }
+
   return [...map.values()];
 }
 
@@ -40,12 +141,22 @@ export function getSkillBySlug(slug: string): CatalogEntry | undefined {
   return getCatalog().find((e) => e.slug === slug);
 }
 
-export function catalogHasHeat(entries: CatalogEntry[] = getCatalog()): boolean {
+export function catalogHasHeat(
+  entries: CatalogEntry[] = getCatalog(),
+): boolean {
   return entries.some(
-    (e) => typeof e.installs30d === "number" || typeof e.installsTotal === "number",
+    (e) =>
+      typeof e.installs30d === "number" ||
+      typeof e.installsTotal === "number",
   );
 }
 
+/**
+ * Filter by provenance-facing `source` facet:
+ * - official  → provenance official OR scope official
+ * - community → provenance community only (excludes curated-external)
+ * - curated   → provenance curated-external
+ */
 export function filterCatalog(
   entries: CatalogEntry[],
   query: CatalogQuery,
@@ -58,7 +169,18 @@ export function filterCatalog(
 
   return entries.filter((entry) => {
     if (layer && entry.layer !== layer) return false;
-    if (source && entry.scope !== source) return false;
+
+    if (source) {
+      const prov = entryProvenance(entry);
+      if (source === "official") {
+        if (prov !== "official" && entry.scope !== "official") return false;
+      } else if (source === "community") {
+        if (prov !== "community") return false;
+      } else if (source === "curated") {
+        if (prov !== "curated-external") return false;
+      }
+    }
+
     if (lang && entry.language !== lang) return false;
     if (disciplines.length > 0) {
       const hit = disciplines.some((d) => entry.disciplines.includes(d));
@@ -85,6 +207,12 @@ export function filterCatalog(
 const SCOPE_ORDER: Record<SkillScope, number> = {
   official: 0,
   community: 1,
+};
+
+const PROVENANCE_ORDER: Record<string, number> = {
+  official: 0,
+  community: 1,
+  "curated-external": 2,
 };
 
 const LAYER_ORDER: Record<SkillLayer, number> = {
@@ -118,6 +246,9 @@ export function sortCatalog(
       }
       case "featured":
       default: {
+        const pa = PROVENANCE_ORDER[entryProvenance(a)] ?? 9;
+        const pb = PROVENANCE_ORDER[entryProvenance(b)] ?? 9;
+        if (pa !== pb) return pa - pb;
         const scopeDiff = SCOPE_ORDER[a.scope] - SCOPE_ORDER[b.scope];
         if (scopeDiff !== 0) return scopeDiff;
         const layerDiff = LAYER_ORDER[a.layer] - LAYER_ORDER[b.layer];
@@ -137,7 +268,11 @@ export function queryCatalog(
   query: CatalogQuery,
   locale = "zh",
 ): CatalogEntry[] {
-  return sortCatalog(filterCatalog(getCatalog(), query), query.sort ?? "featured", locale);
+  return sortCatalog(
+    filterCatalog(getCatalog(), query),
+    query.sort ?? "featured",
+    locale,
+  );
 }
 
 export function parseDisciplineParam(
@@ -167,8 +302,10 @@ export function parseLayerParam(
 
 export function parseSourceParam(
   raw: string | undefined,
-): SkillScope | "" {
-  if (raw === "official" || raw === "community") return raw;
+): CatalogSourceFilter | "" {
+  if (raw === "official" || raw === "community" || raw === "curated") {
+    return raw;
+  }
   return "";
 }
 

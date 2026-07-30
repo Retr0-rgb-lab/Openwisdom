@@ -1,0 +1,726 @@
+{
+  "install": {
+    "meta": {
+      "title": "安装",
+      "description": "把 Openwisdom Skills 装进你的 Agent：CLI、MCP、GitHub 与手动路径。分析在你的 Agent 中运行，不在本站。"
+    },
+    "title": "安装 Skills",
+    "lede": "选一条路径把 skill 装进你已有的 Agent；装好后在 Agent 中调用，分析在你的模型预算里运行。",
+    "statusBadge": "当前状态",
+    "statusTitle": "CLI 与 MCP 尚未上架 npm",
+    "statusBody": "可先复制下方命令。发布前请从 GitHub 安装，或按手动步骤拷入 Agent。",
+    "commandHeading": "安装命令",
+    "pathsHeading": "四条安装路径",
+    "pathsLede": "CLI 与 MCP 面向终端与 Agent 会话；GitHub 与手动复制随时可用。",
+    "pathPrimary": "命令行",
+    "pathSecondary": "现可用",
+    "paths": {
+      "cli": {
+        "title": "Openwisdom CLI",
+        "desc": "终端：search / install / update / list。发布后可交互式选择 Agent。"
+      },
+      "mcp": {
+        "title": "Openwisdom MCP",
+        "desc": "Agent 会话内工具：search / list / install / update，不调用模型。"
+      },
+      "github": {
+        "title": "GitHub 仓库",
+        "desc": "浏览源码、clone 或下载。官方 skill 在 skills/official/。"
+      },
+      "manual": {
+        "title": "手动复制",
+        "desc": "把 skill 目录拷入 Agent 的 skills 路径（如 .claude/skills/）。"
+      }
+    },
+    "manualStepsHeading": "手动安装步骤",
+    "manualSteps": [
+      "在 GitHub 打开 skills/ 目录或 clone 仓库。",
+      "将目标 skill 文件夹复制到你的 Agent skills 路径。",
+      "重启或重载 Agent，按 SKILL.md 中的说明调用。"
+    ],
+    "devHeading": "",
+    "devLede": "",
+    "devCliLabel": "",
+    "devCliCommand": "",
+    "devCliHint": "",
+    "devEnvLabel": "",
+    "devEnvCommand": "",
+    "devEnvHint": "",
+    "nextHeading": "装好之后",
+    "afterNote": "分析在你的 Agent 中运行，不在本站。",
+    "browseSkills": "浏览 Skills 目录",
+    "readDocs": "阅读入门文档",
+    "openGithub": "打开 GitHub 仓库",
+    "contribute": "贡献指南",
+    "telemetryNote": "安装热度为匿名旁路信号，可随时关闭。",
+    "telemetryLink": "隐私与遥测"
+  },
+  "docs": {
+    "meta": {
+      "title": "文档",
+      "description": "Openwisdom 文档：入门、隐私与遥测、FAQ。Skills 装进你的 Agent 后在本地分析，本站不托管会话。"
+    },
+    "nav": {
+      "title": "文档",
+      "sidebarLabel": "文档导航",
+      "menu": "文档目录",
+      "onThisPage": "本页目录",
+      "linkToSection": "链接到此标题",
+      "pageNav": "相邻文档",
+      "prev": "上一篇",
+      "next": "下一篇",
+      "stubBadge": "稍后",
+      "overview": "总览",
+      "gettingStarted": "快速开始",
+      "concepts": "概念",
+      "cli": "CLI",
+      "agents": "Agents",
+      "authoring": "编写规范",
+      "privacy": "隐私与遥测",
+      "faq": "常见问题",
+      "changelog": "更新日志"
+    },
+    "hub": {
+      "title": "文档",
+      "lede": "最短路径：理解产品边界 → 安装 Skills → 在你自己的 Agent 里调用。本站是目录与文档，不是分析聊天窗。",
+      "whatHeading": "产品是什么",
+      "whatItems": [
+        "开源社会科学 Agent Skills 库：场景工作流（scenario）引用学科理论卡（reference）。",
+        "三个表面：GitHub 源码 · 双语目录站 · CLI/MCP 包管理器（不调用模型）。",
+        "分析始终在你的 Agent 与模型预算中运行——本站不做托管聊天或会话分析。"
+      ],
+      "pathHeading": "快速路径",
+      "pathCards": [
+        {
+          "n": "01",
+          "title": "快速开始",
+          "body": "装好 skill，在 Agent 里跑通一次 macro-scan。",
+          "href": "/docs/getting-started",
+          "cta": "开始"
+        },
+        {
+          "n": "02",
+          "title": "安装中枢",
+          "body": "CLI、MCP、GitHub 与手动路径。",
+          "href": "/install",
+          "cta": "安装"
+        },
+        {
+          "n": "03",
+          "title": "常见问题",
+          "body": "边界、文件位置、更新与遥测。",
+          "href": "/docs/faq",
+          "cta": "查看"
+        }
+      ],
+      "guidesHeading": "指南",
+      "guideCards": [
+        {
+          "id": "concepts",
+          "title": "概念",
+          "body": "场景 vs reference、官方与社区、分析只在 Agent 中运行。",
+          "href": "/docs/concepts"
+        },
+        {
+          "id": "cli",
+          "title": "CLI",
+          "body": "命令与标志：search / install / update / list、多 harness、MCP 工具。",
+          "href": "/docs/cli"
+        },
+        {
+          "id": "agents",
+          "title": "Agents",
+          "body": "各 harness 的 skills 路径与 scope（项目 / 全局）对照。",
+          "href": "/docs/agents"
+        },
+        {
+          "id": "authoring",
+          "title": "编写规范",
+          "body": "SKILL.md、frontmatter 与 PR 到 community/ 的检查清单。",
+          "href": "/docs/authoring"
+        },
+        {
+          "id": "privacy",
+          "title": "隐私与遥测",
+          "body": "采集范围、关闭方式、热度含义。",
+          "href": "/docs/privacy"
+        },
+        {
+          "id": "changelog",
+          "title": "更新日志",
+          "body": "能力波次与诚实边界；真源在 GitHub。",
+          "href": "/docs/changelog"
+        }
+      ],
+      "linksHeading": "相关链接",
+      "linkSkills": "Skills 目录",
+      "linkInstall": "安装中枢",
+      "linkContribute": "贡献指南",
+      "linkGithub": "GitHub 仓库"
+    },
+    "gettingStarted": {
+      "title": "快速开始",
+      "lede": "目标：把一个官方场景 skill 装进你的 Agent，并在真实对话里跑通一次分析。",
+      "toc": {
+        "boundary": "边界",
+        "install": "安装",
+        "firstSkill": "首个 skill",
+        "invoke": "调用",
+        "verify": "校验",
+        "next": "下一步"
+      },
+      "boundaryTitle": "分析不在本站",
+      "boundaryBody": "Openwisdom 提供 skill 包与安装路径。模型调用、上下文与账单都在你使用的 Agent 里。",
+      "boundaryHeading": "先理解边界",
+      "boundaryDetail": "目录站帮助发现与安装；CLI/MCP 只做包管理（search / install / update / list），不调用大模型。",
+      "installHeading": "选择安装路径",
+      "installBody": "CLI 与 MCP 发布后可一键安装；当前也可 GitHub clone 或手动拷贝。完整路径见",
+      "installLink": "安装中枢",
+      "installNote": "CLI 尚未上架 npm 时，请优先用 GitHub 或手动路径；命令可先复制备用。",
+      "firstSkillHeading": "安装 macro-scan",
+      "firstSkillBody": "建议先装官方场景 skill，了解宏观扫描工作流：",
+      "firstSkillCommand": "npx openwisdom install macro-scan",
+      "invokeHeading": "在 Agent 中调用",
+      "invokeBody": "打开 Claude Code、Cursor、Codex 等你日常使用的 Agent，按该 skill 的 SKILL.md 触发（名称或描述匹配）。用你自己的材料跑一遍流程。",
+      "invokeTipTitle": "成功标准",
+      "invokeTipBody": "Agent 能加载 skill 说明，并产出一次结构化分析草稿——而不是在本站网页里出现聊天框。",
+      "verifyHeading": "如何确认装好了",
+      "verifyItems": [
+        "skill 目录出现在 Agent 约定的 skills 路径中（如 .claude/skills/ 或项目配置路径）。",
+        "Agent 能列出或检索到 macro-scan（或你安装的 slug）。",
+        "按步骤跑完一次后，你得到可复查的输出，而不是站内会话记录。"
+      ],
+      "nextHeading": "接下来",
+      "nextItems": [
+        { "text": "浏览更多 Skills", "href": "/skills" },
+        { "text": "阅读常见问题", "href": "/docs/faq" },
+        { "text": "了解隐私与遥测", "href": "/docs/privacy" },
+        { "text": "贡献一个 skill", "href": "/contribute" }
+      ]
+    },
+    "faqPage": {
+      "title": "常见问题",
+      "lede": "边界、安装位置、语言策略与遥测。更细的安装操作见安装中枢。",
+      "privacyHint": "遥测细节见",
+      "privacyLink": "隐私与遥测",
+      "items": [
+        {
+          "q": "Openwisdom 会托管分析或网页聊天吗？",
+          "a": "不会。本站不做浏览器内 AI 分析会话。技能装进你的 Agent 后，由你的 Agent 与模型执行。"
+        },
+        {
+          "q": "CLI 或 MCP 会调用大模型吗？",
+          "a": "不会。它们是包管理器：search / install / update / list。没有 run、没有托管会话、不需要模型 API Key。"
+        },
+        {
+          "q": "Skill 文件会装到哪里？",
+          "a": "取决于你选择的 Agent 与安装 scope（项目或全局）。CLI/MCP 会写入该 harness 约定的 skills 目录；手动安装则由你复制到对应路径。详见安装中枢的路径说明。"
+        },
+        {
+          "q": "如何更新已安装的 skill？",
+          "a": "发布后可用 openwisdom update（或 MCP 的 update 工具）。在此之前，可重新 clone/拉取仓库或覆盖拷贝 skill 目录。"
+        },
+        {
+          "q": "界面是中英双语，skill 正文也必须双语吗？",
+          "a": "不必。站点 UI 中英对等；skill 正文语言跟随贡献者。目录会展示内容语言，便于筛选。"
+        },
+        {
+          "q": "Agent 里看不到刚装的 skill 怎么办？",
+          "a": "确认目录路径与 harness 配置一致，重启或重载 Agent，检查 slug 是否匹配。仍不可见时到 GitHub Issues 反馈，并附上 Agent 类型与安装方式。"
+        },
+        {
+          "q": "安装热度是强制的吗？会写进 SKILL.md 吗？",
+          "a": "都不是。热度来自网页下载与 CLI/MCP 安装成功的旁路统计；失败不影响安装。热度从不写入 skill 源文件。可用 --no-telemetry 或环境变量关闭。"
+        },
+        {
+          "q": "为什么 CLI / MCP 命令能复制，却提示还没上 npm？",
+          "a": "命令形态与包管理语义已在仓库落地；公开 registry 发布未完成前，请用 GitHub clone、手动拷贝，或 monorepo 本地 / snapshot 路径。"
+        },
+        {
+          "q": "热度排序是默认排序吗？",
+          "a": "不是。目录默认仍是 featured；popular 仅在有热度数据时作为可选视图。热度只反映近期安装/下载活跃度，不代表学术质量。"
+        },
+        {
+          "q": "更新日志用版本号吗？",
+          "a": "早期用能力波次（如 2026-07 site docs wave）描述已上线面。GitHub commits 与 Releases 才是完整变更记录；我们不在站点做虚假版本号表演。"
+        }
+      ]
+    },
+    "authoringPage": {
+      "title": "编写规范",
+      "lede": "如何撰写可被发现、可安装、可审查的 skill：目录即单元、分层写清意图、frontmatter 便于目录索引，社区贡献以 PR 进入 community/。",
+      "toc": {
+        "unit": "Skill 单元",
+        "layers": "两层内容",
+        "frontmatter": "Frontmatter",
+        "writing": "正文写法",
+        "pr": "贡献与 PR",
+        "next": "下一步"
+      },
+      "unitHeading": "Skill 单元",
+      "unitBody": [
+        "一个 skill 是一个目录：必需包含 SKILL.md（YAML frontmatter + Markdown 正文），可选 assets/（模板、示意、附录文件等）。",
+        "仓库中的 skills/ 是内容真源；站点目录与 CLI/MCP 共享由构建生成的 catalog 索引，请勿只在网站上虚构元数据。",
+        "安装时整个目录写入用户所选 Agent 的 skills 路径；分析始终在用户的 Agent 中运行，不在本站。"
+      ],
+      "layersHeading": "两层内容",
+      "scenarioTitle": "Scenario（场景工作流）",
+      "scenarioBody": "面向一次完整分析任务：何时启用、输入与步骤、期望输出、偏见与边界检查。官方 v1 场景包括 macro-scan、personal-anchor、metacognition-audit。场景应引用相关 reference，而不是把理论长文塞进工作流。",
+      "referenceTitle": "Reference（学科理论卡）",
+      "referenceBody": "可被多个场景引用的紧凑理论卡片：定义、适用边界、常见误用与可复查要点。学科维度通常覆盖 psychology、sociology、history、political-science、economics。official 与 community 表示出处，不是两套产品。",
+      "frontmatterHeading": "Frontmatter 要点",
+      "frontmatterIntro": "元数据供目录筛选、Agent 发现与安装校验。字段以仓库 schema 与贡献模板为准；社区 skill 常见需要：",
+      "frontmatterItems": [
+        "name：kebab-case 稳定标识，与目录 id 对齐（id 可省略，默认等于 name）",
+        "description：简短描述（供 Agent 与目录发现）",
+        "layer：scenario 或 reference",
+        "scope：社区贡献填 community；不要自称 official",
+        "disciplines：相关学科（可多选）",
+        "language：正文语言（zh / en 等）；跟随贡献者，不必强行双语正文",
+        "tags、version、references：发现、版本与场景引用链（按 schema）"
+      ],
+      "frontmatterNote": "站点 UI 中英对等；skill 正文语言由贡献者决定。精确字段名、必填项与校验规则见仓库 schema / 贡献指南。热度等统计从不写入 SKILL.md。",
+      "writingHeading": "正文写法",
+      "scenarioTips": [
+        "开篇写清适用场景与不适用边界，避免「万能分析」口吻。",
+        "步骤可执行：输入是什么、Agent 依次做什么、产出什么结构。",
+        "显式做偏见 / 证据 / 反例检查，并引用相关 reference，而不是重写教材。",
+        "输出应便于人工复查（提纲、假设、不确定处），而不是口号式结论。",
+        "可对照官方场景（如 macro-scan）的结构与语气，保持可安装、可触发。"
+      ],
+      "referenceTips": [
+        "用短定义打开，再写适用范围与不适用之处。",
+        "写清常见误用与过度外推，帮助 Agent 与人共同纠偏。",
+        "保持卡片体量：可被多个 scenario 引用，而不是一篇独立长文。",
+        "标明术语与学科语境；需要时用 tags / disciplines 辅助发现。",
+        "正文语言与贡献者一致即可；摘要与 frontmatter 仍应便于目录浏览。"
+      ],
+      "prHeading": "贡献与 PR",
+      "prSteps": [
+        "Fork 仓库并 clone 到本地。",
+        "在 skills/community/ 下新建 skill 目录，撰写 SKILL.md（及可选 assets/）。",
+        "自检 frontmatter 与正文：layer / scope、边界、是否可被 Agent 触发。",
+        "向 community/ 开 PR：说明意图、适用对象与已知局限。",
+        "根据审查意见修改；合入后由 catalog 管道进入目录（非网页直传）。"
+      ],
+      "prWarning": "v1 无网页上传或审核后台。外部贡献默认进入 community/；不要直接改 official/，除非维护者邀请。完整操作路径见贡献指南。",
+      "nextHeading": "下一步",
+      "nextItems": [
+        { "text": "贡献指南（流程与出处）", "href": "/contribute" },
+        { "text": "概念：场景、reference 与边界", "href": "/docs/concepts" },
+        { "text": "浏览现有 Skills", "href": "/skills" }
+      ]
+    },
+    "privacy": {
+      "heading": "隐私与遥测",
+      "lede": "安装热度是匿名统计，用于目录排序。统计不写入 skill 源文件；关闭遥测后安装与下载仍可用。",
+      "collectHeading": "采集什么",
+      "collectItems": [
+        "skillId（须在目录白名单内）与事件类型（如 CLI/MCP 安装成功、网页下载、复制安装命令）",
+        "时间戳与按日聚合的计数桶（用于 30 天与累计热度）",
+        "CLI/MCP 客户端版本，以及可选的短时 session 去重 id",
+        "可选 meta：providers 列表、安装 scope（project / global）"
+      ],
+      "notCollectHeading": "不采集什么",
+      "notCollectItems": [
+        "姓名、邮箱、账号或登录身份",
+        "机器名、完整主目录路径或其他主机标识",
+        "用户级画像、广告追踪，或可精确到个人的安装历史"
+      ],
+      "optOutHeading": "如何关闭 CLI / MCP 遥测",
+      "optOutItems": [
+        "CLI 标志：--no-telemetry（本进程关闭）",
+        "环境变量：OPENWISDOM_NO_TELEMETRY=1（CLI、MCP 会话 env 或 shell 均可）",
+        "CI：CI=true 或 CI=1 时默认关闭，避免流水线刷量",
+        "未设置 OPENWISDOM_TELEMETRY_URL 时不上报"
+      ],
+      "optOutEnvNote": "可复制的环境变量写法（CLI 与 MCP 同一门闩）：",
+      "optOutEnvExample": "OPENWISDOM_NO_TELEMETRY=1",
+      "urlHeading": "上报地址",
+      "urlBody": "CLI 与 MCP 仅在显式配置上报 URL 时才会 POST。生产环境应指向本站同源遥测端点：",
+      "urlExample": "OPENWISDOM_TELEMETRY_URL=https://example.com/api/telemetry",
+      "urlHint": "把 example.com 换成你的部署域名。网页采集走同源 /api/telemetry，无需此环境变量。",
+      "heatHeading": "热度不等于学术质量",
+      "heatBody": "installs（30 天）只反映近期安装/下载活跃度，不代表理论严谨性、适用边界或引用价值。目录默认排序仍是 featured；popular 排序仅在有热度数据时作为可选视图。",
+      "copyHeading": "复制命令不进主榜",
+      "copyBody": "网页复制安装命令不计入安装热度。主榜来自 CLI/MCP 安装成功与网页下载。",
+      "purposeHeading": "数据用途",
+      "purposeBody": "改进目录排序，并帮助维护者安排更新优先级。无需账号。"
+    },
+    "conceptsPage": {
+      "title": "概念",
+      "lede": "Openwisdom 是分层的社会科学 Agent Skills 库：场景工作流引用学科 reference；目录站帮助发现与安装；分析在你自己的 Agent 中运行。",
+      "toc": {
+        "layers": "场景与 reference",
+        "provenance": "官方与社区",
+        "runtime": "网站与 Agent 的分工",
+        "catalog": "目录如何帮助发现",
+        "next": "下一步"
+      },
+      "layersHeading": "场景与 reference",
+      "layersBody": [
+        "内容按两层组织，而不是扁平的「一堆 prompt」。",
+        "场景 skill（scenario）是可运行的分析工作流：说明何时使用、步骤顺序、期望输出，以及偏见与证据检查。例如官方场景 macro-scan，用于对局势与系统做宏观扫描。",
+        "Reference 是学科理论/方法卡：定义、适用边界、常见误用，以及如何被场景引用。它们本身通常不单独「跑完整工作流」，而是作为可引用的构建块。例如心理学侧的 confirmation-bias（确认偏误），或社会学侧的 collective-action（集体行动）一类卡片。",
+        "分层的用意：场景负责「这次分析怎么走」；reference 负责「用到的概念是否说清楚、是否被误用」。一个场景可以引用多张 reference；同一张 reference 也可以被多个场景复用。"
+      ],
+      "layersTableHeaders": ["层", "作用"],
+      "layersTableRows": [
+        ["场景（scenario）", "可运行的分析工作流；例如 macro-scan、personal-anchor、metacognition-audit"],
+        ["Reference", "学科理论/方法卡；例如 confirmation-bias、collective-action；被场景引用"]
+      ],
+      "provenanceHeading": "官方与社区",
+      "provenanceBody": [
+        "Official 与 Community 标记的是出处与审查门槛，不是两套产品，也不是两套安装系统。同一目录、同一 CLI/MCP 语义；你按需筛选即可。",
+        "仓库中的路径对应关系：官方内容在 skills/official/；社区贡献默认进入 skills/community/。"
+      ],
+      "officialTitle": "Official（skills/official/）",
+      "officialPoints": [
+        "由核心维护者合入，绑定产品叙事（宏观扫描、历史/社会定位、元认知等）",
+        "更高的质量、风格与可引用性门槛",
+        "v1 意图包含官方场景（如 macro-scan）以及五个学科方向上的官方 reference 深度"
+      ],
+      "communityTitle": "Community（skills/community/）",
+      "communityPoints": [
+        "外部贡献默认 PR 到 skills/community/",
+        "共享规范与基础审查，目录随社区扩展",
+        "正文语言跟随贡献者；站点 UI 仍是中英双语"
+      ],
+      "runtimeHeading": "网站与 Agent 的分工",
+      "runtimeBody": [
+        "Openwisdom 有三个耦合表面：GitHub（skill 源码真源）、双语目录站（发现、筛选、详情、安装引导）、以及 CLI/MCP 包管理器（search / install / update / list）。",
+        "网站用于阅读、筛选与拿到安装路径；它不是分析聊天窗，也不托管会话。",
+        "CLI 与 MCP 只做包管理：把 skill 装进你已有的 coding agent。它们不调用大模型，没有 run，也不需要模型 API Key。",
+        "装好后，在 Claude Code、Cursor、Codex 等你日常使用的 Agent 中按 SKILL.md 调用。模型调用、上下文与账单都在你自己的 Agent 与模型预算里。"
+      ],
+      "runtimeCalloutTitle": "分析不在本站",
+      "runtimeCalloutBody": "Openwisdom 交付方法与包装；思考由你的 Agent 与模型完成。若网页上出现「托管分析会话」，那就不在本产品边界内。",
+      "catalogHeading": "目录如何帮助发现",
+      "catalogBody": [
+        "Skills 目录把 git 中的 skill 树呈现为可筛选索引。常见维度包括：层（scenario / reference）、出处（official / community）、学科、内容语言，以及默认的 featured 排序。",
+        "按层筛选时：若你要「跑一次工作流」，先看 scenario；若你要补强某个概念或边界，再装或查阅对应 reference。",
+        "按出处筛选时：official 适合先建立共同基线；community 适合探索扩展写法。两者同属一个库，不是平行商店。",
+        "安装热度（若显示）是旁路的安装/下载活跃信号，不是学术质量分数，也不会写入 SKILL.md。默认排序仍以 featured 为主；热度细节见隐私相关说明。"
+      ],
+      "nextHeading": "下一步",
+      "nextItems": [
+        { "text": "按快速开始装并跑通一次", "href": "/docs/getting-started" },
+        { "text": "浏览 Skills 目录", "href": "/skills" },
+        { "text": "选择安装路径（CLI / MCP / GitHub / 手动）", "href": "/install" },
+        { "text": "阅读常见问题", "href": "/docs/faq" },
+        { "text": "向 community/ 贡献 skill", "href": "/contribute" }
+      ]
+    },
+    "cliPage": {
+      "title": "CLI 与 MCP",
+      "lede": "Openwisdom 提供两条技能包管理表面：给人用的终端 CLI，以及给 Agent 会话用的 MCP 工具。它们共享同一套 catalog / install 语义，都不调用大模型，也不跑分析。",
+      "toc": {
+        "status": "发布状态",
+        "cli": "CLI 是什么",
+        "commands": "命令",
+        "flags": "常用标志",
+        "mcp": "MCP",
+        "telemetry": "遥测",
+        "next": "下一步"
+      },
+      "statusHeading": "发布状态",
+      "statusBadge": "尚未上架 npm",
+      "statusBody": "monorepo 内已有 packages/cli 与 packages/mcp，可从源码构建试用。npm 上的 openwisdom / openwisdom-mcp 可能尚未发布；站上的 npx 命令是发布后的目标入口，发布前请从 monorepo 运行，或改用安装中枢的 GitHub / 手动路径。我们不会宣称「生产就绪」的安装量或可用性。",
+      "cliHeading": "CLI 是什么",
+      "cliBody": [
+        "CLI 面向人类终端：从共享 catalog 搜索技能，把 skill 目录写入所选 coding agent 的 skills 路径，并可列出与更新已装内容。",
+        "命令面固定为 search / install / update / list。没有 run、没有托管会话、不需要模型 API Key。分析始终在你的 Agent 与模型账单里完成。",
+        "交互模式下可多选 harness；脚本与 CI 请加 -y 并显式传入 --providers。更密的安装路径说明与命令块见安装中枢。"
+      ],
+      "cliInstallExample": "npx openwisdom install\nnpx openwisdom install macro-scan -y --providers=claude --scope=project",
+      "commandsHeading": "命令",
+      "commands": [
+        {
+          "name": "search",
+          "desc": "按 id、名称、描述或标签过滤 catalog（包内 snapshot，可离线）。",
+          "example": "npx openwisdom search \"metacognition\""
+        },
+        {
+          "name": "install",
+          "desc": "将 skill 目录复制到所选 provider 的 skills 根。可省略 id 进入交互；非交互需 -y 与 providers。",
+          "example": "npx openwisdom install macro-scan -y --providers=claude --scope=project"
+        },
+        {
+          "name": "update",
+          "desc": "按与 install 相同的写入路径刷新已装 skill（从本地 skills 源再拷贝）。",
+          "example": "npx openwisdom update macro-scan -y --providers=claude"
+        },
+        {
+          "name": "list",
+          "desc": "列出 catalog 中可用技能；加 --installed 则扫描已知 harness 路径上的已装内容。",
+          "example": "npx openwisdom list\nnpx openwisdom list --installed"
+        }
+      ],
+      "flagsHeading": "常用标志",
+      "flags": [
+        {
+          "flag": "--providers",
+          "desc": "逗号分隔的 harness id，如 claude、cursor、agents、codex、gemini 等。决定写入哪些 skills 目录。"
+        },
+        {
+          "flag": "-y / --yes",
+          "desc": "非交互。默认 scope 为 project；未指定 providers 时尝试 detect，否则回退到 claude 与 agents。"
+        },
+        {
+          "flag": "--scope project|global",
+          "desc": "project 写入当前项目（可用 --cwd）；global 写入用户主目录下对应 harness 路径（若该 provider 支持）。"
+        },
+        {
+          "flag": "--force",
+          "desc": "覆盖与源内容哈希不一致的已有 SKILL.md。"
+        },
+        {
+          "flag": "--dry-run",
+          "desc": "只打印安装计划，不写盘。"
+        },
+        {
+          "flag": "--cwd",
+          "desc": "project scope 下的项目根路径。"
+        },
+        {
+          "flag": "--no-deps",
+          "desc": "跳过 catalog 中 scenario 对 references 的默认连带安装。"
+        },
+        {
+          "flag": "--no-telemetry",
+          "desc": "本进程关闭安装成功后的匿名热度上报。"
+        },
+        {
+          "flag": "--help / --version",
+          "desc": "查看帮助与版本。"
+        }
+      ],
+      "mcpHeading": "MCP（Agent 会话内）",
+      "mcpBody": [
+        "MCP 是同一核心的另一条表面：通过本地 stdio 暴露工具，供 Claude Code、Cursor 等在会话里调用。它仍是包管理器，不是聊天机器人，也不会代你调用模型。",
+        "写操作必须显式传入 providers，不会挂起等待终端多选。推荐先 openwisdom_detect_providers，再 search/list，可选 dryRun 后 install。"
+      ],
+      "mcpEntryNote": "发布后，stdio MCP 入口为：",
+      "mcpDevNote": "开发期请先构建 packages/mcp，再把 OPENWISDOM_SKILLS_ROOT 指向本地 skills 树：",
+      "mcpDevExample": "OPENWISDOM_SKILLS_ROOT=/absolute/path/to/skills node packages/mcp/dist/mcp.js",
+      "mcpToolsHeading": "工具",
+      "mcpTools": [
+        { "name": "openwisdom_search", "desc": "搜索 catalog，返回结构化技能列表。" },
+        { "name": "openwisdom_list", "desc": "列出可用或已安装技能。" },
+        {
+          "name": "openwisdom_install",
+          "desc": "安装技能；必须提供 providers 数组。支持 force / dryRun 等与 CLI 对齐的语义。"
+        },
+        {
+          "name": "openwisdom_update",
+          "desc": "刷新已安装技能（与 install 相同写入路径）。"
+        },
+        {
+          "name": "openwisdom_detect_providers",
+          "desc": "只读探测本机/项目下可能的 harness 路径，不写盘。"
+        }
+      ],
+      "mcpConfigHeading": "客户端配置（概念示例）",
+      "mcpConfigNote": "以下为 stdio MCP 配置形态；发布前把 command 换成 monorepo 中的 node 入口。Windows 若 spawn 失败可试 cmd /c npx -y openwisdom-mcp。",
+      "mcpConfigExample": "claude mcp add --transport stdio openwisdom -- npx -y openwisdom-mcp\n\n# Cursor / Claude Desktop 等（stdio）\n# mcpServers.openwisdom.command = npx\n# mcpServers.openwisdom.args = -y, openwisdom-mcp\n# 可选 env：OPENWISDOM_NO_TELEMETRY=1\n# 可选 env：OPENWISDOM_SKILLS_ROOT=本地 skills 绝对路径",
+      "telemetryHeading": "遥测与热度",
+      "telemetryBody": "安装全部目标 provider 成功写入后，CLI/MCP 可能上报匿名安装成功事件。热度是旁路统计，从不写入 SKILL.md；网络失败、超时或未配置上报地址时静默忽略，安装退出码不变（fail-open）。可用 --no-telemetry、OPENWISDOM_NO_TELEMETRY=1，或 CI=true 关闭。完整采集范围与用途见隐私页。",
+      "privacyLink": "隐私与遥测",
+      "privacyHref": "/docs/privacy",
+      "nextHeading": "下一步",
+      "nextItems": [
+        { "text": "安装中枢（命令块与路径）", "href": "/install" },
+        { "text": "快速开始", "href": "/docs/getting-started" },
+        { "text": "Agents 路径矩阵", "href": "/docs/agents" },
+        { "text": "隐私与遥测", "href": "/docs/privacy" },
+        { "text": "常见问题", "href": "/docs/faq" }
+      ]
+    },
+    "agentsPage": {
+      "title": "Agents 与 harness 路径",
+      "lede": "Openwisdom skill 会写到哪个目录，取决于你使用的编码 Agent。下表是 CLI / 安装工具采用的常见（typical）路径——若 Agent 版本不同或技能未出现，请以该 Agent 的官方文档为准。",
+      "toc": {
+        "what": "本页说明",
+        "matrix": "路径矩阵",
+        "scopes": "项目 vs 全局",
+        "troubleshoot": "排障",
+        "next": "下一步"
+      },
+      "whatHeading": "本页说明",
+      "whatBody": [
+        "Openwisdom 把 skill 目录安装到各 Agent 约定的 skills 根路径。分析始终在你的 Agent 与模型额度中运行，本站不提供托管分析会话。",
+        "CLI 与 MCP 按 provider 路径表写入（如 claude、cursor、codex、agents）。手动拷贝时，请使用同一套常见根目录。",
+        "路径会随 Agent 版本变化。请将矩阵视为默认参考；不确定时走安装中枢的手动步骤，或在 CLI/MCP 可用后使用 provider 检测。"
+      ],
+      "matrixHeading": "常见项目路径",
+      "matrixIntro": "每行对应工具识别的 provider id。项目路径相对仓库根目录；全局路径在用户主目录下。skill 再下一层：例如 .claude/skills/macro-scan/SKILL.md。",
+      "matrixHeaders": ["Provider", "常见项目路径", "说明"],
+      "matrixRows": [
+        [
+          "Claude Code (claude)",
+          ".claude/skills",
+          "全局：~/.claude/skills。别名 claude-code。若版本不同，请核对 Claude Code 文档。"
+        ],
+        [
+          "Cursor (cursor)",
+          ".cursor/skills",
+          "全局：~/.cursor/skills。部分环境也会读 portable 的 .agents/skills——需要时可选用 agents。"
+        ],
+        [
+          "Portable agents (agents)",
+          ".agents/skills",
+          "跨 harness 的可移植根（别名 portable）。全局：~/.agents/skills。多工具共用 agents 风格 skills 时很有用。"
+        ],
+        [
+          "Codex (codex)",
+          ".agents/skills",
+          "项目路径与 agents 共用（安装会去重）。全局常见：~/.codex/skills。请以当前 Codex 文档为准。"
+        ],
+        [
+          "GitHub Copilot (github)",
+          ".github/skills",
+          "别名 copilot。全局常见：~/.copilot/skills。产品/版本差异较大——检测失败时请手动安装。"
+        ],
+        [
+          "Gemini CLI (gemini)",
+          ".gemini/skills",
+          "全局：~/.gemini/skills。别名 gemini-cli。"
+        ],
+        [
+          "其他 / 未知 harness",
+          "因版本而异—请手动安装",
+          "无保证路径。将 skill 文件夹拷到 Agent 文档标明的目录，或到 GitHub Issues 说明 Agent 名称与版本。"
+        ]
+      ],
+      "scopesHeading": "项目 scope 与全局 scope",
+      "scopesBody": [
+        "安装 scope 决定 skill 写入哪一层根目录。希望 skill 随仓库走时选项目；希望本机所有工作区可用（且该 harness 支持）时选全局。"
+      ],
+      "projectTitle": "项目 scope",
+      "projectBody": "写入当前工作目录（仓库根）下，例如 project-root/.claude/skills/skill-id。适合团队共享或仓库本地流程。仅在团队明确要共享时再提交这些文件。",
+      "globalTitle": "全局 scope",
+      "globalBody": "写入用户主目录，例如 ~/.claude/skills/skill-id，或 provider 特定全局根如 ~/.codex/skills。并非所有 harness 的项目路径与全局路径一致——Codex、Copilot 的全局目录与项目路径不同。",
+      "troubleshootHeading": "排障",
+      "troubleshootItems": [
+        {
+          "q": "Agent 里看不到刚装的 skill",
+          "a": "确认目录落在该 harness 的 skills 根下（见上表）、存在 SKILL.md、slug 与目录 id 一致，然后重载或重启 Agent。路径可能因版本而异——核对官方文档，或用显式 --providers 重新安装。"
+        },
+        {
+          "q": "如何知道本机有哪些 provider？",
+          "a": "CLI/MCP 发布后，交互安装可检测常见 harness 标记；MCP 提供只读的 detect_providers 类工具。在此之前，可检查项目中是否有 .claude、.cursor、.agents 等目录，或按矩阵手动拷贝。"
+        },
+        {
+          "q": "同时选 Codex 与 agents 会写两份吗？",
+          "a": "项目安装两者都落在 .agents/skills；Openwisdom 会对相同写入目标去重，只写一份。Codex 全局仍使用 ~/.codex/skills。"
+        },
+        {
+          "q": "我的 Agent 不在表里",
+          "a": "请手动安装：把 skill 目录拷到该 Agent 文档要求的路径。不要臆造路径。安装中枢始终提供手动步骤。"
+        },
+        {
+          "q": "安装后 Openwisdom 会替我跑分析吗？",
+          "a": "不会。安装只放置 skill 包。你在自己的 Agent 里调用 skill；本站没有托管分析会话。"
+        }
+      ],
+      "nextHeading": "下一步",
+      "nextItems": [
+        { "text": "安装中枢（CLI、MCP、GitHub、手动）", "href": "/install" },
+        { "text": "CLI 与 MCP 说明", "href": "/docs/cli" },
+        { "text": "快速开始", "href": "/docs/getting-started" },
+        { "text": "常见问题", "href": "/docs/faq" }
+      ]
+    },
+    "changelogPage": {
+      "title": "更新日志",
+      "lede": "早期产品用「能力波次」记录已上线内容，不用虚假 semver 演戏。未上架 npm、未发布的能力会写清楚。",
+      "toc": {
+        "current": "本波次",
+        "history": "此前",
+        "source": "真源"
+      },
+      "currentHeading": "本波次",
+      "versionLabel": "2026-07 site docs wave",
+      "currentItems": [
+        "文档中枢：总览、快速开始、FAQ、隐私与遥测、概念、CLI/MCP、Agents 路径、编写规范、更新日志全文。",
+        "Skills 目录与详情页：scenario / reference 分层与 Official · Community 分面；catalog 与 registry 同源索引。",
+        "安装中枢四条路径：CLI、MCP、GitHub、手动拷贝；CLI/MCP 包管理语义已在 monorepo 落地，公开 npm 发布仍未完成。",
+        "热度旁路 API：网页下载与 CLI/MCP 安装成功可上报；复制命令仅漏斗；fail-open，不写进 SKILL.md。",
+        "Monorepo 包：schema · providers · catalog · core · cli · mcp；本地 / snapshot 可装。",
+        "官方内容最小集：3 个场景 skill + 5 张学科 reference；community/ 目录就绪。",
+        "贡献页与双语 UI（中 / 英）；skill 正文语言跟随贡献者。"
+      ],
+      "historyHeading": "此前",
+      "historyBody": "更早完成的是 Home 六拍叙事与 Overlay Atlas 视觉系统（Logo 对齐令牌与动效约束）。同一冲刺窗口内 monorepo 包与安装表面陆续合入，而非单独「大版本」发布。",
+      "sourceHeading": "真源",
+      "sourceBody": "本页摘要以仓库实态为准。完整 diff、计划与 Release 以 GitHub 为准；站点不会伪造安装量或用户数。",
+      "githubLabel": "在 GitHub 查看",
+      "githubNote": "提交历史、Issues 与 Releases 是变更的权威记录；npm 公开发布前请优先用仓库与手动路径。"
+    },
+    "code": {
+      "copy": "复制",
+      "copied": "已复制",
+      "failed": "复制失败"
+    },
+    "agentPrompt": {
+      "button": "复制 LLM Prompt",
+      "copied": "已复制，可贴到你的 Agent",
+      "failed": "复制失败",
+      "gettingStarted": "你正在帮助用户使用 Openwisdom：开源社会科学 Agent Skills 库（场景工作流 scenario + 学科理论卡 reference）。Skills 安装进用户的编码 Agent；分析在本会话（当前 Agent）中运行，不在 Openwisdom 托管聊天里。\n\n硬约束：\n- Openwisdom 不托管分析、不做网页聊天会话，也没有会调用模型的 run 工具。\n- CLI / MCP（若可用）只做包管理：search / install / update / list。\n- 不要虚构托管聊天能力、npm 已上架状态或安装量。\n\n具体步骤：\n1. 先对齐产品边界：目录站负责发现；安装只是把 skill 目录写入 harness 路径；分析在本 Agent 会话完成。\n2. 安装路径：公开发布后可用 npx openwisdom install。若包尚未上 npm，请改用 GitHub 仓库 Retr0-rgb-lab/Openwisdom、monorepo 本地包，或手动拷贝 skill 目录到 Agent skills 路径（见安装中枢）。\n3. 安装官方场景 skill macro-scan：npx openwisdom install macro-scan（或把 skills 树中的 macro-scan 目录拷到 harness skills 根下）。\n4. 在本会话按 SKILL.md 触发 macro-scan（名称或描述匹配），用用户真实材料跑通一次。\n5. 校验：skill 文件夹出现在约定路径（例如 project-root/.claude/skills/macro-scan/SKILL.md）；Agent 能加载；产出一次可复查的结构化分析草稿——不是站内聊天记录。\n\n成功标准：\n- disk 上存在 skill-id 目录与 SKILL.md\n- Agent 能加载 skill 说明并完成一轮分析\n- 未声称分析发生在托管网站或站外托管会话",
+      "cli": "你正在帮助用户使用 Openwisdom 的 CLI 与 MCP 包管理表面。Openwisdom 是社会科学 Agent Skills 库；CLI 面向人类终端，MCP 面向 Agent 会话。二者共享 catalog / install 语义。\n\n硬约束：\n- CLI 与 MCP 只做包管理，不调用大模型，不跑分析，不需要模型 API Key。\n- 命令面固定：search / install / update / list。没有 run、没有托管会话。\n- 不要假装 openwisdom 已一定在 npm 可用；monorepo 与 GitHub / 手动路径是诚实回退。\n- 绝不要以 Openwisdom 名义去调用 LLM API。\n\nCLI 要点：\n- search：按 id、名称、描述、标签过滤 catalog（可离线 snapshot）。\n- install：把 skill 目录写入所选 providers 的 skills 根；非交互需 -y 与 providers。\n- update：按 install 相同写入路径刷新已装 skill。\n- list：列 catalog；--installed 扫描已知 harness 路径。\n\n常用标志：--providers（如 claude,cursor,agents,codex,gemini）、--scope project|global、-y / --yes、--force、--dry-run、--cwd、--no-deps、--no-telemetry。\n\n示例（发布后）：npx openwisdom install macro-scan -y --providers=claude --scope=project\n\nMCP 要点：\n- 工具：openwisdom_search、openwisdom_list、openwisdom_install（必须 providers）、openwisdom_update、openwisdom_detect_providers（只读）。\n- 写操作必须显式 providers，不挂起等 TTY 多选。\n- 配置形态（stdio）：command 为 npx，args 为 -y, openwisdom-mcp；发布前可改 monorepo 的 node packages/mcp/dist/mcp.js，并设 OPENWISDOM_SKILLS_ROOT。\n- 推荐流程：detect_providers → search/list → 可选 dryRun → install。\n\n诚实状态：packages/cli 与 packages/mcp 在 monorepo 内；公开 npm 可能未发布。不可用时改用 GitHub clone 或手动拷贝。\n\n成功标准：\n- 用户理解 CLI/MCP 是包管理器而非分析引擎\n- 能给出可执行的 search/install/list/update 或 MCP 等价流程\n- 未声称会调用模型或已必然上架 npm",
+      "agents": "你正在帮助用户把 Openwisdom skills 安装到正确的 coding agent harness 路径。分析始终在本 Agent 会话运行；安装只写 skill 文件夹。\n\n硬约束：\n- 不要虚构托管分析。\n- 路径因 Agent 版本而异；下表是 typical 默认，以各 Agent 当前文档为准。\n- 不确定时走手动拷贝或 provider 检测，不要臆造路径。\n\n常见项目路径矩阵（相对 project-root）：\n- claude（Claude Code）：.claude/skills；全局 ~/.claude/skills\n- cursor：.cursor/skills；全局 ~/.cursor/skills；部分环境也读 .agents/skills\n- agents（portable）：.agents/skills；全局 ~/.agents/skills\n- codex：项目与 agents 共用 .agents/skills（安装去重）；全局常见 ~/.codex/skills\n- github / copilot：.github/skills；全局常见 ~/.copilot/skills\n- gemini：.gemini/skills；全局 ~/.gemini/skills\n- 未知 harness：按该 Agent 文档手动安装\n\nScope：\n- project：写入当前仓库根，如 project-root/.claude/skills/skill-id\n- global：写入用户主目录对应 harness 根；Codex / Copilot 的全局路径可能与项目路径不同\n\n排障：\n1. Agent 看不到 skill：确认目录在 skills 根下、存在 SKILL.md、slug 与 catalog id 一致，然后重载/重启 Agent；或用显式 --providers 重装。\n2. 探测 providers：CLI/MCP 可用后用交互安装或 openwisdom_detect_providers；否则检查项目是否有 .claude / .cursor / .agents 等标记。\n3. Codex 与 agents 同装：项目路径去重只写一份；Codex 全局仍用 ~/.codex/skills。\n\n成功标准：\n- 为用户选定的 harness 给出正确写入路径\n- skill-id 目录与 SKILL.md 可在 disk 上验证\n- 说明如何重载 Agent 使 skill 可见",
+      "authoring": "你正在帮助用户撰写并贡献一个 Openwisdom skill。Openwisdom 是社会科学 Agent Skills 库；内容真源在 git 的 skills/ 树，站点与 CLI 共享生成的 catalog 索引。\n\n硬约束：\n- 社区贡献默认 scope=community，PR 到 skills/community/；不要自称 official，除非维护者邀请改 official/。\n- 不要只在网站上虚构元数据；必须有目录 + SKILL.md。\n- 热度/统计永不写入 SKILL.md。\n- UI 可中英双语；skill 正文语言跟随贡献者，不必强行双语正文。\n- 分析仍在用户的 Agent 中运行，贡献的是可安装包，不是托管聊天。\n\nSkill 单元：\n- 一个目录 = 一个 skill：必需 SKILL.md（YAML frontmatter + Markdown），可选 assets/。\n- layer：scenario（完整分析工作流）或 reference（可复用理论卡）。\n- 场景应引用 reference，而不是把教材塞进工作流。\n\nFrontmatter 常见字段（以仓库 schema 为准）：\n- name：kebab-case 稳定标识，与目录 id 对齐\n- description：简短描述，供 Agent 与目录发现\n- layer：scenario | reference\n- scope：community（社区 PR）\n- disciplines：如 psychology、sociology、history、political-science、economics\n- language：正文语言（zh / en 等）\n- tags、version、references：发现、版本与引用链\n\n写作：\n- scenario：适用/不适用边界、输入、可执行步骤、输出结构、偏见与证据检查、引用 reference。\n- reference：短定义、适用边界、常见误用、可复查要点；保持卡片体量。\n\n贡献步骤：\n1. Fork Retr0-rgb-lab/Openwisdom 并 clone。\n2. 在 skills/community/ 下新建 skill-id/ 与 SKILL.md。\n3. 填 frontmatter 与正文；本地按 schema/模板自检。\n4. 打开 PR 说明意图与边界；不要直接改 official/。\n\n成功标准：\n- 目录结构正确，frontmatter 可被 catalog 索引\n- scope=community，未伪称 official\n- PR 指向 skills/community/ 且说明可审查"
+    }
+  },
+  "contribute": {
+    "meta": {
+      "title": "贡献",
+      "description": "向 Openwisdom 贡献场景 skill 或学科 reference：fork、撰写 SKILL.md、PR 到 skills/community/。v1 无网页上传后台。"
+    },
+    "title": "贡献指南",
+    "lede": "v1 不做网页直传与审核后台。一切经由 GitHub：fork → 按模板写 SKILL.md → 向 community/ 开 PR。",
+    "provenanceHeading": "Official 与 Community",
+    "officialBadge": "Official",
+    "officialTitle": "核心维护",
+    "officialPoints": [
+      "与产品叙事绑定的官方场景与学科 reference",
+      "更高的质量、风格与可引用性门槛，由维护者合入 official/"
+    ],
+    "communityBadge": "Community",
+    "communityTitle": "社区生长",
+    "communityPoints": [
+      "外部贡献默认进入 skills/community/",
+      "共享规范与基础审查，随社区共同扩展"
+    ],
+    "stepsHeading": "贡献步骤",
+    "steps": [
+      {
+        "title": "Fork 仓库",
+        "body": "在 GitHub 上 fork Retr0-rgb-lab/Openwisdom，clone 到本地。"
+      },
+      {
+        "title": "撰写 SKILL.md",
+        "body": "每个 skill 是一个目录，内含 SKILL.md（YAML frontmatter + 正文）。场景写清何时用、步骤、输出与偏见检查；reference 写清定义、边界与常见误用。"
+      },
+      {
+        "title": "PR 到 skills/community/",
+        "body": "不要直接改 official/ 除非维护者邀请。打开 PR，说明意图与适用边界。"
+      }
+    ],
+    "frontmatterHeading": "Frontmatter 要点",
+    "frontmatterIntro": "具体字段以仓库编写规范为准。社区 skill 通常需要：",
+    "frontmatterItems": [
+      "name / 标识（slug）与可读标题",
+      "layer：scenario 或 reference",
+      "scope：community（社区贡献）",
+      "disciplines、摘要、语言等便于目录发现的元数据"
+    ],
+    "frontmatterNote": "UI 为中英双语；skill 正文语言跟随贡献者，不必强制双语正文。",
+    "linksHeading": "外链",
+    "openRepo": "打开仓库",
+    "openIssues": "Issues / 讨论",
+    "readDocs": "阅读文档入门",
+    "browseSkills": "先浏览现有 Skills",
+    "closing": "贡献一张理论卡或一个场景流程，比空喊 AI 框架更有用。感谢把方法写清楚的人。"
+  }
+}

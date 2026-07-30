@@ -118,7 +118,7 @@ Purple/cyan AI gradients · glassmorphism buttons · glow shadows · gradient he
 | Logo asset | `apps/web/public/brand/logo.svg` |
 | shadcn UI | `apps/web/src/components/ui/*` + `components.json` (base-nova) |
 | React Bits | `apps/web/src/components/bits/*` — DotField, BlurText, Noise, LogoLoop, Reveal, SpotlightCard |
-| Install object | `apps/web/src/components/install/InstallCommand.tsx` (Tabs CLI \| GitHub \| Manual + honest CLI status) |
+| Install object | `apps/web/src/components/install/InstallCommand.tsx` (Tabs **CLI \| MCP** + honest not-yet-on-npm status) |
 | i18n | next-intl v4; `apps/web/src/messages/{zh,en}/{shell,home}.json` |
 | Specs (authority) | `docs/specs/07`–`11` + plans `docs/plans/2026-07-30-visual-rebrand/` |
 

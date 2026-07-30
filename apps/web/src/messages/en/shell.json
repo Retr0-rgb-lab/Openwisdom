@@ -8,7 +8,6 @@
   },
   "nav": {
     "skills": "Skills",
-    "install": "Install",
     "docs": "Docs",
     "contribute": "Contribute",
     "githubLabel": "Openwisdom on GitHub",
@@ -36,12 +35,13 @@
     "product": {
       "title": "Product",
       "home": "Home",
-      "skills": "Skills",
-      "install": "Install"
+      "skills": "Skills"
     },
     "resources": {
       "title": "Resources",
-      "docs": "Docs"
+      "docs": "Docs",
+      "gettingStarted": "Getting started",
+      "faq": "FAQ"
     },
     "community": {
       "title": "Community",
@@ -64,23 +64,23 @@
     "github": "View the repo on GitHub",
     "skills": {
       "title": "Skills catalog",
-      "description": "The online Skills catalog is still under construction — there is no full browsable catalog here yet. See the GitHub repo for skill sources and progress."
+      "description": "Browse and install skills from the Skills catalog."
     },
     "install": {
       "title": "Install",
-      "description": "This install page is still under construction. The CLI is not published to npm yet; prefer cloning or downloading the repo from GitHub, then copy skills into your harness directories."
+      "description": "See the install page for CLI, MCP, GitHub, and manual paths."
     },
     "docs": {
       "title": "Docs",
-      "description": "Site docs are still under construction — there is no full docs site here yet. For product scope and contribution rules, see PRODUCT, DESIGN, and docs in the repository."
+      "description": "See the docs page for getting started and FAQ."
     },
     "contribute": {
       "title": "Contribute",
-      "description": "This contribute guide is still under construction. For now, fork on GitHub, write SKILL.md from the template, and open a PR into community/."
+      "description": "See the contribute page for how to open a GitHub PR."
     },
     "about": {
       "title": "About",
-      "description": "This about page is still under construction. Openwisdom is an open-source social-science Agent Skills library: analysis runs in your agent, not on this site; the CLI never calls a model. More on GitHub and the home page."
+      "description": "Openwisdom is an open-source social-science Agent Skills library. Analysis runs in your agent, not on this site."
     }
   },
   "notFound": {

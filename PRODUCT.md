@@ -22,7 +22,7 @@ Openwisdom is an **open-source social-science Agent Skills library** delivered a
 
 1. **GitHub repository** — source of truth for skills (`official/` + `community/`), specs, and contribution.
 2. **Bilingual catalog website** — discover, filter, search, detail, download, install guidance, contribute path; product-grade finish (maturity bar inspired by impeccable.style’s craft, not its domain).
-3. **Openwisdom CLI** — package manager (`search` / `install` / `update` / `list`) that installs skills into the user’s chosen coding agents interactively (Impeccable-like multi-provider flow). **Does not call models or run analysis.**
+3. **Install package managers (CLI + MCP)** — same skill package-manager job, two surfaces: **CLI** (`search` / `install` / `update` / `list`, interactive multi-provider like Impeccable) and **MCP** (stdio tools for agent sessions). Shared install/catalog semantics; **neither calls models nor runs analysis.**
 
 **Why it exists:** Give people durable, composable social-science method (psychology, sociology, history, political science, economics) as agent skills so AI-assisted thinking is structured, situated, and self-critical—not generic vibes.
 
@@ -31,7 +31,7 @@ Openwisdom is an **open-source social-science Agent Skills library** delivered a
 - Official **three scenario skills** (macro-scan, personal-anchor, metacognition-audit) plus **official references across five disciplines** are browsable and installable.
 - User completes a real analysis flow **in their own agent**.
 - Contributors can PR into `community/` from web-guided GitHub workflow.
-- Skill **install heat** (web download + successful CLI install) is visible; default sort remains editorial `featured`.
+- Skill **install heat** (web download + successful CLI/MCP install) is visible; default sort remains editorial `featured`.
 
 ## Positioning
 
@@ -42,10 +42,10 @@ Content language follows the contributor; **UI is zh/en**. Analysis runtime stay
 ## Operating Context
 
 - **Discovery:** Website (narrative home + Skills library) or GitHub tree/releases.
-- **Install:** Prefer `npx openwisdom …` (name subject to npm availability); alternatives: site zip download, manual copy from repo; optional ecosystem tools (e.g. generic skills installers) as secondary paths if layout stays compatible.
+- **Install:** Prefer `npx openwisdom …` (CLI; name subject to npm availability) or **MCP** (`openwisdom-mcp` / agent-configured stdio tools); alternatives: site zip download, manual copy from repo; optional ecosystem tools (e.g. generic skills installers) as secondary paths if layout stays compatible.
 - **Run:** User invokes scenario skills inside their harness; references are loaded/cited per skill design—not by Openwisdom servers.
 - **Contribute:** Fork → template → PR to `community/` (web Contribute page guides; no upload backend in v1).
-- **Heat telemetry:** Anonymous events from successful web downloads and CLI installs; CLI opt-out (`--no-telemetry` / env); copy-install is funnel-only, not primary popularity rank.
+- **Heat telemetry:** Anonymous events from successful web downloads and CLI/MCP installs; CLI/MCP opt-out (`--no-telemetry` / env); copy-install is funnel-only, not primary popularity rank.
 - **Artifacts users care about:** `SKILL.md` trees, install commands, catalog filters (layer, discipline, language, official|community), docs (getting started, FAQ, authoring specs).
 
 ## Capabilities and Constraints
@@ -55,14 +55,15 @@ Content language follows the contributor; **UI is zh/en**. Analysis runtime stay
 - Catalog site: home (IA option C), skills grid with facets, skill detail, install hub, docs skeleton, contribute, about; zh/en UI.
 - Content model **D:** scenario skills + discipline references; official three scenarios; five disciplines with official reference depth (not empty taxonomy).
 - CLI package manager only; multi-provider interactive install; non-interactive flags for scripts.
-- Registry/index pipeline: skills git → `catalog.json` → web + CLI; machine-readable `/registry` style index.
-- Install heat (third tier): web download + CLI install success; `sort=popular` optional; default `featured`.
+- **MCP install surface** (alongside CLI): local stdio skill package manager for agent tools; same search/list/install/update semantics; **no LLM**.
+- Registry/index pipeline: skills git → `catalog.json` → web + CLI + MCP; machine-readable `/registry` style index.
+- Install heat (third tier): web download + CLI/MCP install success; `sort=popular` optional; default `featured`.
 - Open source on GitHub: https://github.com/Retr0-rgb-lab/Openwisdom
 
 ### Confirmed non-goals (v1)
 
 - No in-browser AI analysis chat or Openwisdom-hosted sessions.
-- No CLI LLM `run` / report generation.
+- No CLI or MCP LLM `run` / report generation.
 - No user accounts, cloud favorites, or web direct-upload moderation backend.
 - No forced bilingual body text per skill.
 - No paid Pro / commercial paywall as v1 scope.
@@ -111,7 +112,7 @@ Content language follows the contributor; **UI is zh/en**. Analysis runtime stay
 1. **Agent-native analysis** — Openwisdom ships method and packaging; the user’s agent and model do the thinking.
 2. **Layered knowledge** — Scenarios do jobs; references are citable building blocks; official quality bar differs from community growth.
 3. **One content truth** — Git skills tree is authoritative; site and CLI share one catalog index; heat is a side channel, never mutates skill source files.
-4. **Install is the product handshake** — Multi-harness CLI and clear web install paths beat feature sprawl (chat, accounts, hosted AI).
+4. **Install is the product handshake** — Multi-harness CLI, MCP tools, and clear web install paths beat feature sprawl (chat, accounts, hosted AI).
 5. **Orientation over hype** — Macro structure, historical anchor, and metacognition over engagement theater; heat ranks popularity, not truth.
 
 ## Accessibility & Inclusion

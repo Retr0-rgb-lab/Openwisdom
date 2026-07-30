@@ -11,13 +11,13 @@
     "resultCountOne": "1 个 skill"
   },
   "bootstrap": {
-    "title": "Bootstrap + 多学科精选",
-    "body": "官方三场景为产品叙事种子；其余为 curated-external（GitHub 开源 SKILL.md，按心理/社会/历史/政治/经济/哲学标注）。小红书等平台若未指向可核验仓库则不收录。完整 skills/ 与热度未接入。顶栏可直接点学科筛选；搜索用 Ctrl+K / ⌘K。"
+    "title": "",
+    "body": ""
   },
   "provenance": {
     "official": "官方",
     "community": "社区",
-    "curated-external": "精选外部"
+    "curated-external": "精选"
   },
   "filters": {
     "search": "搜索",
@@ -25,6 +25,7 @@
     "layer": "层级",
     "layerAll": "全部",
     "source": "来源",
+    "curated": "精选",
     "discipline": "学科",
     "language": "正文语言",
     "sort": "排序",
@@ -62,31 +63,38 @@
     "open": "查看详情",
     "copyInstall": "复制安装命令",
     "viewUpstream": "打开上游",
-    "copyCliPreview": "复制 CLI（预览）",
+    "copyCliPreview": "复制安装命令",
+    "download": "下载 SKILL.md",
     "whenLabel": "何时用",
     "contentLang": "正文 {lang}",
     "moreTags": "+{count}"
+  },
+  "heat": {
+    "installs30d": "{count} · 30d",
+    "installsTotal": "累计 {count}",
+    "unavailable": "—",
+    "note": "热度来自匿名安装与下载统计，不等于学术质量。"
   },
   "actions": {
     "copied": "已复制到剪贴板",
     "copyFailed": "复制失败，请手动选择命令复制。",
     "github": "在 GitHub 查看",
     "backToCatalog": "返回目录",
-    "installNote": "CLI 尚未发布到 npm。命令可先复制备查；发布后即可交互式安装。"
+    "installNote": "CLI 尚未上架 npm，可先复制命令。"
   },
   "empty": {
     "title": "没有匹配的 skill",
     "description": "试试清空筛选，或从官方三场景重新开始。",
     "clear": "清空筛选",
     "communityTitle": "还没有社区 skill",
-    "communityDescription": "社区条目通过 GitHub PR 合入 community/。欢迎按模板贡献。",
+    "communityDescription": "社区 skill 通过 GitHub PR 提交。欢迎按贡献指南参与。",
     "featuredTitle": "官方场景",
     "contribute": "了解如何贡献",
     "github": "在 GitHub 查看"
   },
   "featured": {
     "title": "精选场景",
-    "subtitle": "v1 三条官方分析流程"
+    "subtitle": "三条官方分析流程"
   },
   "sections": {
     "officialTitle": "官方场景",
@@ -106,12 +114,13 @@
     "misuse": "常见误用",
     "questions": "引导问题",
     "references": "引用 / 关联",
-    "referencesNote": "可点击项已在目录中；其余为规划标识或上游概念名。",
+    "referencesNote": "",
     "related": "相关 skills",
     "version": "版本 {version}",
     "updated": "更新 {date}",
-    "bodyPending": "完整 SKILL.md 正文将随仓库 skills/ 目录入库。当前页展示结构化元数据与流程摘要，便于评估与安装。",
-    "bodyExternal": "正文在上游仓库。本页提供诚实摘要、许可与安装入口；请在 GitHub 阅读完整 SKILL.md。",
+    "bodyPending": "",
+    "bodyCatalog": "",
+    "bodyExternal": "",
     "attribution": "来源与许可",
     "author": "作者",
     "license": "许可",
@@ -120,14 +129,14 @@
     "tabCli": "CLI",
     "tabGithub": "GitHub",
     "tabManual": "手动",
-    "githubTabBody": "在上游或 monorepo 路径中查看 SKILL.md，clone 后拷入 harness 的 skills 目录。",
+    "githubTabBody": "在 GitHub 打开 skill 源文件，clone 后拷入你的 Agent skills 目录。",
     "openUpstream": "打开源码",
-    "cliPreviewNote": "CLI 安装名仅为预览：正文在上游，完整安装以 GitHub 为准；CLI 发布后可用。",
-    "defaultGitHubTab": "外部 skill 默认打开 GitHub 标签；CLI 仍可查看但为预览。",
+    "cliPreviewNote": "完整内容在上游仓库，请从 GitHub 安装。",
+    "defaultGitHubTab": "",
     "manual1": "从 GitHub 打开 skill 目录或 clone 仓库。",
     "manual2": "将 skill 文件夹放入 Agent 的 skills 路径（如 .claude/skills/）。",
     "manual3": "重启 / 重载 Agent 后按文档调用。",
-    "installHub": "前往安装说明",
-    "afterInstall": "分析在你的 Agent 中运行，不在本站。安装后在你的 harness 里调用该 skill。"
+    "installHub": "返回 Skills 目录",
+    "afterInstall": "分析在你的 Agent 中运行，不在本站。安装后在 Agent 中调用该 skill。"
   }
 }

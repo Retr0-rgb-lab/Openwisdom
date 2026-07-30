@@ -25,12 +25,11 @@ import {
   queryCatalog,
   type CatalogEntry,
 } from "@/data/catalog";
-import { Link, usePathname, useRouter } from "@/i18n/navigation";
+import { usePathname, useRouter } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
 const JUMP_LINKS = [
   { href: "/skills" as const, key: "skills" },
-  { href: "/install" as const, key: "install" },
   { href: "/docs" as const, key: "docs" },
   { href: "/contribute" as const, key: "contribute" },
 ] as const;
@@ -45,6 +44,25 @@ function isMacPlatform() {
   return /Mac|iPhone|iPad|iPod/i.test(navigator.platform || navigator.userAgent);
 }
 
+/** SSR-safe: always start with Ctrl so server HTML matches first client paint. */
+function useIsMac() {
+  const [mac, setMac] = useState(false);
+  useEffect(() => {
+    setMac(isMacPlatform());
+  }, []);
+  return mac;
+}
+
+/** Prefill palette query from catalog URL (Spec 16: /skills?q=…). */
+function prefillFromCatalogUrl(
+  pathname: string,
+  searchParams: { get: (key: string) => string | null },
+) {
+  const urlQ = searchParams.get("q") ?? "";
+  if (pathname.startsWith("/skills") && urlQ) return urlQ;
+  return "";
+}
+
 export function GlobalSearchTrigger({
   className,
   compact = false,
@@ -53,25 +71,51 @@ export function GlobalSearchTrigger({
   compact?: boolean;
 }) {
   const t = useTranslations("shell.search");
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [open, setOpen] = useState(false);
-  const mac = useMemo(() => isMacPlatform(), []);
+  /** Bumps on each open so CommandPalette remounts with fresh seedQ. */
+  const [paletteEpoch, setPaletteEpoch] = useState(0);
+  const [seedQ, setSeedQ] = useState("");
+  const mac = useIsMac();
+
+  const openPalette = useCallback(() => {
+    setSeedQ(prefillFromCatalogUrl(pathname, searchParams));
+    setPaletteEpoch((n) => n + 1);
+    setOpen(true);
+  }, [pathname, searchParams]);
+
+  const handleOpenChange = useCallback(
+    (next: boolean) => {
+      if (next) {
+        setSeedQ(prefillFromCatalogUrl(pathname, searchParams));
+        setPaletteEpoch((n) => n + 1);
+      }
+      setOpen(next);
+    },
+    [pathname, searchParams],
+  );
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
-        setOpen((v) => !v);
+        if (open) {
+          setOpen(false);
+        } else {
+          openPalette();
+        }
       }
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [open, openPalette]);
 
   return (
     <>
       <button
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={openPalette}
         className={cn(
           "group inline-flex h-9 min-w-0 items-center gap-2 rounded-full border border-line bg-field px-3 text-sm text-ink-muted transition-colors",
           "hover:border-line hover:bg-surface hover:text-ink",
@@ -101,7 +145,12 @@ export function GlobalSearchTrigger({
           )}
         </KbdGroup>
       </button>
-      <CommandPalette open={open} onOpenChange={setOpen} />
+      <CommandPalette
+        key={paletteEpoch}
+        open={open}
+        onOpenChange={handleOpenChange}
+        seedQ={seedQ}
+      />
     </>
   );
 }
@@ -109,9 +158,11 @@ export function GlobalSearchTrigger({
 function CommandPalette({
   open,
   onOpenChange,
+  seedQ,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  seedQ: string;
 }) {
   const t = useTranslations("shell");
   const tSearch = useTranslations("shell.search");
@@ -121,22 +172,16 @@ function CommandPalette({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const inputRef = useRef<HTMLInputElement>(null);
-  const [q, setQ] = useState("");
+  const listRef = useRef<HTMLDivElement>(null);
+  const [q, setQ] = useState(seedQ);
   const [active, setActive] = useState(0);
 
-  // Prefill from catalog URL when opening
+  // Focus input when dialog opens (DOM only — no setState).
   useEffect(() => {
     if (!open) return;
-    const urlQ = searchParams.get("q") ?? "";
-    if (pathname.startsWith("/skills") && urlQ) {
-      setQ(urlQ);
-    } else {
-      setQ("");
-    }
-    setActive(0);
     const id = window.setTimeout(() => inputRef.current?.focus(), 10);
     return () => window.clearTimeout(id);
-  }, [open, pathname, searchParams]);
+  }, [open]);
 
   const skillHits = useMemo(() => {
     return queryCatalog({ q, sort: "featured" }, locale).slice(0, 8);
@@ -163,9 +208,33 @@ function CommandPalette({
     return out;
   }, [q, skillHits, featured]);
 
+  // Keep highlight index in range when result list shrinks
   useEffect(() => {
-    setActive(0);
-  }, [q]);
+    setActive((i) => {
+      if (rows.length === 0) return 0;
+      return Math.min(i, rows.length - 1);
+    });
+  }, [rows.length]);
+
+  // Arrow-key navigation must keep active option visible in the scrollport
+  useEffect(() => {
+    if (!open || rows.length === 0) return;
+    const option = document.getElementById(`gs-opt-${active}`);
+    if (!option) return;
+    // Prefer scrolling only the listbox (not the whole page / dialog)
+    const list = listRef.current;
+    if (list && list.contains(option)) {
+      const listRect = list.getBoundingClientRect();
+      const optRect = option.getBoundingClientRect();
+      if (optRect.top < listRect.top) {
+        list.scrollTop -= listRect.top - optRect.top;
+      } else if (optRect.bottom > listRect.bottom) {
+        list.scrollTop += optRect.bottom - listRect.bottom;
+      }
+      return;
+    }
+    option.scrollIntoView({ block: "nearest", inline: "nearest" });
+  }, [active, open, rows]);
 
   const goCatalogSearch = useCallback(
     (query: string) => {
@@ -235,7 +304,10 @@ function CommandPalette({
           <Input
             ref={inputRef}
             value={q}
-            onChange={(e) => setQ(e.target.value)}
+            onChange={(e) => {
+              setQ(e.target.value);
+              setActive(0);
+            }}
             placeholder={tSearch("placeholder")}
             className="h-12 border-0 bg-transparent shadow-none focus-visible:ring-0"
             autoComplete="off"
@@ -250,6 +322,7 @@ function CommandPalette({
         </div>
 
         <div
+          ref={listRef}
           id={listboxId}
           role="listbox"
           aria-label={tSearch("dialogTitle")}

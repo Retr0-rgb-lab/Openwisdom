@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
-import { useTranslations } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { use } from "react";
-import { PlaceholderSection } from "@/components/site/PlaceholderSection";
+import { InstallHub } from "@/components/install/InstallHub";
 
 type Params = Promise<{ locale: string }>;
 
@@ -12,22 +10,16 @@ export async function generateMetadata({
   params: Params;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "shell" });
+  const t = await getTranslations({ locale, namespace: "pages" });
   return {
-    title: t("placeholder.install.title"),
-    description: t("placeholder.install.description"),
+    title: t("install.meta.title"),
+    description: t("install.meta.description"),
   };
 }
 
-export default function InstallPage({ params }: { params: Params }) {
-  const { locale } = use(params);
+export default async function InstallPage({ params }: { params: Params }) {
+  const { locale } = await params;
   setRequestLocale(locale);
-  const t = useTranslations("shell");
 
-  return (
-    <PlaceholderSection
-      title={t("placeholder.install.title")}
-      description={t("placeholder.install.description")}
-    />
-  );
+  return <InstallHub />;
 }

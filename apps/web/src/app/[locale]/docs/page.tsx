@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
-import { useTranslations } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { use } from "react";
-import { PlaceholderSection } from "@/components/site/PlaceholderSection";
+import { DocsHub } from "@/components/docs/DocsHub";
 
 type Params = Promise<{ locale: string }>;
 
@@ -12,22 +10,15 @@ export async function generateMetadata({
   params: Params;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "shell" });
+  const t = await getTranslations({ locale, namespace: "pages" });
   return {
-    title: t("placeholder.docs.title"),
-    description: t("placeholder.docs.description"),
+    title: t("docs.meta.title"),
+    description: t("docs.meta.description"),
   };
 }
 
-export default function DocsPage({ params }: { params: Params }) {
-  const { locale } = use(params);
+export default async function DocsPage({ params }: { params: Params }) {
+  const { locale } = await params;
   setRequestLocale(locale);
-  const t = useTranslations("shell");
-
-  return (
-    <PlaceholderSection
-      title={t("placeholder.docs.title")}
-      description={t("placeholder.docs.description")}
-    />
-  );
+  return <DocsHub />;
 }

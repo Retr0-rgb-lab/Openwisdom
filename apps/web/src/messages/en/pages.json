@@ -1,0 +1,726 @@
+{
+  "install": {
+    "meta": {
+      "title": "Install",
+      "description": "Install Openwisdom skills into your agent via CLI, MCP, GitHub, or manual copy. Analysis runs in your agent, not on this site."
+    },
+    "title": "Install skills",
+    "lede": "Pick a path that drops skills into an agent you already use. Invoke them there so analysis runs on your model budget.",
+    "statusBadge": "Status",
+    "statusTitle": "CLI and MCP are not on npm yet",
+    "statusBody": "You can copy the commands below. Until publish, install from GitHub or follow the manual steps.",
+    "commandHeading": "Install commands",
+    "pathsHeading": "Four install paths",
+    "pathsLede": "CLI and MCP for terminal and agent sessions; GitHub and manual copy work today.",
+    "pathPrimary": "Command line",
+    "pathSecondary": "Available now",
+    "paths": {
+      "cli": {
+        "title": "Openwisdom CLI",
+        "desc": "Terminal: search / install / update / list. After publish, pick agents interactively."
+      },
+      "mcp": {
+        "title": "Openwisdom MCP",
+        "desc": "In-session tools: search / list / install / update—no model calls."
+      },
+      "github": {
+        "title": "GitHub repository",
+        "desc": "Browse source, clone, or download. Official skills live under skills/official/."
+      },
+      "manual": {
+        "title": "Manual copy",
+        "desc": "Copy a skill folder into your agent skills path (e.g. .claude/skills/)."
+      }
+    },
+    "manualStepsHeading": "Manual install steps",
+    "manualSteps": [
+      "Open the skills/ tree on GitHub or clone the repo.",
+      "Copy the skill folder into your agent’s skills directory.",
+      "Reload the agent and invoke the skill per its SKILL.md."
+    ],
+    "devHeading": "",
+    "devLede": "",
+    "devCliLabel": "",
+    "devCliCommand": "",
+    "devCliHint": "",
+    "devEnvLabel": "",
+    "devEnvCommand": "",
+    "devEnvHint": "",
+    "nextHeading": "After install",
+    "afterNote": "Analysis runs in your agent, not on this site.",
+    "browseSkills": "Browse Skills catalog",
+    "readDocs": "Read getting started",
+    "openGithub": "Open GitHub repo",
+    "contribute": "Contribute guide",
+    "telemetryNote": "Install heat is an anonymous side-channel signal you can turn off anytime.",
+    "telemetryLink": "Privacy & telemetry"
+  },
+  "docs": {
+    "meta": {
+      "title": "Docs",
+      "description": "Openwisdom docs: getting started, privacy and telemetry, FAQ. Skills install into your agent; this site does not host analysis sessions."
+    },
+    "nav": {
+      "title": "Docs",
+      "sidebarLabel": "Docs navigation",
+      "menu": "Docs menu",
+      "onThisPage": "On this page",
+      "linkToSection": "Link to this section",
+      "pageNav": "Adjacent pages",
+      "prev": "Previous",
+      "next": "Next",
+      "stubBadge": "Soon",
+      "overview": "Overview",
+      "gettingStarted": "Getting started",
+      "concepts": "Concepts",
+      "cli": "CLI",
+      "agents": "Agents",
+      "authoring": "Authoring",
+      "privacy": "Privacy",
+      "faq": "FAQ",
+      "changelog": "Changelog"
+    },
+    "hub": {
+      "title": "Docs",
+      "lede": "Shortest path: understand the boundary → install skills → invoke inside your own agent. This site is a catalog and docs hub, not an analysis chat.",
+      "whatHeading": "What this is",
+      "whatItems": [
+        "An open-source social-science Agent Skills library: scenario workflows that cite discipline reference cards.",
+        "Three surfaces: GitHub as source of truth · bilingual catalog site · CLI/MCP package managers (no LLMs).",
+        "Analysis always runs in your agent and model budget—this site does not host chat or analysis sessions."
+      ],
+      "pathHeading": "Quick path",
+      "pathCards": [
+        {
+          "n": "01",
+          "title": "Getting started",
+          "body": "Install a skill and run macro-scan once in your agent.",
+          "href": "/docs/getting-started",
+          "cta": "Start"
+        },
+        {
+          "n": "02",
+          "title": "Install hub",
+          "body": "CLI, MCP, GitHub, and manual paths.",
+          "href": "/install",
+          "cta": "Install"
+        },
+        {
+          "n": "03",
+          "title": "FAQ",
+          "body": "Boundaries, file locations, updates, telemetry.",
+          "href": "/docs/faq",
+          "cta": "Read"
+        }
+      ],
+      "guidesHeading": "Guides",
+      "guideCards": [
+        {
+          "id": "concepts",
+          "title": "Concepts",
+          "body": "Scenario vs reference, official vs community, analysis only in your agent.",
+          "href": "/docs/concepts"
+        },
+        {
+          "id": "cli",
+          "title": "CLI",
+          "body": "Commands and flags: search / install / update / list, multi-harness, MCP tools.",
+          "href": "/docs/cli"
+        },
+        {
+          "id": "agents",
+          "title": "Agents",
+          "body": "Skills paths and scope (project / global) per harness.",
+          "href": "/docs/agents"
+        },
+        {
+          "id": "authoring",
+          "title": "Authoring",
+          "body": "SKILL.md, frontmatter, and PR checklist for community/.",
+          "href": "/docs/authoring"
+        },
+        {
+          "id": "privacy",
+          "title": "Privacy & telemetry",
+          "body": "What we collect, how to opt out, what heat means.",
+          "href": "/docs/privacy"
+        },
+        {
+          "id": "changelog",
+          "title": "Changelog",
+          "body": "Capability waves and honest bounds; source of truth on GitHub.",
+          "href": "/docs/changelog"
+        }
+      ],
+      "linksHeading": "Related links",
+      "linkSkills": "Skills catalog",
+      "linkInstall": "Install hub",
+      "linkContribute": "Contribute guide",
+      "linkGithub": "GitHub repository"
+    },
+    "gettingStarted": {
+      "title": "Getting started",
+      "lede": "Goal: install one official scenario skill into your agent and run a real analysis once.",
+      "toc": {
+        "boundary": "Boundary",
+        "install": "Install",
+        "firstSkill": "First skill",
+        "invoke": "Invoke",
+        "verify": "Verify",
+        "next": "Next"
+      },
+      "boundaryTitle": "Analysis is not on this site",
+      "boundaryBody": "Openwisdom provides skill packages and install paths. Model calls, context, and billing stay in the agent you already use.",
+      "boundaryHeading": "Know the boundary",
+      "boundaryDetail": "The catalog helps you discover and install. CLI/MCP are package managers only (search / install / update / list)—they never call a model.",
+      "installHeading": "Pick an install path",
+      "installBody": "CLI and MCP become one-command installs after publish; today you can also clone from GitHub or copy manually. Full paths live on the",
+      "installLink": "Install hub",
+      "installNote": "If the CLI is not on npm yet, prefer GitHub or manual paths; you can still copy the command for later.",
+      "firstSkillHeading": "Install macro-scan",
+      "firstSkillBody": "Start with the official scenario skill for a macro scan workflow:",
+      "firstSkillCommand": "npx openwisdom install macro-scan",
+      "invokeHeading": "Invoke in your agent",
+      "invokeBody": "Open Claude Code, Cursor, Codex, or your daily agent. Trigger the skill per its SKILL.md (name or description match). Run the flow on your own material.",
+      "invokeTipTitle": "Done looks like",
+      "invokeTipBody": "Your agent loads the skill instructions and produces a structured analysis draft—not a chat box on this website.",
+      "verifyHeading": "How to verify",
+      "verifyItems": [
+        "The skill folder appears under your agent’s skills path (e.g. .claude/skills/ or project config).",
+        "The agent can list or retrieve macro-scan (or the slug you installed).",
+        "After one full run you have reviewable output, not a hosted session log on this site."
+      ],
+      "nextHeading": "What’s next",
+      "nextItems": [
+        { "text": "Browse more Skills", "href": "/skills" },
+        { "text": "Read the FAQ", "href": "/docs/faq" },
+        { "text": "Privacy & telemetry", "href": "/docs/privacy" },
+        { "text": "Contribute a skill", "href": "/contribute" }
+      ]
+    },
+    "faqPage": {
+      "title": "FAQ",
+      "lede": "Boundaries, install locations, language policy, and telemetry. Dense install steps live on the Install hub.",
+      "privacyHint": "Telemetry details:",
+      "privacyLink": "Privacy & telemetry",
+      "items": [
+        {
+          "q": "Does Openwisdom host analysis or web chat?",
+          "a": "No. There is no in-browser AI analysis session. Skills install into your agent; your agent and model execute them."
+        },
+        {
+          "q": "Do CLI or MCP call a large language model?",
+          "a": "No. They are package managers: search / install / update / list. No run command, no hosted sessions, no model API keys."
+        },
+        {
+          "q": "Where do skill files land?",
+          "a": "It depends on your agent and install scope (project or global). CLI/MCP write to that harness’s skills directory; manual install means you copy into the matching path. See the Install hub."
+        },
+        {
+          "q": "How do I update an installed skill?",
+          "a": "After publish, use openwisdom update (or the MCP update tool). Until then, re-clone/pull the repo or overwrite the skill folder."
+        },
+        {
+          "q": "UI is bilingual—must skill bodies be bilingual too?",
+          "a": "No. Site UI is zh/en; skill body language follows the contributor. The catalog shows content language for filtering."
+        },
+        {
+          "q": "My agent does not see the skill I just installed",
+          "a": "Confirm the path matches the harness config, reload the agent, and check the slug. If it still fails, open a GitHub Issue with agent type and install method."
+        },
+        {
+          "q": "Is install heat required? Does it write into SKILL.md?",
+          "a": "No on both. Heat is side-channel stats from web downloads and successful CLI/MCP installs; failures do not block install. Heat never mutates skill sources. Opt out with --no-telemetry or env vars."
+        },
+        {
+          "q": "Why can I copy CLI / MCP commands if they are not on npm yet?",
+          "a": "Command shapes and package-manager semantics already live in the repo. Until public registry publish ships, use GitHub clone, manual copy, or monorepo local / snapshot paths."
+        },
+        {
+          "q": "Is popular the default catalog sort?",
+          "a": "No. Default sort stays featured. Popular is optional when heat data exists. Heat reflects recent install/download activity—not academic quality."
+        },
+        {
+          "q": "Does the changelog use version numbers?",
+          "a": "Early notes use capability waves (e.g. 2026-07 site docs wave) for shipped surfaces. GitHub commits and Releases remain the full record—we do not put on fake version theater on the site."
+        }
+      ]
+    },
+    "authoringPage": {
+      "title": "Authoring",
+      "lede": "How to write skills that can be discovered, installed, and reviewed: one directory per unit, clear layers, catalog-friendly frontmatter, and community PRs into community/.",
+      "toc": {
+        "unit": "Skill unit",
+        "layers": "Two layers",
+        "frontmatter": "Frontmatter",
+        "writing": "Writing the body",
+        "pr": "Contribute and PR",
+        "next": "Next"
+      },
+      "unitHeading": "Skill unit",
+      "unitBody": [
+        "A skill is a directory: required SKILL.md (YAML frontmatter + Markdown body), optional assets/ (templates, diagrams, appendices).",
+        "The skills/ tree in git is the content source of truth. The site catalog and CLI/MCP share a generated index—do not invent skill metadata only on the website.",
+        "Install copies the whole directory into the user chosen agent skills path. Analysis always runs in the user agent, not on this site."
+      ],
+      "layersHeading": "Two layers",
+      "scenarioTitle": "Scenario (workflow)",
+      "scenarioBody": "A full analysis job: when to use it, inputs and steps, expected output, bias and boundary checks. Official v1 scenarios include macro-scan, personal-anchor, and metacognition-audit. Scenarios should cite references instead of embedding long theory essays.",
+      "referenceTitle": "Reference (discipline card)",
+      "referenceBody": "Compact theory cards reusable across scenarios: definition, applicability bounds, common misuse, and reviewable points. Disciplines typically cover psychology, sociology, history, political-science, and economics. Official vs community is provenance, not a second product.",
+      "frontmatterHeading": "Frontmatter checklist",
+      "frontmatterIntro": "Metadata powers catalog filters, agent discovery, and install validation. Exact fields follow the repo schema and contribute template. Community skills usually need:",
+      "frontmatterItems": [
+        "name: kebab-case stable id aligned with the catalog (id optional; defaults to name)",
+        "description: short description for agents and discovery",
+        "layer: scenario or reference",
+        "scope: community for community contributions—do not self-label official",
+        "disciplines: related fields (may be multiple)",
+        "language: body language (zh / en / …); follows the contributor—do not force bilingual bodies",
+        "tags, version, references: discovery, change tracking, and scenario cite chains (per schema)"
+      ],
+      "frontmatterNote": "Site UI is zh/en; skill body language is the contributor choice. For exact field names, required keys, and validation, see the repo schema / contribute guide. Heat and install stats never write into SKILL.md.",
+      "writingHeading": "Writing the body",
+      "scenarioTips": [
+        "Open with when to use it and when not to—avoid universal-analysis tone.",
+        "Make steps executable: inputs, ordered agent actions, structured outputs.",
+        "Spell out bias / evidence / counterexample checks, and cite references instead of rewriting a textbook.",
+        "Outputs should be human-reviewable (outline, assumptions, uncertainties), not slogan conclusions.",
+        "Mirror official scenario structure and tone (e.g. macro-scan) so the skill stays installable and invokable."
+      ],
+      "referenceTips": [
+        "Lead with a short definition, then applicability and non-applicability.",
+        "Call out common misuse and over-extension so agents and humans can correct course.",
+        "Keep card length: reusable across scenarios, not a standalone essay.",
+        "Ground terms in disciplinary context; use tags / disciplines for discovery when needed.",
+        "Body language may match the contributor; keep summary and frontmatter catalog-friendly."
+      ],
+      "prHeading": "Contribute and PR",
+      "prSteps": [
+        "Fork the repo and clone locally.",
+        "Add a skill directory under skills/community/ with SKILL.md (and optional assets/).",
+        "Self-check frontmatter and body: layer / scope, bounds, and whether an agent can trigger it.",
+        "Open a PR into community/: state intent, audience, and known limits.",
+        "Revise from review; after merge, the catalog pipeline indexes it (no web upload)."
+      ],
+      "prWarning": "v1 has no web upload or moderation backend. External contributions default to community/. Do not edit official/ unless a maintainer invites you. Full flow lives on the contribute guide.",
+      "nextHeading": "What is next",
+      "nextItems": [
+        { "text": "Contribute guide (flow and provenance)", "href": "/contribute" },
+        { "text": "Concepts: scenario, reference, boundary", "href": "/docs/concepts" },
+        { "text": "Browse existing Skills", "href": "/skills" }
+      ]
+    },
+    "privacy": {
+      "heading": "Privacy & telemetry",
+      "lede": "Install heat is anonymous stats used for catalog ranking. Stats never write into skill source files; install still works if you turn telemetry off.",
+      "collectHeading": "What we collect",
+      "collectItems": [
+        "skillId (must be on the catalog allowlist) and event type (e.g. CLI/MCP install success, web download, copy-install command)",
+        "Timestamps and day-bucket counters (for 30-day and all-time heat)",
+        "CLI/MCP client version, plus an optional short-lived session id for de-duplication",
+        "Optional meta: providers list and install scope (project / global)"
+      ],
+      "notCollectHeading": "What we do not collect",
+      "notCollectItems": [
+        "Name, email, account, or login identity",
+        "Machine name, full home-directory paths, or other host identifiers",
+        "User-level profiles, ad tracking, or install history that can pinpoint a person"
+      ],
+      "optOutHeading": "How to turn off CLI / MCP telemetry",
+      "optOutItems": [
+        "CLI flag: --no-telemetry (disables for this process)",
+        "Environment: OPENWISDOM_NO_TELEMETRY=1 (CLI, MCP session env, or shell)",
+        "CI: CI=true or CI=1 defaults telemetry off to avoid pipeline spam",
+        "No report is sent when OPENWISDOM_TELEMETRY_URL is unset"
+      ],
+      "optOutEnvNote": "Copyable env form (same gate for CLI and MCP):",
+      "optOutEnvExample": "OPENWISDOM_NO_TELEMETRY=1",
+      "urlHeading": "Telemetry endpoint",
+      "urlBody": "CLI and MCP only POST when a report URL is configured. Production should point at this site’s telemetry route:",
+      "urlExample": "OPENWISDOM_TELEMETRY_URL=https://example.com/api/telemetry",
+      "urlHint": "Replace example.com with your deployment host. Web collection uses same-origin /api/telemetry and does not need this env var.",
+      "heatHeading": "Heat is not academic quality",
+      "heatBody": "installs (30d) only reflects recent install/download activity—not theoretical rigor, applicability bounds, or citability. Default catalog sort remains featured; popular is an optional view when heat data exists.",
+      "copyHeading": "Copy-command is not on the main rank",
+      "copyBody": "Copying an install command on the web does not count toward install heat. Main rank uses successful CLI/MCP installs and web downloads.",
+      "purposeHeading": "What the data is for",
+      "purposeBody": "Improve catalog ranking and help maintainers prioritize updates. No account required."
+    },
+    "conceptsPage": {
+      "title": "Concepts",
+      "lede": "Openwisdom is a layered social-science Agent Skills library: scenario workflows cite discipline references; the catalog helps you discover and install; analysis runs in your own agent.",
+      "toc": {
+        "layers": "Scenarios and references",
+        "provenance": "Official and community",
+        "runtime": "Website vs agent",
+        "catalog": "How the catalog helps discovery",
+        "next": "Next"
+      },
+      "layersHeading": "Scenarios and references",
+      "layersBody": [
+        "Content is organized in two layers—not a flat pile of prompts.",
+        "A scenario skill is a runnable analysis workflow: when to use it, step order, expected output, and bias/evidence checks. Example: the official scenario macro-scan for a macro scan of situations and systems.",
+        "A reference is a discipline theory/method card: definition, applicability bounds, common misuse, and how scenarios should cite it. References are usually building blocks, not full end-to-end runs on their own. Examples: a psychology card such as confirmation-bias, or a sociology card such as collective-action.",
+        "Why layers: scenarios own how this analysis proceeds; references own whether the concepts are clear and not misused. One scenario can cite many references; one reference can support many scenarios."
+      ],
+      "layersTableHeaders": ["Layer", "Role"],
+      "layersTableRows": [
+        ["Scenario", "Runnable analysis workflow; e.g. macro-scan, personal-anchor, metacognition-audit"],
+        ["Reference", "Discipline theory/method card; e.g. confirmation-bias, collective-action; cited by scenarios"]
+      ],
+      "provenanceHeading": "Official and community",
+      "provenanceBody": [
+        "Official and Community mark provenance and review bar—not a second product and not a second install system. Same catalog, same CLI/MCP semantics; filter when you need to.",
+        "Paths in the repo: official content under skills/official/; community contributions default to skills/community/."
+      ],
+      "officialTitle": "Official (skills/official/)",
+      "officialPoints": [
+        "Maintainer-merged; bound to the product narrative (macro scan, historical/social orientation, metacognition)",
+        "Higher bar for quality, style, and citability",
+        "v1 intent includes official scenarios (e.g. macro-scan) and official reference depth across five disciplines"
+      ],
+      "communityTitle": "Community (skills/community/)",
+      "communityPoints": [
+        "External contributions default via PR into skills/community/",
+        "Shared conventions and a basic review bar; the catalog grows with the community",
+        "Skill body language follows the contributor; site UI stays zh/en"
+      ],
+      "runtimeHeading": "Website vs agent",
+      "runtimeBody": [
+        "Openwisdom has three coupled surfaces: GitHub (source of truth for skills), the bilingual catalog site (discover, filter, detail, install guidance), and CLI/MCP package managers (search / install / update / list).",
+        "The website is for reading, filtering, and obtaining install paths. It is not an analysis chat and does not host sessions.",
+        "CLI and MCP only package-manage: they install skills into a coding agent you already use. They do not call models, have no run command, and need no model API keys.",
+        "After install, invoke skills in Claude Code, Cursor, Codex, or your daily agent per SKILL.md. Model calls, context, and billing stay in your agent and model budget."
+      ],
+      "runtimeCalloutTitle": "Analysis is not on this site",
+      "runtimeCalloutBody": "Openwisdom ships method and packaging; thinking runs in your agent and model. A hosted analysis session on the web would be outside this product boundary.",
+      "catalogHeading": "How the catalog helps discovery",
+      "catalogBody": [
+        "The Skills catalog presents the git skills tree as a filterable index. Common facets include layer (scenario / reference), provenance (official / community), discipline, content language, and default featured sort.",
+        "Filter by layer when you need a workflow (scenario) versus a concept card (reference).",
+        "Filter by provenance when you want the maintained baseline (official) or community extensions. Both belong to one library—not parallel storefronts.",
+        "Install heat (when shown) is a side-channel activity signal for installs/downloads—not an academic quality score, and it never writes into SKILL.md. Default sort remains featured; see privacy docs for telemetry detail."
+      ],
+      "nextHeading": "Next",
+      "nextItems": [
+        { "text": "Install and run once via Getting started", "href": "/docs/getting-started" },
+        { "text": "Browse the Skills catalog", "href": "/skills" },
+        { "text": "Pick an install path (CLI / MCP / GitHub / manual)", "href": "/install" },
+        { "text": "Read the FAQ", "href": "/docs/faq" },
+        { "text": "Contribute a skill to community/", "href": "/contribute" }
+      ]
+    },
+    "cliPage": {
+      "title": "CLI & MCP",
+      "lede": "Openwisdom ships two skill package-manager surfaces: a human terminal CLI and MCP tools for agent sessions. They share the same catalog and install semantics. Neither calls a model or runs analysis.",
+      "toc": {
+        "status": "Publish status",
+        "cli": "What the CLI is",
+        "commands": "Commands",
+        "flags": "Common flags",
+        "mcp": "MCP",
+        "telemetry": "Telemetry",
+        "next": "Next"
+      },
+      "statusHeading": "Publish status",
+      "statusBadge": "Not on npm yet",
+      "statusBody": "packages/cli and packages/mcp already live in the monorepo and can be built from source. The openwisdom and openwisdom-mcp names may not be published to npm yet. Site npx commands are the post-publish entry points; until then run from the monorepo, or use GitHub / manual paths on the Install hub. We do not claim production-ready install volume or npm availability.",
+      "cliHeading": "What the CLI is",
+      "cliBody": [
+        "The CLI is for humans in a terminal: search the shared catalog, copy skill directories into the skills roots of the coding agents you choose, and list or update what is already installed.",
+        "The command surface is fixed: search / install / update / list. There is no run command, no hosted session, and no model API key. Analysis always runs in your agent on your model budget.",
+        "Interactive mode can multi-select harnesses; scripts and CI should pass -y and explicit --providers. For denser install paths and copyable command blocks, use the Install hub."
+      ],
+      "cliInstallExample": "npx openwisdom install\nnpx openwisdom install macro-scan -y --providers=claude --scope=project",
+      "commandsHeading": "Commands",
+      "commands": [
+        {
+          "name": "search",
+          "desc": "Filter the catalog by id, name, description, or tags (bundled snapshot; works offline).",
+          "example": "npx openwisdom search \"metacognition\""
+        },
+        {
+          "name": "install",
+          "desc": "Copy skill directories into the selected providers skills roots. Omit ids for interactive selection; non-interactive use needs -y and providers.",
+          "example": "npx openwisdom install macro-scan -y --providers=claude --scope=project"
+        },
+        {
+          "name": "update",
+          "desc": "Refresh installed skills by re-copying from the local skills source along the same write paths as install.",
+          "example": "npx openwisdom update macro-scan -y --providers=claude"
+        },
+        {
+          "name": "list",
+          "desc": "List skills available in the catalog; add --installed to scan skills found under known harness paths.",
+          "example": "npx openwisdom list\nnpx openwisdom list --installed"
+        }
+      ],
+      "flagsHeading": "Common flags",
+      "flags": [
+        {
+          "flag": "--providers",
+          "desc": "Comma-separated harness ids such as claude, cursor, agents, codex, gemini, and others. Controls which skills directories are written."
+        },
+        {
+          "flag": "-y / --yes",
+          "desc": "Non-interactive. Default scope is project; if providers are omitted, detect when possible, otherwise fall back to claude and agents."
+        },
+        {
+          "flag": "--scope project|global",
+          "desc": "project writes under the current project (see --cwd); global writes under the home harness path when that provider supports it."
+        },
+        {
+          "flag": "--force",
+          "desc": "Overwrite an existing SKILL.md when content hashes differ."
+        },
+        {
+          "flag": "--dry-run",
+          "desc": "Print the install plan only; do not write files."
+        },
+        {
+          "flag": "--cwd",
+          "desc": "Project root used for project scope installs."
+        },
+        {
+          "flag": "--no-deps",
+          "desc": "Skip default install of catalog references linked from a scenario."
+        },
+        {
+          "flag": "--no-telemetry",
+          "desc": "Disable anonymous install-success heat reporting for this process."
+        },
+        {
+          "flag": "--help / --version",
+          "desc": "Show help or version."
+        }
+      ],
+      "mcpHeading": "MCP (in-agent session)",
+      "mcpBody": [
+        "MCP is the same core over local stdio tools for agents such as Claude Code and Cursor. It remains a package manager—not a chatbot and not a model caller.",
+        "Write tools require explicit providers; they never hang waiting for a TTY multiselect. Recommended flow: openwisdom_detect_providers then search/list then optional dryRun install then install."
+      ],
+      "mcpEntryNote": "After publish, the stdio MCP entry is:",
+      "mcpDevNote": "During monorepo development, build packages/mcp first, then point OPENWISDOM_SKILLS_ROOT at the local skills tree:",
+      "mcpDevExample": "OPENWISDOM_SKILLS_ROOT=/absolute/path/to/skills node packages/mcp/dist/mcp.js",
+      "mcpToolsHeading": "Tools",
+      "mcpTools": [
+        { "name": "openwisdom_search", "desc": "Search the catalog and return a structured skill list." },
+        { "name": "openwisdom_list", "desc": "List available or installed skills." },
+        {
+          "name": "openwisdom_install",
+          "desc": "Install skills; providers is required. force, dryRun, and related semantics match the CLI/core contract."
+        },
+        {
+          "name": "openwisdom_update",
+          "desc": "Refresh installed skills along the same write paths as install."
+        },
+        {
+          "name": "openwisdom_detect_providers",
+          "desc": "Read-only detection of likely harness paths on the machine or project; no disk writes."
+        }
+      ],
+      "mcpConfigHeading": "Client configuration (conceptual)",
+      "mcpConfigNote": "stdio MCP shape below. Before publish, point command at the monorepo node entry. On Windows, if spawn fails, try cmd /c npx -y openwisdom-mcp.",
+      "mcpConfigExample": "claude mcp add --transport stdio openwisdom -- npx -y openwisdom-mcp\n\n# Cursor / Claude Desktop and similar (stdio)\n# mcpServers.openwisdom.command = npx\n# mcpServers.openwisdom.args = -y, openwisdom-mcp\n# optional env: OPENWISDOM_NO_TELEMETRY=1\n# optional env: OPENWISDOM_SKILLS_ROOT=absolute path to local skills/",
+      "telemetryHeading": "Telemetry and heat",
+      "telemetryBody": "After a successful write to all selected providers, CLI/MCP may POST an anonymous install-success event. Heat is a side channel and never mutates SKILL.md. Network errors, timeouts, or a missing report URL are ignored; install exit codes stay fail-open. Opt out with --no-telemetry, OPENWISDOM_NO_TELEMETRY=1, or CI=true. Full collection scope and purpose are on the privacy page.",
+      "privacyLink": "Privacy and telemetry",
+      "privacyHref": "/docs/privacy",
+      "nextHeading": "Next",
+      "nextItems": [
+        { "text": "Install hub (commands and paths)", "href": "/install" },
+        { "text": "Getting started", "href": "/docs/getting-started" },
+        { "text": "Agents path matrix", "href": "/docs/agents" },
+        { "text": "Privacy and telemetry", "href": "/docs/privacy" },
+        { "text": "FAQ", "href": "/docs/faq" }
+      ]
+    },
+    "agentsPage": {
+      "title": "Agents and harness paths",
+      "lede": "Where Openwisdom skills land depends on your coding agent. Paths below are typical / common roots used by our CLI and install tools—confirm against your agent current docs if something does not show up.",
+      "toc": {
+        "what": "What this page covers",
+        "matrix": "Path matrix",
+        "scopes": "Project vs global",
+        "troubleshoot": "Troubleshooting",
+        "next": "Next"
+      },
+      "whatHeading": "What this page covers",
+      "whatBody": [
+        "Openwisdom installs skill folders into agent skills directories. Analysis always runs in your agent and model budget—not as a hosted chat on this site.",
+        "CLI and MCP write using a provider path table (ids such as claude, cursor, codex, agents). Manual copy uses the same roots when you place folders yourself.",
+        "Paths can drift across agent versions. Treat the matrix as typical defaults; when unsure, use the Install hub manual steps or run provider detection after the CLI/MCP is available."
+      ],
+      "matrixHeading": "Typical project paths",
+      "matrixIntro": "Each row is a provider id our tools understand. Project paths are relative to the repo root; global paths are under your home directory. Skill folders go one level deeper: e.g. .claude/skills/macro-scan/SKILL.md.",
+      "matrixHeaders": ["Provider", "Typical project path", "Notes"],
+      "matrixRows": [
+        [
+          "Claude Code (claude)",
+          ".claude/skills",
+          "Global: ~/.claude/skills. Alias: claude-code. Confirm with Claude Code docs if your version differs."
+        ],
+        [
+          "Cursor (cursor)",
+          ".cursor/skills",
+          "Global: ~/.cursor/skills. Some setups also read portable .agents/skills—use agents if you prefer that root."
+        ],
+        [
+          "Portable agents (agents)",
+          ".agents/skills",
+          "Cross-harness portable root (alias: portable). Global: ~/.agents/skills. Useful when multiple tools share agents-style skills."
+        ],
+        [
+          "Codex (codex)",
+          ".agents/skills",
+          "Shares the project path with agents (install dedupes). Global typical: ~/.codex/skills. Confirm with current Codex docs."
+        ],
+        [
+          "GitHub Copilot (github)",
+          ".github/skills",
+          "Alias: copilot. Global typical: ~/.copilot/skills. Layout can vary by Copilot product/version—if detection fails, use manual install."
+        ],
+        [
+          "Gemini CLI (gemini)",
+          ".gemini/skills",
+          "Global: ~/.gemini/skills. Alias: gemini-cli."
+        ],
+        [
+          "Other / unknown harness",
+          "varies—use manual",
+          "No guaranteed path. Copy the skill folder into the directory your agent documents, or open an Issue with agent name and version."
+        ]
+      ],
+      "scopesHeading": "Project vs global scope",
+      "scopesBody": [
+        "Install scope chooses which root the skill is written under. Pick project when the skill should travel with a repository; pick global when you want it on this machine for all workspaces that harness supports."
+      ],
+      "projectTitle": "Project scope",
+      "projectBody": "Writes under the current working directory (repo root), e.g. project-root/.claude/skills/skill-id. Best for team-shared or repo-local workflows. Commit only if your team intends to share those files.",
+      "globalTitle": "Global scope",
+      "globalBody": "Writes under your home directory, e.g. ~/.claude/skills/skill-id or provider-specific global roots such as ~/.codex/skills. Not every harness path is identical for project and global—Codex and Copilot use different global folders than their project paths.",
+      "troubleshootHeading": "Troubleshooting",
+      "troubleshootItems": [
+        {
+          "q": "The agent does not list my newly installed skill",
+          "a": "Confirm the folder sits under the harness skills root (matrix above), that SKILL.md is present, and that the slug matches the catalog id. Reload or restart the agent. Paths may differ by version—check your agent docs or reinstall with an explicit --providers value."
+        },
+        {
+          "q": "How do I know which providers I have?",
+          "a": "After CLI/MCP ship, interactive install can detect common harness markers, and MCP exposes a read-only detect_providers-style tool. Until then, inspect your project for folders like .claude, .cursor, or .agents, or install manually into the matching path."
+        },
+        {
+          "q": "I use Codex and agents together—will files duplicate?",
+          "a": "Both use .agents/skills for project installs. Openwisdom dedupes shared write targets so one folder is written once. Global Codex still uses ~/.codex/skills."
+        },
+        {
+          "q": "My agent is not in the matrix",
+          "a": "Use manual install: copy the skill folder into the path your agent expects. Prefer that over inventing a path. The Install hub always documents the manual path."
+        },
+        {
+          "q": "Does Openwisdom run analysis for me after install?",
+          "a": "No. Install only places skill packages. You invoke the skill inside your agent; there is no hosted analysis session on this site."
+        }
+      ],
+      "nextHeading": "Next",
+      "nextItems": [
+        { "text": "Install hub (CLI, MCP, GitHub, manual)", "href": "/install" },
+        { "text": "CLI and MCP", "href": "/docs/cli" },
+        { "text": "Getting started", "href": "/docs/getting-started" },
+        { "text": "FAQ", "href": "/docs/faq" }
+      ]
+    },
+    "changelogPage": {
+      "title": "Changelog",
+      "lede": "Early product notes use capability waves—not fake semver theater. Anything not on npm or not shipped yet is called out plainly.",
+      "toc": {
+        "current": "This wave",
+        "history": "Earlier",
+        "source": "Source of truth"
+      },
+      "currentHeading": "This wave",
+      "versionLabel": "2026-07 site docs wave",
+      "currentItems": [
+        "Docs hub: Overview, Getting started, FAQ, Privacy, Concepts, CLI/MCP, Agents paths, Authoring, and Changelog as full pages.",
+        "Skills catalog and detail pages: scenario / reference layers with Official and Community facets; catalog and registry share one index.",
+        "Install hub with four paths: CLI, MCP, GitHub, and manual copy. Package-manager semantics exist in-repo; public npm publish is not done yet.",
+        "Heat side-channel API: web downloads and successful CLI/MCP installs can report; copy-command is funnel-only; fail-open and never writes into SKILL.md.",
+        "Monorepo packages: schema, providers, catalog, core, cli, mcp. Local / snapshot install works.",
+        "Official content minimum: three scenario skills plus five discipline references; community/ tree ready.",
+        "Contribute guide and bilingual UI (zh / en). Skill body language follows the contributor."
+      ],
+      "historyHeading": "Earlier",
+      "historyBody": "Earlier work landed the Home 6-beat narrative and the Overlay Atlas visual system (logo-aligned tokens and motion rules). Monorepo packages and install surfaces landed in the same sprint window—not as a separate major version release.",
+      "sourceHeading": "Source of truth",
+      "sourceBody": "This page summarizes what is in the repo. Full diffs, plans, and Releases live on GitHub. We do not invent install counts or user numbers.",
+      "githubLabel": "View on GitHub",
+      "githubNote": "Commits, Issues, and Releases are the authoritative change log. Prefer the repo and manual paths until packages are on public npm."
+    },
+    "code": {
+      "copy": "Copy",
+      "copied": "Copied",
+      "failed": "Copy failed"
+    },
+    "agentPrompt": {
+      "button": "Copy LLM prompt",
+      "copied": "Copied — paste into your agent",
+      "failed": "Copy failed",
+      "gettingStarted": "You are helping the user with Openwisdom, an open-source social-science agent skills library (scenario workflows + discipline reference cards). Skills install into coding agents; analysis runs in THIS agent session—not on a hosted Openwisdom chat.\n\nHard constraints:\n- Openwisdom does not host analysis, browser chat sessions, or a run tool that calls models.\n- CLI and MCP (when available) are package managers only: search / install / update / list.\n- Do not invent hosted-chat features, claim npm availability, or fabricate install counts.\n\nConcrete steps:\n1. Align on product boundary: the catalog site discovers skills; install only places skill folders into harness paths; analysis happens here in this agent.\n2. Install path: after public publish, use npx openwisdom install. If the package is not on npm yet, use the GitHub repo Retr0-rgb-lab/Openwisdom, monorepo packages, or manual copy into the agent skills path (see the Install hub).\n3. Install the official scenario skill macro-scan: npx openwisdom install macro-scan (or copy the macro-scan folder from the skills tree into the harness skills root).\n4. Invoke macro-scan in this session per SKILL.md (name or description match). Run once on the user's real material.\n5. Verify: the skill folder exists at the expected path (e.g. project-root/.claude/skills/macro-scan/SKILL.md); the agent can load it; one structured, reviewable analysis draft is produced—not a website chat transcript.\n\nSuccess criteria:\n- skill-id directory and SKILL.md exist on disk\n- Agent loads the skill instructions and completes one analysis pass\n- No claim that analysis happened on a hosted site or external hosted session",
+      "cli": "You are helping the user with Openwisdom CLI and MCP package-manager surfaces. Openwisdom is a social-science agent skills library. The CLI is for humans in a terminal; MCP tools are for agent sessions. Both share catalog and install semantics.\n\nHard constraints:\n- CLI and MCP are package managers only—they do not call LLMs, run analysis, or need model API keys.\n- Command surface is fixed: search / install / update / list. No run command, no hosted sessions.\n- Do not pretend openwisdom is necessarily published on npm; monorepo and GitHub / manual paths are honest fallbacks.\n- Never call LLM APIs as Openwisdom.\n\nCLI essentials:\n- search: filter catalog by id, name, description, or tags (bundled snapshot; offline-capable).\n- install: copy skill directories into selected providers skills roots; non-interactive needs -y and providers.\n- update: refresh installed skills along the same write paths as install.\n- list: list catalog skills; --installed scans known harness paths.\n\nCommon flags: --providers (e.g. claude,cursor,agents,codex,gemini), --scope project|global, -y / --yes, --force, --dry-run, --cwd, --no-deps, --no-telemetry.\n\nExample after publish: npx openwisdom install macro-scan -y --providers=claude --scope=project\n\nMCP essentials:\n- Tools: openwisdom_search, openwisdom_list, openwisdom_install (providers required), openwisdom_update, openwisdom_detect_providers (read-only).\n- Write tools require explicit providers; never hang waiting for a TTY multiselect.\n- Config shape (stdio): command npx, args -y, openwisdom-mcp; before publish use monorepo node packages/mcp/dist/mcp.js with OPENWISDOM_SKILLS_ROOT set.\n- Recommended flow: detect_providers → search/list → optional dryRun → install.\n\nHonest status: packages/cli and packages/mcp live in the monorepo; public npm may not be published yet. If unavailable, use GitHub clone or manual copy.\n\nSuccess criteria:\n- User understands CLI/MCP as package managers, not analysis engines\n- You can give executable search/install/list/update or MCP-equivalent steps\n- You do not claim model calls or guaranteed npm availability",
+      "agents": "You are helping the user install Openwisdom skills into the correct coding-agent harness paths. Analysis always runs in this agent session; install only writes skill folders.\n\nHard constraints:\n- Do not invent hosted analysis.\n- Paths can drift across agent versions; the matrix below is typical defaults—confirm against current agent docs.\n- When unsure, use manual copy or provider detection; do not invent paths.\n\nTypical project path matrix (relative to project-root):\n- claude (Claude Code): .claude/skills; global ~/.claude/skills\n- cursor: .cursor/skills; global ~/.cursor/skills; some setups also read .agents/skills\n- agents (portable): .agents/skills; global ~/.agents/skills\n- codex: project shares .agents/skills with agents (install dedupes); global typical ~/.codex/skills\n- github / copilot: .github/skills; global typical ~/.copilot/skills\n- gemini: .gemini/skills; global ~/.gemini/skills\n- unknown harness: manual install per that agent docs\n\nScope:\n- project: write under the current repo root, e.g. project-root/.claude/skills/skill-id\n- global: write under the home harness root; Codex and Copilot global folders may differ from project paths\n\nTroubleshooting:\n1. Agent does not list the skill: confirm folder under the skills root, SKILL.md present, slug matches catalog id, then reload/restart the agent; or reinstall with explicit --providers.\n2. Detect providers: after CLI/MCP ship, use interactive install or openwisdom_detect_providers; otherwise inspect for .claude / .cursor / .agents markers.\n3. Codex and agents together: project path is deduped to one write; Codex global still uses ~/.codex/skills.\n\nSuccess criteria:\n- Correct write path for the user's chosen harness\n- skill-id directory and SKILL.md verifiable on disk\n- Clear steps to reload the agent so the skill becomes visible",
+      "authoring": "You are helping the user author and contribute an Openwisdom skill. Openwisdom is a social-science agent skills library. Content truth lives in the git skills/ tree; the site and CLI share a generated catalog index.\n\nHard constraints:\n- Community contributions use scope=community and PRs into skills/community/. Do not claim official unless a maintainer invites changes under official/.\n- Do not invent metadata only on the website; a skill unit is a directory plus SKILL.md.\n- Heat/stats never write into SKILL.md.\n- Site UI may be bilingual; skill body language follows the contributor—do not force bilingual bodies.\n- Analysis still runs in the user's agent; contributions are installable packages, not hosted chat.\n\nSkill unit:\n- One directory = one skill: required SKILL.md (YAML frontmatter + Markdown), optional assets/.\n- layer: scenario (full analysis workflow) or reference (reusable theory card).\n- Scenarios should cite references instead of stuffing textbooks into workflows.\n\nFrontmatter fields (per repo schema):\n- name: stable kebab-case id aligned with the directory\n- description: short text for agent and catalog discovery\n- layer: scenario | reference\n- scope: community for community PRs\n- disciplines: e.g. psychology, sociology, history, political-science, economics\n- language: body language (zh / en / etc.)\n- tags, version, references: discovery, versioning, and citation links\n\nWriting:\n- scenario: when to use / not use, inputs, executable steps, output structure, bias and evidence checks, cite references.\n- reference: short definition, applicability bounds, common misuses, reviewable points; keep card-sized.\n\nContribution steps:\n1. Fork Retr0-rgb-lab/Openwisdom and clone.\n2. Create skill-id/ with SKILL.md under skills/community/.\n3. Fill frontmatter and body; self-check against schema/templates.\n4. Open a PR describing intent and bounds; do not edit official/ unless invited.\n\nSuccess criteria:\n- Correct directory layout; frontmatter indexable by the catalog\n- scope=community; no false official claim\n- PR targets skills/community/ and is reviewable"
+    }
+  },
+  "contribute": {
+    "meta": {
+      "title": "Contribute",
+      "description": "Contribute a scenario skill or discipline reference to Openwisdom: fork, write SKILL.md, PR into skills/community/. No web upload backend in v1."
+    },
+    "title": "Contribute",
+    "lede": "v1 has no web upload or moderation backend. Everything goes through GitHub: fork → write SKILL.md from the template → open a PR into community/.",
+    "provenanceHeading": "Official vs Community",
+    "officialBadge": "Official",
+    "officialTitle": "Core-maintained",
+    "officialPoints": [
+      "Official scenarios and discipline references bound to the product narrative",
+      "Higher quality, style, and citability bar; maintainers land changes under official/"
+    ],
+    "communityBadge": "Community",
+    "communityTitle": "Community growth",
+    "communityPoints": [
+      "External contributions default to skills/community/",
+      "Shared conventions and a basic review bar; the catalog grows with the community"
+    ],
+    "stepsHeading": "How to contribute",
+    "steps": [
+      {
+        "title": "Fork the repo",
+        "body": "Fork Retr0-rgb-lab/Openwisdom on GitHub and clone locally."
+      },
+      {
+        "title": "Write SKILL.md",
+        "body": "Each skill is a directory with SKILL.md (YAML frontmatter + body). Scenarios: when to use, steps, output, bias checks. References: definition, bounds, common misuse."
+      },
+      {
+        "title": "PR into skills/community/",
+        "body": "Do not edit official/ unless a maintainer invites you. Open a PR that states intent and applicability bounds."
+      }
+    ],
+    "frontmatterHeading": "Frontmatter checklist",
+    "frontmatterIntro": "Exact fields follow the repo authoring guide. Community skills usually need:",
+    "frontmatterItems": [
+      "name / slug and a human-readable title",
+      "layer: scenario or reference",
+      "scope: community for community contributions",
+      "disciplines, summary, language, and other discovery metadata"
+    ],
+    "frontmatterNote": "UI is zh/en; skill body language follows the contributor—do not force bilingual bodies.",
+    "linksHeading": "External links",
+    "openRepo": "Open repository",
+    "openIssues": "Issues / discussion",
+    "readDocs": "Read getting started",
+    "browseSkills": "Browse existing Skills",
+    "closing": "A clear theory card or scenario workflow beats empty AI-framework noise. Thanks for writing methods carefully."
+  }
+}

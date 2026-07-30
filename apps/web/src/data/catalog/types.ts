@@ -17,6 +17,12 @@ export type SkillProvenance =
   | "community"
   | "curated-external";
 
+/**
+ * Catalog list source filter (URL `?source=`).
+ * `curated` maps to provenance curated-external — not the same as community.
+ */
+export type CatalogSourceFilter = "official" | "community" | "curated";
+
 export type ContentAvailability =
   | "full-body"
   | "summary-only"
@@ -40,7 +46,7 @@ export type CatalogEntry = {
   updated: string;
   repoPath: string | null;
   install: { cli: string };
-  /** bootstrap = product seed; catalog = generated/real tree */
+  /** bootstrap = product/discovery seed; catalog = machine registry installable */
   source: "bootstrap" | "catalog";
   /** UI badge; defaults from scope if omitted */
   provenance?: SkillProvenance;
@@ -71,7 +77,8 @@ export type SortKey = "featured" | "name" | "updated" | "popular";
 export type CatalogQuery = {
   q?: string;
   layer?: SkillLayer | "";
-  source?: SkillScope | "";
+  /** Provenance-facing filter: official | community | curated */
+  source?: CatalogSourceFilter | "";
   disciplines?: DisciplineId[];
   lang?: ContentLang | "";
   sort?: SortKey;
@@ -109,4 +116,24 @@ export function entryProvenance(entry: CatalogEntry): SkillProvenance {
   if (entry.scope === "official") return "official";
   if (entry.externalUrl) return "curated-external";
   return "community";
+}
+
+/** Discovery / external entries: upstream link is primary, not CLI. */
+export function isLinkOnlyEntry(entry: CatalogEntry): boolean {
+  if (entry.installMode === "link-only") return true;
+  if (entry.installMode === "git-clone") return true;
+  if (entry.contentAvailability === "external-only") return true;
+  if (entryProvenance(entry) === "curated-external") return true;
+  return false;
+}
+
+/** Whether catalog list needs honesty banner (bootstrap seeds or curated discovery). */
+export function catalogNeedsHonestyBanner(
+  entries: CatalogEntry[],
+): boolean {
+  return entries.some(
+    (e) =>
+      e.source !== "catalog" ||
+      entryProvenance(e) === "curated-external",
+  );
 }

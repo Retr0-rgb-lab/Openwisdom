@@ -15,19 +15,24 @@
       "anchor": "锚点",
       "meta": "元认知",
       "youAreHere": "你在这里",
-      "ariaLabel": "坐标场示意图：宏观、锚点、元认知三条价值轴，主色 datum 十字标记你的位置"
+      "ariaLabel": "坐标场示意图：宏观、锚点、元认知三条价值轴"
     }
   },
   "install": {
-    "cliStatus": "CLI 尚未发布到 npm。命令可先复制备查；发布后即可交互式安装。",
-    "cliNote": "发包后：交互式选择要装入的 Agent，支持项目级或全局安装。当前命令尚不可用。",
+    "surfacesLabel": "安装方式",
+    "tabCli": "CLI",
+    "tabMcp": "MCP",
+    "cliStatus": "CLI 尚未上架 npm，可先复制命令。",
+    "cliNote": "发布后可交互式选择要装入的 Agent（项目级或全局）。",
+    "mcpStatus": "MCP 尚未上架 npm，可先复制命令。",
+    "mcpNote": "Agent 会话内包管理：search / list / install / update。不调用模型。",
     "copied": "已复制到剪贴板",
     "copyFailed": "复制失败，请手动选择命令复制。"
   },
   "harness": {
     "label": "装进你已经在用的 Agent",
     "subtitle": "兼容目标是安装清单，不是信任 logo 跑马灯。",
-    "paths": ".claude/skills/ · .cursor/ · 等 harness 目录",
+    "paths": ".claude/skills/ · .cursor/ · 等 Agent 目录",
     "items": ["Claude Code", "Cursor", "Codex", "Gemini CLI", "GitHub Copilot", "Grok"]
   },
   "scenarios": {
@@ -140,13 +145,18 @@
   },
   "paths": {
     "eyebrow": "安装",
-    "title": "三条路径，同一个真相源",
-    "subtitle": "无论哪条路径，内容都来自同一个 GitHub 仓库。",
+    "title": "四条路径，同一套内容",
+    "subtitle": "CLI 与 MCP 是同一套包管理语义的两个界面；其余路径仍回到同一个 GitHub 仓库。",
     "primary": "主路径",
     "cli": {
       "title": "Openwisdom CLI",
       "desc": "一条命令，交互式装进多个 Agent。",
-      "cta": "查看安装中枢"
+      "cta": "浏览可安装 Skills"
+    },
+    "mcp": {
+      "title": "Openwisdom MCP",
+      "desc": "在 Agent 会话里用 stdio 工具：search / install / update。",
+      "cta": "浏览可安装 Skills"
     },
     "github": {
       "title": "GitHub 仓库",
@@ -155,8 +165,8 @@
     },
     "manual": {
       "title": "手动复制",
-      "desc": "下载 zip 或复制 skill 目录到你的 harness。",
-      "cta": "了解手动路径"
+      "desc": "下载 zip 或复制 skill 目录到你的 Agent。",
+      "cta": "在 GitHub 获取"
     }
   },
   "provenance": {

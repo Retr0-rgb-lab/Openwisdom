@@ -1,0 +1,39 @@
+{
+  "name": "openwisdom",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Openwisdom CLI — social-science agent skills package manager",
+  "type": "module",
+  "bin": {
+    "openwisdom": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "catalog-snapshot",
+    "skills-snapshot",
+    "LICENSE",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "dev": "tsup --watch"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.11.0",
+    "@openwisdom/core": "workspace:*",
+    "@openwisdom/providers": "workspace:*",
+    "@openwisdom/schema": "workspace:*",
+    "citty": "^0.1.6",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
+  }
+}

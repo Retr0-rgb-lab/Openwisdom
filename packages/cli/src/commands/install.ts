@@ -1,0 +1,238 @@
+import { defineCommand } from "citty";
+import * as p from "@clack/prompts";
+import {
+  detectProviders,
+  PROVIDERS,
+  type ProviderId,
+} from "@openwisdom/providers";
+import {
+  runInstall,
+  UsageError,
+  type LogLevel,
+  type Scope,
+} from "@openwisdom/core";
+import os from "node:os";
+import path from "node:path";
+import { CLI_VERSION } from "../version.js";
+
+function collectSkillIds(rawArgs: string[], positional?: string): string[] {
+  const ids: string[] = [];
+  if (positional) ids.push(positional);
+  let skipNext = false;
+  const flagValueKeys = new Set([
+    "--providers",
+    "--scope",
+    "--cwd",
+    "--lang",
+    "--registry",
+  ]);
+  for (let i = 0; i < rawArgs.length; i++) {
+    const a = rawArgs[i]!;
+    if (skipNext) {
+      skipNext = false;
+      continue;
+    }
+    if (a === "install") continue;
+    if (flagValueKeys.has(a)) {
+      skipNext = true;
+      continue;
+    }
+    if (a.startsWith("--providers=") || a.startsWith("--scope=")) continue;
+    if (a.startsWith("--cwd=") || a.startsWith("--lang=")) continue;
+    if (a.startsWith("-")) continue;
+    if (!ids.includes(a)) ids.push(a);
+  }
+  return ids;
+}
+
+async function promptProviders(
+  cwd: string,
+  home: string,
+): Promise<ProviderId[] | null> {
+  const detected = detectProviders(cwd, home);
+  const p0 = PROVIDERS.filter((x) => x.tier === "p0");
+  const initial = detected.project.length
+    ? detected.project
+    : (["claude", "agents"] as ProviderId[]);
+
+  const result = await p.multiselect({
+    message: "Install into which agents?",
+    options: p0.map((x) => ({
+      value: x.id,
+      label: `${x.label} (${x.id})`,
+      hint: detected.project.includes(x.id)
+        ? "detected in project"
+        : detected.global.includes(x.id)
+          ? "detected in home"
+          : undefined,
+    })),
+    initialValues: initial,
+    required: true,
+  });
+
+  if (p.isCancel(result)) {
+    p.cancel("Install cancelled.");
+    return null;
+  }
+  return result as ProviderId[];
+}
+
+function cliOnLog(level: LogLevel, message: string): void {
+  if (level === "info") console.log(message);
+  else console.error(message);
+}
+
+export const installCommand = defineCommand({
+  meta: {
+    name: "install",
+    description: "Copy skill(s) into selected agent skill directories",
+  },
+  args: {
+    skill: {
+      type: "positional",
+      description: "Skill id(s) to install",
+      required: false,
+    },
+    providers: {
+      type: "string",
+      description: "Comma-separated provider ids (e.g. claude,agents)",
+      alias: "p",
+    },
+    scope: {
+      type: "string",
+      description: "project | global (default project with -y)",
+    },
+    yes: {
+      type: "boolean",
+      description: "Skip prompts; default providers claude,agents if none detected",
+      alias: "y",
+      default: false,
+    },
+    force: {
+      type: "boolean",
+      description: "Overwrite conflicting skill content",
+      default: false,
+    },
+    "dry-run": {
+      type: "boolean",
+      description: "Print write plan without writing",
+      default: false,
+    },
+    "no-telemetry": {
+      type: "boolean",
+      description: "Disable install telemetry for this run",
+      default: false,
+    },
+    lang: {
+      type: "string",
+      description: "Prompt language zh|en (reserved)",
+    },
+    cwd: {
+      type: "string",
+      description: "Project root for --scope project",
+    },
+    "no-deps": {
+      type: "boolean",
+      description: "Do not install catalog references[]",
+      default: false,
+    },
+  },
+  async run({ args, rawArgs }) {
+    try {
+      const skillIds = collectSkillIds(
+        rawArgs,
+        args.skill as string | undefined,
+      );
+      const cwd = path.resolve(
+        (args.cwd as string | undefined) || process.cwd(),
+      );
+      const home = os.homedir();
+      const yes = Boolean(args.yes);
+      const isTty = Boolean(process.stdin.isTTY);
+      const ci = process.env.CI === "true" || process.env.CI === "1";
+
+      if (!skillIds.length) {
+        console.error(
+          "error: No skill ids given. Example: openwisdom install macro-scan -y --providers=claude",
+        );
+        process.exitCode = 2;
+        return;
+      }
+
+      let scope = args.scope as string | undefined;
+      if (!scope) {
+        if (yes || !isTty || ci) {
+          scope = "project";
+        } else {
+          const sel = await p.select({
+            message: "Install scope",
+            options: [
+              { value: "project", label: "project (cwd)" },
+              { value: "global", label: "global (home)" },
+            ],
+            initialValue: "project",
+          });
+          if (p.isCancel(sel)) {
+            p.cancel("Install cancelled.");
+            process.exitCode = 0;
+            return;
+          }
+          scope = sel as string;
+        }
+      }
+      if (scope !== "project" && scope !== "global") {
+        console.error(`error: Invalid --scope: ${scope}`);
+        process.exitCode = 2;
+        return;
+      }
+
+      let interactiveProviders: ProviderId[] | null = null;
+      if (!args.providers && !yes && isTty && !ci) {
+        interactiveProviders = await promptProviders(cwd, home);
+        if (interactiveProviders === null) {
+          process.exitCode = 0;
+          return;
+        }
+      } else if (!args.providers && !yes && (!isTty || ci)) {
+        console.error(
+          "error: Missing --providers in non-interactive mode. Use -y or --providers=claude,agents.",
+        );
+        process.exitCode = 2;
+        return;
+      }
+
+      const result = runInstall({
+        skillIds,
+        providers: args.providers as string | undefined,
+        providerIds: interactiveProviders ?? undefined,
+        scope: scope as Scope,
+        cwd,
+        home,
+        force: Boolean(args.force),
+        dryRun: Boolean(args["dry-run"]),
+        yes,
+        noDeps: Boolean(args["no-deps"]),
+        noTelemetry: Boolean(args["no-telemetry"]),
+        interactiveProviders,
+        isTty,
+        onLog: cliOnLog,
+        telemetrySource: "cli",
+        clientVersion: CLI_VERSION,
+      });
+
+      console.error(
+        "Next: invoke the skill in your coding agent. Analysis does not run on Openwisdom servers.",
+      );
+      process.exitCode = result.exitCode;
+    } catch (err) {
+      if (err instanceof UsageError) {
+        console.error(`error: ${err.message}`);
+        process.exitCode = 2;
+        return;
+      }
+      const message = err instanceof Error ? err.message : String(err);
+      console.error(`error: ${message}`);
+      process.exitCode = 1;
+    }
+  },
+});

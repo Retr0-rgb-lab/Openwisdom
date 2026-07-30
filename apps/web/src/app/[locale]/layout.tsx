@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
-import { setRequestLocale } from "next-intl/server";
+import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { SiteBackdrop } from "@/components/site/SiteBackdrop";
@@ -33,9 +33,12 @@ export default async function LocaleLayout({
     notFound();
   }
   setRequestLocale(locale);
+  // Explicit messages so client components (e.g. SkillsCatalog) always see
+  // full namespaces: shell / home / skills — including nested sections.* keys.
+  const messages = await getMessages();
 
   return (
-    <NextIntlClientProvider>
+    <NextIntlClientProvider locale={locale} messages={messages}>
       {/* Fixed field under chrome; path-aware static/drift via usePathname */}
       <SiteBackdrop />
       <div className="relative z-10 flex min-h-screen flex-col">

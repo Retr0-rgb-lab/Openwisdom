@@ -29,13 +29,14 @@ export function SiteFooter() {
           <FooterColumn title={t("footer.product.title")}>
             <FooterLink href="/">{t("footer.product.home")}</FooterLink>
             <FooterLink href="/skills">{t("footer.product.skills")}</FooterLink>
-            <FooterLink href="/install">
-              {t("footer.product.install")}
-            </FooterLink>
           </FooterColumn>
 
           <FooterColumn title={t("footer.resources.title")}>
             <FooterLink href="/docs">{t("footer.resources.docs")}</FooterLink>
+            <FooterLink href="/docs/getting-started">
+              {t("footer.resources.gettingStarted")}
+            </FooterLink>
+            <FooterLink href="/docs/faq">{t("footer.resources.faq")}</FooterLink>
           </FooterColumn>
 
           <FooterColumn title={t("footer.community.title")}>

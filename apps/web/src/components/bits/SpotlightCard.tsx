@@ -44,7 +44,6 @@ export function SpotlightCard({
       onMouseMove={onMove}
       onMouseLeave={onLeave}
       className={cn(
-        /* flex + h-full: spotlight chrome wraps equal-height cards correctly */
         "relative flex h-full min-h-0 flex-col overflow-hidden transition-[border-color,box-shadow] duration-300",
         className,
       )}
@@ -57,13 +56,15 @@ export function SpotlightCard({
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 z-0 opacity-0 transition-opacity duration-300 motion-reduce:hidden"
+        className="pointer-events-none absolute inset-0 z-0 overflow-hidden rounded-[inherit] opacity-0 transition-opacity duration-300 motion-reduce:hidden"
         style={{
           opacity: spot.on ? 1 : 0,
           background: `radial-gradient(420px circle at var(--spot-x) var(--spot-y), color-mix(in srgb, var(--ow-primary) 10%, transparent), color-mix(in srgb, var(--ow-mist) 14%, transparent) 42%, transparent 58%)`,
         }}
       />
-      <div className="relative z-[1] flex h-full min-h-0 flex-col">{children}</div>
+      <div className="relative z-[1] flex h-full min-h-0 flex-col overflow-visible">
+        {children}
+      </div>
     </div>
   );
 }

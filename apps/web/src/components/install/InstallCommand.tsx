@@ -2,16 +2,21 @@
 
 import { Check, Copy } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { ClickSpark } from "@/components/bits/ClickSpark";
 import { Magnet } from "@/components/bits/Magnet";
 import { TextType } from "@/components/bits/TextType";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  INSTALL_COMMANDS,
+  type InstallSurface,
+} from "@/components/install/commands";
 import { cn } from "@/lib/utils";
 
-const CLI_COMMAND = "npx openwisdom install";
+export { INSTALL_COMMANDS, type InstallSurface };
 
 async function copyText(text: string): Promise<boolean> {
   try {
@@ -31,28 +36,36 @@ async function copyText(text: string): Promise<boolean> {
 }
 
 /**
- * CLI install object (A+B).
- * emphasis: primary ring · TextType once · code sweep · Magnet copy · ClickSpark
- * Opaque Atlas Plate: solid surface + line-strong fallback + contact shadow
+ * Install object (Hero + Final CTA).
+ * Tabs: CLI | MCP — shared catalog, two adapters.
+ * emphasis: primary ring · TextType (CLI + MCP) · code sweep · Magnet copy · ClickSpark
+ * Opaque Atlas Plate: solid surface + line-strong + contact shadow
  */
 export function InstallCommand({
   className,
   emphasis = false,
+  defaultSurface = "cli",
 }: {
   className?: string;
   emphasis?: boolean;
+  defaultSurface?: InstallSurface;
 }) {
   const t = useTranslations("home.install");
+  const [surface, setSurface] = useState<InstallSurface>(defaultSurface);
   const [copied, setCopied] = useState(false);
-  const [sweep, setSweep] = useState(false);
 
-  useEffect(() => {
-    if (!emphasis) return;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
-    const id = window.setTimeout(() => setSweep(true), 700);
-    return () => window.clearTimeout(id);
-  }, [emphasis]);
+  const command = INSTALL_COMMANDS[surface];
+
+  async function onCopy() {
+    const ok = await copyText(command);
+    if (ok) {
+      setCopied(true);
+      toast.success(t("copied"));
+      window.setTimeout(() => setCopied(false), 2000);
+    } else {
+      toast.error(t("copyFailed"));
+    }
+  }
 
   const copyBtn = (
     <ClickSpark active={copied}>
@@ -64,16 +77,7 @@ export function InstallCommand({
           emphasis &&
             "bg-primary text-primary-foreground hover:bg-primary-pressed",
         )}
-        onClick={async () => {
-          const ok = await copyText(CLI_COMMAND);
-          if (ok) {
-            setCopied(true);
-            toast.success(t("copied"));
-            window.setTimeout(() => setCopied(false), 2000);
-          } else {
-            toast.error(t("copyFailed"));
-          }
-        }}
+        onClick={onCopy}
       >
         {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
         <span className="sr-only">{t("copied")}</span>
@@ -84,7 +88,6 @@ export function InstallCommand({
   return (
     <Card
       className={cn(
-        // Opaque Atlas Plate — solid surface + line-strong + contact shadow
         "border-line-strong bg-surface",
         "shadow-[0_1px_0_rgb(15_23_36/0.04),0_4px_14px_-2px_rgb(15_23_36/0.08)]",
         emphasis && "border-primary/30 ring-1 ring-primary/25",
@@ -97,12 +100,53 @@ export function InstallCommand({
           emphasis ? "p-5 md:p-6" : "p-4 md:p-5",
         )}
       >
-        <p
-          role="status"
-          className="border-l border-line pl-3 font-mono text-xs leading-relaxed text-ink-muted"
+        <Tabs
+          value={surface}
+          onValueChange={(v) => {
+            if (v === "cli" || v === "mcp") {
+              setSurface(v);
+              setCopied(false);
+            }
+          }}
+          className="gap-3"
         >
-          {t("cliStatus")}
-        </p>
+          <TabsList
+            variant="line"
+            className="h-auto w-full justify-start gap-0 border-b border-line pb-0"
+            aria-label={t("surfacesLabel")}
+          >
+            <TabsTrigger
+              value="cli"
+              className="min-h-9 flex-none rounded-none px-3 text-sm data-active:text-ink"
+            >
+              {t("tabCli")}
+            </TabsTrigger>
+            <TabsTrigger
+              value="mcp"
+              className="min-h-9 flex-none rounded-none px-3 text-sm data-active:text-ink"
+            >
+              {t("tabMcp")}
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="cli" className="mt-0 outline-none">
+            <p
+              role="status"
+              className="border-l border-line pl-3 font-mono text-xs leading-relaxed text-ink-muted"
+            >
+              {t("cliStatus")}
+            </p>
+          </TabsContent>
+          <TabsContent value="mcp" className="mt-0 outline-none">
+            <p
+              role="status"
+              className="border-l border-line pl-3 font-mono text-xs leading-relaxed text-ink-muted"
+            >
+              {t("mcpStatus")}
+            </p>
+          </TabsContent>
+        </Tabs>
+
         <div
           className={cn(
             "relative flex items-center gap-2 overflow-hidden rounded-lg border px-4 py-3.5",
@@ -111,9 +155,9 @@ export function InstallCommand({
               : "border-line bg-field",
           )}
         >
-          {/* one-shot sweep — ow-custom CSS */}
-          {sweep ? (
+          {emphasis ? (
             <span
+              key={`sweep-${surface}`}
               aria-hidden
               className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-transparent via-primary/12 to-transparent motion-reduce:hidden"
               style={{
@@ -129,9 +173,14 @@ export function InstallCommand({
             )}
           >
             {emphasis ? (
-              <TextType text={CLI_COMMAND} speed={26} delay={200} />
+              <TextType
+                key={surface}
+                text={command}
+                speed={26}
+                delay={surface === "cli" ? 200 : 80}
+              />
             ) : (
-              CLI_COMMAND
+              command
             )}
           </code>
           <span className="relative z-[1]">
@@ -147,7 +196,10 @@ export function InstallCommand({
             {copied ? t("copied") : ""}
           </span>
         </div>
-        <p className="text-sm leading-relaxed text-ink-muted">{t("cliNote")}</p>
+
+        <p className="text-sm leading-relaxed text-ink-muted">
+          {surface === "cli" ? t("cliNote") : t("mcpNote")}
+        </p>
       </CardContent>
       <style>{`
         @keyframes ow-code-sweep {

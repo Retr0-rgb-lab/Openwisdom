@@ -1,0 +1,38 @@
+{
+  "name": "openwisdom-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Openwisdom MCP server — social-science agent skills package manager (stdio)",
+  "type": "module",
+  "bin": {
+    "openwisdom-mcp": "./dist/mcp.js"
+  },
+  "files": [
+    "dist",
+    "catalog-snapshot",
+    "skills-snapshot",
+    "LICENSE",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "dev": "tsup --watch"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "^2.0.0",
+    "@openwisdom/core": "workspace:*",
+    "@openwisdom/providers": "workspace:*",
+    "@openwisdom/schema": "workspace:*",
+    "zod": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
+  }
+}

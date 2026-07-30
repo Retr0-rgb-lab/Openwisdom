@@ -11,7 +11,8 @@
 | `SpotlightCard` | MUST weak | Scenario hover; primary/mist ≤14% |
 | `LogoLoop` | MUST option | Harness ≥36s; RM/mobile static |
 | `ClickSpark` | MAY | Copy success; ≤450ms; RM off |
-| `Magnet` | MAY | Official API `magnetStrength` (↑=weaker); cards 14; CTA 7; desktop fine pointer only; clamp ±10px; mobile/RM = plain |
+| `Magnet` | MAY | Install CTA only (not Skills cards) |
+| `MagicBento` | MAY | Skills catalog — [magic-bento](https://reactbits.dev/components/magic-bento); border glow + optional stars/spotlight; primary/mist glow (no purple); no GSAP; magnetism off |
 | `TextType` | MAY | One-shot typewriter; RM = full text |
 
 **NEVER:** Hyperspeed, Galaxy, Aurora, Prism, Beams, glitch text, fake CountUp, cursor trails.

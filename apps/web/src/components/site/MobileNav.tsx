@@ -67,10 +67,10 @@ export function MobileNav() {
         </nav>
         <div className="mt-auto flex flex-col gap-3 border-t border-line p-4">
           <SheetClose
-            render={<Link href="/install" />}
+            render={<Link href="/skills" />}
             className={cn(buttonVariants(), "h-10 w-full")}
           >
-            {t("nav.install")}
+            {t("nav.skills")}
           </SheetClose>
           <LocaleSwitcher />
         </div>

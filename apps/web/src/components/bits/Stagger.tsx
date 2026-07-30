@@ -7,7 +7,12 @@ import { cn } from "@/lib/utils";
 const ease = [0.16, 1, 0.3, 1] as const;
 
 /**
- * Stagger list entrance — visible y + soft opacity floor.
+ * Stagger list entrance — transform-only (y).
+ *
+ * Do NOT lower opacity on list items. Catalog cards sit over ShapeGrid;
+ * opacity < 1 multiplies white plates into ghost gray, and whileInView
+ * delays / filter remounts leave items stranded mid-floor (entity bug).
+ * Spec 08 C7: content must remain fully opaque.
  * Prefer not nesting under another Reveal on the same block.
  */
 export function Stagger({
@@ -30,7 +35,8 @@ export function Stagger({
       className={cn(className)}
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true, amount: 0.1, margin: "0px 0px -5% 0px" }}
+      /* Generous root margin so filter remounts in sticky+fold still fire */
+      viewport={{ once: true, amount: 0.05, margin: "40px 0px 40px 0px" }}
       variants={{
         hidden: {},
         show: {
@@ -64,11 +70,12 @@ export function StaggerItem({
         className,
       )}
       variants={{
-        hidden: { opacity: 0.22, y: 22 },
+        /* Opacity always 1 — only lift (y) for entrance polish */
+        hidden: { opacity: 1, y: 16 },
         show: {
           opacity: 1,
           y: 0,
-          transition: { duration: 0.55, ease },
+          transition: { duration: 0.45, ease },
         },
       }}
     >

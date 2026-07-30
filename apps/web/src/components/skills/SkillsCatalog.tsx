@@ -4,6 +4,7 @@ import { ChevronDown, Filter, X } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useCallback, useMemo, useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
+import { MagicBentoGrid } from "@/components/bits/MagicBento";
 import { Stagger, StaggerItem } from "@/components/bits/Stagger";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -25,29 +26,35 @@ import {
 import {
   catalogHasHeat,
   DISCIPLINE_IDS,
+  filterCatalog,
   getCatalog,
   parseDisciplineParam,
   parseLangParam,
   parseLayerParam,
   parseSortParam,
   parseSourceParam,
-  queryCatalog,
+  sortCatalog,
   type CatalogEntry,
   type CatalogQuery,
+  type CatalogSourceFilter,
   type ContentLang,
   type DisciplineId,
   type SkillLayer,
-  type SkillScope,
   type SortKey,
 } from "@/data/catalog";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
-import { BootstrapBanner } from "./BootstrapBanner";
 import { DISCIPLINE_CSS } from "./disciplineStyles";
 import { SkillCard } from "./SkillCard";
 import { SkillsEmpty } from "./SkillsEmpty";
 
 const EXPLORE_PREVIEW = 12;
+
+const SOURCE_FILTERS: CatalogSourceFilter[] = [
+  "official",
+  "community",
+  "curated",
+];
 
 function buildQueryString(q: CatalogQuery): string {
   const params = new URLSearchParams();
@@ -106,20 +113,30 @@ function Chip({
   );
 }
 
+function sourceChipLabel(
+  source: CatalogSourceFilter,
+  t: ReturnType<typeof useTranslations<"skills">>,
+): string {
+  if (source === "curated") return t("filters.curated");
+  return t(`scope.${source}`);
+}
+
 function SkillGrid({ entries }: { entries: CatalogEntry[] }) {
   return (
-    <Stagger
-      className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
-      stagger={0.06}
-    >
-      {entries.map((entry) => (
-        <StaggerItem key={entry.slug} className="h-full min-h-0">
-          <div id={`skill-${entry.slug}`} className="h-full scroll-mt-28">
-            <SkillCard entry={entry} />
-          </div>
-        </StaggerItem>
-      ))}
-    </Stagger>
+    <MagicBentoGrid className="w-full" enableSpotlight spotlightRadius={300}>
+      <Stagger
+        className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
+        stagger={0.06}
+      >
+        {entries.map((entry) => (
+          <StaggerItem key={entry.slug} className="h-full min-h-0">
+            <div id={`skill-${entry.slug}`} className="h-full scroll-mt-28">
+              <SkillCard entry={entry} />
+            </div>
+          </StaggerItem>
+        ))}
+      </Stagger>
+    </MagicBentoGrid>
   );
 }
 
@@ -167,7 +184,7 @@ function FiltersPanel({
     setQuery({ disciplines: next });
   }
 
-  function toggleSource(source: SkillScope) {
+  function toggleSource(source: CatalogSourceFilter) {
     setQuery({ source: query.source === source ? "" : source });
   }
 
@@ -209,18 +226,15 @@ function FiltersPanel({
           {t("filters.source")}
         </p>
         <div className="flex flex-wrap gap-2">
-          <Chip
-            active={query.source === "official"}
-            onClick={() => toggleSource("official")}
-          >
-            {t("scope.official")}
-          </Chip>
-          <Chip
-            active={query.source === "community"}
-            onClick={() => toggleSource("community")}
-          >
-            {t("scope.community")}
-          </Chip>
+          {SOURCE_FILTERS.map((source) => (
+            <Chip
+              key={source}
+              active={query.source === source}
+              onClick={() => toggleSource(source)}
+            >
+              {sourceChipLabel(source, t)}
+            </Chip>
+          ))}
         </div>
       </div>
 
@@ -405,32 +419,25 @@ function SkillsToolbar({
 
       <span className="hidden h-4 w-px shrink-0 bg-line md:block" aria-hidden />
 
-      {/* Source */}
+      {/* Source — Official | Community | Curated */}
       <div
         className="flex shrink-0 items-center gap-1"
         role="group"
         aria-label={t("filters.source")}
       >
-        <Chip
-          active={query.source === "official"}
-          onClick={() =>
-            setQuery({
-              source: query.source === "official" ? "" : "official",
-            })
-          }
-        >
-          {t("scope.official")}
-        </Chip>
-        <Chip
-          active={query.source === "community"}
-          onClick={() =>
-            setQuery({
-              source: query.source === "community" ? "" : "community",
-            })
-          }
-        >
-          {t("scope.community")}
-        </Chip>
+        {SOURCE_FILTERS.map((source) => (
+          <Chip
+            key={source}
+            active={query.source === source}
+            onClick={() =>
+              setQuery({
+                source: query.source === source ? "" : source,
+              })
+            }
+          >
+            {sourceChipLabel(source, t)}
+          </Chip>
+        ))}
       </div>
 
       <span className="hidden h-4 w-px shrink-0 bg-line md:block" aria-hidden />
@@ -535,7 +542,17 @@ function SkillsToolbar({
   );
 }
 
-export function SkillsCatalog() {
+/**
+ * Skills catalog Operate surface.
+ * Optional `entries` should be heat-merged server-side (Spec 29).
+ * Without heat, do not invent installs* zeros.
+ */
+export function SkillsCatalog({
+  entries,
+}: {
+  /** Pre-merged catalog (static + optional heat). Falls back to getCatalog(). */
+  entries?: CatalogEntry[];
+}) {
   const t = useTranslations("skills");
   const locale = useLocale();
   const router = useRouter();
@@ -557,23 +574,32 @@ export function SkillsCatalog() {
     };
   }, [searchParams]);
 
-  const catalog = getCatalog();
+  const catalog = entries ?? getCatalog();
   const showPopular = catalogHasHeat(catalog);
-  const showBootstrap = catalog.some((e) => e.source === "bootstrap");
 
   const results = useMemo(
-    () => queryCatalog(query, locale),
-    [query, locale],
+    () =>
+      sortCatalog(
+        filterCatalog(catalog, query),
+        query.sort ?? "featured",
+        locale,
+      ),
+    [catalog, query, locale],
   );
 
   /** Empty-state featured strip only (official scenarios). */
   const featured = useMemo(
     () =>
-      queryCatalog(
-        { sort: "featured", layer: "scenario", source: "official" },
+      sortCatalog(
+        filterCatalog(catalog, {
+          sort: "featured",
+          layer: "scenario",
+          source: "official",
+        }),
+        "featured",
         locale,
       ).slice(0, 3),
-    [locale],
+    [catalog, locale],
   );
 
   const activeFilterCount = useMemo(() => {
@@ -595,8 +621,9 @@ export function SkillsCatalog() {
       (query.disciplines?.length ?? 0) > 0,
   );
 
-  /** Distill layout: official scenarios → packs → rest of catalog. */
-  const sections = useMemo(() => {
+  /** Distill layout: official scenarios → packs → rest of catalog.
+   * Named catalogSections so it never shadows i18n key path `sections.*`. */
+  const catalogSections = useMemo(() => {
     if (hardFiltersActive) {
       return {
         official: [] as CatalogEntry[],
@@ -618,9 +645,9 @@ export function SkillsCatalog() {
   }, [hardFiltersActive, results]);
 
   const exploreVisible = useMemo(() => {
-    if (exploreExpanded) return sections.explore;
-    return sections.explore.slice(0, EXPLORE_PREVIEW);
-  }, [exploreExpanded, sections.explore]);
+    if (exploreExpanded) return catalogSections.explore;
+    return catalogSections.explore.slice(0, EXPLORE_PREVIEW);
+  }, [exploreExpanded, catalogSections.explore]);
 
   const pushQuery = useCallback(
     (next: CatalogQuery) => {
@@ -674,7 +701,6 @@ export function SkillsCatalog() {
             </p>
           </div>
 
-          {showBootstrap ? <BootstrapBanner className="mt-5" /> : null}
         </div>
       </section>
 
@@ -707,25 +733,26 @@ export function SkillsCatalog() {
         </section>
       ) : (
         <>
-          {sections.official.length > 0 ? (
+          {catalogSections.official.length > 0 ? (
             <CatalogSection
               title={t("sections.officialTitle")}
-              className="bg-surface-muted/40"
+              className="bg-surface-muted"
             >
-              <SkillGrid entries={sections.official} />
+              <SkillGrid entries={catalogSections.official} />
             </CatalogSection>
           ) : null}
 
-          {sections.packs.length > 0 ? (
+          {catalogSections.packs.length > 0 ? (
             <CatalogSection title={t("sections.packsTitle")}>
-              <SkillGrid entries={sections.packs} />
+              <SkillGrid entries={catalogSections.packs} />
             </CatalogSection>
           ) : null}
 
-          {sections.explore.length > 0 ? (
+          {catalogSections.explore.length > 0 ? (
             <CatalogSection title={t("sections.exploreTitle")}>
               <SkillGrid entries={exploreVisible} />
-              {!exploreExpanded && sections.explore.length > EXPLORE_PREVIEW ? (
+              {!exploreExpanded &&
+              catalogSections.explore.length > EXPLORE_PREVIEW ? (
                 <div className="mt-6 flex justify-center">
                   <Button
                     type="button"
@@ -736,7 +763,7 @@ export function SkillsCatalog() {
                   >
                     {t("sections.showAll")}
                     <span className="tabular-nums text-ink-muted">
-                      ({sections.explore.length})
+                      ({catalogSections.explore.length})
                     </span>
                   </Button>
                 </div>
@@ -745,6 +772,14 @@ export function SkillsCatalog() {
           ) : null}
         </>
       )}
+
+      {showPopular ? (
+        <div className="border-b border-line">
+          <p className="mx-auto max-w-6xl px-6 py-4 text-xs text-ink-muted">
+            {t("heat.note")}
+          </p>
+        </div>
+      ) : null}
     </div>
   );
 }

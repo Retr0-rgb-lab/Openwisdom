@@ -8,7 +8,6 @@
   },
   "nav": {
     "skills": "Skills",
-    "install": "安装",
     "docs": "文档",
     "contribute": "贡献",
     "githubLabel": "Openwisdom 的 GitHub 仓库",
@@ -36,12 +35,13 @@
     "product": {
       "title": "产品",
       "home": "首页",
-      "skills": "Skills",
-      "install": "安装"
+      "skills": "Skills"
     },
     "resources": {
       "title": "资源",
-      "docs": "文档"
+      "docs": "文档",
+      "gettingStarted": "快速开始",
+      "faq": "常见问题"
     },
     "community": {
       "title": "社区",
@@ -64,23 +64,23 @@
     "github": "在 GitHub 上查看仓库",
     "skills": {
       "title": "Skills 目录",
-      "description": "在线 Skills 目录仍在建设中，此处尚无可浏览的完整目录。请到 GitHub 仓库查看 skill 源文件与进展。"
+      "description": "请前往 Skills 目录浏览与安装。"
     },
     "install": {
       "title": "安装",
-      "description": "安装说明页仍在建设中。CLI 尚未发布到 npm；请优先通过 GitHub 克隆或下载仓库，再按 harness 目录手动放入 skills。"
+      "description": "请前往安装页查看 CLI、MCP、GitHub 与手动路径。"
     },
     "docs": {
       "title": "文档",
-      "description": "站点文档仍在建设中，此处暂无完整文档站。产品说明与贡献约定请先看仓库中的 PRODUCT、DESIGN 与 docs。"
+      "description": "请前往文档页查看入门与 FAQ。"
     },
     "contribute": {
       "title": "贡献",
-      "description": "贡献引导页仍在建设中。当前请直接在 GitHub 上 fork 仓库，按模板撰写 SKILL.md，再向 community/ 提交 PR。"
+      "description": "请前往贡献页了解如何通过 GitHub PR 提交 skill。"
     },
     "about": {
       "title": "关于",
-      "description": "关于页仍在建设中。Openwisdom 是开源社会科学 Agent Skills 库：分析在你的 Agent 中运行，不在本站；CLI 不调用模型。更多见 GitHub 与首页。"
+      "description": "Openwisdom 是开源社会科学 Agent Skills 库。分析在你的 Agent 中运行，不在本站。"
     }
   },
   "notFound": {

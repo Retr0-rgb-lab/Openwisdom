@@ -3,13 +3,18 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
+import { SiteFooter } from "@/components/site/SiteFooter";
+import { SiteHeader } from "@/components/site/SiteHeader";
 import { Toaster } from "@/components/ui/sonner";
 import { routing } from "@/i18n/routing";
 import { fontVariables } from "@/lib/fonts";
 import "../globals.css";
 
 export const metadata: Metadata = {
-  title: "Openwisdom",
+  title: {
+    default: "Openwisdom",
+    template: "%s · Openwisdom",
+  },
   description: "Open-source social-science Agent Skills library",
 };
 
@@ -18,9 +23,7 @@ export function generateStaticParams() {
 }
 
 // The single root layout for the whole app (renders <html>).
-// The header/footer below are INLINE PLACEHOLDER shell markup (Plan A only);
-// Wave 2 Plan B replaces them with real site/* components. Do not import
-// site/* here before then.
+// Global chrome comes from components/site/* (Wave 2 Plan B).
 export default async function LocaleLayout({
   children,
   params,
@@ -38,17 +41,9 @@ export default async function LocaleLayout({
     <html lang={locale} className={fontVariables}>
       <body className="flex min-h-screen flex-col">
         <NextIntlClientProvider>
-          <header className="border-b border-line bg-surface">
-            <div className="mx-auto flex h-14 max-w-5xl items-center px-6 font-serif text-title">
-              Openwisdom
-            </div>
-          </header>
-          <div className="flex-1">{children}</div>
-          <footer className="border-t border-line bg-surface">
-            <div className="mx-auto max-w-5xl px-6 py-6 text-meta text-ink-muted">
-              Openwisdom
-            </div>
-          </footer>
+          <SiteHeader />
+          <main className="flex-1">{children}</main>
+          <SiteFooter />
           <Toaster />
         </NextIntlClientProvider>
       </body>

@@ -7,7 +7,7 @@ Openwisdom is **not** a hosted chatbot. It is a library of structured skills—s
 | Surface | What it is |
 |---------|------------|
 | **This repo** | Skill source of truth (`skills/`), package managers, docs |
-| **Website** | Bilingual catalog: discover, filter, install guidance (`apps/web`) |
+| **Website** | Bilingual catalog: discover, filter, install guidance — **[openwisdom.vercel.app](https://openwisdom.vercel.app)** |
 | **CLI / MCP** | Package managers only: `search` · `install` · `update` · `list` — **no LLM calls** |
 
 **中文说明见下方 [中文](#openwisdom-中文)。**
@@ -30,8 +30,9 @@ Official content today: **3 scenarios + 5 references** under `skills/official/`.
 
 ### 1. Browse skills
 
-- **Web (local):** see [Website](#website-appsweb)
+- **Live site:** [https://openwisdom.vercel.app](https://openwisdom.vercel.app) (default locale `/zh`; English at `/en`)
 - **Repo:** [`skills/official/`](./skills/official/)
+- **Local web:** see [Website](#website-appsweb)
 
 Official skills:
 
@@ -96,6 +97,9 @@ Open Claude Code / Cursor / etc., trigger the skill (e.g. **macro-scan**), and r
 ---
 
 ## Website (`apps/web`)
+
+**Production:** [https://openwisdom.vercel.app](https://openwisdom.vercel.app)  
+(Vercel project `openwisdom`, root directory `apps/web`. No custom domain configured.)
 
 Bilingual UI (`/zh`, `/en`): Home, Skills catalog & detail, Install hub, Docs, Contribute.
 
@@ -173,6 +177,7 @@ Install popularity is an optional side channel (web download + successful CLI/MC
 
 ## Links
 
+- **Website:** https://openwisdom.vercel.app  
 - Repository: https://github.com/Retr0-rgb-lab/Openwisdom  
 - Issues: https://github.com/Retr0-rgb-lab/Openwisdom/issues  
 
@@ -187,7 +192,7 @@ Openwisdom **不是**托管分析机器人。它提供结构化 skill（场景�
 | 表面 | 作用 |
 |------|------|
 | **本仓库** | skill 真源（`skills/`）、CLI/MCP、文档 |
-| **网站** | 中英目录：发现、筛选、安装引导（`apps/web`） |
+| **网站** | 中英目录：发现、筛选、安装引导 — **[openwisdom.vercel.app](https://openwisdom.vercel.app)** |
 | **CLI / MCP** | 仅包管理：`search` / `install` / `update` / `list`，**不调用大模型** |
 
 ### 当前官方内容
@@ -205,7 +210,9 @@ CLI / MCP 在 monorepo 内可用，**尚未上架公共 npm**。当前推荐：
 2. 或本仓库构建后：`pnpm cli -- install macro-scan -y --providers=claude --scope=project`  
 3. 在 Agent 中按 `SKILL.md` 调用并跑通一次真实分析  
 
-本地网站：
+**线上站点：** [https://openwisdom.vercel.app](https://openwisdom.vercel.app)（默认 `/zh`，英文 `/en`）
+
+本地开发：
 
 ```bash
 pnpm install

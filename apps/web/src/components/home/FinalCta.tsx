@@ -1,38 +1,47 @@
-import { ArrowUpRight } from "lucide-react";
+"use client";
+
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { InstallCommand } from "@/components/install/InstallCommand";
-import { GITHUB_URL } from "@/components/site/constants";
+import { Reveal } from "@/components/bits/Reveal";
 
-// Bottom CTA (specs/03 §4.1 ⑨): one more chance at the primary action —
-// copy the command, browse the catalog, or open GitHub.
+/**
+ * bolder close: larger title · primary browse · install emphasis ring
+ */
 export function FinalCta() {
   const t = useTranslations("home.finalCta");
 
   return (
-    <section className="border-b border-line">
-      <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-6 py-20 text-center md:py-28">
-        <h2 className="font-serif text-3xl leading-tight text-ink md:text-4xl">
-          {t("title")}
-        </h2>
-        <p className="max-w-xl text-body leading-relaxed text-ink-muted">
-          {t("description")}
-        </p>
-        <InstallCommand className="w-full text-left" />
-        <div className="flex flex-wrap items-center justify-center gap-3">
-          <Button variant="outline" className="border-line" render={<Link href="/skills" />}>
-            {t("browseSkills")}
-          </Button>
-          <Button
-            variant="ghost"
-            render={<a href={GITHUB_URL} target="_blank" rel="noreferrer" />}
-          >
-            {t("github")}
-            <ArrowUpRight className="size-4" />
-          </Button>
+    <section id="final" className="border-b border-line bg-surface/92">
+      <Reveal>
+        <div className="mx-auto grid max-w-6xl gap-10 px-6 py-20 md:grid-cols-[1.15fr_0.95fr] md:items-center md:gap-14 md:py-28">
+          <div className="flex flex-col gap-5">
+            <h2 className="max-w-[16ch] font-serif text-[1.9rem] leading-[1.12] font-semibold tracking-[-0.03em] text-ink md:text-[2.5rem]">
+              {t("title")}
+            </h2>
+            <p className="max-w-md text-base leading-[1.65] text-ink-muted md:text-[1.0625rem]">
+              {t("description")}
+            </p>
+            <div className="flex flex-wrap items-center gap-3 pt-1">
+              <Button
+                className="bg-primary text-primary-foreground hover:bg-primary-pressed"
+                render={<Link href="/skills" />}
+              >
+                {t("browseSkills")}
+              </Button>
+              <Button
+                variant="ghost"
+                className="text-structure hover:text-primary"
+                render={<a href="#scenarios" />}
+              >
+                {t("backToScenarios")}
+              </Button>
+            </div>
+          </div>
+          <InstallCommand className="w-full" emphasis />
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }

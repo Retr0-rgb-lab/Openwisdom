@@ -1,20 +1,30 @@
 import { useTranslations } from "next-intl";
 import { LogoLoop } from "@/components/bits/LogoLoop";
+import { Reveal } from "@/components/bits/Reveal";
 
-// Harness trust band (specs/03 §4.1 ②): text wordmarks only — no third-party
-// brand glyphs. LogoLoop is the Tier-A pick (specs/04 §5), heavily restrained.
+/** Compact band between Hero peak and Scenarios — quieter typeset. */
 export function HarnessRow() {
   const t = useTranslations("home.harness");
   const items = t.raw("items") as string[];
 
   return (
-    <section className="border-b border-line bg-surface">
-      <div className="mx-auto flex max-w-6xl flex-col items-center gap-5 px-6 py-10">
-        <p className="text-meta font-medium tracking-widest text-ink-muted uppercase">
-          {t("label")}
-        </p>
-        <LogoLoop items={items} className="w-full" />
-      </div>
+    <section className="border-b border-line bg-surface/92">
+      <Reveal>
+        <div className="mx-auto flex max-w-5xl flex-col items-center gap-4 px-6 py-12 text-center md:gap-5 md:py-14">
+          <h2 className="font-serif text-xl leading-snug font-semibold tracking-[-0.02em] text-ink md:text-2xl">
+            {t("label")}
+          </h2>
+          {t("subtitle") ? (
+            <p className="max-w-md text-sm leading-relaxed text-ink-muted">
+              {t("subtitle")}
+            </p>
+          ) : null}
+          <LogoLoop items={items} className="w-full" />
+          <p className="font-mono text-[0.7rem] tracking-wide text-ink-muted">
+            {t("paths")}
+          </p>
+        </div>
+      </Reveal>
     </section>
   );
 }

@@ -18,14 +18,14 @@ export function LayerDiagram() {
       />
       <div className="flex flex-col items-stretch gap-6 rounded-xl border border-line bg-field p-6 md:p-8">
         <div className="flex flex-col gap-3">
-          <p className="text-meta font-medium tracking-widest text-datum uppercase">
+          <p className="text-meta font-medium tracking-widest text-primary uppercase">
             {t("layers.scenarioLabel")}
           </p>
           <div className="flex flex-wrap gap-3">
             {scenarios.map((item) => (
               <span
                 key={item}
-                className="rounded-lg border border-datum/50 bg-surface px-3 py-1.5 font-mono text-sm text-ink"
+                className="rounded-lg border border-primary/50 bg-surface px-3 py-1.5 font-mono text-sm text-ink"
               >
                 {item}
               </span>
@@ -40,14 +40,14 @@ export function LayerDiagram() {
           <span className="h-px flex-1 bg-line" />
         </div>
         <div className="flex flex-col gap-3">
-          <p className="text-meta font-medium tracking-widest text-insight uppercase">
+          <p className="text-meta font-medium tracking-widest text-structure uppercase">
             {t("layers.referenceLabel")}
           </p>
           <div className="flex flex-wrap gap-3">
             {references.map((item) => (
               <span
                 key={item}
-                className="rounded-lg border border-insight/40 bg-surface px-3 py-1.5 text-sm text-ink"
+                className="rounded-lg border border-structure/40 bg-surface px-3 py-1.5 text-sm text-ink"
               >
                 {item}
               </span>

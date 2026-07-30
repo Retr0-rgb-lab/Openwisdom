@@ -15,52 +15,68 @@
       "anchor": "Anchor",
       "meta": "Metacognition",
       "youAreHere": "You are here",
-      "ariaLabel": "Coordinate-field diagram: three value axes — macro, anchor, metacognition — with a copper datum cross marking your position"
+      "ariaLabel": "Coordinate-field diagram: three value axes — macro, anchor, metacognition — with a primary datum cross marking your position"
     }
   },
   "install": {
-    "tabs": {
-      "cli": "CLI",
-      "github": "GitHub",
-      "manual": "Manual"
-    },
-    "cliNote": "Interactively pick the agents to install into — project-scoped or global.",
-    "githubNote": "The skill source files are the single source of truth. Browse, clone, or download the repo directly.",
-    "githubCta": "Open the GitHub repo",
-    "manualNote": "Or clone the repo and copy the skill directories you need into your harness's skills directory.",
-    "copied": "Copied to clipboard"
+    "cliStatus": "The CLI is not published to npm yet. Copy the command for later — interactive install works after publish.",
+    "cliNote": "After publish: interactively pick agents (project or global). This command is not available yet.",
+    "copied": "Copied to clipboard",
+    "copyFailed": "Copy failed. Select and copy the command manually."
   },
   "harness": {
-    "label": "One command, into the agent you already use",
+    "label": "Into the agent you already use",
+    "subtitle": "A compatibility inventory — not a marquee of logos.",
+    "paths": ".claude/skills/ · .cursor/ · harness skill dirs",
     "items": ["Claude Code", "Cursor", "Codex", "Gemini CLI", "GitHub Copilot", "Grok"]
   },
   "scenarios": {
     "eyebrow": "Scenario skills",
     "title": "Three scenarios, three acts of orientation",
     "subtitle": "Each scenario is a runnable analysis workflow: when to use it, step-by-step inquiry, output structure, bias checkpoints.",
-    "layerBadge": "Scenario",
     "whenLabel": "When to use",
+    "flowLabel": "Workflow",
+    "citeLabel": "Cites",
+    "citeJoin": ", ",
     "cta": "View in catalog",
     "macroScan": {
       "name": "Macro Scan",
       "id": "macro-scan",
+      "axis": "Whole",
       "tagline": "Break a situation, an industry, or a system into structure: actors, incentives, constraints, and trajectories.",
       "when": "When a complex situation demands seeing the whole board before judging.",
-      "disciplines": ["poli", "econ", "socio"]
+      "disciplines": ["poli", "econ", "socio"],
+      "steps": [
+        "Bound the situation and time horizon",
+        "Map actors, incentives, and constraints",
+        "Ship a checkable structure and trajectory"
+      ]
     },
     "personalAnchor": {
       "name": "Personal Anchor",
       "id": "personal-anchor",
+      "axis": "Individual",
       "tagline": "Place your situation on historical and social coordinates: which curve you are on, which stratum you stand on.",
       "when": "For long-horizon choices — career, city, direction — when you need to know where you stand.",
-      "disciplines": ["history", "socio"]
+      "disciplines": ["history", "socio"],
+      "steps": [
+        "Name the choice and its constraints",
+        "Locate yourself in history and society",
+        "Mark room to move and path dependence"
+      ]
     },
     "metacognition": {
       "name": "Metacognition Audit",
       "id": "metacognition-audit",
+      "axis": "Structure",
       "tagline": "A checkup for your thinking: expose biases, blind spots, and evidence gaps instead of polishing conclusions.",
       "when": "After a conclusion forms and before it ships, when thought quality matters.",
-      "disciplines": ["psych"]
+      "disciplines": ["psych"],
+      "steps": [
+        "Replay the reasoning chain and evidence",
+        "Name biases and blind spots",
+        "Close gaps before you commit"
+      ]
     }
   },
   "layers": {
@@ -73,10 +89,48 @@
     "cites": "cite",
     "references": ["Prospect theory", "Elite theory", "Path dependence", "Collective action", "Confirmation bias"]
   },
+  "model": {
+    "title": "Scenarios cite theory; provenance is a layer, not two products",
+    "subtitle": "Knowledge is layered and composable. Select a scenario to see one reference it pulls. Official and community are provenance, not parallel product lines.",
+    "scenarioLabel": "Scenario skills",
+    "referenceLabel": "Discipline reference",
+    "citesLabel": "cite",
+    "cites": {
+      "macro": {
+        "id": "macro-scan",
+        "name": "Macro Scan",
+        "refTitle": "Path dependence",
+        "refBody": "Past choices lock later room to move. Macro-scan uses this to explain institutional stickiness and trajectory inertia — not a blank slate called “now.”",
+        "from": "← macro-scan · history / economics"
+      },
+      "anchor": {
+        "id": "personal-anchor",
+        "name": "Personal Anchor",
+        "refTitle": "Stratification and historical coordinates",
+        "refBody": "Personal-anchor places “I” on a narratable historical layer and group position — coordinates, not pep talk.",
+        "from": "← personal-anchor · history / sociology"
+      },
+      "meta": {
+        "id": "metacognition-audit",
+        "name": "Metacognition Audit",
+        "refTitle": "Confirmation bias",
+        "refBody": "The audit names how you harvest only supporting evidence and requires closing counter-evidence gaps before you ship.",
+        "from": "← metacognition-audit · psychology"
+      }
+    },
+    "official": {
+      "badge": "Official",
+      "blurb": "Core-maintained scenarios and five-discipline references tied to the product narrative and a higher quality bar."
+    },
+    "community": {
+      "badge": "Community",
+      "blurb": "Merged into community/ via GitHub PR under a shared review bar — grows with the community."
+    }
+  },
   "disciplines": {
-    "eyebrow": "Discipline references",
     "title": "Five disciplines, the skeleton of the library",
     "subtitle": "Each discipline ships official reference cards that scenarios actually cite — no empty taxonomy.",
+    "edgeNote": "Cite edges: macro-scan → political science, economics, sociology; personal-anchor → history, sociology; metacognition-audit → psychology.",
     "psych": { "name": "Psychology", "desc": "How individuals perceive, decide, and err" },
     "socio": { "name": "Sociology", "desc": "How groups, structures, and institutions shape behavior" },
     "history": { "name": "History", "desc": "Path dependence and cycles in the long run" },
@@ -137,6 +191,6 @@
     "title": "Install macro-scan into your agent first",
     "description": "Start with one command. Then trigger macro-scan in your agent and run your first structured analysis.",
     "browseSkills": "Browse the Skills catalog",
-    "github": "GitHub"
+    "backToScenarios": "Back to scenarios"
   }
 }

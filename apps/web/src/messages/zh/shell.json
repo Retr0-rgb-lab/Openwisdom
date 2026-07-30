@@ -49,28 +49,28 @@
     }
   },
   "placeholder": {
-    "badge": "即将推出",
+    "badge": "建设中",
     "backHome": "返回首页",
-    "github": "在 GitHub 上跟踪进展",
+    "github": "在 GitHub 上查看仓库",
     "skills": {
       "title": "Skills 目录",
-      "description": "场景 skill 与学科 reference 的统一目录：发现、筛选、搜索与安装。目录索引管道就绪后在此上线。"
+      "description": "在线 Skills 目录仍在建设中，此处尚无可浏览的完整目录。请到 GitHub 仓库查看 skill 源文件与进展。"
     },
     "install": {
-      "title": "安装中枢",
-      "description": "一条命令把技能装进你的 Agent。CLI 用法、手动路径与各 harness 的安装矩阵将在此汇总。"
+      "title": "安装",
+      "description": "安装说明页仍在建设中。CLI 尚未发布到 npm；请优先通过 GitHub 克隆或下载仓库，再按 harness 目录手动放入 skills。"
     },
     "docs": {
       "title": "文档",
-      "description": "从首次在自己的 Agent 中跑通 macro-scan，到贡献编写规范：入门、概念、CLI 参考与常见问题将在此归档。"
+      "description": "站点文档仍在建设中，此处暂无完整文档站。产品说明与贡献约定请先看仓库中的 PRODUCT、DESIGN 与 docs。"
     },
     "contribute": {
       "title": "贡献",
-      "description": "fork、模板、PR：向 community/ 提交场景 skill 或学科 reference 的引导页，在此之前可直接到 GitHub 查看仓库。"
+      "description": "贡献引导页仍在建设中。当前请直接在 GitHub 上 fork 仓库，按模板撰写 SKILL.md，再向 community/ 提交 PR。"
     },
     "about": {
       "title": "关于",
-      "description": "Openwisdom 的定位、五大学科，以及明确不做的事：不托管对话，CLI 不调用模型。"
+      "description": "关于页仍在建设中。Openwisdom 是开源社会科学 Agent Skills 库：分析在你的 Agent 中运行，不在本站；CLI 不调用模型。更多见 GitHub 与首页。"
     }
   },
   "notFound": {

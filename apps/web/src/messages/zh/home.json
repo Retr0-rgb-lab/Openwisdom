@@ -15,52 +15,68 @@
       "anchor": "锚点",
       "meta": "元认知",
       "youAreHere": "你在这里",
-      "ariaLabel": "坐标场示意图：宏观、锚点、元认知三条价值轴，铜色 datum 十字标记你的位置"
+      "ariaLabel": "坐标场示意图：宏观、锚点、元认知三条价值轴，主色 datum 十字标记你的位置"
     }
   },
   "install": {
-    "tabs": {
-      "cli": "CLI",
-      "github": "GitHub",
-      "manual": "手动"
-    },
-    "cliNote": "交互式选择要安装的 Agent，支持项目级或全局安装。",
-    "githubNote": "skill 源文件即真相源。直接浏览、clone 或下载仓库。",
-    "githubCta": "打开 GitHub 仓库",
-    "manualNote": "也可以 clone 仓库后，把需要的 skill 目录手动复制到你的 harness skills 目录。",
-    "copied": "已复制到剪贴板"
+    "cliStatus": "CLI 尚未发布到 npm。命令可先复制备查；发布后即可交互式安装。",
+    "cliNote": "发包后：交互式选择要装入的 Agent，支持项目级或全局安装。当前命令尚不可用。",
+    "copied": "已复制到剪贴板",
+    "copyFailed": "复制失败，请手动选择命令复制。"
   },
   "harness": {
-    "label": "一条命令，装进你已经在用的 Agent",
+    "label": "装进你已经在用的 Agent",
+    "subtitle": "兼容目标是安装清单，不是信任 logo 跑马灯。",
+    "paths": ".claude/skills/ · .cursor/ · 等 harness 目录",
     "items": ["Claude Code", "Cursor", "Codex", "Gemini CLI", "GitHub Copilot", "Grok"]
   },
   "scenarios": {
     "eyebrow": "场景 Skills",
     "title": "三个场景，三种定位动作",
     "subtitle": "每个场景是一条可执行的分析流程：何时使用、分步提问、输出结构、偏见检查点。",
-    "layerBadge": "场景",
     "whenLabel": "何时用",
+    "flowLabel": "分析流程",
+    "citeLabel": "引用",
+    "citeJoin": "、",
     "cta": "在目录中查看",
     "macroScan": {
       "name": "宏观扫描",
       "id": "macro-scan",
+      "axis": "整体视角",
       "tagline": "把一个局势、行业或系统拆成结构：行动者、激励、约束与趋势。",
       "when": "面对复杂局面，需要先看清全貌再做判断时。",
-      "disciplines": ["poli", "econ", "socio"]
+      "disciplines": ["poli", "econ", "socio"],
+      "steps": [
+        "界定局势边界与时间尺度",
+        "识别行动者、激励与约束",
+        "输出可检验的结构与趋势图"
+      ]
     },
     "personalAnchor": {
       "name": "个人锚点",
       "id": "personal-anchor",
+      "axis": "个体视角",
       "tagline": "把个人处境放进历史与社会的坐标：你在哪条曲线上，脚下是哪一层。",
       "when": "做长期选择——职业、城市、方向——想知道自己身处何处时。",
-      "disciplines": ["history", "socio"]
+      "disciplines": ["history", "socio"],
+      "steps": [
+        "写下当下的选择与约束",
+        "定位历史层与社会坐标",
+        "标出可动空间与路径依赖"
+      ]
     },
     "metacognition": {
       "name": "元认知体检",
       "id": "metacognition-audit",
+      "axis": "结构视角",
       "tagline": "给一次思考做体检：暴露偏见、盲点与证据缺口，而不是给结论抛光。",
       "when": "重要结论形成之后、落地之前，想检验思考质量时。",
-      "disciplines": ["psych"]
+      "disciplines": ["psych"],
+      "steps": [
+        "复盘推理链条与证据",
+        "点名偏见与盲点",
+        "补齐缺口后再定结论"
+      ]
     }
   },
   "layers": {
@@ -73,10 +89,48 @@
     "cites": "引用",
     "references": ["前景理论", "精英理论", "路径依赖", "集体行动", "确认偏误"]
   },
+  "model": {
+    "title": "场景引用理论；来源分层，不是两套产品",
+    "subtitle": "知识分层可组合。点左侧场景，看它会拉哪张 reference。Official 与 Community 是 provenance，不是平行产品线。",
+    "scenarioLabel": "场景 Skills",
+    "referenceLabel": "学科 Reference",
+    "citesLabel": "引用",
+    "cites": {
+      "macro": {
+        "id": "macro-scan",
+        "name": "宏观扫描",
+        "refTitle": "路径依赖",
+        "refBody": "历史选择会锁定后续空间。宏观扫描用它解释制度粘性与趋势惯性，而不是把「现在」当成空白画布。",
+        "from": "← macro-scan · 历史学 / 经济学"
+      },
+      "anchor": {
+        "id": "personal-anchor",
+        "name": "个人锚点",
+        "refTitle": "社会分层与历史坐标",
+        "refBody": "个人锚点把「我」放回可叙述的历史层与群体位置——不是鸡汤定位，是坐标。",
+        "from": "← personal-anchor · 历史学 / 社会学"
+      },
+      "meta": {
+        "id": "metacognition-audit",
+        "name": "元认知体检",
+        "refTitle": "确认偏误",
+        "refBody": "元认知体检点名你如何只收集支持结论的证据，并要求补齐反证与缺口后再落地。",
+        "from": "← metacognition-audit · 心理学"
+      }
+    },
+    "official": {
+      "badge": "Official",
+      "blurb": "核心维护的三个场景与五学科 reference，绑定产品叙事与更高质量门槛。"
+    },
+    "community": {
+      "badge": "Community",
+      "blurb": "经 GitHub PR 合入 community/，共享规范与基础审查，随社区生长。"
+    }
+  },
   "disciplines": {
-    "eyebrow": "学科 References",
     "title": "五大学科，图书馆的骨架",
     "subtitle": "每个学科都有 official reference 卡片，支撑场景引用，而非空壳分类。",
+    "edgeNote": "场景引用边：macro-scan → 政治学、经济学、社会学；personal-anchor → 历史学、社会学；metacognition-audit → 心理学。",
     "psych": { "name": "心理学", "desc": "个体如何感知、决策与产生偏差" },
     "socio": { "name": "社会学", "desc": "群体、结构与制度如何塑造行为" },
     "history": { "name": "历史学", "desc": "长时段中的路径依赖与周期" },
@@ -137,6 +191,6 @@
     "title": "先把宏观扫描装进你的 Agent",
     "description": "一条命令开始。装好后，在你的 Agent 里触发 macro-scan，跑通第一次结构化分析。",
     "browseSkills": "浏览 Skills 目录",
-    "github": "GitHub"
+    "backToScenarios": "回看场景"
   }
 }

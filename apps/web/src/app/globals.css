@@ -20,15 +20,18 @@
     --text-meta: 0.75rem;
     --text-meta--line-height: 1.4;
 
-    /* Direction B (Atlas Coordinate) raw tokens as utilities */
+    /* Overlay Atlas (Spec 07) raw tokens as utilities */
     --color-field: var(--ow-field);
     --color-surface: var(--ow-surface);
+    --color-surface-muted: var(--ow-surface-muted);
     --color-ink: var(--ow-ink);
     --color-ink-muted: var(--ow-ink-muted);
     --color-line: var(--ow-line);
-    --color-datum: var(--ow-datum);
-    --color-datum-pressed: var(--ow-datum-pressed);
-    --color-insight: var(--ow-insight);
+    --color-ow-primary: var(--ow-primary);
+    --color-primary-pressed: var(--ow-primary-pressed);
+    --color-structure: var(--ow-structure);
+    --color-signal: var(--ow-signal);
+    --color-mist: var(--ow-mist);
     --color-danger: var(--ow-danger);
     --color-community: var(--ow-community);
     --color-psych: var(--ow-psych);
@@ -36,6 +39,10 @@
     --color-history: var(--ow-history);
     --color-poli: var(--ow-poli);
     --color-econ: var(--ow-econ);
+    /* One-release aliases: copper/insight → signal/structure (do not use for new code) */
+    --color-datum: var(--ow-signal);
+    --color-datum-pressed: var(--ow-primary-pressed);
+    --color-insight: var(--ow-structure);
 
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
@@ -78,25 +85,32 @@
 }
 
 :root {
-    /* Direction B — Instrument of Orientation (specs/02 §5) */
-    --ow-field: #EEF1F2;
-    --ow-surface: #FAFBFC;
-    --ow-ink: #0E141B;
-    --ow-ink-muted: #4A5560;
-    --ow-line: #C5CDD4;
-    --ow-datum: #B87333;
-    --ow-datum-pressed: #8E5520;
-    --ow-insight: #2F6F6A;
-    --ow-danger: #9B2C2C;
-    --ow-community: #6B5B4F;
-    /* Discipline chips (border or 10% fill only) */
-    --ow-psych: #7D6B8A;
-    --ow-socio: #A67C52;
-    --ow-history: #8B4D3B;
-    --ow-poli: #3D4F7C;
-    --ow-econ: #3F6B4F;
+    /* Overlay Atlas — logo-aligned (specs/07 §2) */
+    --ow-field: #F8F9FA;
+    --ow-surface: #FFFFFF;
+    --ow-surface-muted: #F3F5F7;
+    --ow-ink: #0F1724;
+    --ow-ink-muted: #5A6570;
+    --ow-line: #D5DCE2;
+    --ow-primary: #1C4BD1;
+    --ow-primary-pressed: #153A9E;
+    --ow-structure: #2E6975;
+    --ow-signal: #E69622;
+    --ow-mist: #88ADC0;
+    --ow-danger: #B42318;
+    --ow-community: #5C6B75;
+    /* Discipline chips — logo-同源 (specs/07 §2); border or 10% fill only */
+    --ow-psych: #E69622;
+    --ow-socio: #1C4BD1;
+    --ow-history: #5C7A8A;
+    --ow-poli: #3D4F8C;
+    --ow-econ: #2E6975;
+    /* Temporary aliases (one release): copper datum → signal; insight → structure */
+    --ow-datum: var(--ow-signal);
+    --ow-datum-pressed: var(--ow-primary-pressed);
+    --ow-insight: var(--ow-structure);
 
-    /* shadcn semantic mapping */
+    /* shadcn semantic mapping (specs/07 §2) */
     --radius: 0.5rem;
     --background: var(--ow-field);
     --foreground: var(--ow-ink);
@@ -104,44 +118,57 @@
     --card-foreground: var(--ow-ink);
     --popover: var(--ow-surface);
     --popover-foreground: var(--ow-ink);
-    --primary: var(--ow-datum);
-    --primary-foreground: var(--ow-surface);
+    --primary: var(--ow-primary);
+    --primary-foreground: #FFFFFF;
     --secondary: var(--ow-surface);
     --secondary-foreground: var(--ow-ink);
     --muted: color-mix(in oklab, var(--ow-line) 30%, var(--ow-field));
     --muted-foreground: var(--ow-ink-muted);
-    --accent: color-mix(in oklab, var(--ow-insight) 10%, var(--ow-surface));
-    --accent-foreground: var(--ow-insight);
+    --accent: color-mix(in oklab, var(--ow-structure) 12%, var(--ow-surface));
+    --accent-foreground: var(--ow-structure);
     --destructive: var(--ow-danger);
-    --destructive-foreground: var(--ow-surface);
+    --destructive-foreground: #FFFFFF;
     --border: var(--ow-line);
     --input: var(--ow-line);
-    --ring: var(--ow-datum);
-    --chart-1: var(--ow-datum);
-    --chart-2: var(--ow-insight);
-    --chart-3: var(--ow-poli);
-    --chart-4: var(--ow-econ);
+    --ring: var(--ow-primary);
+    --chart-1: var(--ow-primary);
+    --chart-2: var(--ow-structure);
+    --chart-3: var(--ow-signal);
+    --chart-4: var(--ow-mist);
     --chart-5: var(--ow-community);
     --sidebar: var(--ow-surface);
     --sidebar-foreground: var(--ow-ink);
-    --sidebar-primary: var(--ow-datum);
-    --sidebar-primary-foreground: var(--ow-surface);
-    --sidebar-accent: color-mix(in oklab, var(--ow-insight) 10%, var(--ow-surface));
-    --sidebar-accent-foreground: var(--ow-insight);
+    --sidebar-primary: var(--ow-primary);
+    --sidebar-primary-foreground: #FFFFFF;
+    --sidebar-accent: color-mix(in oklab, var(--ow-structure) 12%, var(--ow-surface));
+    --sidebar-accent-foreground: var(--ow-structure);
     --sidebar-border: var(--ow-line);
-    --sidebar-ring: var(--ow-datum);
+    --sidebar-ring: var(--ow-primary);
 }
 
-/* Dark pair — structural reservation only; no theme switch in v1 (DESIGN.md) */
+/* Dark pair — structural reservation only; no theme switch in v1 */
 .dark {
     --ow-field: #0B1014;
     --ow-surface: #141A21;
+    --ow-surface-muted: #1A222B;
     --ow-ink: #E6EBEF;
     --ow-ink-muted: #9AA7B2;
     --ow-line: #2A333D;
-    --ow-datum: #D4894A;
-    --ow-datum-pressed: #B87333;
-    --ow-insight: #4FA39C;
+    --ow-primary: #5B7FE8;
+    --ow-primary-pressed: #3D63D4;
+    --ow-structure: #5A9AAA;
+    --ow-signal: #F0B04A;
+    --ow-mist: #6A8FA3;
+    --ow-danger: #E05A50;
+    --ow-community: #8A98A3;
+    --ow-psych: #F0B04A;
+    --ow-socio: #5B7FE8;
+    --ow-history: #7A96A6;
+    --ow-poli: #6B7AB0;
+    --ow-econ: #5A9AAA;
+    --ow-datum: var(--ow-signal);
+    --ow-datum-pressed: var(--ow-primary-pressed);
+    --ow-insight: var(--ow-structure);
 
     --background: var(--ow-field);
     --foreground: var(--ow-ink);
@@ -149,37 +176,76 @@
     --card-foreground: var(--ow-ink);
     --popover: var(--ow-surface);
     --popover-foreground: var(--ow-ink);
-    --primary: var(--ow-datum);
+    --primary: var(--ow-primary);
     --primary-foreground: #0B1014;
     --secondary: var(--ow-surface);
     --secondary-foreground: var(--ow-ink);
     --muted: color-mix(in oklab, var(--ow-line) 40%, var(--ow-field));
     --muted-foreground: var(--ow-ink-muted);
-    --accent: color-mix(in oklab, var(--ow-insight) 18%, var(--ow-surface));
-    --accent-foreground: var(--ow-insight);
+    --accent: color-mix(in oklab, var(--ow-structure) 18%, var(--ow-surface));
+    --accent-foreground: var(--ow-structure);
     --destructive: var(--ow-danger);
     --destructive-foreground: var(--ow-ink);
     --border: var(--ow-line);
     --input: var(--ow-line);
-    --ring: var(--ow-datum);
+    --ring: var(--ow-primary);
     --sidebar: var(--ow-surface);
     --sidebar-foreground: var(--ow-ink);
-    --sidebar-primary: var(--ow-datum);
+    --sidebar-primary: var(--ow-primary);
     --sidebar-primary-foreground: #0B1014;
-    --sidebar-accent: color-mix(in oklab, var(--ow-insight) 18%, var(--ow-surface));
-    --sidebar-accent-foreground: var(--ow-insight);
+    --sidebar-accent: color-mix(in oklab, var(--ow-structure) 18%, var(--ow-surface));
+    --sidebar-accent-foreground: var(--ow-structure);
     --sidebar-border: var(--ow-line);
-    --sidebar-ring: var(--ow-datum);
+    --sidebar-ring: var(--ow-primary);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
-    }
-  body {
-    @apply bg-background text-foreground;
-    }
+  }
   html {
     @apply font-sans;
+  }
+  body {
+    /* Overlay Atlas field is the global canvas (Spec 07/08).
+       DotField + Noise sit in SiteBackdrop; sections use surface/transparent. */
+    @apply bg-field text-ink antialiased;
+  }
+}
+
+/* Spec 08: shared motion tokens */
+:root {
+  --ow-motion-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ow-motion-enter: 0.65s;
+  --ow-motion-tool: 0.2s;
+}
+
+/* Optional CSS fade-up when not using motion/Reveal (C2/C7-safe floor) */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .ow-view-enter {
+      animation: ow-view-enter var(--ow-motion-enter) var(--ow-motion-ease) both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
     }
+  }
+}
+
+@keyframes ow-view-enter {
+  from {
+    opacity: 0.22;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ow-view-enter {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }

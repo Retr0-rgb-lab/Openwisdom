@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Openwisdom · Orientation Plate demo</title>
+  <meta name="description" content="Home redesign demo: centered Hero, dossier without left bars, Spec 08 motion. Overlay Atlas." />
+  <!--
+    REDO 2026-07-30 — Orientation Plate
+    Subagent findings: specs 07–11 + AI-smell audit + design direction
+    Kills: left accent bars, top brand rails, capsule harness, ambient particle hero,
+           glass header, eyebrow factory, chip soup, equal cards
+    Spec 08: C1 still · C2 one-shot · C3 150–250ms · C4 quiet ambient · C7 opacity fail-safe
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ow-field: #F8F9FA;
+      --ow-surface: #FFFFFF;
+      --ow-surface-muted: #F3F5F7;
+      --ow-ink: #0F1724;
+      --ow-ink-muted: #5A6570;
+      --ow-line: #D5DCE2;
+      --ow-primary: #1C4BD1;
+      --ow-primary-pressed: #153A9E;
+      --ow-structure: #2E6975;
+      --ow-signal: #E69622;
+      --ow-mist: #88ADC0;
+      --ow-community: #5C6B75;
+      --font-serif: "Source Serif 4", "Noto Serif SC", ui-serif, Georgia, serif;
+      --font-sans: "IBM Plex Sans", "Noto Sans SC", ui-sans-serif, system-ui, sans-serif;
+      --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --r: 8px;
+      --page: 70rem;
+      --shadow: 0 1px 2px rgb(15 23 36 / 0.04);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      font-size: 17px;
+      line-height: 1.6;
+      color: var(--ow-ink);
+      background: var(--ow-field);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--ow-primary); text-underline-offset: 3px; }
+    a:hover { color: var(--ow-primary-pressed); }
+    .mono { font-family: var(--font-mono); font-size: 0.84em; }
+
+    /* ——— Motion (C7: without .js fully visible) ——— */
+    [data-in] {
+      opacity: 1;
+      transform: none;
+    }
+    html.js [data-in] {
+      opacity: 0.22;
+      transform: translate3d(0, 26px, 0);
+      transition:
+        opacity 0.72s var(--ease),
+        transform 0.78s var(--ease);
+      transition-delay: calc(var(--d, 0) * 1ms);
+      will-change: opacity, transform;
+    }
+    html.js [data-in].on {
+      opacity: 1;
+      transform: none;
+    }
+    html.js [data-in="slide"] {
+      transform: translate3d(-20px, 10px, 0);
+    }
+    html.js [data-in="slide"].on {
+      transform: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html.js [data-in],
+      html.js [data-in].on {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      .h1-line { animation: none !important; opacity: 1 !important; filter: none !important; transform: none !important; }
+    }
+
+    /* Hero H1: whole-line settle (not per-glyph circus) */
+    .h1-line {
+      display: block;
+      opacity: 1;
+    }
+    html.js .h1-line {
+      opacity: 0.15;
+      filter: blur(8px);
+      transform: translateY(16px);
+      animation: line-in 0.7s var(--ease) forwards;
+      animation-delay: calc(var(--ln, 0) * 110ms);
+    }
+    @keyframes line-in {
+      to {
+        opacity: 1;
+        filter: blur(0);
+        transform: none;
+      }
+    }
+
+    /* ——— Shell ——— */
+    .banner {
+      background: var(--ow-ink);
+      color: #E6EBEF;
+      font-size: 0.78rem;
+      text-align: center;
+      padding: 0.45rem 1rem;
+      letter-spacing: 0.01em;
+    }
+    .banner em {
+      font-style: normal;
+      color: var(--ow-signal);
+      font-weight: 600;
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      /* Solid editorial bar — no frosted glass */
+      background: var(--ow-field);
+      border-bottom: 1px solid var(--ow-line);
+    }
+    .header__in {
+      max-width: var(--page);
+      margin: 0 auto;
+      padding: 0.8rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      color: var(--ow-ink);
+      font-weight: 600;
+    }
+    .brand svg { display: block; }
+    .nav {
+      display: none;
+      gap: 1.35rem;
+      font-size: 0.9rem;
+      color: var(--ow-ink-muted);
+    }
+    @media (min-width: 720px) {
+      .nav { display: flex; }
+    }
+    .nav a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .nav a:hover { color: var(--ow-primary); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 2.5rem;
+      padding: 0 1.05rem;
+      border-radius: var(--r);
+      border: 1px solid transparent;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.18s, border-color 0.18s, color 0.18s, transform 0.12s var(--ease);
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary {
+      background: var(--ow-primary);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: var(--ow-primary-pressed);
+      color: #fff;
+    }
+    .btn-ghost {
+      background: transparent;
+      border-color: var(--ow-line);
+      color: var(--ow-ink);
+    }
+    .btn-ghost:hover {
+      border-color: var(--ow-structure);
+      color: var(--ow-structure);
+    }
+    .link-quiet {
+      color: var(--ow-structure);
+      font-size: 0.92rem;
+      font-weight: 500;
+    }
+
+    /* ——— Hero ——— */
+    .hero {
+      position: relative;
+      isolation: isolate;
+      border-bottom: 1px solid var(--ow-line);
+      min-height: min(86dvh, 48rem);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /* Static atlas field: print registration, not particle loop */
+      background:
+        radial-gradient(circle at 12% 18%, color-mix(in oklab, var(--ow-mist) 22%, transparent) 0 1px, transparent 1.5px),
+        radial-gradient(circle at 78% 32%, color-mix(in oklab, var(--ow-primary) 18%, transparent) 0 1px, transparent 1.5px),
+        radial-gradient(circle at 40% 72%, color-mix(in oklab, var(--ow-structure) 20%, transparent) 0 1px, transparent 1.5px),
+        var(--ow-field);
+      background-size: 28px 28px, 28px 28px, 28px 28px, auto;
+    }
+    .hero::before {
+      /* corner registration marks */
+      content: "";
+      position: absolute;
+      inset: 1.25rem 1.5rem;
+      pointer-events: none;
+      z-index: 0;
+      border: 1px solid color-mix(in oklab, var(--ow-line) 65%, transparent);
+      opacity: 0.55;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    .hero__in {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 40rem;
+      margin: 0 auto;
+      padding: 5rem 1.5rem 4.25rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .hero__lede {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--ow-ink-muted);
+      max-width: 28rem;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-weight: 600;
+      font-size: clamp(2.1rem, 5vw, 3.25rem);
+      line-height: 1.14;
+      letter-spacing: -0.02em;
+    }
+    .hero h1 .line-accent { color: var(--ow-primary); }
+
+    .hero__sub {
+      margin: 0;
+      max-width: 34rem;
+      color: var(--ow-ink-muted);
+      font-size: 1.02rem;
+      line-height: 1.65;
+    }
+
+    /* Triad legend — shape carries color, no bars */
+    .triad {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.85rem 1.4rem;
+      margin: 0.15rem 0 0;
+      padding: 0;
+      list-style: none;
+      font-size: 0.84rem;
+      color: var(--ow-ink-muted);
+    }
+    .triad li {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .glyph {
+      flex-shrink: 0;
+      width: 12px;
+      height: 12px;
+    }
+    .glyph-circle {
+      border-radius: 50%;
+      background: var(--ow-primary);
+    }
+    .glyph-triangle {
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-bottom: 11px solid var(--ow-signal);
+    }
+    .glyph-square {
+      border-radius: 2px;
+      background: var(--ow-structure);
+    }
+
+    /* Install object */
+    .install {
+      width: 100%;
+      max-width: 34rem;
+      text-align: left;
+      background: var(--ow-surface);
+      border: 1px solid var(--ow-line);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .install__tabs {
+      display: flex;
+      gap: 0.25rem;
+      padding: 0.4rem;
+      background: var(--ow-surface-muted);
+      border-bottom: 1px solid var(--ow-line);
+    }
+    .install__tab {
+      flex: 1;
+      border: 0;
+      background: transparent;
+      min-height: 2rem;
+      border-radius: 6px;
+      font: inherit;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--ow-ink-muted);
+      cursor: pointer;
+    }
+    .install__tab[aria-selected="true"] {
+      background: var(--ow-surface);
+      color: var(--ow-ink);
+      box-shadow: var(--shadow);
+    }
+    .install__body { padding: 1rem 1.1rem 1.15rem; }
+    .install__note {
+      margin: 0 0 0.7rem;
+      font-size: 0.86rem;
+      color: var(--ow-ink-muted);
+      line-height: 1.5;
+    }
+    .install__warn {
+      margin: 0 0 0.55rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--ow-ink-muted);
+      border-left: 1px solid var(--ow-line); /* ink hairline note — NOT brand chroma bar */
+      padding-left: 0.65rem;
+    }
+    .install__row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 0.7rem;
+      background: var(--ow-field);
+      border: 1px solid var(--ow-line);
+      border-radius: 6px;
+    }
+    .install__row code {
+      flex: 1;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .install__copy {
+      border: 1px solid var(--ow-line);
+      background: var(--ow-surface);
+      border-radius: 6px;
+      padding: 0.35rem 0.55rem;
+      font-size: 0.78rem;
+      font-weight: 500;
+      cursor: pointer;
+      color: var(--ow-ink);
+      transition: border-color 0.18s, color 0.18s;
+    }
+    .install__copy:hover,
+    .install__copy.ok {
+      border-color: var(--ow-structure);
+      color: var(--ow-structure);
+    }
+
+    /* ——— Sections ——— */
+    .sec {
+      padding: 4.75rem 1.5rem;
+      border-bottom: 1px solid var(--ow-line);
+    }
+    .sec--paper { background: var(--ow-surface); }
+    .sec__in {
+      max-width: var(--page);
+      margin: 0 auto;
+    }
+    .sec__head {
+      max-width: 36rem;
+      margin-bottom: 2.25rem;
+    }
+    .sec h2 {
+      margin: 0 0 0.7rem;
+      font-family: var(--font-serif);
+      font-weight: 600;
+      font-size: clamp(1.6rem, 2.8vw, 2.05rem);
+      line-height: 1.22;
+      letter-spacing: -0.02em;
+    }
+    .sec__lede {
+      margin: 0;
+      color: var(--ow-ink-muted);
+      max-width: 46ch;
+      font-size: 1rem;
+    }
+    /* Single kicker on page — Scenarios only */
+    .kicker {
+      margin: 0 0 0.55rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--ow-structure);
+    }
+
+    /* Harness — inventory line, NOT capsules */
+    .compat {
+      margin: 0;
+      padding: 1.1rem 0 0;
+      border-top: 1px solid var(--ow-line);
+      font-size: 0.95rem;
+      color: var(--ow-ink);
+      line-height: 1.7;
+      text-align: center;
+      max-width: 48rem;
+      margin-inline: auto;
+    }
+    .compat strong {
+      display: block;
+      font-weight: 500;
+      color: var(--ow-ink-muted);
+      font-size: 0.88rem;
+      margin-bottom: 0.45rem;
+    }
+    .compat span { white-space: nowrap; }
+    .paths {
+      margin: 1rem 0 0;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--ow-ink-muted);
+    }
+
+    /* ——— Dossier: NO left accent bars ——— */
+    .dossier {
+      display: grid;
+      gap: 1.35rem;
+    }
+    @media (min-width: 900px) {
+      .dossier {
+        grid-template-columns: 1.4fr 1fr;
+        grid-template-rows: auto auto;
+        gap: 1.15rem 1.35rem;
+      }
+      .entry--feature {
+        grid-row: 1 / span 2;
+      }
+    }
+
+    .entry {
+      background: var(--ow-surface);
+      border: 1px solid var(--ow-line);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      padding: 1.5rem 1.55rem 1.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      min-height: 100%;
+      /* NO border-left color rails */
+    }
+    .entry--feature {
+      background: var(--ow-surface);
+      padding: 1.75rem 1.85rem 1.9rem;
+    }
+    .entry--index {
+      background: var(--ow-field);
+      box-shadow: none;
+    }
+
+    .entry__head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--ow-line); /* masthead rule replaces left bar */
+    }
+    .entry__id {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      min-width: 0;
+    }
+    .entry__id .run {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--ow-ink-muted);
+    }
+    .entry__title {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: 1.45rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+    .entry--feature .entry__title { font-size: 1.65rem; }
+    .entry__folio {
+      flex-shrink: 0;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--ow-ink-muted);
+      letter-spacing: 0.04em;
+      text-align: right;
+      line-height: 1.4;
+      padding-top: 0.15rem;
+    }
+
+    .entry__tagline {
+      margin: 0;
+      font-size: 1.02rem;
+      line-height: 1.55;
+      color: var(--ow-ink);
+      max-width: 40ch;
+    }
+    .entry--index .entry__tagline {
+      font-size: 0.94rem;
+      color: var(--ow-ink-muted);
+    }
+
+    .when {
+      margin: 0;
+      font-size: 0.92rem;
+      color: var(--ow-ink-muted);
+      line-height: 1.55;
+    }
+    .when b {
+      font-weight: 600;
+      color: var(--ow-ink);
+    }
+
+    .flow {
+      margin: 0.25rem 0 0;
+      padding: 0.85rem 0 0;
+      border-top: 1px solid var(--ow-line);
+      list-style: none;
+      counter-reset: st;
+    }
+    .flow li {
+      counter-increment: st;
+      display: grid;
+      grid-template-columns: 1.75rem 1fr;
+      gap: 0.55rem;
+      padding: 0.55rem 0;
+      border-bottom: 1px solid color-mix(in oklab, var(--ow-line) 55%, transparent);
+      font-size: 0.94rem;
+    }
+    .flow li:last-child { border-bottom: 0; padding-bottom: 0; }
+    .flow li::before {
+      content: counter(st, decimal-leading-zero);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--ow-ink-muted);
+      padding-top: 0.2rem;
+    }
+
+    .cites {
+      margin: 0;
+      font-size: 0.88rem;
+      color: var(--ow-ink-muted);
+      line-height: 1.5;
+    }
+    .cites em {
+      font-style: normal;
+      color: var(--ow-ink);
+      font-weight: 500;
+    }
+
+    .entry a.more {
+      margin-top: auto;
+      padding-top: 0.35rem;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--ow-structure);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      align-self: flex-start;
+    }
+    .entry a.more:hover {
+      border-bottom-color: var(--ow-structure);
+    }
+
+    /* ——— Model cite plate ——— */
+    .plate {
+      display: grid;
+      gap: 1.5rem;
+      align-items: start;
+    }
+    @media (min-width: 820px) {
+      .plate {
+        grid-template-columns: minmax(12rem, 0.95fr) auto minmax(14rem, 1.2fr);
+        gap: 1.25rem 1.5rem;
+        align-items: stretch;
+      }
+    }
+
+    .plate__col h3,
+    .plate__ref h3 {
+      margin: 0 0 0.65rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--ow-ink-muted);
+    }
+
+    .sc-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .sc-list button {
+      width: 100%;
+      text-align: left;
+      border: 1px solid var(--ow-line);
+      background: var(--ow-surface);
+      border-radius: 6px;
+      padding: 0.7rem 0.85rem;
+      font: inherit;
+      font-size: 0.9rem;
+      color: var(--ow-ink);
+      cursor: pointer;
+      transition: background 0.18s, border-color 0.18s;
+    }
+    .sc-list button:hover {
+      background: var(--ow-field);
+    }
+    .sc-list button[aria-pressed="true"] {
+      border-color: var(--ow-ink);
+      background: var(--ow-field);
+    }
+    .sc-list button .mono {
+      display: block;
+      color: var(--ow-ink-muted);
+      font-size: 0.75rem;
+      margin-bottom: 0.15rem;
+    }
+
+    .bridge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      color: var(--ow-ink-muted);
+      font-size: 0.78rem;
+      padding: 0.5rem 0;
+      align-self: center;
+    }
+    .bridge svg { display: block; }
+
+    .plate__ref {
+      background: var(--ow-field);
+      border: 1px solid var(--ow-line);
+      border-radius: var(--r);
+      padding: 1.35rem 1.4rem;
+      min-height: 10rem;
+      /* NO top brand color bar — plain plate */
+    }
+    .plate__ref .ref-title {
+      margin: 0 0 0.55rem;
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+    .plate__ref .ref-body {
+      margin: 0;
+      font-size: 0.94rem;
+      color: var(--ow-ink-muted);
+      line-height: 1.55;
+    }
+    .plate__ref .ref-from {
+      margin: 1rem 0 0;
+      padding-top: 0.75rem;
+      border-top: 1px dashed var(--ow-line);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--ow-ink-muted);
+    }
+
+    .prov {
+      margin-top: 2rem;
+      padding-top: 1.4rem;
+      border-top: 1px solid var(--ow-line);
+      display: grid;
+      gap: 1.25rem;
+    }
+    @media (min-width: 640px) {
+      .prov {
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
+      }
+      .prov > div:first-child {
+        padding-right: 1.75rem;
+        border-right: 1px solid var(--ow-line);
+      }
+      .prov > div:last-child { padding-left: 1.75rem; }
+    }
+    .prov h4 {
+      margin: 0 0 0.35rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+    .prov .off { color: var(--ow-structure); }
+    .prov .com { color: var(--ow-community); }
+    .prov p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--ow-ink-muted);
+      line-height: 1.55;
+    }
+
+    /* ——— Discipline spine: no left hover bar ——— */
+    .spine {
+      display: grid;
+      border-top: 1px solid var(--ow-line);
+      border-bottom: 1px solid var(--ow-line);
+    }
+    @media (min-width: 720px) {
+      .spine { grid-template-columns: repeat(5, 1fr); }
+    }
+    .spine a {
+      display: block;
+      padding: 1.2rem 1rem 1.3rem;
+      text-decoration: none;
+      color: inherit;
+      border-bottom: 1px solid var(--ow-line);
+      transition: background 0.18s;
+    }
+    @media (min-width: 720px) {
+      .spine a {
+        border-bottom: none;
+        border-right: 1px solid var(--ow-line);
+      }
+      .spine a:last-child { border-right: none; }
+    }
+    .spine a:hover {
+      background: color-mix(in oklab, var(--ow-mist) 10%, var(--ow-surface));
+    }
+    .spine a:hover .spine__name {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: var(--ow-structure);
+    }
+    .spine a:focus-visible {
+      outline: 2px solid var(--ow-primary);
+      outline-offset: -2px;
+    }
+    .spine__name {
+      display: block;
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 0.35rem;
+    }
+    .spine__desc {
+      display: block;
+      font-size: 0.82rem;
+      color: var(--ow-ink-muted);
+      line-height: 1.45;
+    }
+    .spine-note {
+      margin: 1.35rem 0 0;
+      font-size: 0.88rem;
+      color: var(--ow-ink-muted);
+    }
+
+    /* ——— Final ——— */
+    .final {
+      display: grid;
+      gap: 2rem;
+    }
+    @media (min-width: 800px) {
+      .final {
+        grid-template-columns: 1.1fr 0.95fr;
+        gap: 2.75rem;
+        align-items: center;
+      }
+    }
+    .final h2 {
+      font-size: clamp(1.7rem, 3vw, 2.25rem);
+    }
+    .final__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1rem;
+      align-items: center;
+      margin-top: 1.15rem;
+    }
+
+    footer {
+      padding: 2.25rem 1.5rem 2.75rem;
+      font-size: 0.84rem;
+      color: var(--ow-ink-muted);
+    }
+    footer .in {
+      max-width: var(--page);
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="banner">
+    <em>Orientation Plate</em>
+    · 二次 redo · 去掉左侧/顶部色条 · 静态场 · Spec 08 one-shot
+    · 非生产路由
+  </div>
+
+  <header class="header">
+    <div class="header__in">
+      <a class="brand" href="#">
+        <svg width="28" height="28" viewBox="0 0 40 40" aria-hidden="true">
+          <rect width="40" height="40" rx="6" fill="#F8F9FA"/>
+          <circle cx="14" cy="22" r="10" fill="#1C4BD1" fill-opacity="0.9"/>
+          <rect x="14" y="10" width="14" height="14" rx="2" fill="#2E6975" fill-opacity="0.85"/>
+          <path d="M22 30 L34 30 L34 16 Z" fill="#E69622" fill-opacity="0.9"/>
+        </svg>
+        Openwisdom
+      </a>
+      <nav class="nav" aria-label="主导航">
+        <a href="#scenarios">场景</a>
+        <a href="#model">模型</a>
+        <a href="#disciplines">学科</a>
+        <a href="#final">安装</a>
+      </nav>
+      <a class="btn btn-primary" href="#final">获取 Skills</a>
+    </div>
+  </header>
+
+  <!-- 1 HERO centered, no right diagram -->
+  <section class="hero" aria-labelledby="hero-h">
+    <div class="hero__in">
+      <p class="hero__lede" data-in style="--d:0">
+        开源社会科学 Agent Skills 库 — 分析在你的 Agent 中运行，不在本站。
+      </p>
+      <h1 id="hero-h">
+        <span class="h1-line" style="--ln:0">宏观看得清，</span>
+        <span class="h1-line" style="--ln:1">锚点找得准，</span>
+        <span class="h1-line line-accent" style="--ln:2">偏见照得见。</span>
+      </h1>
+      <p class="hero__sub" data-in style="--d:160">
+        Openwisdom 把心理学、社会学、历史学、政治学、经济学的方法打包成 Agent Skills：宏观扫描、个人锚点、元认知体检。装进你已经在用的 Agent。
+      </p>
+      <ul class="triad" data-in style="--d:240" aria-label="三个定位动作">
+        <li><span class="glyph glyph-circle" aria-hidden="true"></span> 宏观 · 整体</li>
+        <li><span class="glyph glyph-triangle" aria-hidden="true"></span> 锚点 · 个体</li>
+        <li><span class="glyph glyph-square" aria-hidden="true"></span> 元认知 · 结构</li>
+      </ul>
+
+      <div class="install" data-in style="--d:320" data-install>
+        <div class="install__tabs" role="tablist" aria-label="安装路径">
+          <button type="button" class="install__tab" role="tab" aria-selected="true" data-tab="github">GitHub</button>
+          <button type="button" class="install__tab" role="tab" aria-selected="false" data-tab="manual">手动</button>
+          <button type="button" class="install__tab" role="tab" aria-selected="false" data-tab="cli">CLI</button>
+        </div>
+        <div class="install__body">
+          <div data-panel="github">
+            <p class="install__note">当前推荐路径。skill 源文件即真相源——直接浏览、clone 或下载仓库。</p>
+            <div class="install__row">
+              <code id="c-gh">git clone https://github.com/Retr0-rgb-lab/Openwisdom.git</code>
+              <button type="button" class="install__copy" data-copy="c-gh">复制</button>
+            </div>
+          </div>
+          <div data-panel="manual" hidden>
+            <p class="install__note">clone 仓库后，把需要的 skill 目录手动复制到你的 harness skills 目录。</p>
+            <div class="install__row">
+              <code id="c-man">skills/official/scenarios/macro-scan → .claude/skills/</code>
+              <button type="button" class="install__copy" data-copy="c-man">复制</button>
+            </div>
+          </div>
+          <div data-panel="cli" hidden>
+            <p class="install__warn">CLI 尚未发布到 npm — 请优先使用 GitHub</p>
+            <p class="install__note">发包后可用：交互式选择要安装的 Agent。当前命令尚不可用。</p>
+            <div class="install__row">
+              <code id="c-cli">npx openwisdom install</code>
+              <button type="button" class="install__copy" data-copy="c-cli">复制</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <a class="link-quiet" href="#scenarios" data-in style="--d:400">浏览场景 Skills →</a>
+    </div>
+  </section>
+
+  <!-- 2 HARNESS inventory -->
+  <section class="sec sec--paper" aria-labelledby="harness-h">
+    <div class="sec__in">
+      <div class="sec__head" style="margin-inline:auto;text-align:center" data-in>
+        <h2 id="harness-h">装进你已经在用的 Agent</h2>
+        <p class="sec__lede" style="margin-inline:auto">兼容目标是安装清单，不是信任 logo 跑马灯。</p>
+      </div>
+      <p class="compat" data-in style="--d:60">
+        <strong>安装目标 harness</strong>
+        <span>Claude Code</span> ·
+        <span>Cursor</span> ·
+        <span>Codex</span> ·
+        <span>Gemini CLI</span> ·
+        <span>GitHub Copilot</span> ·
+        <span>Grok</span>
+      </p>
+      <p class="paths" data-in style="--d:120">
+        .claude/skills/ · .cursor/ · 等 harness 目录
+      </p>
+    </div>
+  </section>
+
+  <!-- 3 SCENARIOS dossier — shape + folio, no left bars -->
+  <section class="sec" id="scenarios" aria-labelledby="sc-h">
+    <div class="sec__in">
+      <div class="sec__head" data-in>
+        <p class="kicker">场景 Skills</p>
+        <h2 id="sc-h">三个场景，三种定位动作</h2>
+        <p class="sec__lede">每个场景是一条可执行的分析流程：何时使用、分步提问、输出结构、偏见检查点。</p>
+      </div>
+
+      <div class="dossier">
+        <article class="entry entry--feature" data-in="slide" style="--d:0">
+          <div class="entry__head">
+            <div class="entry__id">
+              <span class="run">macro-scan</span>
+              <h3 class="entry__title">
+                <span class="glyph glyph-circle" aria-hidden="true"></span>
+                宏观扫描
+              </h3>
+            </div>
+            <div class="entry__folio">01 / 03<br />整体视角</div>
+          </div>
+          <p class="entry__tagline">把一个局势、行业或系统拆成结构：行动者、激励、约束与趋势。</p>
+          <p class="when"><b>何时用 · </b>面对复杂局面，需要先看清全貌再做判断时。</p>
+          <ol class="flow" aria-label="分析流程">
+            <li>界定局势边界与时间尺度</li>
+            <li>识别行动者、激励与约束</li>
+            <li>输出可检验的结构与趋势图</li>
+          </ol>
+          <p class="cites"><em>引用</em> 政治学、经济学、社会学</p>
+          <a class="more" href="#">在目录中查看</a>
+        </article>
+
+        <article class="entry entry--index" data-in style="--d:90">
+          <div class="entry__head">
+            <div class="entry__id">
+              <span class="run">personal-anchor</span>
+              <h3 class="entry__title">
+                <span class="glyph glyph-triangle" aria-hidden="true"></span>
+                个人锚点
+              </h3>
+            </div>
+            <div class="entry__folio">02 / 03<br />个体视角</div>
+          </div>
+          <p class="entry__tagline">把个人处境放进历史与社会的坐标：你在哪条曲线上，脚下是哪一层。</p>
+          <p class="when"><b>何时用 · </b>做长期选择——职业、城市、方向——想知道自己身处何处时。</p>
+          <p class="cites"><em>引用</em> 历史学、社会学</p>
+          <a class="more" href="#">在目录中查看</a>
+        </article>
+
+        <article class="entry entry--index" data-in style="--d:160">
+          <div class="entry__head">
+            <div class="entry__id">
+              <span class="run">metacognition-audit</span>
+              <h3 class="entry__title">
+                <span class="glyph glyph-square" aria-hidden="true"></span>
+                元认知体检
+              </h3>
+            </div>
+            <div class="entry__folio">03 / 03<br />结构视角</div>
+          </div>
+          <p class="entry__tagline">给一次思考做体检：暴露偏见、盲点与证据缺口，而不是给结论抛光。</p>
+          <p class="when"><b>何时用 · </b>重要结论形成之后、落地之前，想检验思考质量时。</p>
+          <p class="cites"><em>引用</em> 心理学</p>
+          <a class="more" href="#">在目录中查看</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 MODEL cite plate -->
+  <section class="sec sec--paper" id="model" aria-labelledby="model-h">
+    <div class="sec__in">
+      <div class="sec__head" data-in>
+        <h2 id="model-h">场景引用理论；来源分层，不是两套产品</h2>
+        <p class="sec__lede">知识分层可组合。点左侧场景，看它会拉哪张 reference。</p>
+      </div>
+
+      <div class="plate" data-in>
+        <div class="plate__col">
+          <h3>场景 Skills</h3>
+          <div class="sc-list" role="list">
+            <button type="button" aria-pressed="true" data-sc="macro">
+              <span class="mono">macro-scan</span>
+              宏观扫描
+            </button>
+            <button type="button" aria-pressed="false" data-sc="anchor">
+              <span class="mono">personal-anchor</span>
+              个人锚点
+            </button>
+            <button type="button" aria-pressed="false" data-sc="meta">
+              <span class="mono">metacognition-audit</span>
+              元认知体检
+            </button>
+          </div>
+        </div>
+        <div class="bridge" aria-hidden="true">
+          <svg width="40" height="14" viewBox="0 0 40 14" fill="none">
+            <path d="M1 7 H30" stroke="#5A6570" stroke-width="1.25"/>
+            <path d="M27 3 L34 7 L27 11" stroke="#5A6570" stroke-width="1.25" fill="none"/>
+          </svg>
+          引用
+        </div>
+        <div class="plate__ref" id="ref-card">
+          <h3>学科 Reference</h3>
+          <p class="ref-title" id="ref-title">路径依赖</p>
+          <p class="ref-body" id="ref-body">历史选择会锁定后续空间。宏观扫描用它解释制度粘性与趋势惯性，而不是把「现在」当成空白画布。</p>
+          <p class="ref-from" id="ref-from">← macro-scan · 历史学 / 经济学</p>
+        </div>
+      </div>
+
+      <div class="prov" data-in style="--d:80">
+        <div>
+          <h4 class="off">Official</h4>
+          <p>核心维护的三个场景与五学科 reference，绑定产品叙事与更高质量门槛。</p>
+        </div>
+        <div>
+          <h4 class="com">Community</h4>
+          <p>经 GitHub PR 合入 community/，共享规范与基础审查，随社区生长。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 DISCIPLINES spine -->
+  <section class="sec" id="disciplines" aria-labelledby="disc-h">
+    <div class="sec__in">
+      <div class="sec__head" data-in>
+        <h2 id="disc-h">五大学科，图书馆的骨架</h2>
+        <p class="sec__lede">每个学科都有 official reference 卡片，支撑场景引用，而非空壳分类。</p>
+      </div>
+      <div class="spine" role="list">
+        <a href="#" role="listitem" data-in style="--d:0">
+          <span class="spine__name">心理学</span>
+          <span class="spine__desc">个体如何感知、决策与产生偏差</span>
+        </a>
+        <a href="#" role="listitem" data-in style="--d:45">
+          <span class="spine__name">社会学</span>
+          <span class="spine__desc">群体、结构与制度如何塑造行为</span>
+        </a>
+        <a href="#" role="listitem" data-in style="--d:90">
+          <span class="spine__name">历史学</span>
+          <span class="spine__desc">长时段中的路径依赖与周期</span>
+        </a>
+        <a href="#" role="listitem" data-in style="--d:135">
+          <span class="spine__name">政治学</span>
+          <span class="spine__desc">权力、治理与集体行动</span>
+        </a>
+        <a href="#" role="listitem" data-in style="--d:180">
+          <span class="spine__name">经济学</span>
+          <span class="spine__desc">激励、稀缺与均衡</span>
+        </a>
+      </div>
+      <p class="spine-note" data-in style="--d:60">
+        场景引用边：macro-scan → 政治学、经济学、社会学；personal-anchor → 历史学、社会学；metacognition-audit → 心理学。
+      </p>
+    </div>
+  </section>
+
+  <!-- 6 FINAL -->
+  <section class="sec sec--paper" id="final" aria-labelledby="final-h">
+    <div class="sec__in final">
+      <div data-in="slide">
+        <h2 id="final-h">先把宏观扫描装进你的 Agent</h2>
+        <p class="sec__lede">一条命令开始。装好后，在你的 Agent 里触发 macro-scan，跑通第一次结构化分析。</p>
+        <div class="final__actions">
+          <a class="btn btn-primary" href="https://github.com/Retr0-rgb-lab/Openwisdom" target="_blank" rel="noopener">打开 GitHub</a>
+          <a class="btn btn-ghost" href="#scenarios">回看场景</a>
+        </div>
+      </div>
+      <div class="install" data-in style="--d:100" data-install>
+        <div class="install__tabs" role="tablist">
+          <button type="button" class="install__tab" role="tab" aria-selected="true" data-tab="github">GitHub</button>
+          <button type="button" class="install__tab" role="tab" aria-selected="false" data-tab="cli">CLI</button>
+        </div>
+        <div class="install__body">
+          <div data-panel="github">
+            <p class="install__note">从仓库取 macro-scan，装进你的 harness。</p>
+            <div class="install__row">
+              <code id="c-f">git clone https://github.com/Retr0-rgb-lab/Openwisdom.git</code>
+              <button type="button" class="install__copy" data-copy="c-f">复制</button>
+            </div>
+          </div>
+          <div data-panel="cli" hidden>
+            <p class="install__warn">尚未上架 npm</p>
+            <div class="install__row">
+              <code>npx openwisdom install</code>
+              <button type="button" class="install__copy" data-copy="c-f">复制</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="in">
+      <span>Openwisdom · Orientation Plate · Overlay Atlas · MIT</span>
+      <span>docs/design/home-centered-demo.html</span>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      document.documentElement.classList.add("js");
+
+      /* Scroll / load one-shot reveals */
+      if (!reduce && "IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) {
+              e.target.classList.add("on");
+              io.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.14, rootMargin: "0px 0px -5% 0px" });
+
+        document.querySelectorAll("[data-in]").forEach(function (el) {
+          io.observe(el);
+        });
+        document.querySelectorAll(".hero [data-in]").forEach(function (el) {
+          requestAnimationFrame(function () { el.classList.add("on"); });
+        });
+      } else {
+        document.querySelectorAll("[data-in]").forEach(function (el) {
+          el.classList.add("on");
+        });
+      }
+
+      /* Install tabs */
+      document.querySelectorAll("[data-install]").forEach(function (root) {
+        var tabs = root.querySelectorAll("[data-tab]");
+        tabs.forEach(function (tab) {
+          tab.addEventListener("click", function () {
+            var name = tab.getAttribute("data-tab");
+            tabs.forEach(function (t) {
+              t.setAttribute("aria-selected", t === tab ? "true" : "false");
+            });
+            root.querySelectorAll("[data-panel]").forEach(function (p) {
+              p.hidden = p.getAttribute("data-panel") !== name;
+            });
+          });
+        });
+      });
+
+      /* Copy ~180ms feedback */
+      document.querySelectorAll("[data-copy]").forEach(function (btn) {
+        btn.addEventListener("click", async function () {
+          var el = document.getElementById(btn.getAttribute("data-copy"));
+          var text = el ? el.textContent.trim() : "";
+          try {
+            await navigator.clipboard.writeText(text);
+            btn.textContent = "已复制";
+            btn.classList.add("ok");
+            setTimeout(function () {
+              btn.textContent = "复制";
+              btn.classList.remove("ok");
+            }, 1500);
+          } catch (err) {
+            btn.textContent = "失败";
+          }
+        });
+      });
+
+      /* Cite interactivity */
+      var refs = {
+        macro: {
+          title: "路径依赖",
+          body: "历史选择会锁定后续空间。宏观扫描用它解释制度粘性与趋势惯性，而不是把「现在」当成空白画布。",
+          from: "← macro-scan · 历史学 / 经济学"
+        },
+        anchor: {
+          title: "社会分层与历史坐标",
+          body: "个人锚点把「我」放回可叙述的历史层与群体位置——不是鸡汤定位，是坐标。",
+          from: "← personal-anchor · 历史学 / 社会学"
+        },
+        meta: {
+          title: "确认偏误",
+          body: "元认知体检点名你如何只收集支持结论的证据，并要求补齐反证与缺口后再落地。",
+          from: "← metacognition-audit · 心理学"
+        }
+      };
+      document.querySelectorAll("[data-sc]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var key = btn.getAttribute("data-sc");
+          document.querySelectorAll("[data-sc]").forEach(function (b) {
+            b.setAttribute("aria-pressed", b === btn ? "true" : "false");
+          });
+          var r = refs[key];
+          if (!r) return;
+          document.getElementById("ref-title").textContent = r.title;
+          document.getElementById("ref-body").textContent = r.body;
+          document.getElementById("ref-from").textContent = r.from;
+          var card = document.getElementById("ref-card");
+          if (card.animate && !reduce) {
+            card.animate(
+              [
+                { transform: "translateY(5px)", opacity: 0.55 },
+                { transform: "none", opacity: 1 }
+              ],
+              { duration: 280, easing: "cubic-bezier(0.16, 1, 0.3, 1)" }
+            );
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

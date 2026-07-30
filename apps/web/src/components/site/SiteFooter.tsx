@@ -11,7 +11,7 @@ export function SiteFooter() {
   const t = useTranslations("shell");
 
   return (
-    <footer className="border-t border-line bg-surface">
+    <footer className="border-t border-line bg-surface/95">
       <div className="mx-auto max-w-5xl px-6 py-12">
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-5">
           <FooterColumn title={t("footer.product.title")}>

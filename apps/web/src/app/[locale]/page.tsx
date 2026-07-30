@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { use } from "react";
-import { ContributeTeaser } from "@/components/home/ContributeTeaser";
 import { DisciplineGrid } from "@/components/home/DisciplineGrid";
 import { FinalCta } from "@/components/home/FinalCta";
 import { HarnessRow } from "@/components/home/HarnessRow";
 import { Hero } from "@/components/home/Hero";
-import { InstallPaths } from "@/components/home/InstallPaths";
-import { LayerDiagram } from "@/components/home/LayerDiagram";
-import { Provenance } from "@/components/home/Provenance";
+import { Model } from "@/components/home/Model";
 import { ScenarioCards } from "@/components/home/ScenarioCards";
 
 export async function generateMetadata({
@@ -28,7 +25,9 @@ export async function generateMetadata({
   };
 }
 
-// Home composition (specs/03 §4.1): nine modules in narrative order.
+// Home composition (specs/10): ≤6 Persuade beats.
+// InstallPaths / ContributeTeaser / full Layer+Provenance removed from Home
+// (components kept for subpages).
 export default function HomePage({
   params,
 }: {
@@ -39,23 +38,17 @@ export default function HomePage({
 
   return (
     <>
-      {/* ① Hero: three pillars + install object + orientation mnemonic */}
+      {/* 1 Hero: 60s + install object */}
       <Hero />
-      {/* ② Harness trust band */}
+      {/* 2 Harness trust band */}
       <HarnessRow />
-      {/* ③ Three scenario skills (asymmetric) */}
+      {/* 3 Three scenario skills (asymmetric) */}
       <ScenarioCards />
-      {/* ④ Layered model: scenario → reference */}
-      <LayerDiagram />
-      {/* ⑤ Five discipline entries */}
+      {/* 4 Model: Layer + Provenance compact merge */}
+      <Model />
+      {/* 5 Disciplines (short keep) */}
       <DisciplineGrid />
-      {/* ⑥ Install paths */}
-      <InstallPaths />
-      {/* ⑦ Official vs community */}
-      <Provenance />
-      {/* ⑧ Contribute teaser */}
-      <ContributeTeaser />
-      {/* ⑨ Bottom CTA */}
+      {/* 6 Final CTA */}
       <FinalCta />
     </>
   );

@@ -1,14 +1,13 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { cn } from "@/lib/utils";
 
-// Adapted from React Bits "Blur Text" (reactbits.dev, MIT + Commons Clause).
-// Direction-B adaptation: plays exactly once on mount (specs/02 §6 — brand
-// settle is one-shot, never looping). When `text` changes later (locale
-// switch), new glyphs appear instantly — no re-run of the hero animation
-// (specs/04 §6: language switch crossfades copy, never replays heavy motion).
+/**
+ * BlurText H1 entrance (specs/04 §5–§6) — one-shot settle on mount.
+ * Strengthened vs prior (y:12 blur:10 was easy to miss under fast LCP).
+ */
 export function BlurText({
   text,
   className,
@@ -19,43 +18,52 @@ export function BlurText({
   delay?: number;
 }) {
   const reduceMotion = useReducedMotion();
-  const [played, setPlayed] = useState(false);
-
-  // Word-split for spaced scripts (en), glyph-split for CJK (zh).
   const units = useMemo(
     () => (/\s/.test(text) ? text.split(/(\s+)/) : Array.from(text)),
     [text],
   );
 
-  const initial = reduceMotion || played ? (false as const) : "hidden";
+  if (reduceMotion) {
+    return <span className={cn("inline-block", className)}>{text}</span>;
+  }
 
   return (
     <motion.span
       className={cn("inline-block", className)}
-      initial={initial}
+      initial="hidden"
       animate="visible"
       variants={{
-        visible: { transition: { staggerChildren: 0.035, delayChildren: delay } },
-      }}
-      onAnimationComplete={() => {
-        setPlayed(true);
+        visible: {
+          transition: {
+            staggerChildren: 0.04,
+            delayChildren: delay,
+          },
+        },
       }}
     >
       {units.map((unit, i) => (
         <motion.span
           key={`${i}-${unit}`}
-          className="inline-block will-change-transform"
+          className="inline-block will-change-[transform,filter,opacity]"
           variants={{
-            hidden: { opacity: 0, y: 12, filter: "blur(10px)" },
+            // Floor opacity > 0 for C7; blur for focal H1 only (Spec 08 animate)
+            hidden: {
+              opacity: 0.18,
+              y: 14,
+              filter: "blur(8px)",
+            },
             visible: {
               opacity: 1,
               y: 0,
               filter: "blur(0px)",
-              transition: { duration: 0.5, ease: "easeOut" },
+              transition: {
+                duration: 0.6,
+                ease: [0.16, 1, 0.3, 1],
+              },
             },
           }}
         >
-          {unit === " " ? " " : unit}
+          {unit === " " ? "\u00A0" : unit}
         </motion.span>
       ))}
     </motion.span>

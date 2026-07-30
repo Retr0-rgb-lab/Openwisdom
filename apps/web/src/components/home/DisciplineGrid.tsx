@@ -1,42 +1,57 @@
-import { useTranslations } from "next-intl";
-import { Section, SectionHeading } from "@/components/home/Section";
-import { DISCIPLINE_COLORS, DISCIPLINE_ORDER } from "@/components/home/disciplines";
+"use client";
 
-// Five-discipline entry chips (specs/03 §4.1 ⑤): chip color as border or
-// ~8–10% fill only — never full-card rainbow (specs/02 §5).
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
+import { Section, SectionHeading } from "@/components/home/Section";
+import { Stagger, StaggerItem } from "@/components/bits/Stagger";
+import {
+  DISCIPLINE_COLORS,
+  DISCIPLINE_ORDER,
+} from "@/components/home/disciplines";
+
+/**
+ * layout: spine · colorize: name-side color tick · animate: Stagger only
+ */
 export function DisciplineGrid() {
   const t = useTranslations("home");
 
   return (
-    <Section>
+    <Section id="disciplines" reveal={false}>
       <SectionHeading
-        eyebrow={t("disciplines.eyebrow")}
         title={t("disciplines.title")}
         subtitle={t("disciplines.subtitle")}
       />
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      <Stagger
+        className="grid border-y border-line bg-surface/70 sm:grid-cols-2 lg:grid-cols-5"
+        stagger={0.05}
+      >
         {DISCIPLINE_ORDER.map((key) => (
-          <div
-            key={key}
-            className="flex flex-col gap-2 rounded-lg border p-4"
-            style={{
-              borderColor: `color-mix(in oklab, ${DISCIPLINE_COLORS[key]} 40%, transparent)`,
-              backgroundColor: `color-mix(in oklab, ${DISCIPLINE_COLORS[key]} 8%, transparent)`,
-            }}
-          >
-            <p className="flex items-center gap-2 font-medium text-ink">
-              <span
-                className="size-2 rounded-full"
-                style={{ backgroundColor: DISCIPLINE_COLORS[key] }}
-              />
-              {t(`disciplines.${key}.name`)}
-            </p>
-            <p className="text-meta leading-relaxed text-ink-muted">
-              {t(`disciplines.${key}.desc`)}
-            </p>
-          </div>
+          <StaggerItem key={key} className="h-full">
+            <Link
+              href="/skills"
+              className="group flex h-full flex-col gap-2.5 border-b border-line px-4 py-6 transition-colors duration-200 last:border-b-0 hover:bg-mist/12 sm:border-b lg:border-b-0 lg:border-r lg:py-7 lg:last:border-r-0"
+            >
+              <span className="flex items-center gap-2 font-medium tracking-[-0.01em] text-ink">
+                {/* 2px tick under name — colorize without left bar */}
+                <span
+                  className="mt-px size-1.5 shrink-0 rounded-full"
+                  style={{ backgroundColor: DISCIPLINE_COLORS[key] }}
+                  aria-hidden
+                />
+                <span className="underline-offset-4 group-hover:underline group-hover:decoration-structure">
+                  {t(`disciplines.${key}.name`)}
+                </span>
+              </span>
+              <span className="pl-3.5 text-[0.8125rem] leading-relaxed text-ink-muted">
+                {t(`disciplines.${key}.desc`)}
+              </span>
+            </Link>
+          </StaggerItem>
         ))}
-      </div>
+      </Stagger>
+      <p className="mt-6 max-w-3xl text-sm leading-relaxed text-ink-muted">
+        {t("disciplines.edgeNote")}
+      </p>
     </Section>
   );
 }

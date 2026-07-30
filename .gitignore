@@ -21,3 +21,9 @@ next-env.d.ts
 *.pem
 coverage/
 .turbo/
+
+# local agent / impeccable session
+.grok/
+.impeccable/
+apps/web/_layout_backup.txt
+

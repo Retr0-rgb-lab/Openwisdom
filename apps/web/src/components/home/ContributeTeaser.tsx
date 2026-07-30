@@ -19,7 +19,7 @@ export function ContributeTeaser() {
         <ol className="flex flex-col gap-4 md:flex-row md:items-center md:gap-0">
           {steps.map((step, i) => (
             <li key={step} className="flex flex-1 items-center gap-3">
-              <span className="flex size-8 shrink-0 items-center justify-center rounded-full border border-datum text-sm font-semibold text-datum">
+              <span className="flex size-8 shrink-0 items-center justify-center rounded-full border border-primary text-sm font-semibold text-primary">
                 {i + 1}
               </span>
               <span className="text-sm font-medium text-ink">{step}</span>
@@ -41,7 +41,7 @@ export function ContributeTeaser() {
             href={GITHUB_URL}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-1 text-sm font-medium text-insight underline-offset-4 hover:underline"
+            className="inline-flex items-center gap-1 text-sm font-medium text-structure underline-offset-4 hover:underline"
           >
             GitHub
             <ArrowUpRight className="size-4" />

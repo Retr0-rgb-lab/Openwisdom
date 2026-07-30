@@ -33,7 +33,8 @@ export function LocaleSwitcher() {
         render={
           <Button
             variant="ghost"
-            size="sm"
+            size="default"
+            className="h-10 gap-1.5 px-2.5"
             aria-label={t("localeSwitcher.label")}
           />
         }

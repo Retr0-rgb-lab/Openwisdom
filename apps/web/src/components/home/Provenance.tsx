@@ -4,17 +4,16 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Section, SectionHeading } from "@/components/home/Section";
 
-// Official vs community (specs/03 §4.1 ⑦): provenance layers, restrained
-// badges — insight green for official, warm brown for community (DESIGN.md),
-// never playful rainbow badges (specs/02 §7).
+// Official vs community (specs/03 §4.1 ⑦ · 07 §6): provenance layers —
+// structure for official, community/mist for community; never rainbow badges.
 export function Provenance() {
   const t = useTranslations("home.provenance");
 
   const panels = [
     {
       key: "official" as const,
-      badgeClass: "border-insight/50 text-insight",
-      accentClass: "border-t-insight",
+      badgeClass: "border-structure/50 text-structure",
+      accentClass: "border-t-structure",
     },
     {
       key: "community" as const,
@@ -48,7 +47,7 @@ export function Provenance() {
                 <ul className="flex flex-col gap-3">
                   {points.map((point) => (
                     <li key={point} className="flex items-start gap-2.5">
-                      <Check className="mt-0.5 size-4 shrink-0 text-insight" />
+                      <Check className="mt-0.5 size-4 shrink-0 text-structure" />
                       <span className="text-sm leading-relaxed text-ink-muted">
                         {point}
                       </span>

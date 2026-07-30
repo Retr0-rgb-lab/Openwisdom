@@ -1,24 +1,21 @@
 "use client";
 
-import { ArrowUpRight, Check, Copy } from "lucide-react";
+import { Check, Copy } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { GITHUB_URL } from "@/components/site/constants";
+import { ClickSpark } from "@/components/bits/ClickSpark";
 import { cn } from "@/lib/utils";
 
 const CLI_COMMAND = "npx openwisdom install";
-const CLONE_COMMAND = `git clone ${GITHUB_URL}.git`;
 
 async function copyText(text: string): Promise<boolean> {
   try {
     await navigator.clipboard.writeText(text);
     return true;
   } catch {
-    // Fallback for non-secure contexts
     const ta = document.createElement("textarea");
     ta.value = text;
     ta.style.position = "fixed";
@@ -31,79 +28,88 @@ async function copyText(text: string): Promise<boolean> {
   }
 }
 
-function CodeRow({ command, copiedLabel }: { command: string; copiedLabel: string }) {
+/**
+ * CLI install object.
+ * `emphasis` — bolder/colorize: primary ring + stronger code well (Hero peak).
+ */
+export function InstallCommand({
+  className,
+  emphasis = false,
+}: {
+  className?: string;
+  emphasis?: boolean;
+}) {
+  const t = useTranslations("home.install");
   const [copied, setCopied] = useState(false);
 
   return (
-    <div className="flex items-center gap-2 rounded-lg border border-line bg-field px-4 py-3">
-      <code className="flex-1 overflow-x-auto font-mono text-sm whitespace-nowrap text-ink">
-        {command}
-      </code>
-      <Button
-        variant="ghost"
-        size="sm"
-        className="shrink-0"
-        onClick={async () => {
-          const ok = await copyText(command);
-          if (ok) {
-            setCopied(true);
-            toast.success(copiedLabel);
-            window.setTimeout(() => setCopied(false), 2000);
-          }
-        }}
-      >
-        {copied ? (
-          <Check className="size-4 text-insight" />
-        ) : (
-          <Copy className="size-4" />
+    <Card
+      className={cn(
+        "border-line bg-surface shadow-[0_2px_8px_-2px_rgb(15_23_36/0.08)]",
+        emphasis && "ring-1 ring-primary/25 border-primary/30",
+        className,
+      )}
+    >
+      <CardContent
+        className={cn(
+          "flex flex-col gap-3",
+          emphasis ? "p-5 md:p-6" : "p-4 md:p-5",
         )}
-        <span className="sr-only">{copiedLabel}</span>
-      </Button>
-      {/* Screen-reader announcement of copy success */}
-      <span aria-live="polite" className="sr-only">
-        {copied ? copiedLabel : ""}
-      </span>
-    </div>
-  );
-}
-
-// Install object (specs/03 §4.1, specs/04 §3): the primary "object" on Home.
-// CLI first; GitHub and manual as secondary paths. Copy feedback via Sonner —
-// no confetti, no fake terminal typing.
-export function InstallCommand({ className }: { className?: string }) {
-  const t = useTranslations("home.install");
-
-  return (
-    <Card className={cn("border-line shadow-none", className)}>
-      <CardContent className="p-4 md:p-5">
-        <Tabs defaultValue="cli">
-          <TabsList className="w-full sm:w-auto">
-            <TabsTrigger value="cli">{t("tabs.cli")}</TabsTrigger>
-            <TabsTrigger value="github">{t("tabs.github")}</TabsTrigger>
-            <TabsTrigger value="manual">{t("tabs.manual")}</TabsTrigger>
-          </TabsList>
-          <TabsContent value="cli" className="mt-4 flex flex-col gap-3">
-            <CodeRow command={CLI_COMMAND} copiedLabel={t("copied")} />
-            <p className="text-sm leading-relaxed text-ink-muted">{t("cliNote")}</p>
-          </TabsContent>
-          <TabsContent value="github" className="mt-4 flex flex-col gap-3">
-            <p className="text-sm leading-relaxed text-ink-muted">{t("githubNote")}</p>
-            <div>
-              <Button
-                variant="outline"
-                className="border-line"
-                render={<a href={GITHUB_URL} target="_blank" rel="noreferrer" />}
-              >
-                {t("githubCta")}
-                <ArrowUpRight className="size-4" />
-              </Button>
-            </div>
-          </TabsContent>
-          <TabsContent value="manual" className="mt-4 flex flex-col gap-3">
-            <p className="text-sm leading-relaxed text-ink-muted">{t("manualNote")}</p>
-            <CodeRow command={CLONE_COMMAND} copiedLabel={t("copied")} />
-          </TabsContent>
-        </Tabs>
+      >
+        <p
+          role="status"
+          className="border-l border-line pl-3 font-mono text-xs leading-relaxed text-ink-muted"
+        >
+          {t("cliStatus")}
+        </p>
+        <div
+          className={cn(
+            "flex items-center gap-2 rounded-lg border px-4 py-3.5",
+            emphasis
+              ? "border-primary/20 bg-primary/[0.04]"
+              : "border-line bg-field/90",
+          )}
+        >
+          <code
+            className={cn(
+              "flex-1 overflow-x-auto font-mono whitespace-nowrap text-ink",
+              emphasis ? "text-[0.9375rem] font-medium" : "text-sm",
+            )}
+          >
+            {CLI_COMMAND}
+          </code>
+          <ClickSpark active={copied}>
+            <Button
+              variant={emphasis ? "default" : "ghost"}
+              size="sm"
+              className={cn(
+                "shrink-0 transition-colors duration-200",
+                emphasis && "bg-primary text-primary-foreground hover:bg-primary-pressed",
+              )}
+              onClick={async () => {
+                const ok = await copyText(CLI_COMMAND);
+                if (ok) {
+                  setCopied(true);
+                  toast.success(t("copied"));
+                  window.setTimeout(() => setCopied(false), 2000);
+                } else {
+                  toast.error(t("copyFailed"));
+                }
+              }}
+            >
+              {copied ? (
+                <Check className="size-4" />
+              ) : (
+                <Copy className="size-4" />
+              )}
+              <span className="sr-only">{t("copied")}</span>
+            </Button>
+          </ClickSpark>
+          <span aria-live="polite" className="sr-only">
+            {copied ? t("copied") : ""}
+          </span>
+        </div>
+        <p className="text-sm leading-relaxed text-ink-muted">{t("cliNote")}</p>
       </CardContent>
     </Card>
   );

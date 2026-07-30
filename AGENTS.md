@@ -40,7 +40,7 @@ License: **MIT**
 3. **Heat is a side channel** — Install telemetry (web download + CLI install success) must not write into `SKILL.md`. Fail open: install works if stats API is down. Copy-command is funnel-only, not primary popularity.
 4. **Layered content** — **Scenario skills** (workflows) cite **discipline references** (theory cards). Official vs community is provenance, not a second product.
 5. **UI zh/en; skill body language = contributor** — Don’t force bilingual skill bodies.
-6. **Design world = Direction B (Atlas Coordinate)** — Cool field `#EEF1F2`, copper datum `#B87333`, no purple AI-SaaS skin, no fake testimonials/metrics. See `DESIGN.md` before visual work.
+6. **Design world = Overlay Atlas (logo-aligned)** — Field `#F8F9FA`, primary `#1C4BD1`, structure `#2E6975`, signal `#E69622`; logo at `apps/web/public/brand/logo.svg`. Specs **07–11** + `DESIGN.md` win over old copper Direction B. No purple AI-SaaS skin, no fake testimonials/metrics.
 7. **Don’t fabricate** commercial claims, customers, install counts, or skill text that isn’t in repo.
 
 ### Truth sources (open only when needed)
@@ -48,7 +48,7 @@ License: **MIT**
 | Need | File |
 |------|------|
 | Product truth (users, purpose, non-goals) | [`PRODUCT.md`](./PRODUCT.md) |
-| Visual system tokens & bans | [`DESIGN.md`](./DESIGN.md) |
+| Visual system tokens & bans | [`DESIGN.md`](./DESIGN.md) (Overlay Atlas; logo tokens) · authority specs [`07`](./docs/specs/07-品牌与Logo对齐视觉系统.md)–[`11`](./docs/specs/11-视觉整改总控-SPE.md) |
 | Product decisions log | [`docs/知识库/02-产品决策记录.md`](./docs/知识库/02-产品决策记录.md) |
 | v1 scope checklist | [`docs/知识库/03-v1交付范围.md`](./docs/知识库/03-v1交付范围.md) |
 | Specs index | [`docs/specs/00-索引.md`](./docs/specs/00-索引.md) |
@@ -68,7 +68,7 @@ Pick the task row; load **only** the linked L2 material.
 |------|-----------|--------|
 | **Product / scope / “should we build X?”** | `PRODUCT.md` + `docs/知识库/02` + `03` | Prefer decisions already recorded |
 | **Architecture / monorepo / CLI package layout** | `docs/specs/01-架构方案.md` | Index-centric monorepo (Option A) |
-| **UI / visual / landing polish** | `DESIGN.md` + `docs/specs/02` + `04` + **active plan** `docs/plans/2026-07-30-home-spec-alignment.md` | **Specs win over current hand-rolled UI**; shadcn + React Bits per 04 |
+| **UI / visual / landing polish** | **`docs/specs/07`–`11`（权威）** + `docs/plans/2026-07-30-visual-rebrand/` | Logo-aligned tokens; 08 motion; 09 P0/P1; 10 Home 6-beat. Old copper Direction B superseded for primary brand. |
 | **New page / IA / nav** | `docs/specs/03-页面信息架构.md` | Home = Persuade; Skills = Operate+Read; Docs = Read |
 | **Home page only** | `apps/web` home components + `PRODUCT`/`DESIGN` | Already implemented (see L2 Web) |
 | **Skills catalog / detail / install pages** | `docs/specs/03` then implement under `apps/web` | Routes linked from Home may 404 until built |
@@ -88,7 +88,7 @@ Pick the task row; load **only** the linked L2 material.
 Openwisdom/
 ├── AGENTS.md                 ← you are here
 ├── PRODUCT.md                ← product truth (Impeccable)
-├── DESIGN.md                 ← visual system Direction B
+├── DESIGN.md                 ← visual system Overlay Atlas (logo-aligned)
 ├── apps/web/                 ← Next.js 16 site (Home live)
 ├── docs/知识库/               ← decisions & vision
 ├── docs/specs/               ← architecture / IA / components / telemetry
@@ -97,7 +97,7 @@ Openwisdom/
 └── package.json              ← PLANNED monorepo root (optional today)
 ```
 
-**Implemented today:** `apps/web` Home at `/zh` and `/en` (nine modules), site shell, placeholder routes for `/skills` `/install` `/docs` `/contribute` `/about`.  
+**Implemented today:** `apps/web` Home at `/zh` and `/en` (**6-beat** Persuade per Spec 10), Overlay Atlas tokens, logo chrome, honest placeholders for `/skills` `/install` `/docs` `/contribute` `/about`.  
 **Not implemented yet:** Real Skills catalog/detail pages, docs content, CLI package, `skills/` tree, stats API.
 
 ### Web (`apps/web`)
@@ -108,10 +108,11 @@ Openwisdom/
 | Locales | next-intl v4: `/zh`, `/en`; middleware prefixes missing locale; default `zh` |
 | i18n wiring | `src/i18n/{routing,request,navigation}.ts`; internal links via `@/i18n/navigation` only |
 | Copy | `src/messages/{zh,en}/shell.json` (chrome) + `{zh,en}/home.json` (home), namespaced `shell`/`home` |
-| Design tokens | `src/app/globals.css` (`--ow-*` + shadcn aliases), fonts in `src/lib/fonts.ts` |
-| Home | `src/components/home/*` (nine modules) + `src/app/[locale]/page.tsx` |
+| Design tokens | `src/app/globals.css` (logo-aligned `--ow-*` + shadcn; Spec 07), fonts in `src/lib/fonts.ts` |
+| Logo | `public/brand/logo.svg` |
+| Home | `src/components/home/*` (6 beats) + `src/app/[locale]/page.tsx` |
 | Shell | `src/components/site/*`, `src/components/ui/*` (shadcn) |
-| Bits (Tier A) | `src/components/bits/*` — DotField, BlurText, Noise, LogoLoop (all restrained) |
+| Bits (MUST/MAY) | `src/components/bits/*` — DotField, BlurText, Noise, LogoLoop, Reveal, SpotlightCard (Spec 08) |
 | Install snippet | `src/components/install/InstallCommand.tsx` (Tabs CLI \| GitHub \| Manual + Sonner) |
 
 **Commands:**
@@ -123,7 +124,7 @@ pnpm build
 pnpm lint
 ```
 
-**When adding a page:** follow `docs/specs/03` route table; reuse `SiteHeader` / `SiteFooter`; add strings to **both** message files; keep copper/field tokens—no new purple gradient brand.
+**When adding a page:** follow `docs/specs/03` route table; reuse `SiteHeader` / `SiteFooter`; add strings to **both** message files; keep **logo-aligned** Overlay Atlas tokens (`primary` / `structure` / `signal`)—no copper primary, no purple gradient brand.
 
 **Secondary routes** (`/skills`, `/install`, `/docs`, `/contribute`) may be linked from Home but empty—prefer implementing stubs over leaving broken UX if you touch nav.
 
@@ -144,10 +145,11 @@ pnpm lint
 
 ### Design / Impeccable
 
-- World: **Instrument of Orientation / Atlas Coordinate** (`DESIGN.md`).
-- Home mode: **Persuade** (+ Read). Catalog: **Operate** + Read.
-- Motion: still content; micro-feedback on copy/nav; respect `prefers-reduced-motion`.
-- Ban list summary: purple/cyan AI glow, glassmorphism, nested cards, fake social proof, Inter-as-brand face.
+- World: **Overlay Atlas** — logo-aligned tokens (`DESIGN.md`; Specs **07–11** authority for visual work).
+- Logo asset: `apps/web/public/brand/logo.svg`.
+- Home mode: **Persuade** (+ Read), ≤6 beats. Catalog: **Operate** + Read.
+- Motion: Spec **08** constitution (still content default; one-shot entrances; tool feedback; RM off); Bits MUST/MAY only.
+- Ban list summary: purple/cyan AI glow, glassmorphism, nested cards, fake social proof, Inter-as-brand face, copper as primary CTA.
 
 ---
 
@@ -171,7 +173,7 @@ Only if you must audit history or research trail:
 3. **Confirm before destructive git / force-push / remote publish.**
 4. **Label synthetic data** if you mock catalog stats or skill bodies in UI demos.
 5. **After substantial UI** — keep zh/en strings in sync; run `pnpm build` in `apps/web`.
-6. **If PRODUCT and a draft spec conflict** — PRODUCT + decision log (`02`) win for product scope; DESIGN wins for visual tokens unless the user reopens direction.
+6. **If PRODUCT and a draft spec conflict** — PRODUCT + decision log (`02`) win for product scope; Specs **07–11** + `DESIGN.md` win for visual tokens (logo Overlay Atlas over old copper Direction B) unless the user reopens direction.
 
 ---
 
@@ -181,11 +183,11 @@ Only if you must audit history or research trail:
 |--------------|------------|
 | Understand the product in 2 minutes | L0 + `PRODUCT.md` |
 | Ship the next website page | L1 UI/IA rows + `apps/web` |
-| Design / rebrand | Stop → read `DESIGN.md` first |
+| Design / rebrand | Stop → `DESIGN.md` + Specs **07–11** first |
 | Build CLI | `docs/specs/01` + hard rule #1 |
 | Add a skill | Wait for / create `skills/` per § Skills + schema in `01` |
 | Change install heat | `docs/specs/06` only |
 
 ---
 
-*Last aligned with repo state: Home live under `apps/web`; monorepo packages and skills tree still planned. Update this map when major surfaces land.*
+*Last aligned with repo state: Home 6-beat + Overlay Atlas visual rebrand (Waves 1–3) under `apps/web`; monorepo packages and skills tree still planned. Update this map when major surfaces land.*

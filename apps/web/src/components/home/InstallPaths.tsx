@@ -14,7 +14,7 @@ export function InstallPaths() {
   const cards = [
     {
       key: "cli" as const,
-      icon: <Terminal className="size-5 text-datum" />,
+      icon: <Terminal className="size-5 text-primary" />,
       primary: true,
       body: (
         <code className="block rounded-lg border border-line bg-field px-3 py-2 font-mono text-sm text-ink">
@@ -24,7 +24,7 @@ export function InstallPaths() {
       cta: (
         <Link
           href="/install"
-          className="text-sm font-medium text-insight underline-offset-4 hover:underline"
+          className="text-sm font-medium text-structure underline-offset-4 hover:underline"
         >
           {t("cli.cta")} →
         </Link>
@@ -40,7 +40,7 @@ export function InstallPaths() {
           href={GITHUB_URL}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-1 text-sm font-medium text-insight underline-offset-4 hover:underline"
+          className="inline-flex items-center gap-1 text-sm font-medium text-structure underline-offset-4 hover:underline"
         >
           {t("github.cta")}
           <ArrowUpRight className="size-4" />
@@ -55,7 +55,7 @@ export function InstallPaths() {
       cta: (
         <Link
           href="/install"
-          className="text-sm font-medium text-insight underline-offset-4 hover:underline"
+          className="text-sm font-medium text-structure underline-offset-4 hover:underline"
         >
           {t("manual.cta")} →
         </Link>
@@ -77,7 +77,7 @@ export function InstallPaths() {
               <div className="flex items-center justify-between">
                 {icon}
                 {primary ? (
-                  <Badge className="bg-datum text-surface hover:bg-datum">
+                  <Badge className="bg-primary text-primary-foreground hover:bg-primary">
                     {t("primary")}
                   </Badge>
                 ) : null}

@@ -1,6 +1,6 @@
 {
   "name": "openwisdom",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Openwisdom CLI — install social-science agent skills into Claude Code, Cursor, and other harnesses (package manager only, no LLM)",
   "type": "module",
   "bin": {

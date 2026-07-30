@@ -1,6 +1,6 @@
 {
   "name": "openwisdom-mcp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Openwisdom MCP server — stdio skill package manager for coding agents (search/list/get/install/update, no LLM)",
   "type": "module",
   "bin": {

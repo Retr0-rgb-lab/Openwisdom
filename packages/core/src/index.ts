@@ -61,3 +61,9 @@ export {
   type InstallSkillResult,
   type InstallResult,
 } from "./install.js";
+
+export {
+  getSkillDetail,
+  type GetSkillDetailOpts,
+  type SkillDetail,
+} from "./get-skill.js";

@@ -22,12 +22,17 @@
     "surfacesLabel": "安装方式",
     "tabCli": "CLI",
     "tabMcp": "MCP",
-    "cliStatus": "CLI 尚未上架 npm，可先复制命令。",
-    "cliNote": "发布后可交互式选择要装入的 Agent（项目级或全局）。",
-    "mcpStatus": "MCP 尚未上架 npm，可先复制命令。",
-    "mcpNote": "Agent 会话内包管理：search / list / install / update。不调用模型。",
+    "commandLabel": "命令",
+    "promptLabel": "给 AI 的安装 Prompt",
+    "copyPrompt": "复制 Prompt",
+    "promptCopiedShort": "已复制",
+    "promptCopied": "已复制 Prompt，粘贴给你的 AI 即可",
+    "cliPrompt": "请帮我安装 Openwisdom CLI（社会科学 Agent Skills 包管理器，只装 skill、不调用模型）。在终端执行：npx openwisdom install。交互式选择要写入的 Agent（Claude Code / Cursor / Codex 等，项目级或全局）；脚本可用 -y --providers=claude --scope=project。装完后可用 npx openwisdom search / list 验证。",
+    "mcpPrompt": "请帮我把 Openwisdom 配置为 MCP 包管理器（stdio，只做 search/list/install/update，不调用模型）。优先运行：claude mcp add --transport stdio openwisdom -- npx -y openwisdom-mcp；或在 Cursor/Grok 等客户端加入 command=npx、args=[\"-y\",\"openwisdom-mcp\"]。配置后调用 openwisdom_detect_providers，再 openwisdom_install 安装 skill。",
+    "cliNote": "复制 Prompt → 粘贴进你的 Agent，由它完成 CLI 安装与写入路径。",
+    "mcpNote": "复制 Prompt → 粘贴进你的 Agent，由它完成 MCP 配置与工具探测。",
     "copied": "已复制到剪贴板",
-    "copyFailed": "复制失败，请手动选择命令复制。"
+    "copyFailed": "复制失败，请手动选择复制。"
   },
   "harness": {
     "label": "装进你已经在用的 Agent",

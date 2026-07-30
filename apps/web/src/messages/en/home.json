@@ -22,12 +22,17 @@
     "surfacesLabel": "Install surface",
     "tabCli": "CLI",
     "tabMcp": "MCP",
-    "cliStatus": "CLI is not on npm yet. You can copy the command for later.",
-    "cliNote": "After publish, pick agents interactively (project or global).",
-    "mcpStatus": "MCP is not on npm yet. You can copy the command for later.",
-    "mcpNote": "In-session package manager: search / list / install / update. No model calls.",
+    "commandLabel": "Command",
+    "promptLabel": "AI install prompt",
+    "copyPrompt": "Copy prompt",
+    "promptCopiedShort": "Copied",
+    "promptCopied": "Prompt copied — paste it into your agent",
+    "cliPrompt": "Install the Openwisdom CLI for me (social-science agent skills package manager — installs skills only, never calls models). Run in a terminal: npx openwisdom install. Interactively pick target agents (Claude Code / Cursor / Codex, project or global); for scripts use -y --providers=claude --scope=project. Verify with npx openwisdom search / list.",
+    "mcpPrompt": "Configure Openwisdom as an MCP package manager for me (stdio tools: search / list / install / update only — no model calls). Prefer: claude mcp add --transport stdio openwisdom -- npx -y openwisdom-mcp; or in Cursor/Grok add command=npx with args [\"-y\",\"openwisdom-mcp\"]. Then call openwisdom_detect_providers and openwisdom_install to place skills.",
+    "cliNote": "Copy the prompt → paste into your agent so it can install the CLI and write harness paths.",
+    "mcpNote": "Copy the prompt → paste into your agent so it can wire MCP and probe tools.",
     "copied": "Copied to clipboard",
-    "copyFailed": "Copy failed. Select and copy the command manually."
+    "copyFailed": "Copy failed. Select and copy manually."
   },
   "harness": {
     "label": "Into the agent you already use",

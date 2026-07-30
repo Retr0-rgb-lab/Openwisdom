@@ -49,9 +49,19 @@ Official skills:
 
 ### 2. Install into your agent
 
-**Status:** CLI and MCP live in this monorepo. **Public npm publish is not done yet.** Prefer monorepo install or manual copy until packages are on the registry.
+**CLI and MCP are on npm** as `openwisdom` and `openwisdom-mcp` (0.1.0+). Analysis still runs in **your** agent—not on this site.
 
-#### Option A — Manual (works today)
+```bash
+npx openwisdom list
+npx openwisdom install macro-scan -y --providers=claude --scope=project
+npx -y openwisdom-mcp
+```
+
+Common CLI flags: `--providers claude,cursor,agents` · `--scope project|global` · `-y` · `--no-telemetry`
+
+**MCP** is the same package-manager core over **stdio** (not a chat model). Configure your agent with `npx -y openwisdom-mcp`. Tools: `openwisdom_search` · `openwisdom_list` · `openwisdom_install` · `openwisdom_update` · `openwisdom_detect_providers`.
+
+#### Option B — Manual copy
 
 1. Copy a skill folder from `skills/official/.../<skill-id>/` into your agent’s skills directory, for example:
    - Claude Code: `.claude/skills/<skill-id>/`
@@ -59,7 +69,9 @@ Official skills:
    - Portable / Codex-style project: `.agents/skills/<skill-id>/`
 2. Reload the agent and invoke the skill per its `SKILL.md`.
 
-#### Option B — CLI from this monorepo
+#### Develop from source (monorepo)
+
+For contributors building packages locally:
 
 ```bash
 # Prerequisites: Node 20+, pnpm 10+
@@ -74,21 +86,11 @@ pnpm --filter openwisdom build
 
 pnpm cli -- search macro
 pnpm cli -- install macro-scan -y --providers=claude --scope=project
-```
 
-Common flags: `--providers claude,cursor,agents` · `--scope project|global` · `-y` · `--no-telemetry`
-
-#### Option C — MCP (agent session tools)
-
-Same install semantics over **stdio**. Not a chat model.
-
-```bash
 pnpm --filter openwisdom-mcp build
 # Configure your agent MCP to run: node packages/mcp/dist/mcp.js
 # Optional: OPENWISDOM_SKILLS_ROOT=/absolute/path/to/skills
 ```
-
-Tools: `openwisdom_search` · `openwisdom_list` · `openwisdom_install` · `openwisdom_update` · `openwisdom_detect_providers`
 
 ### 3. Run analysis in your agent
 
@@ -202,17 +204,23 @@ Openwisdom **不是**托管分析机器人。它提供结构化 skill（场景�
 - 路径：`skills/official/`  
 - `skills/community/` 已就绪，欢迎 PR  
 
-### 今天怎么用（诚实状态）
+### 今天怎么用
 
-CLI / MCP 在 monorepo 内可用，**尚未上架公共 npm**。当前推荐：
+**CLI / MCP 已上架 npm**（`openwisdom` · `openwisdom-mcp`，0.1.0+）。分析仍在**你的 Agent** 中运行，不在本站。
 
-1. **手动拷贝** skill 目录到 Agent 的 skills 路径（如 `.claude/skills/`）  
-2. 或本仓库构建后：`pnpm cli -- install macro-scan -y --providers=claude --scope=project`  
-3. 在 Agent 中按 `SKILL.md` 调用并跑通一次真实分析  
+```bash
+npx openwisdom list
+npx openwisdom install macro-scan -y --providers=claude --scope=project
+npx -y openwisdom-mcp
+```
+
+备选：手动拷贝 skill 目录到 Agent 的 skills 路径（如 `.claude/skills/`），或见上方 **Develop from source** 从 monorepo 构建。
+
+装好后在 Agent 中按 `SKILL.md` 调用并跑通一次真实分析。
 
 **线上站点：** [https://openwisdom.vercel.app](https://openwisdom.vercel.app)（默认 `/zh`，英文 `/en`）
 
-本地开发：
+本地开发网站：
 
 ```bash
 pnpm install

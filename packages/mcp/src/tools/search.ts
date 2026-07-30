@@ -4,44 +4,38 @@ import {
   UsageError,
   RuntimeError,
 } from "@openwisdom/core";
-import type { CatalogSkill } from "@openwisdom/schema";
 import { getMcpPackageRoot } from "../lib/package-root.js";
 import { toErrorResult, toTextResult, type ToolResult } from "../lib/result.js";
+import { toSkillCard, type DetailLevel } from "./skill-card.js";
 
 export type SearchInput = {
-  query: string;
+  /** Free text; may be empty when layer|scope|discipline is set (Spec 31). */
+  query?: string;
   layer?: "scenario" | "reference";
   scope?: "official" | "community";
   discipline?: string;
   limit?: number;
+  detail?: DetailLevel;
   /** Reserved: remote catalog refresh (not implemented; ignored). */
   refresh?: boolean;
 };
 
-function summarizeSkill(s: CatalogSkill) {
-  const desc =
-    s.description.length > 200
-      ? s.description.slice(0, 197) + "..."
-      : s.description;
-  return {
-    id: s.id,
-    name: s.name,
-    layer: s.layer,
-    scope: s.scope,
-    disciplines: s.disciplines,
-    language: s.language,
-    version: s.version,
-    description: desc,
-  };
-}
-
 /** Pure handler — unit-testable without MCP transport. */
-export async function handleSearch(input: SearchInput): Promise<ToolResult> {
+export async function handleSearch(input: SearchInput = {}): Promise<ToolResult> {
   try {
     const query = input.query?.trim() ?? "";
-    if (!query) {
+    const hasFilter = Boolean(
+      input.layer || input.scope || input.discipline?.trim(),
+    );
+
+    if (!query && !hasFilter) {
       return toErrorResult(
-        'Missing query. Example: openwisdom_search({ query: "macro" })',
+        [
+          "Missing query (and no layer/scope/discipline filter).",
+          'Example: openwisdom_search({ query: "macro" })',
+          'or openwisdom_search({ query: "", layer: "scenario" })',
+          "or openwisdom_list to browse the full Official catalog.",
+        ].join(" "),
       );
     }
 
@@ -55,14 +49,27 @@ export async function handleSearch(input: SearchInput): Promise<ToolResult> {
     });
 
     const limit = Math.min(50, Math.max(1, input.limit ?? 20));
+    const detail: DetailLevel = input.detail === "full" ? "full" : "card";
+
+    // Empty query + filters: searchCatalog filters without requiring tokens.
     const hits = searchCatalog(index, query, {
       layer: input.layer,
       scope: input.scope,
-      discipline: input.discipline,
+      discipline: input.discipline?.trim() || undefined,
       limit,
     });
 
-    const skills = hits.map(summarizeSkill);
+    const skills = hits.map((s) => toSkillCard(s, detail));
+    const filterNote = [
+      input.layer ? `layer=${input.layer}` : null,
+      input.scope ? `scope=${input.scope}` : null,
+      input.discipline?.trim()
+        ? `discipline=${input.discipline.trim()}`
+        : null,
+    ]
+      .filter(Boolean)
+      .join(", ");
+
     return toTextResult(
       {
         ok: true,
@@ -74,8 +81,12 @@ export async function handleSearch(input: SearchInput): Promise<ToolResult> {
       {
         summary:
           skills.length === 0
-            ? `No skills matched "${query}".`
-            : `Found ${skills.length} skill(s) for "${query}" (catalog: ${source}).`,
+            ? query
+              ? `No skills matched "${query}".`
+              : `No skills matched filters (${filterNote || "none"}).`
+            : query
+              ? `Found ${skills.length} skill(s) for "${query}" (catalog: ${source}).`
+              : `Found ${skills.length} skill(s) with filters (${filterNote}) (catalog: ${source}).`,
       },
     );
   } catch (err) {

@@ -7,17 +7,17 @@
     "title": "Install skills",
     "lede": "Pick a path that drops skills into an agent you already use. Invoke them there so analysis runs on your model budget.",
     "statusBadge": "Status",
-    "statusTitle": "CLI and MCP are not on npm yet",
-    "statusBody": "You can copy the commands below. Until publish, install from GitHub or follow the manual steps.",
+    "statusTitle": "CLI and MCP are on npm",
+    "statusBody": "Use npx openwisdom and npx -y openwisdom-mcp. GitHub and manual copy remain optional secondary paths.",
     "commandHeading": "Install commands",
     "pathsHeading": "Four install paths",
-    "pathsLede": "CLI and MCP for terminal and agent sessions; GitHub and manual copy work today.",
+    "pathsLede": "CLI and MCP for terminal and agent sessions; GitHub and manual copy are optional secondary paths.",
     "pathPrimary": "Command line",
-    "pathSecondary": "Available now",
+    "pathSecondary": "Secondary",
     "paths": {
       "cli": {
         "title": "Openwisdom CLI",
-        "desc": "Terminal: search / install / update / list. After publish, pick agents interactively."
+        "desc": "Terminal: search / install / update / list. Interactive multi-agent install, or pass --providers for scripts."
       },
       "mcp": {
         "title": "Openwisdom MCP",
@@ -174,9 +174,9 @@
       "boundaryHeading": "Know the boundary",
       "boundaryDetail": "The catalog helps you discover and install. CLI/MCP are package managers only (search / install / update / list)—they never call a model.",
       "installHeading": "Pick an install path",
-      "installBody": "CLI and MCP become one-command installs after publish; today you can also clone from GitHub or copy manually. Full paths live on the",
+      "installBody": "CLI and MCP support one-command installs via npm; you can also clone from GitHub or copy manually. Full paths live on the",
       "installLink": "Install hub",
-      "installNote": "If the CLI is not on npm yet, prefer GitHub or manual paths; you can still copy the command for later.",
+      "installNote": "CLI is available via npx openwisdom. GitHub and manual paths remain as alternatives.",
       "firstSkillHeading": "Install macro-scan",
       "firstSkillBody": "Start with the official scenario skill for a macro scan workflow:",
       "firstSkillCommand": "npx openwisdom install macro-scan",
@@ -218,7 +218,7 @@
         },
         {
           "q": "How do I update an installed skill?",
-          "a": "After publish, use openwisdom update (or the MCP update tool). Until then, re-clone/pull the repo or overwrite the skill folder."
+          "a": "Use npx openwisdom update (or the MCP update tool). You can also re-clone/pull the repo or overwrite the skill folder."
         },
         {
           "q": "UI is bilingual—must skill bodies be bilingual too?",
@@ -233,8 +233,8 @@
           "a": "No on both. Heat is side-channel stats from web downloads and successful CLI/MCP installs; failures do not block install. Heat never mutates skill sources. Opt out with --no-telemetry or env vars."
         },
         {
-          "q": "Why can I copy CLI / MCP commands if they are not on npm yet?",
-          "a": "Command shapes and package-manager semantics already live in the repo. Until public registry publish ships, use GitHub clone, manual copy, or monorepo local / snapshot paths."
+          "q": "Can I install from the monorepo instead of npm?",
+          "a": "Yes. Contributors can build packages/cli and packages/mcp from source and point OPENWISDOM_SKILLS_ROOT at a local skills tree. For everyday use, prefer npx openwisdom and npx -y openwisdom-mcp from the public registry."
         },
         {
           "q": "Is popular the default catalog sort?",
@@ -424,8 +424,8 @@
         "next": "Next"
       },
       "statusHeading": "Publish status",
-      "statusBadge": "Not on npm yet",
-      "statusBody": "packages/cli and packages/mcp already live in the monorepo and can be built from source. The openwisdom and openwisdom-mcp names may not be published to npm yet. Site npx commands are the post-publish entry points; until then run from the monorepo, or use GitHub / manual paths on the Install hub. We do not claim production-ready install volume or npm availability.",
+      "statusBadge": "Available on npm",
+      "statusBody": "openwisdom and openwisdom-mcp are published on npm (0.1.0+). Use npx openwisdom for the CLI and npx -y openwisdom-mcp for MCP. The monorepo remains an optional path for contributors who build from source. We do not claim install counts or production volume metrics.",
       "cliHeading": "What the CLI is",
       "cliBody": [
         "The CLI is for humans in a terminal: search the shared catalog, copy skill directories into the skills roots of the coding agents you choose, and list or update what is already installed.",
@@ -500,8 +500,8 @@
         "MCP is the same core over local stdio tools for agents such as Claude Code and Cursor. It remains a package manager—not a chatbot and not a model caller.",
         "Write tools require explicit providers; they never hang waiting for a TTY multiselect. Recommended flow: openwisdom_detect_providers then search/list then optional dryRun install then install."
       ],
-      "mcpEntryNote": "After publish, the stdio MCP entry is:",
-      "mcpDevNote": "During monorepo development, build packages/mcp first, then point OPENWISDOM_SKILLS_ROOT at the local skills tree:",
+      "mcpEntryNote": "stdio MCP entry:",
+      "mcpDevNote": "Optional for contributors: build packages/mcp from the monorepo, then point OPENWISDOM_SKILLS_ROOT at the local skills tree:",
       "mcpDevExample": "OPENWISDOM_SKILLS_ROOT=/absolute/path/to/skills node packages/mcp/dist/mcp.js",
       "mcpToolsHeading": "Tools",
       "mcpTools": [
@@ -521,7 +521,7 @@
         }
       ],
       "mcpConfigHeading": "Client configuration (conceptual)",
-      "mcpConfigNote": "stdio MCP shape below. Before publish, point command at the monorepo node entry. On Windows, if spawn fails, try cmd /c npx -y openwisdom-mcp.",
+      "mcpConfigNote": "stdio MCP shape below. Prefer npx -y openwisdom-mcp. On Windows, if spawn fails, try cmd /c npx -y openwisdom-mcp. Contributors may point command at a monorepo node entry instead.",
       "mcpConfigExample": "claude mcp add --transport stdio openwisdom -- npx -y openwisdom-mcp\n\n# Cursor / Claude Desktop and similar (stdio)\n# mcpServers.openwisdom.command = npx\n# mcpServers.openwisdom.args = -y, openwisdom-mcp\n# optional env: OPENWISDOM_NO_TELEMETRY=1\n# optional env: OPENWISDOM_SKILLS_ROOT=absolute path to local skills/",
       "telemetryHeading": "Telemetry and heat",
       "telemetryBody": "After a successful write to all selected providers, CLI/MCP may POST an anonymous install-success event. Heat is a side channel and never mutates SKILL.md. Network errors, timeouts, or a missing report URL are ignored; install exit codes stay fail-open. Opt out with --no-telemetry, OPENWISDOM_NO_TELEMETRY=1, or CI=true. Full collection scope and purpose are on the privacy page.",
@@ -550,7 +550,7 @@
       "whatBody": [
         "Openwisdom installs skill folders into agent skills directories. Analysis always runs in your agent and model budget—not as a hosted chat on this site.",
         "CLI and MCP write using a provider path table (ids such as claude, cursor, codex, agents). Manual copy uses the same roots when you place folders yourself.",
-        "Paths can drift across agent versions. Treat the matrix as typical defaults; when unsure, use the Install hub manual steps or run provider detection after the CLI/MCP is available."
+        "Paths can drift across agent versions. Treat the matrix as typical defaults; when unsure, use the Install hub manual steps or run provider detection with the CLI/MCP."
       ],
       "matrixHeading": "Typical project paths",
       "matrixIntro": "Each row is a provider id our tools understand. Project paths are relative to the repo root; global paths are under your home directory. Skill folders go one level deeper: e.g. .claude/skills/macro-scan/SKILL.md.",
@@ -608,7 +608,7 @@
         },
         {
           "q": "How do I know which providers I have?",
-          "a": "After CLI/MCP ship, interactive install can detect common harness markers, and MCP exposes a read-only detect_providers-style tool. Until then, inspect your project for folders like .claude, .cursor, or .agents, or install manually into the matching path."
+          "a": "Interactive CLI install can detect common harness markers, and MCP exposes a read-only openwisdom_detect_providers tool. You can also inspect your project for folders like .claude, .cursor, or .agents, or install manually into the matching path."
         },
         {
           "q": "I use Codex and agents together—will files duplicate?",
@@ -633,7 +633,7 @@
     },
     "changelogPage": {
       "title": "Changelog",
-      "lede": "Early product notes use capability waves—not fake semver theater. Anything not on npm or not shipped yet is called out plainly.",
+      "lede": "Early product notes use capability waves—not fake semver theater. Shipped surfaces are listed plainly.",
       "toc": {
         "current": "This wave",
         "history": "Earlier",
@@ -644,9 +644,9 @@
       "currentItems": [
         "Docs hub: Overview, Getting started, FAQ, Privacy, Concepts, CLI/MCP, Agents paths, Authoring, and Changelog as full pages.",
         "Skills catalog and detail pages: scenario / reference layers with Official and Community facets; catalog and registry share one index.",
-        "Install hub with four paths: CLI, MCP, GitHub, and manual copy. Package-manager semantics exist in-repo; public npm publish is not done yet.",
+        "Install hub with four paths: CLI, MCP, GitHub, and manual copy. openwisdom and openwisdom-mcp published on npm (0.1.0).",
         "Heat side-channel API: web downloads and successful CLI/MCP installs can report; copy-command is funnel-only; fail-open and never writes into SKILL.md.",
-        "Monorepo packages: schema, providers, catalog, core, cli, mcp. Local / snapshot install works.",
+        "Monorepo packages: schema, providers, catalog, core, cli, mcp. Local / snapshot install still works for contributors.",
         "Official content minimum: three scenario skills plus five discipline references; community/ tree ready.",
         "Contribute guide and bilingual UI (zh / en). Skill body language follows the contributor."
       ],
@@ -655,7 +655,7 @@
       "sourceHeading": "Source of truth",
       "sourceBody": "This page summarizes what is in the repo. Full diffs, plans, and Releases live on GitHub. We do not invent install counts or user numbers.",
       "githubLabel": "View on GitHub",
-      "githubNote": "Commits, Issues, and Releases are the authoritative change log. Prefer the repo and manual paths until packages are on public npm."
+      "githubNote": "Commits, Issues, and Releases are the authoritative change log. Package versions track on npm as openwisdom and openwisdom-mcp."
     },
     "code": {
       "copy": "Copy",
@@ -666,9 +666,9 @@
       "button": "Copy LLM prompt",
       "copied": "Copied — paste into your agent",
       "failed": "Copy failed",
-      "gettingStarted": "You are helping the user with Openwisdom, an open-source social-science agent skills library (scenario workflows + discipline reference cards). Skills install into coding agents; analysis runs in THIS agent session—not on a hosted Openwisdom chat.\n\nHard constraints:\n- Openwisdom does not host analysis, browser chat sessions, or a run tool that calls models.\n- CLI and MCP (when available) are package managers only: search / install / update / list.\n- Do not invent hosted-chat features, claim npm availability, or fabricate install counts.\n\nConcrete steps:\n1. Align on product boundary: the catalog site discovers skills; install only places skill folders into harness paths; analysis happens here in this agent.\n2. Install path: after public publish, use npx openwisdom install. If the package is not on npm yet, use the GitHub repo Retr0-rgb-lab/Openwisdom, monorepo packages, or manual copy into the agent skills path (see the Install hub).\n3. Install the official scenario skill macro-scan: npx openwisdom install macro-scan (or copy the macro-scan folder from the skills tree into the harness skills root).\n4. Invoke macro-scan in this session per SKILL.md (name or description match). Run once on the user's real material.\n5. Verify: the skill folder exists at the expected path (e.g. project-root/.claude/skills/macro-scan/SKILL.md); the agent can load it; one structured, reviewable analysis draft is produced—not a website chat transcript.\n\nSuccess criteria:\n- skill-id directory and SKILL.md exist on disk\n- Agent loads the skill instructions and completes one analysis pass\n- No claim that analysis happened on a hosted site or external hosted session",
-      "cli": "You are helping the user with Openwisdom CLI and MCP package-manager surfaces. Openwisdom is a social-science agent skills library. The CLI is for humans in a terminal; MCP tools are for agent sessions. Both share catalog and install semantics.\n\nHard constraints:\n- CLI and MCP are package managers only—they do not call LLMs, run analysis, or need model API keys.\n- Command surface is fixed: search / install / update / list. No run command, no hosted sessions.\n- Do not pretend openwisdom is necessarily published on npm; monorepo and GitHub / manual paths are honest fallbacks.\n- Never call LLM APIs as Openwisdom.\n\nCLI essentials:\n- search: filter catalog by id, name, description, or tags (bundled snapshot; offline-capable).\n- install: copy skill directories into selected providers skills roots; non-interactive needs -y and providers.\n- update: refresh installed skills along the same write paths as install.\n- list: list catalog skills; --installed scans known harness paths.\n\nCommon flags: --providers (e.g. claude,cursor,agents,codex,gemini), --scope project|global, -y / --yes, --force, --dry-run, --cwd, --no-deps, --no-telemetry.\n\nExample after publish: npx openwisdom install macro-scan -y --providers=claude --scope=project\n\nMCP essentials:\n- Tools: openwisdom_search, openwisdom_list, openwisdom_install (providers required), openwisdom_update, openwisdom_detect_providers (read-only).\n- Write tools require explicit providers; never hang waiting for a TTY multiselect.\n- Config shape (stdio): command npx, args -y, openwisdom-mcp; before publish use monorepo node packages/mcp/dist/mcp.js with OPENWISDOM_SKILLS_ROOT set.\n- Recommended flow: detect_providers → search/list → optional dryRun → install.\n\nHonest status: packages/cli and packages/mcp live in the monorepo; public npm may not be published yet. If unavailable, use GitHub clone or manual copy.\n\nSuccess criteria:\n- User understands CLI/MCP as package managers, not analysis engines\n- You can give executable search/install/list/update or MCP-equivalent steps\n- You do not claim model calls or guaranteed npm availability",
-      "agents": "You are helping the user install Openwisdom skills into the correct coding-agent harness paths. Analysis always runs in this agent session; install only writes skill folders.\n\nHard constraints:\n- Do not invent hosted analysis.\n- Paths can drift across agent versions; the matrix below is typical defaults—confirm against current agent docs.\n- When unsure, use manual copy or provider detection; do not invent paths.\n\nTypical project path matrix (relative to project-root):\n- claude (Claude Code): .claude/skills; global ~/.claude/skills\n- cursor: .cursor/skills; global ~/.cursor/skills; some setups also read .agents/skills\n- agents (portable): .agents/skills; global ~/.agents/skills\n- codex: project shares .agents/skills with agents (install dedupes); global typical ~/.codex/skills\n- github / copilot: .github/skills; global typical ~/.copilot/skills\n- gemini: .gemini/skills; global ~/.gemini/skills\n- unknown harness: manual install per that agent docs\n\nScope:\n- project: write under the current repo root, e.g. project-root/.claude/skills/skill-id\n- global: write under the home harness root; Codex and Copilot global folders may differ from project paths\n\nTroubleshooting:\n1. Agent does not list the skill: confirm folder under the skills root, SKILL.md present, slug matches catalog id, then reload/restart the agent; or reinstall with explicit --providers.\n2. Detect providers: after CLI/MCP ship, use interactive install or openwisdom_detect_providers; otherwise inspect for .claude / .cursor / .agents markers.\n3. Codex and agents together: project path is deduped to one write; Codex global still uses ~/.codex/skills.\n\nSuccess criteria:\n- Correct write path for the user's chosen harness\n- skill-id directory and SKILL.md verifiable on disk\n- Clear steps to reload the agent so the skill becomes visible",
+      "gettingStarted": "You are helping the user with Openwisdom, an open-source social-science agent skills library (scenario workflows + discipline reference cards). Skills install into coding agents; analysis runs in THIS agent session—not on a hosted Openwisdom chat.\n\nHard constraints:\n- Openwisdom does not host analysis, browser chat sessions, or a run tool that calls models.\n- CLI and MCP are package managers only: search / install / update / list.\n- Do not invent hosted-chat features or fabricate install counts.\n\nConcrete steps:\n1. Align on product boundary: the catalog site discovers skills; install only places skill folders into harness paths; analysis happens here in this agent.\n2. Install path: packages are on npm. Prefer npx openwisdom install. Optional alternatives: GitHub repo Retr0-rgb-lab/Openwisdom, monorepo packages for contributors, or manual copy into the agent skills path (see the Install hub).\n3. Install the official scenario skill macro-scan: npx openwisdom install macro-scan (or copy the macro-scan folder from the skills tree into the harness skills root).\n4. Invoke macro-scan in this session per SKILL.md (name or description match). Run once on the user's real material.\n5. Verify: the skill folder exists at the expected path (e.g. project-root/.claude/skills/macro-scan/SKILL.md); the agent can load it; one structured, reviewable analysis draft is produced—not a website chat transcript.\n\nSuccess criteria:\n- skill-id directory and SKILL.md exist on disk\n- Agent loads the skill instructions and completes one analysis pass\n- No claim that analysis happened on a hosted site or external hosted session",
+      "cli": "You are helping the user with Openwisdom CLI and MCP package-manager surfaces. Openwisdom is a social-science agent skills library. The CLI is for humans in a terminal; MCP tools are for agent sessions. Both share catalog and install semantics.\n\nHard constraints:\n- CLI and MCP are package managers only—they do not call LLMs, run analysis, or need model API keys.\n- Command surface is fixed: search / install / update / list. No run command, no hosted sessions.\n- Packages are on npm as openwisdom and openwisdom-mcp (0.1.0+). Monorepo and GitHub / manual paths remain optional for contributors and fallbacks.\n- Never call LLM APIs as Openwisdom. Do not fabricate install counts.\n\nCLI essentials:\n- search: filter catalog by id, name, description, or tags (bundled snapshot; offline-capable).\n- install: copy skill directories into selected providers skills roots; non-interactive needs -y and providers.\n- update: refresh installed skills along the same write paths as install.\n- list: list catalog skills; --installed scans known harness paths.\n\nCommon flags: --providers (e.g. claude,cursor,agents,codex,gemini), --scope project|global, -y / --yes, --force, --dry-run, --cwd, --no-deps, --no-telemetry.\n\nExample: npx openwisdom install macro-scan -y --providers=claude --scope=project\n\nMCP essentials:\n- Tools: openwisdom_search, openwisdom_list, openwisdom_install (providers required), openwisdom_update, openwisdom_detect_providers (read-only).\n- Write tools require explicit providers; never hang waiting for a TTY multiselect.\n- Config shape (stdio): command npx, args -y, openwisdom-mcp. Optional for contributors: monorepo node packages/mcp/dist/mcp.js with OPENWISDOM_SKILLS_ROOT set.\n- Recommended flow: detect_providers → search/list → optional dryRun → install.\n\nSuccess criteria:\n- User understands CLI/MCP as package managers, not analysis engines\n- You can give executable search/install/list/update or MCP-equivalent steps\n- You do not claim model calls or invent install counts",
+      "agents": "You are helping the user install Openwisdom skills into the correct coding-agent harness paths. Analysis always runs in this agent session; install only writes skill folders.\n\nHard constraints:\n- Do not invent hosted analysis.\n- Paths can drift across agent versions; the matrix below is typical defaults—confirm against current agent docs.\n- When unsure, use manual copy or provider detection; do not invent paths.\n\nTypical project path matrix (relative to project-root):\n- claude (Claude Code): .claude/skills; global ~/.claude/skills\n- cursor: .cursor/skills; global ~/.cursor/skills; some setups also read .agents/skills\n- agents (portable): .agents/skills; global ~/.agents/skills\n- codex: project shares .agents/skills with agents (install dedupes); global typical ~/.codex/skills\n- github / copilot: .github/skills; global typical ~/.copilot/skills\n- gemini: .gemini/skills; global ~/.gemini/skills\n- unknown harness: manual install per that agent docs\n\nScope:\n- project: write under the current repo root, e.g. project-root/.claude/skills/skill-id\n- global: write under the home harness root; Codex and Copilot global folders may differ from project paths\n\nTroubleshooting:\n1. Agent does not list the skill: confirm folder under the skills root, SKILL.md present, slug matches catalog id, then reload/restart the agent; or reinstall with explicit --providers.\n2. Detect providers: use interactive CLI install or openwisdom_detect_providers; or inspect for .claude / .cursor / .agents markers.\n3. Codex and agents together: project path is deduped to one write; Codex global still uses ~/.codex/skills.\n\nSuccess criteria:\n- Correct write path for the user's chosen harness\n- skill-id directory and SKILL.md verifiable on disk\n- Clear steps to reload the agent so the skill becomes visible",
       "authoring": "You are helping the user author and contribute an Openwisdom skill. Openwisdom is a social-science agent skills library. Content truth lives in the git skills/ tree; the site and CLI share a generated catalog index.\n\nHard constraints:\n- Community contributions use scope=community and PRs into skills/community/. Do not claim official unless a maintainer invites changes under official/.\n- Do not invent metadata only on the website; a skill unit is a directory plus SKILL.md.\n- Heat/stats never write into SKILL.md.\n- Site UI may be bilingual; skill body language follows the contributor—do not force bilingual bodies.\n- Analysis still runs in the user's agent; contributions are installable packages, not hosted chat.\n\nSkill unit:\n- One directory = one skill: required SKILL.md (YAML frontmatter + Markdown), optional assets/.\n- layer: scenario (full analysis workflow) or reference (reusable theory card).\n- Scenarios should cite references instead of stuffing textbooks into workflows.\n\nFrontmatter fields (per repo schema):\n- name: stable kebab-case id aligned with the directory\n- description: short text for agent and catalog discovery\n- layer: scenario | reference\n- scope: community for community PRs\n- disciplines: e.g. psychology, sociology, history, political-science, economics\n- language: body language (zh / en / etc.)\n- tags, version, references: discovery, versioning, and citation links\n\nWriting:\n- scenario: when to use / not use, inputs, executable steps, output structure, bias and evidence checks, cite references.\n- reference: short definition, applicability bounds, common misuses, reviewable points; keep card-sized.\n\nContribution steps:\n1. Fork Retr0-rgb-lab/Openwisdom and clone.\n2. Create skill-id/ with SKILL.md under skills/community/.\n3. Fill frontmatter and body; self-check against schema/templates.\n4. Open a PR describing intent and bounds; do not edit official/ unless invited.\n\nSuccess criteria:\n- Correct directory layout; frontmatter indexable by the catalog\n- scope=community; no false official claim\n- PR targets skills/community/ and is reviewable"
     }
   },

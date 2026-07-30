@@ -7,17 +7,17 @@
     "title": "安装 Skills",
     "lede": "选一条路径把 skill 装进你已有的 Agent；装好后在 Agent 中调用，分析在你的模型预算里运行。",
     "statusBadge": "当前状态",
-    "statusTitle": "CLI 与 MCP 尚未上架 npm",
-    "statusBody": "可先复制下方命令。发布前请从 GitHub 安装，或按手动步骤拷入 Agent。",
+    "statusTitle": "CLI 与 MCP 已上架 npm",
+    "statusBody": "可用 npx openwisdom 与 npx -y openwisdom-mcp。GitHub 与手动拷贝仍可作为备选路径。",
     "commandHeading": "安装命令",
     "pathsHeading": "四条安装路径",
-    "pathsLede": "CLI 与 MCP 面向终端与 Agent 会话；GitHub 与手动复制随时可用。",
+    "pathsLede": "CLI 与 MCP 面向终端与 Agent 会话；GitHub 与手动复制为可选备选路径。",
     "pathPrimary": "命令行",
-    "pathSecondary": "现可用",
+    "pathSecondary": "备选",
     "paths": {
       "cli": {
         "title": "Openwisdom CLI",
-        "desc": "终端：search / install / update / list。发布后可交互式选择 Agent。"
+        "desc": "终端：search / install / update / list。支持交互式多 Agent 安装，或脚本传 --providers。"
       },
       "mcp": {
         "title": "Openwisdom MCP",
@@ -174,9 +174,9 @@
       "boundaryHeading": "先理解边界",
       "boundaryDetail": "目录站帮助发现与安装；CLI/MCP 只做包管理（search / install / update / list），不调用大模型。",
       "installHeading": "选择安装路径",
-      "installBody": "CLI 与 MCP 发布后可一键安装；当前也可 GitHub clone 或手动拷贝。完整路径见",
+      "installBody": "CLI 与 MCP 已可通过 npm 一键安装；也可从 GitHub clone 或手动拷贝。完整路径见",
       "installLink": "安装中枢",
-      "installNote": "CLI 尚未上架 npm 时，请优先用 GitHub 或手动路径；命令可先复制备用。",
+      "installNote": "CLI 已可通过 npx openwisdom 使用；GitHub 与手动路径仍可作为备选。",
       "firstSkillHeading": "安装 macro-scan",
       "firstSkillBody": "建议先装官方场景 skill，了解宏观扫描工作流：",
       "firstSkillCommand": "npx openwisdom install macro-scan",
@@ -218,7 +218,7 @@
         },
         {
           "q": "如何更新已安装的 skill？",
-          "a": "发布后可用 openwisdom update（或 MCP 的 update 工具）。在此之前，可重新 clone/拉取仓库或覆盖拷贝 skill 目录。"
+          "a": "使用 npx openwisdom update（或 MCP 的 update 工具）。也可重新 clone/拉取仓库或覆盖拷贝 skill 目录。"
         },
         {
           "q": "界面是中英双语，skill 正文也必须双语吗？",
@@ -233,8 +233,8 @@
           "a": "都不是。热度来自网页下载与 CLI/MCP 安装成功的旁路统计；失败不影响安装。热度从不写入 skill 源文件。可用 --no-telemetry 或环境变量关闭。"
         },
         {
-          "q": "为什么 CLI / MCP 命令能复制，却提示还没上 npm？",
-          "a": "命令形态与包管理语义已在仓库落地；公开 registry 发布未完成前，请用 GitHub clone、手动拷贝，或 monorepo 本地 / snapshot 路径。"
+          "q": "可以从 monorepo 安装，而不走 npm 吗？",
+          "a": "可以。贡献者可从源码构建 packages/cli 与 packages/mcp，并把 OPENWISDOM_SKILLS_ROOT 指向本地 skills 树。日常使用请优先用公共 registry 上的 npx openwisdom 与 npx -y openwisdom-mcp。"
         },
         {
           "q": "热度排序是默认排序吗？",
@@ -424,8 +424,8 @@
         "next": "下一步"
       },
       "statusHeading": "发布状态",
-      "statusBadge": "尚未上架 npm",
-      "statusBody": "monorepo 内已有 packages/cli 与 packages/mcp，可从源码构建试用。npm 上的 openwisdom / openwisdom-mcp 可能尚未发布；站上的 npx 命令是发布后的目标入口，发布前请从 monorepo 运行，或改用安装中枢的 GitHub / 手动路径。我们不会宣称「生产就绪」的安装量或可用性。",
+      "statusBadge": "已上架 npm",
+      "statusBody": "openwisdom 与 openwisdom-mcp 已发布到 npm（0.1.0+）。CLI 用 npx openwisdom，MCP 用 npx -y openwisdom-mcp。monorepo 仍可作为贡献者从源码构建的可选路径。我们不宣称安装量或生产规模指标。",
       "cliHeading": "CLI 是什么",
       "cliBody": [
         "CLI 面向人类终端：从共享 catalog 搜索技能，把 skill 目录写入所选 coding agent 的 skills 路径，并可列出与更新已装内容。",
@@ -500,8 +500,8 @@
         "MCP 是同一核心的另一条表面：通过本地 stdio 暴露工具，供 Claude Code、Cursor 等在会话里调用。它仍是包管理器，不是聊天机器人，也不会代你调用模型。",
         "写操作必须显式传入 providers，不会挂起等待终端多选。推荐先 openwisdom_detect_providers，再 search/list，可选 dryRun 后 install。"
       ],
-      "mcpEntryNote": "发布后，stdio MCP 入口为：",
-      "mcpDevNote": "开发期请先构建 packages/mcp，再把 OPENWISDOM_SKILLS_ROOT 指向本地 skills 树：",
+      "mcpEntryNote": "stdio MCP 入口：",
+      "mcpDevNote": "贡献者可选：从 monorepo 构建 packages/mcp，再把 OPENWISDOM_SKILLS_ROOT 指向本地 skills 树：",
       "mcpDevExample": "OPENWISDOM_SKILLS_ROOT=/absolute/path/to/skills node packages/mcp/dist/mcp.js",
       "mcpToolsHeading": "工具",
       "mcpTools": [
@@ -521,7 +521,7 @@
         }
       ],
       "mcpConfigHeading": "客户端配置（概念示例）",
-      "mcpConfigNote": "以下为 stdio MCP 配置形态；发布前把 command 换成 monorepo 中的 node 入口。Windows 若 spawn 失败可试 cmd /c npx -y openwisdom-mcp。",
+      "mcpConfigNote": "以下为 stdio MCP 配置形态；日常请用 npx -y openwisdom-mcp。Windows 若 spawn 失败可试 cmd /c npx -y openwisdom-mcp。贡献者也可把 command 指向 monorepo 中的 node 入口。",
       "mcpConfigExample": "claude mcp add --transport stdio openwisdom -- npx -y openwisdom-mcp\n\n# Cursor / Claude Desktop 等（stdio）\n# mcpServers.openwisdom.command = npx\n# mcpServers.openwisdom.args = -y, openwisdom-mcp\n# 可选 env：OPENWISDOM_NO_TELEMETRY=1\n# 可选 env：OPENWISDOM_SKILLS_ROOT=本地 skills 绝对路径",
       "telemetryHeading": "遥测与热度",
       "telemetryBody": "安装全部目标 provider 成功写入后，CLI/MCP 可能上报匿名安装成功事件。热度是旁路统计，从不写入 SKILL.md；网络失败、超时或未配置上报地址时静默忽略，安装退出码不变（fail-open）。可用 --no-telemetry、OPENWISDOM_NO_TELEMETRY=1，或 CI=true 关闭。完整采集范围与用途见隐私页。",
@@ -550,7 +550,7 @@
       "whatBody": [
         "Openwisdom 把 skill 目录安装到各 Agent 约定的 skills 根路径。分析始终在你的 Agent 与模型额度中运行，本站不提供托管分析会话。",
         "CLI 与 MCP 按 provider 路径表写入（如 claude、cursor、codex、agents）。手动拷贝时，请使用同一套常见根目录。",
-        "路径会随 Agent 版本变化。请将矩阵视为默认参考；不确定时走安装中枢的手动步骤，或在 CLI/MCP 可用后使用 provider 检测。"
+        "路径会随 Agent 版本变化。请将矩阵视为默认参考；不确定时走安装中枢的手动步骤，或用 CLI/MCP 做 provider 检测。"
       ],
       "matrixHeading": "常见项目路径",
       "matrixIntro": "每行对应工具识别的 provider id。项目路径相对仓库根目录；全局路径在用户主目录下。skill 再下一层：例如 .claude/skills/macro-scan/SKILL.md。",
@@ -608,7 +608,7 @@
         },
         {
           "q": "如何知道本机有哪些 provider？",
-          "a": "CLI/MCP 发布后，交互安装可检测常见 harness 标记；MCP 提供只读的 detect_providers 类工具。在此之前，可检查项目中是否有 .claude、.cursor、.agents 等目录，或按矩阵手动拷贝。"
+          "a": "CLI 交互安装可检测常见 harness 标记；MCP 提供只读的 openwisdom_detect_providers 工具。也可检查项目中是否有 .claude、.cursor、.agents 等目录，或按矩阵手动拷贝。"
         },
         {
           "q": "同时选 Codex 与 agents 会写两份吗？",
@@ -633,7 +633,7 @@
     },
     "changelogPage": {
       "title": "更新日志",
-      "lede": "早期产品用「能力波次」记录已上线内容，不用虚假 semver 演戏。未上架 npm、未发布的能力会写清楚。",
+      "lede": "早期产品用「能力波次」记录已上线内容，不用虚假 semver 演戏。已上线能力会写清楚。",
       "toc": {
         "current": "本波次",
         "history": "此前",
@@ -644,9 +644,9 @@
       "currentItems": [
         "文档中枢：总览、快速开始、FAQ、隐私与遥测、概念、CLI/MCP、Agents 路径、编写规范、更新日志全文。",
         "Skills 目录与详情页：scenario / reference 分层与 Official · Community 分面；catalog 与 registry 同源索引。",
-        "安装中枢四条路径：CLI、MCP、GitHub、手动拷贝；CLI/MCP 包管理语义已在 monorepo 落地，公开 npm 发布仍未完成。",
+        "安装中枢四条路径：CLI、MCP、GitHub、手动拷贝；openwisdom 与 openwisdom-mcp 已发布到 npm（0.1.0）。",
         "热度旁路 API：网页下载与 CLI/MCP 安装成功可上报；复制命令仅漏斗；fail-open，不写进 SKILL.md。",
-        "Monorepo 包：schema · providers · catalog · core · cli · mcp；本地 / snapshot 可装。",
+        "Monorepo 包：schema · providers · catalog · core · cli · mcp；贡献者仍可本地 / snapshot 安装。",
         "官方内容最小集：3 个场景 skill + 5 张学科 reference；community/ 目录就绪。",
         "贡献页与双语 UI（中 / 英）；skill 正文语言跟随贡献者。"
       ],
@@ -655,7 +655,7 @@
       "sourceHeading": "真源",
       "sourceBody": "本页摘要以仓库实态为准。完整 diff、计划与 Release 以 GitHub 为准；站点不会伪造安装量或用户数。",
       "githubLabel": "在 GitHub 查看",
-      "githubNote": "提交历史、Issues 与 Releases 是变更的权威记录；npm 公开发布前请优先用仓库与手动路径。"
+      "githubNote": "提交历史、Issues 与 Releases 是变更的权威记录；包版本以 npm 上的 openwisdom 与 openwisdom-mcp 为准。"
     },
     "code": {
       "copy": "复制",
@@ -666,9 +666,9 @@
       "button": "复制 LLM Prompt",
       "copied": "已复制，可贴到你的 Agent",
       "failed": "复制失败",
-      "gettingStarted": "你正在帮助用户使用 Openwisdom：开源社会科学 Agent Skills 库（场景工作流 scenario + 学科理论卡 reference）。Skills 安装进用户的编码 Agent；分析在本会话（当前 Agent）中运行，不在 Openwisdom 托管聊天里。\n\n硬约束：\n- Openwisdom 不托管分析、不做网页聊天会话，也没有会调用模型的 run 工具。\n- CLI / MCP（若可用）只做包管理：search / install / update / list。\n- 不要虚构托管聊天能力、npm 已上架状态或安装量。\n\n具体步骤：\n1. 先对齐产品边界：目录站负责发现；安装只是把 skill 目录写入 harness 路径；分析在本 Agent 会话完成。\n2. 安装路径：公开发布后可用 npx openwisdom install。若包尚未上 npm，请改用 GitHub 仓库 Retr0-rgb-lab/Openwisdom、monorepo 本地包，或手动拷贝 skill 目录到 Agent skills 路径（见安装中枢）。\n3. 安装官方场景 skill macro-scan：npx openwisdom install macro-scan（或把 skills 树中的 macro-scan 目录拷到 harness skills 根下）。\n4. 在本会话按 SKILL.md 触发 macro-scan（名称或描述匹配），用用户真实材料跑通一次。\n5. 校验：skill 文件夹出现在约定路径（例如 project-root/.claude/skills/macro-scan/SKILL.md）；Agent 能加载；产出一次可复查的结构化分析草稿——不是站内聊天记录。\n\n成功标准：\n- disk 上存在 skill-id 目录与 SKILL.md\n- Agent 能加载 skill 说明并完成一轮分析\n- 未声称分析发生在托管网站或站外托管会话",
-      "cli": "你正在帮助用户使用 Openwisdom 的 CLI 与 MCP 包管理表面。Openwisdom 是社会科学 Agent Skills 库；CLI 面向人类终端，MCP 面向 Agent 会话。二者共享 catalog / install 语义。\n\n硬约束：\n- CLI 与 MCP 只做包管理，不调用大模型，不跑分析，不需要模型 API Key。\n- 命令面固定：search / install / update / list。没有 run、没有托管会话。\n- 不要假装 openwisdom 已一定在 npm 可用；monorepo 与 GitHub / 手动路径是诚实回退。\n- 绝不要以 Openwisdom 名义去调用 LLM API。\n\nCLI 要点：\n- search：按 id、名称、描述、标签过滤 catalog（可离线 snapshot）。\n- install：把 skill 目录写入所选 providers 的 skills 根；非交互需 -y 与 providers。\n- update：按 install 相同写入路径刷新已装 skill。\n- list：列 catalog；--installed 扫描已知 harness 路径。\n\n常用标志：--providers（如 claude,cursor,agents,codex,gemini）、--scope project|global、-y / --yes、--force、--dry-run、--cwd、--no-deps、--no-telemetry。\n\n示例（发布后）：npx openwisdom install macro-scan -y --providers=claude --scope=project\n\nMCP 要点：\n- 工具：openwisdom_search、openwisdom_list、openwisdom_install（必须 providers）、openwisdom_update、openwisdom_detect_providers（只读）。\n- 写操作必须显式 providers，不挂起等 TTY 多选。\n- 配置形态（stdio）：command 为 npx，args 为 -y, openwisdom-mcp；发布前可改 monorepo 的 node packages/mcp/dist/mcp.js，并设 OPENWISDOM_SKILLS_ROOT。\n- 推荐流程：detect_providers → search/list → 可选 dryRun → install。\n\n诚实状态：packages/cli 与 packages/mcp 在 monorepo 内；公开 npm 可能未发布。不可用时改用 GitHub clone 或手动拷贝。\n\n成功标准：\n- 用户理解 CLI/MCP 是包管理器而非分析引擎\n- 能给出可执行的 search/install/list/update 或 MCP 等价流程\n- 未声称会调用模型或已必然上架 npm",
-      "agents": "你正在帮助用户把 Openwisdom skills 安装到正确的 coding agent harness 路径。分析始终在本 Agent 会话运行；安装只写 skill 文件夹。\n\n硬约束：\n- 不要虚构托管分析。\n- 路径因 Agent 版本而异；下表是 typical 默认，以各 Agent 当前文档为准。\n- 不确定时走手动拷贝或 provider 检测，不要臆造路径。\n\n常见项目路径矩阵（相对 project-root）：\n- claude（Claude Code）：.claude/skills；全局 ~/.claude/skills\n- cursor：.cursor/skills；全局 ~/.cursor/skills；部分环境也读 .agents/skills\n- agents（portable）：.agents/skills；全局 ~/.agents/skills\n- codex：项目与 agents 共用 .agents/skills（安装去重）；全局常见 ~/.codex/skills\n- github / copilot：.github/skills；全局常见 ~/.copilot/skills\n- gemini：.gemini/skills；全局 ~/.gemini/skills\n- 未知 harness：按该 Agent 文档手动安装\n\nScope：\n- project：写入当前仓库根，如 project-root/.claude/skills/skill-id\n- global：写入用户主目录对应 harness 根；Codex / Copilot 的全局路径可能与项目路径不同\n\n排障：\n1. Agent 看不到 skill：确认目录在 skills 根下、存在 SKILL.md、slug 与 catalog id 一致，然后重载/重启 Agent；或用显式 --providers 重装。\n2. 探测 providers：CLI/MCP 可用后用交互安装或 openwisdom_detect_providers；否则检查项目是否有 .claude / .cursor / .agents 等标记。\n3. Codex 与 agents 同装：项目路径去重只写一份；Codex 全局仍用 ~/.codex/skills。\n\n成功标准：\n- 为用户选定的 harness 给出正确写入路径\n- skill-id 目录与 SKILL.md 可在 disk 上验证\n- 说明如何重载 Agent 使 skill 可见",
+      "gettingStarted": "你正在帮助用户使用 Openwisdom：开源社会科学 Agent Skills 库（场景工作流 scenario + 学科理论卡 reference）。Skills 安装进用户的编码 Agent；分析在本会话（当前 Agent）中运行，不在 Openwisdom 托管聊天里。\n\n硬约束：\n- Openwisdom 不托管分析、不做网页聊天会话，也没有会调用模型的 run 工具。\n- CLI / MCP 只做包管理：search / install / update / list。\n- 不要虚构托管聊天能力或安装量。\n\n具体步骤：\n1. 先对齐产品边界：目录站负责发现；安装只是把 skill 目录写入 harness 路径；分析在本 Agent 会话完成。\n2. 安装路径：包已在 npm 上。优先用 npx openwisdom install。备选：GitHub 仓库 Retr0-rgb-lab/Openwisdom、贡献者 monorepo 本地包，或手动拷贝 skill 目录到 Agent skills 路径（见安装中枢）。\n3. 安装官方场景 skill macro-scan：npx openwisdom install macro-scan（或把 skills 树中的 macro-scan 目录拷到 harness skills 根下）。\n4. 在本会话按 SKILL.md 触发 macro-scan（名称或描述匹配），用用户真实材料跑通一次。\n5. 校验：skill 文件夹出现在约定路径（例如 project-root/.claude/skills/macro-scan/SKILL.md）；Agent 能加载；产出一次可复查的结构化分析草稿——不是站内聊天记录。\n\n成功标准：\n- disk 上存在 skill-id 目录与 SKILL.md\n- Agent 能加载 skill 说明并完成一轮分析\n- 未声称分析发生在托管网站或站外托管会话",
+      "cli": "你正在帮助用户使用 Openwisdom 的 CLI 与 MCP 包管理表面。Openwisdom 是社会科学 Agent Skills 库；CLI 面向人类终端，MCP 面向 Agent 会话。二者共享 catalog / install 语义。\n\n硬约束：\n- CLI 与 MCP 只做包管理，不调用大模型，不跑分析，不需要模型 API Key。\n- 命令面固定：search / install / update / list。没有 run、没有托管会话。\n- 包已在 npm 上架为 openwisdom 与 openwisdom-mcp（0.1.0+）。monorepo 与 GitHub / 手动路径仍可作为贡献者或备选路径。\n- 绝不要以 Openwisdom 名义去调用 LLM API。不要虚构安装量。\n\nCLI 要点：\n- search：按 id、名称、描述、标签过滤 catalog（可离线 snapshot）。\n- install：把 skill 目录写入所选 providers 的 skills 根；非交互需 -y 与 providers。\n- update：按 install 相同写入路径刷新已装 skill。\n- list：列 catalog；--installed 扫描已知 harness 路径。\n\n常用标志：--providers（如 claude,cursor,agents,codex,gemini）、--scope project|global、-y / --yes、--force、--dry-run、--cwd、--no-deps、--no-telemetry。\n\n示例：npx openwisdom install macro-scan -y --providers=claude --scope=project\n\nMCP 要点：\n- 工具：openwisdom_search、openwisdom_list、openwisdom_install（必须 providers）、openwisdom_update、openwisdom_detect_providers（只读）。\n- 写操作必须显式 providers，不挂起等 TTY 多选。\n- 配置形态（stdio）：command 为 npx，args 为 -y, openwisdom-mcp。贡献者可选 monorepo 的 node packages/mcp/dist/mcp.js，并设 OPENWISDOM_SKILLS_ROOT。\n- 推荐流程：detect_providers → search/list → 可选 dryRun → install。\n\n成功标准：\n- 用户理解 CLI/MCP 是包管理器而非分析引擎\n- 能给出可执行的 search/install/list/update 或 MCP 等价流程\n- 未声称会调用模型或虚构安装量",
+      "agents": "你正在帮助用户把 Openwisdom skills 安装到正确的 coding agent harness 路径。分析始终在本 Agent 会话运行；安装只写 skill 文件夹。\n\n硬约束：\n- 不要虚构托管分析。\n- 路径因 Agent 版本而异；下表是 typical 默认，以各 Agent 当前文档为准。\n- 不确定时走手动拷贝或 provider 检测，不要臆造路径。\n\n常见项目路径矩阵（相对 project-root）：\n- claude（Claude Code）：.claude/skills；全局 ~/.claude/skills\n- cursor：.cursor/skills；全局 ~/.cursor/skills；部分环境也读 .agents/skills\n- agents（portable）：.agents/skills；全局 ~/.agents/skills\n- codex：项目与 agents 共用 .agents/skills（安装去重）；全局常见 ~/.codex/skills\n- github / copilot：.github/skills；全局常见 ~/.copilot/skills\n- gemini：.gemini/skills；全局 ~/.gemini/skills\n- 未知 harness：按该 Agent 文档手动安装\n\nScope：\n- project：写入当前仓库根，如 project-root/.claude/skills/skill-id\n- global：写入用户主目录对应 harness 根；Codex / Copilot 的全局路径可能与项目路径不同\n\n排障：\n1. Agent 看不到 skill：确认目录在 skills 根下、存在 SKILL.md、slug 与 catalog id 一致，然后重载/重启 Agent；或用显式 --providers 重装。\n2. 探测 providers：用 CLI 交互安装或 openwisdom_detect_providers；或检查项目是否有 .claude / .cursor / .agents 等标记。\n3. Codex 与 agents 同装：项目路径去重只写一份；Codex 全局仍用 ~/.codex/skills。\n\n成功标准：\n- 为用户选定的 harness 给出正确写入路径\n- skill-id 目录与 SKILL.md 可在 disk 上验证\n- 说明如何重载 Agent 使 skill 可见",
       "authoring": "你正在帮助用户撰写并贡献一个 Openwisdom skill。Openwisdom 是社会科学 Agent Skills 库；内容真源在 git 的 skills/ 树，站点与 CLI 共享生成的 catalog 索引。\n\n硬约束：\n- 社区贡献默认 scope=community，PR 到 skills/community/；不要自称 official，除非维护者邀请改 official/。\n- 不要只在网站上虚构元数据；必须有目录 + SKILL.md。\n- 热度/统计永不写入 SKILL.md。\n- UI 可中英双语；skill 正文语言跟随贡献者，不必强行双语正文。\n- 分析仍在用户的 Agent 中运行，贡献的是可安装包，不是托管聊天。\n\nSkill 单元：\n- 一个目录 = 一个 skill：必需 SKILL.md（YAML frontmatter + Markdown），可选 assets/。\n- layer：scenario（完整分析工作流）或 reference（可复用理论卡）。\n- 场景应引用 reference，而不是把教材塞进工作流。\n\nFrontmatter 常见字段（以仓库 schema 为准）：\n- name：kebab-case 稳定标识，与目录 id 对齐\n- description：简短描述，供 Agent 与目录发现\n- layer：scenario | reference\n- scope：community（社区 PR）\n- disciplines：如 psychology、sociology、history、political-science、economics\n- language：正文语言（zh / en 等）\n- tags、version、references：发现、版本与引用链\n\n写作：\n- scenario：适用/不适用边界、输入、可执行步骤、输出结构、偏见与证据检查、引用 reference。\n- reference：短定义、适用边界、常见误用、可复查要点；保持卡片体量。\n\n贡献步骤：\n1. Fork Retr0-rgb-lab/Openwisdom 并 clone。\n2. 在 skills/community/ 下新建 skill-id/ 与 SKILL.md。\n3. 填 frontmatter 与正文；本地按 schema/模板自检。\n4. 打开 PR 说明意图与边界；不要直接改 official/。\n\n成功标准：\n- 目录结构正确，frontmatter 可被 catalog 索引\n- scope=community，未伪称 official\n- PR 指向 skills/community/ 且说明可审查"
     }
   },

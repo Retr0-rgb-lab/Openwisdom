@@ -80,7 +80,7 @@
     "copyFailed": "Copy failed — select the command and copy manually.",
     "github": "View on GitHub",
     "backToCatalog": "Back to catalog",
-    "installNote": "CLI is not on npm yet. You can copy the command for later."
+    "installNote": "CLI is available via npx openwisdom."
   },
   "empty": {
     "title": "No matching skills",

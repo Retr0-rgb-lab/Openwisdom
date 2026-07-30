@@ -1,11 +1,10 @@
 {
   "name": "openwisdom",
   "version": "0.1.0",
-  "private": true,
-  "description": "Openwisdom CLI — social-science agent skills package manager",
+  "description": "Openwisdom CLI — install social-science agent skills into Claude Code, Cursor, and other harnesses (package manager only, no LLM)",
   "type": "module",
   "bin": {
-    "openwisdom": "./dist/cli.js"
+    "openwisdom": "dist/cli.js"
   },
   "files": [
     "dist",
@@ -22,18 +21,41 @@
     "test": "vitest run",
     "dev": "tsup --watch"
   },
+  "keywords": [
+    "openwisdom",
+    "agent-skills",
+    "claude-code",
+    "cursor",
+    "skills",
+    "cli",
+    "social-science"
+  ],
+  "author": "Openwisdom contributors",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Retr0-rgb-lab/Openwisdom.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://openwisdom.vercel.app",
+  "bugs": {
+    "url": "https://github.com/Retr0-rgb-lab/Openwisdom/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@clack/prompts": "^0.11.0",
+    "citty": "^0.1.6"
+  },
+  "devDependencies": {
     "@openwisdom/core": "workspace:*",
     "@openwisdom/providers": "workspace:*",
     "@openwisdom/schema": "workspace:*",
-    "citty": "^0.1.6",
-    "zod": "^3.25.76"
-  },
-  "devDependencies": {
     "@types/node": "^24.13.3",
     "tsup": "^8.5.0",
     "typescript": "^5.9.3",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "zod": "^3.25.76"
   }
 }

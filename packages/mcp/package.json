@@ -1,11 +1,10 @@
 {
   "name": "openwisdom-mcp",
-  "version": "0.1.0",
-  "private": true,
-  "description": "Openwisdom MCP server — social-science agent skills package manager (stdio)",
+  "version": "0.1.1",
+  "description": "Openwisdom MCP server — stdio skill package manager for coding agents (search/list/get/install/update, no LLM)",
   "type": "module",
   "bin": {
-    "openwisdom-mcp": "./dist/mcp.js"
+    "openwisdom-mcp": "dist/mcp.js"
   },
   "files": [
     "dist",
@@ -22,14 +21,36 @@
     "test": "vitest run",
     "dev": "tsup --watch"
   },
+  "keywords": [
+    "openwisdom",
+    "mcp",
+    "agent-skills",
+    "model-context-protocol",
+    "claude-code",
+    "cursor"
+  ],
+  "author": "Openwisdom contributors",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Retr0-rgb-lab/Openwisdom.git",
+    "directory": "packages/mcp"
+  },
+  "homepage": "https://openwisdom.vercel.app",
+  "bugs": {
+    "url": "https://github.com/Retr0-rgb-lab/Openwisdom/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@modelcontextprotocol/server": "^2.0.0",
-    "@openwisdom/core": "workspace:*",
-    "@openwisdom/providers": "workspace:*",
-    "@openwisdom/schema": "workspace:*",
     "zod": "^4.2.0"
   },
   "devDependencies": {
+    "@openwisdom/core": "workspace:*",
+    "@openwisdom/providers": "workspace:*",
+    "@openwisdom/schema": "workspace:*",
     "@types/node": "^24.13.3",
     "tsup": "^8.5.0",
     "typescript": "^5.9.3",

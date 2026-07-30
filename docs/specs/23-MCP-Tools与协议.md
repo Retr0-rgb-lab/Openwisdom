@@ -9,7 +9,7 @@
 
 ## 1. 设计原则
 
-1. **工具少而稳** — v1 控制在 **5–6** 个；命名带 `openwisdom_` 前缀防聚合冲突。  
+1. **工具少而稳** — v1 控制在 **5–6** 个（含 `openwisdom_get` 后为 **6**）；命名带 `openwisdom_` 前缀防聚合冲突。  
 2. **参数可机读** — 每个字段 Zod + `.describe()`；枚举优于自由字符串。  
 3. **读写分离** — 读：`readOnlyHint: true`；写：显式 providers + 可选 dryRun/force。  
 4. **错误可重试** — 缺参返回 `isError` 文本，说明应补哪些字段（对齐 Spec 18 非 TTY）。  
@@ -46,24 +46,26 @@
 
 | | |
 |--|--|
-| **意图** | 在 catalog 中搜索可安装 skill |
+| **意图** | 在 **可安装** catalog 中按场景/关键词搜索 skill（Web Official 同源） |
 | **CLI 对应** | `openwisdom search` |
 | **Annotations** | `readOnlyHint: true`, `openWorldHint: true`（若 refresh）, `destructiveHint: false` |
+| **增强** | Spec **31** — 场景搜 → get → install 闭环 |
 
 **Input：**
 
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
-| `query` | string | 是 | 自由文本 |
+| `query` | string | 条件 | 自由文本；**可为空**当且仅当提供了 layer/scope/discipline 任一 filter |
 | `layer` | `scenario` \| `reference` | 否 | 层过滤 |
 | `scope` | `official` \| `community` | 否 | 出处过滤 |
 | `discipline` | string | 否 | 学科 id |
 | `limit` | int 1–50 | 否 | 默认 20 |
+| `detail` | `card` \| `full` | 否 | 默认 card（description 可截断）；full 不截断 |
 | `refresh` | boolean | 否 | 默认 false；先尝试拉远程索引 |
 
 **Output（语义）：**  
-`skills[]`：`id`, `name`, `layer`, `scope`, `disciplines`, `language`, `version`, `description`（截断）  
-空结果不算 error。
+`skills[]`：`id`, `name`, `layer`, `scope`, `disciplines`, `language`, `version`, `description`, **`tags`**, **`references`**, **`repoPath`**, **`updated`**  
+空结果不算 error。无 query 且无 filter → `isError` 并提示 list 或补 query。
 
 ---
 
@@ -71,9 +73,10 @@
 
 | | |
 |--|--|
-| **意图** | 列出 catalog 可用 或 本机已安装 |
+| **意图** | 列出 catalog **全库**可用 或 本机已安装（React Bits `list_components` 对等） |
 | **CLI 对应** | `openwisdom list` / `list --installed` |
 | **Annotations** | `readOnlyHint: true` |
+| **增强** | Spec **31** |
 
 **Input：**
 
@@ -81,11 +84,16 @@
 |------|------|------|------|
 | `mode` | `available` \| `installed` | 否 | 默认 `available` |
 | `providers` | string[] | mode=installed 时建议 | 过滤 harness；缺省扫 P0 检测集 |
-| `scope` | `project` \| `global` | 否 | 默认 project（installed） |
+| `scope` | `project` \| `global` | 否 | installed：写盘 scope；available：catalog official\|community filter（可选） |
+| `layer` | `scenario` \| `reference` | 否 | **仅 available** |
+| `discipline` | string | 否 | **仅 available** |
+| `q` | string | 否 | **仅 available** 可选自由文本 |
+| `detail` | `card` \| `full` | 否 | 默认 card；tags/references **始终返回** |
+| `limit` | int | 否 | available 默认覆盖全库（≥50 或全量） |
 | `cwd` | string | 否 | project 根 |
 
 **Output：**  
-- available：与 search 类似的简表（可无 query，全量或 featured 优先）  
+- available：与 search 同结构的卡片数组（**可无 query 扫全库**）  
 - installed：`skillId`, `provider`, `path`, `scope`
 
 ---
@@ -154,7 +162,37 @@
 
 ---
 
-### 3.6 明确不暴露
+### 3.6 `openwisdom_get`（只读 · Spec 31）
+
+| | |
+|--|--|
+| **意图** | 打开单个 **可安装** skill 的完整索引行 + **SKILL.md 正文**（装前可读，对齐 React Bits `get_component`） |
+| **CLI 对应** | 无强制；语义 = 读将安装的 SKILL.md |
+| **Annotations** | `readOnlyHint: true`, `destructiveHint: false` |
+
+**Input：**
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `skill` | string | **是** | catalog id 或 name |
+| `includeBody` | boolean | 否 | 默认 true |
+| `maxBodyChars` | int | 否 | 默认 32000；截断时 `body.truncated=true` |
+
+**Output：**  
+`ok`, `installable: true`, `catalogSource`, `skill`（完整 CatalogSkill）, `body?`（`path`, `content`, `truncated`, `chars`）  
+
+**Error：** 未知 skill；skills 树/snapshot 不可读。
+
+**数据源：** `loadCatalog` + `locateSkillDir` + 读盘 `SKILL.md`（包内 `skills-snapshot` 或 `OPENWISDOM_SKILLS_ROOT`）。**禁止**伪造正文。
+
+**推荐 Agent 流：**  
+`list|search` → **`get`** → `detect_providers` → `install(dryRun)` → `install` → 在 Agent 中调用 skill（非 MCP run）。
+
+详见 [31-MCP-Official目录浏览-SPE](./31-MCP-Official目录浏览-SPE.md)。
+
+---
+
+### 3.7 明确不暴露
 
 | 禁止 | 原因 |
 |------|------|
@@ -162,6 +200,7 @@
 | 自由 `write_file` / `exec` | 安全 |
 | `uninstall` | CLI v1 无；保持对称 |
 | 修改 skill 正文 / 写热度进 frontmatter | Spec 06 |
+| 将网页 Curated discovery 静默当可安装 catalog | 诚实分面；见 Spec 31 非目标 |
 
 ---
 

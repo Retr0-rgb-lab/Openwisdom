@@ -13,19 +13,24 @@ Uses **`@modelcontextprotocol/server` v2** (`McpServer` + `StdioServerTransport`
 
 | Tool | Role |
 |------|------|
-| `openwisdom_search` | Search catalog |
-| `openwisdom_list` | List available or installed |
+| `openwisdom_list` | Browse full installable Official catalog (or installed) |
+| `openwisdom_search` | Search catalog by keywords / layer / scope / discipline |
+| `openwisdom_get` | Open one skill: catalog row + **SKILL.md body** (read before install) |
 | `openwisdom_install` | Install skills (requires `providers[]`) |
 | `openwisdom_update` | Refresh installed skills |
 | `openwisdom_detect_providers` | Detect harness paths (read-only) |
 
+Covers the **installable Official** library (same registry source as the website Official filter). Not a hosted analyzer — no `run` / LLM tools.
+
 Recommended agent flow:
 
 ```text
-openwisdom_detect_providers
-  → openwisdom_search / openwisdom_list
+openwisdom_list | openwisdom_search
+  → openwisdom_get(skill)              // read SKILL.md before install
+  → openwisdom_detect_providers
   → openwisdom_install(dryRun: true)   // optional
-  → openwisdom_install(dryRun: false)
+  → openwisdom_install
+  → (use the skill in the Agent session — not via MCP)
 ```
 
 ## Run locally (monorepo)

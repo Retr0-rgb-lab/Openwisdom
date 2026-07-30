@@ -80,7 +80,7 @@
     "copyFailed": "复制失败，请手动选择命令复制。",
     "github": "在 GitHub 查看",
     "backToCatalog": "返回目录",
-    "installNote": "CLI 尚未上架 npm，可先复制命令。"
+    "installNote": "CLI 已可通过 npx openwisdom 使用。"
   },
   "empty": {
     "title": "没有匹配的 skill",

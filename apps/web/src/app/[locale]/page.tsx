@@ -1,10 +1,34 @@
-import { useTranslations } from "next-intl";
-import { setRequestLocale } from "next-intl/server";
+import type { Metadata } from "next";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { use } from "react";
-import { Button } from "@/components/ui/button";
+import { ContributeTeaser } from "@/components/home/ContributeTeaser";
+import { DisciplineGrid } from "@/components/home/DisciplineGrid";
+import { FinalCta } from "@/components/home/FinalCta";
+import { HarnessRow } from "@/components/home/HarnessRow";
+import { Hero } from "@/components/home/Hero";
+import { InstallPaths } from "@/components/home/InstallPaths";
+import { LayerDiagram } from "@/components/home/LayerDiagram";
+import { Provenance } from "@/components/home/Provenance";
+import { ScenarioCards } from "@/components/home/ScenarioCards";
 
-// Temporary test page (Plan A Task A.6); Plan C replaces it with the real
-// nine-module Home composition.
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "home.metadata" });
+  return {
+    title: t("title"),
+    description: t("description"),
+    openGraph: {
+      title: t("title"),
+      description: t("description"),
+    },
+  };
+}
+
+// Home composition (specs/03 §4.1): nine modules in narrative order.
 export default function HomePage({
   params,
 }: {
@@ -12,13 +36,27 @@ export default function HomePage({
 }) {
   const { locale } = use(params);
   setRequestLocale(locale);
-  const t = useTranslations("shell");
 
   return (
-    <main className="mx-auto flex max-w-3xl flex-col items-start gap-6 px-6 py-24">
-      <h1 className="font-serif text-display">{t("meta.siteName")}</h1>
-      <p className="text-body text-ink-muted">{t("meta.tagline")}</p>
-      <Button>{t("test.button")}</Button>
-    </main>
+    <>
+      {/* ① Hero: three pillars + install object + orientation mnemonic */}
+      <Hero />
+      {/* ② Harness trust band */}
+      <HarnessRow />
+      {/* ③ Three scenario skills (asymmetric) */}
+      <ScenarioCards />
+      {/* ④ Layered model: scenario → reference */}
+      <LayerDiagram />
+      {/* ⑤ Five discipline entries */}
+      <DisciplineGrid />
+      {/* ⑥ Install paths */}
+      <InstallPaths />
+      {/* ⑦ Official vs community */}
+      <Provenance />
+      {/* ⑧ Contribute teaser */}
+      <ContributeTeaser />
+      {/* ⑨ Bottom CTA */}
+      <FinalCta />
+    </>
   );
 }

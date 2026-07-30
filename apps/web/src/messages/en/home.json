@@ -1,1 +1,142 @@
-{}
+{
+  "metadata": {
+    "title": "Open-source social-science Agent Skills library",
+    "description": "Macro-scan, personal-anchor, metacognition-audit — social-science methods that run inside your own agent. One command to install; analysis runs in your agent, not on this site."
+  },
+  "hero": {
+    "eyebrow": "Open-source · Social-science agent skills",
+    "title1": "See the structure.",
+    "title2": "Find your anchor.",
+    "title3": "Audit your thinking.",
+    "subtitle": "Openwisdom packs methods from psychology, sociology, history, political science, and economics into agent skills — macro-scan, personal-anchor, and metacognition-audit. Install them into the agent you already use. Analysis runs in your agent, not on this site.",
+    "browseSkills": "Browse the Skills catalog",
+    "diagram": {
+      "macro": "Macro",
+      "anchor": "Anchor",
+      "meta": "Metacognition",
+      "youAreHere": "You are here",
+      "ariaLabel": "Coordinate-field diagram: three value axes — macro, anchor, metacognition — with a copper datum cross marking your position"
+    }
+  },
+  "install": {
+    "tabs": {
+      "cli": "CLI",
+      "github": "GitHub",
+      "manual": "Manual"
+    },
+    "cliNote": "Interactively pick the agents to install into — project-scoped or global.",
+    "githubNote": "The skill source files are the single source of truth. Browse, clone, or download the repo directly.",
+    "githubCta": "Open the GitHub repo",
+    "manualNote": "Or clone the repo and copy the skill directories you need into your harness's skills directory.",
+    "copied": "Copied to clipboard"
+  },
+  "harness": {
+    "label": "One command, into the agent you already use",
+    "items": ["Claude Code", "Cursor", "Codex", "Gemini CLI", "GitHub Copilot", "Grok"]
+  },
+  "scenarios": {
+    "eyebrow": "Scenario skills",
+    "title": "Three scenarios, three acts of orientation",
+    "subtitle": "Each scenario is a runnable analysis workflow: when to use it, step-by-step inquiry, output structure, bias checkpoints.",
+    "layerBadge": "Scenario",
+    "whenLabel": "When to use",
+    "cta": "View in catalog",
+    "macroScan": {
+      "name": "Macro Scan",
+      "id": "macro-scan",
+      "tagline": "Break a situation, an industry, or a system into structure: actors, incentives, constraints, and trajectories.",
+      "when": "When a complex situation demands seeing the whole board before judging.",
+      "disciplines": ["poli", "econ", "socio"]
+    },
+    "personalAnchor": {
+      "name": "Personal Anchor",
+      "id": "personal-anchor",
+      "tagline": "Place your situation on historical and social coordinates: which curve you are on, which stratum you stand on.",
+      "when": "For long-horizon choices — career, city, direction — when you need to know where you stand.",
+      "disciplines": ["history", "socio"]
+    },
+    "metacognition": {
+      "name": "Metacognition Audit",
+      "id": "metacognition-audit",
+      "tagline": "A checkup for your thinking: expose biases, blind spots, and evidence gaps instead of polishing conclusions.",
+      "when": "After a conclusion forms and before it ships, when thought quality matters.",
+      "disciplines": ["psych"]
+    }
+  },
+  "layers": {
+    "eyebrow": "Layered content",
+    "title": "Scenarios cite theory; theory supports scenarios",
+    "description": "Scenario skills cite discipline reference cards in their workflows — each card defines one theory or method, its boundaries, and common misuse. Knowledge is layered and composable, not one monolithic prompt.",
+    "scenarioLabel": "Scenario skills",
+    "scenarioItems": ["macro-scan", "personal-anchor", "metacognition-audit"],
+    "referenceLabel": "Discipline references",
+    "cites": "cite",
+    "references": ["Prospect theory", "Elite theory", "Path dependence", "Collective action", "Confirmation bias"]
+  },
+  "disciplines": {
+    "eyebrow": "Discipline references",
+    "title": "Five disciplines, the skeleton of the library",
+    "subtitle": "Each discipline ships official reference cards that scenarios actually cite — no empty taxonomy.",
+    "psych": { "name": "Psychology", "desc": "How individuals perceive, decide, and err" },
+    "socio": { "name": "Sociology", "desc": "How groups, structures, and institutions shape behavior" },
+    "history": { "name": "History", "desc": "Path dependence and cycles in the long run" },
+    "poli": { "name": "Political Science", "desc": "Power, governance, and collective action" },
+    "econ": { "name": "Economics", "desc": "Incentives, scarcity, and equilibrium" }
+  },
+  "paths": {
+    "eyebrow": "Install",
+    "title": "Three paths, one source of truth",
+    "subtitle": "Whichever path you take, the content comes from the same GitHub repository.",
+    "primary": "Primary",
+    "cli": {
+      "title": "Openwisdom CLI",
+      "desc": "One command, interactively installed into multiple agents.",
+      "cta": "Visit the install hub"
+    },
+    "github": {
+      "title": "GitHub repo",
+      "desc": "Browse the source, clone, or download a release.",
+      "cta": "Open the repo"
+    },
+    "manual": {
+      "title": "Manual copy",
+      "desc": "Download a zip or copy skill directories into your harness.",
+      "cta": "See the manual path"
+    }
+  },
+  "provenance": {
+    "eyebrow": "Provenance",
+    "title": "Official and community: layers, not two products",
+    "official": {
+      "badge": "Official",
+      "title": "Core-maintained",
+      "points": [
+        "The three scenarios and five-discipline references tied to the product narrative",
+        "A higher bar for quality, style, and citability"
+      ]
+    },
+    "community": {
+      "badge": "Community",
+      "title": "Community-grown",
+      "points": [
+        "Merged into community/ via GitHub PR",
+        "Spec and basic review bar, growing with the community"
+      ]
+    }
+  },
+  "contribute": {
+    "eyebrow": "Contribute",
+    "title": "Contribute a reference card or a scenario",
+    "step1": "Fork the repo",
+    "step2": "Write SKILL.md from the template",
+    "step3": "Open a PR to community/",
+    "note": "No web upload or moderation backend in v1 — everything goes through GitHub PRs.",
+    "cta": "Read the contribute guide"
+  },
+  "finalCta": {
+    "title": "Install macro-scan into your agent first",
+    "description": "Start with one command. Then trigger macro-scan in your agent and run your first structured analysis.",
+    "browseSkills": "Browse the Skills catalog",
+    "github": "GitHub"
+  }
+}

@@ -1,1 +1,142 @@
-{}
+{
+  "metadata": {
+    "title": "社会科学 Agent Skills 开源库",
+    "description": "宏观扫描、个人锚点、元认知体检——把社会科学方法装进你自己的 Agent。一条命令安装，分析在你的 Agent 中运行，不在本站。"
+  },
+  "hero": {
+    "eyebrow": "开源 · 社会科学 Agent Skills 库",
+    "title1": "宏观看得清，",
+    "title2": "锚点找得准，",
+    "title3": "偏见照得见。",
+    "subtitle": "Openwisdom 把心理学、社会学、历史学、政治学、经济学的方法打包成 Agent Skills：宏观扫描、个人锚点、元认知体检。装进你已经在用的 Agent，分析在你的 Agent 中运行，不在本站。",
+    "browseSkills": "浏览 Skills 目录",
+    "diagram": {
+      "macro": "宏观",
+      "anchor": "锚点",
+      "meta": "元认知",
+      "youAreHere": "你在这里",
+      "ariaLabel": "坐标场示意图：宏观、锚点、元认知三条价值轴，铜色 datum 十字标记你的位置"
+    }
+  },
+  "install": {
+    "tabs": {
+      "cli": "CLI",
+      "github": "GitHub",
+      "manual": "手动"
+    },
+    "cliNote": "交互式选择要安装的 Agent，支持项目级或全局安装。",
+    "githubNote": "skill 源文件即真相源。直接浏览、clone 或下载仓库。",
+    "githubCta": "打开 GitHub 仓库",
+    "manualNote": "也可以 clone 仓库后，把需要的 skill 目录手动复制到你的 harness skills 目录。",
+    "copied": "已复制到剪贴板"
+  },
+  "harness": {
+    "label": "一条命令，装进你已经在用的 Agent",
+    "items": ["Claude Code", "Cursor", "Codex", "Gemini CLI", "GitHub Copilot", "Grok"]
+  },
+  "scenarios": {
+    "eyebrow": "场景 Skills",
+    "title": "三个场景，三种定位动作",
+    "subtitle": "每个场景是一条可执行的分析流程：何时使用、分步提问、输出结构、偏见检查点。",
+    "layerBadge": "场景",
+    "whenLabel": "何时用",
+    "cta": "在目录中查看",
+    "macroScan": {
+      "name": "宏观扫描",
+      "id": "macro-scan",
+      "tagline": "把一个局势、行业或系统拆成结构：行动者、激励、约束与趋势。",
+      "when": "面对复杂局面，需要先看清全貌再做判断时。",
+      "disciplines": ["poli", "econ", "socio"]
+    },
+    "personalAnchor": {
+      "name": "个人锚点",
+      "id": "personal-anchor",
+      "tagline": "把个人处境放进历史与社会的坐标：你在哪条曲线上，脚下是哪一层。",
+      "when": "做长期选择——职业、城市、方向——想知道自己身处何处时。",
+      "disciplines": ["history", "socio"]
+    },
+    "metacognition": {
+      "name": "元认知体检",
+      "id": "metacognition-audit",
+      "tagline": "给一次思考做体检：暴露偏见、盲点与证据缺口，而不是给结论抛光。",
+      "when": "重要结论形成之后、落地之前，想检验思考质量时。",
+      "disciplines": ["psych"]
+    }
+  },
+  "layers": {
+    "eyebrow": "分层内容",
+    "title": "场景引用理论，理论支撑场景",
+    "description": "场景 skill 在流程中引用学科 reference 卡片——每张卡是一个理论或方法的定义、适用边界与常见误用。知识分层可组合，而不是一整块提示词。",
+    "scenarioLabel": "场景 Skills",
+    "scenarioItems": ["macro-scan", "personal-anchor", "metacognition-audit"],
+    "referenceLabel": "学科 References",
+    "cites": "引用",
+    "references": ["前景理论", "精英理论", "路径依赖", "集体行动", "确认偏误"]
+  },
+  "disciplines": {
+    "eyebrow": "学科 References",
+    "title": "五大学科，图书馆的骨架",
+    "subtitle": "每个学科都有 official reference 卡片，支撑场景引用，而非空壳分类。",
+    "psych": { "name": "心理学", "desc": "个体如何感知、决策与产生偏差" },
+    "socio": { "name": "社会学", "desc": "群体、结构与制度如何塑造行为" },
+    "history": { "name": "历史学", "desc": "长时段中的路径依赖与周期" },
+    "poli": { "name": "政治学", "desc": "权力、治理与集体行动" },
+    "econ": { "name": "经济学", "desc": "激励、稀缺与均衡" }
+  },
+  "paths": {
+    "eyebrow": "安装",
+    "title": "三条路径，同一个真相源",
+    "subtitle": "无论哪条路径，内容都来自同一个 GitHub 仓库。",
+    "primary": "主路径",
+    "cli": {
+      "title": "Openwisdom CLI",
+      "desc": "一条命令，交互式装进多个 Agent。",
+      "cta": "查看安装中枢"
+    },
+    "github": {
+      "title": "GitHub 仓库",
+      "desc": "浏览源码、clone、下载 release。",
+      "cta": "打开仓库"
+    },
+    "manual": {
+      "title": "手动复制",
+      "desc": "下载 zip 或复制 skill 目录到你的 harness。",
+      "cta": "了解手动路径"
+    }
+  },
+  "provenance": {
+    "eyebrow": "来源分层",
+    "title": "Official 与 Community：分层，而非两个产品",
+    "official": {
+      "badge": "Official",
+      "title": "核心维护",
+      "points": [
+        "与产品叙事强绑定的三个场景与五学科 reference",
+        "更高的质量、风格与可引用性门槛"
+      ]
+    },
+    "community": {
+      "badge": "Community",
+      "title": "社区生长",
+      "points": [
+        "经 GitHub PR 合入 community/",
+        "规范与基础审查门槛，随社区共同生长"
+      ]
+    }
+  },
+  "contribute": {
+    "eyebrow": "贡献",
+    "title": "贡献一张理论卡，或一个场景",
+    "step1": "Fork 仓库",
+    "step2": "用模板撰写 SKILL.md",
+    "step3": "PR 到 community/",
+    "note": "v1 不做网页直传与审核后台，一切经由 GitHub PR。",
+    "cta": "查看贡献引导"
+  },
+  "finalCta": {
+    "title": "先把宏观扫描装进你的 Agent",
+    "description": "一条命令开始。装好后，在你的 Agent 里触发 macro-scan，跑通第一次结构化分析。",
+    "browseSkills": "浏览 Skills 目录",
+    "github": "GitHub"
+  }
+}

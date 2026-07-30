@@ -3,6 +3,7 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
+import { SiteBackdrop } from "@/components/site/SiteBackdrop";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { Toaster } from "@/components/ui/sonner";
@@ -35,10 +36,14 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider>
-      <SiteHeader />
-      <main className="flex-1">{children}</main>
-      <SiteFooter />
-      <Toaster />
+      {/* Fixed field under chrome; path-aware static/drift via usePathname */}
+      <SiteBackdrop />
+      <div className="relative z-10 flex min-h-screen flex-col">
+        <SiteHeader />
+        <main className="flex-1">{children}</main>
+        <SiteFooter />
+        <Toaster />
+      </div>
     </NextIntlClientProvider>
   );
 }

@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
  * Harness trust strip (specs/08 C5 LogoLoop).
  * Animated only on md+ when motion allowed; cycle ≥36s; hover pauses.
  * Mobile / prefers-reduced-motion → static wrap row.
+ * Duplicate marquee row is aria-hidden so SR hears each name once.
  */
 export function LogoLoop({
   items,
@@ -23,7 +24,7 @@ export function LogoLoop({
       {items.map((item) => (
         <span
           key={`${keyPrefix}-${item}`}
-          className="mx-8 font-sans text-sm font-medium tracking-wide whitespace-nowrap text-ink-muted md:text-[0.95rem]"
+          className="mx-8 font-sans text-sm font-medium tracking-wide whitespace-nowrap text-ink-muted/70 md:text-[0.95rem]"
         >
           {item}
         </span>
@@ -52,7 +53,7 @@ export function LogoLoop({
         {items.map((item) => (
           <span
             key={item}
-            className="font-sans text-sm font-medium tracking-wide text-ink-muted"
+            className="font-sans text-sm font-medium tracking-wide text-ink-muted/70"
           >
             {item}
           </span>

@@ -1,24 +1,46 @@
 "use client";
 
-import { DotField } from "@/components/bits/DotField";
+import { ShapeGrid } from "@/components/bits/ShapeGrid";
 import { Noise } from "@/components/bits/Noise";
+import { usePathname } from "@/i18n/navigation";
 
 /**
- * Global page field (Spec 08 MUST):
- * DotField (HEAVY ambient) + static Noise 3–7%.
- * Fixed under all routes; content sits in relative z-10 chrome.
- * RM: DotField freezes to one frame (see DotField).
+ * Global field: React Bits Shape Grid
+ * https://reactbits.dev/backgrounds/shape-grid
+ *
+ * Animated + cursor (same as Home) on:
+ *   /  ·  /skills  ·  /skills/*
+ * Other routes: static grid, no hover fill.
+ *
+ * next-intl usePathname strips locale prefix.
  */
+function usesLiveShapeGrid(pathname: string): boolean {
+  const p = pathname || "/";
+  if (p === "/" || p === "") return true;
+  if (p === "/skills" || p.startsWith("/skills/")) return true;
+  return false;
+}
+
 export function SiteBackdrop() {
+  const pathname = usePathname();
+  const live = usesLiveShapeGrid(pathname);
+
   return (
     <div
       aria-hidden
       className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-field"
     >
-      {/* HEAVY #1 — quiet drift; opacity keeps field readable */}
-      <DotField className="opacity-[0.55]" />
-      {/* Texture only — not a heavy */}
-      <Noise opacity={0.055} className="z-[1]" />
+      <ShapeGrid
+        className="opacity-50"
+        speed={0.14}
+        direction="right"
+        shape="square"
+        squareSize={40}
+        hoverTrailAmount={live ? 5 : 0}
+        static={!live}
+        interactive={live}
+      />
+      <Noise opacity={0.04} className="z-[1]" />
     </div>
   );
 }

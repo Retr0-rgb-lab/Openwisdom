@@ -15,6 +15,16 @@
     "openMenu": "Open navigation menu",
     "menuTitle": "Navigation"
   },
+  "search": {
+    "placeholder": "Search skills…",
+    "openAria": "Open search (Ctrl+K or ⌘K)",
+    "dialogTitle": "Search skills",
+    "dialogDescription": "Search skills by name, summary, or tags, or jump to a site page.",
+    "groupSkills": "Skills",
+    "groupJump": "Jump to",
+    "searchCatalog": "Search catalog for “{q}”",
+    "noSkills": "No matching skills. Use Search catalog below."
+  },
   "localeSwitcher": {
     "label": "Interface language",
     "shortZh": "中",

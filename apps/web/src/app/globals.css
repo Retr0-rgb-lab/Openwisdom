@@ -27,6 +27,7 @@
     --color-ink: var(--ow-ink);
     --color-ink-muted: var(--ow-ink-muted);
     --color-line: var(--ow-line);
+    --color-line-strong: var(--ow-line-strong);
     --color-ow-primary: var(--ow-primary);
     --color-primary-pressed: var(--ow-primary-pressed);
     --color-structure: var(--ow-structure);
@@ -39,6 +40,7 @@
     --color-history: var(--ow-history);
     --color-poli: var(--ow-poli);
     --color-econ: var(--ow-econ);
+    --color-philosophy: var(--ow-philosophy);
     /* One-release aliases: copper/insight → signal/structure (do not use for new code) */
     --color-datum: var(--ow-signal);
     --color-datum-pressed: var(--ow-primary-pressed);
@@ -92,6 +94,9 @@
     --ow-ink: #0F1724;
     --ow-ink-muted: #5A6570;
     --ow-line: #D5DCE2;
+    /* Elevation: slightly ink-darkened line for stronger borders */
+    --ow-line-strong: color-mix(in oklab, var(--ow-ink) 14%, var(--ow-line));
+    /* panel: shadow-[0_1px_0_rgb(15_23_36/0.04),0_4px_14px_-2px_rgb(15_23_36/0.08)] */
     --ow-primary: #1C4BD1;
     --ow-primary-pressed: #153A9E;
     --ow-structure: #2E6975;
@@ -105,6 +110,8 @@
     --ow-history: #5C7A8A;
     --ow-poli: #3D4F8C;
     --ow-econ: #2E6975;
+    /* Philosophy — sage stone; not bright purple */
+    --ow-philosophy: #5E6A4E;
     /* Temporary aliases (one release): copper datum → signal; insight → structure */
     --ow-datum: var(--ow-signal);
     --ow-datum-pressed: var(--ow-primary-pressed);
@@ -166,6 +173,7 @@
     --ow-history: #7A96A6;
     --ow-poli: #6B7AB0;
     --ow-econ: #5A9AAA;
+    --ow-philosophy: #8A9678;
     --ow-datum: var(--ow-signal);
     --ow-datum-pressed: var(--ow-primary-pressed);
     --ow-insight: var(--ow-structure);
@@ -208,7 +216,7 @@
   }
   body {
     /* Overlay Atlas field is the global canvas (Spec 07/08).
-       DotField + Noise sit in SiteBackdrop; sections use surface/transparent. */
+       ShapeGrid + Noise sit in SiteBackdrop; sections use surface/transparent. */
     @apply bg-field text-ink antialiased;
   }
 }

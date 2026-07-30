@@ -8,19 +8,19 @@ export function HarnessRow() {
   const items = t.raw("items") as string[];
 
   return (
-    <section className="border-b border-line bg-surface/92">
+    <section className="border-b border-line bg-surface">
       <Reveal>
         <div className="mx-auto flex max-w-5xl flex-col items-center gap-4 px-6 py-12 text-center md:gap-5 md:py-14">
           <h2 className="font-serif text-xl leading-snug font-semibold tracking-[-0.02em] text-ink md:text-2xl">
             {t("label")}
           </h2>
           {t("subtitle") ? (
-            <p className="max-w-md text-sm leading-relaxed text-ink-muted">
+            <p className="max-w-md text-sm leading-relaxed text-ink-muted/85">
               {t("subtitle")}
             </p>
           ) : null}
           <LogoLoop items={items} className="w-full" />
-          <p className="font-mono text-[0.7rem] tracking-wide text-ink-muted">
+          <p className="font-mono text-[0.7rem] tracking-wide text-ink-muted/65">
             {t("paths")}
           </p>
         </div>

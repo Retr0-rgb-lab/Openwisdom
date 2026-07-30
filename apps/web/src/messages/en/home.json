@@ -128,14 +128,15 @@
     }
   },
   "disciplines": {
-    "title": "Five disciplines, the skeleton of the library",
-    "subtitle": "Each discipline ships official reference cards that scenarios actually cite — no empty taxonomy.",
-    "edgeNote": "Cite edges: macro-scan → political science, economics, sociology; personal-anchor → history, sociology; metacognition-audit → psychology.",
+    "title": "Six disciplines, the skeleton of the library",
+    "subtitle": "Each discipline ships references and curated external skills that scenarios can cite — no empty taxonomy.",
+    "edgeNote": "Cite edges: macro-scan → political science, economics, sociology; personal-anchor → history, sociology; metacognition-audit → psychology. Philosophy supports critique and conceptual clarity.",
     "psych": { "name": "Psychology", "desc": "How individuals perceive, decide, and err" },
     "socio": { "name": "Sociology", "desc": "How groups, structures, and institutions shape behavior" },
     "history": { "name": "History", "desc": "Path dependence and cycles in the long run" },
     "poli": { "name": "Political Science", "desc": "Power, governance, and collective action" },
-    "econ": { "name": "Economics", "desc": "Incentives, scarcity, and equilibrium" }
+    "econ": { "name": "Economics", "desc": "Incentives, scarcity, and equilibrium" },
+    "philo": { "name": "Philosophy", "desc": "Concepts, argument, ethics, and epistemology" }
   },
   "paths": {
     "eyebrow": "Install",

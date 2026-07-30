@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,11 +13,12 @@ import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { GITHUB_URL, NAV_ITEMS } from "./constants";
 import { GithubMark } from "./GithubMark";
+import { GlobalSearchTrigger } from "./GlobalSearch";
 import { LocaleSwitcher } from "./LocaleSwitcher";
+import { BrandLogo } from "./BrandLogo";
 import { MobileNav } from "./MobileNav";
 
-// Brand chrome (specs/07 §6): logo.svg + wordmark; Install = solid primary;
-// touch targets ≥40px for icon/nav (specs/09).
+// Brand chrome (specs/07 §6): logo.svg mark + wordmark + nav + search + utilities.
 export function SiteHeader() {
   const t = useTranslations("shell");
   const pathname = usePathname();
@@ -24,24 +26,16 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-surface/95 backdrop-blur-sm supports-[backdrop-filter]:bg-surface/85">
-      <div className="mx-auto flex h-14 max-w-5xl items-center gap-3 px-6 md:gap-4">
+      <div className="mx-auto flex h-14 max-w-6xl items-center gap-2 px-6 md:gap-3">
         <Link
           href="/"
-          className="flex min-h-10 items-center gap-2.5 font-serif text-base font-semibold text-ink"
+          className="flex min-h-10 shrink-0 items-center gap-2.5 font-serif text-base font-semibold text-ink"
         >
-          {/* eslint-disable-next-line @next/next/no-img-element -- brand SVG from public/brand */}
-          <img
-            src="/brand/logo.svg"
-            alt=""
-            width={32}
-            height={32}
-            className="size-8 shrink-0 rounded-md"
-            decoding="async"
-          />
-          <span>{siteName}</span>
+          <BrandLogo size={32} className="size-8" />
+          <span className="hidden sm:inline">{siteName}</span>
         </Link>
 
-        <NavigationMenu className="ml-1 hidden md:flex">
+        <NavigationMenu className="hidden shrink-0 lg:flex">
           <NavigationMenuList className="gap-0.5">
             {NAV_ITEMS.map((item) => {
               const active =
@@ -51,7 +45,7 @@ export function SiteHeader() {
                   <NavigationMenuLink
                     render={<Link href={item.href} />}
                     className={cn(
-                      "inline-flex min-h-10 items-center rounded-lg px-3 py-2 text-sm",
+                      "inline-flex min-h-10 items-center rounded-lg px-2.5 py-2 text-sm xl:px-3",
                       active
                         ? "bg-muted/60 font-medium text-ink"
                         : "text-ink-muted hover:text-ink",
@@ -65,7 +59,17 @@ export function SiteHeader() {
           </NavigationMenuList>
         </NavigationMenu>
 
-        <div className="ml-auto flex items-center gap-1.5">
+        <div className="mx-1 min-w-0 flex-1 md:mx-2">
+          <Suspense
+            fallback={
+              <div className="h-9 max-w-[22rem] rounded-full border border-line bg-field" />
+            }
+          >
+            <GlobalSearchTrigger compact className="max-w-[22rem] md:ml-auto" />
+          </Suspense>
+        </div>
+
+        <div className="flex shrink-0 items-center gap-1">
           <div className="hidden md:block">
             <LocaleSwitcher />
           </div>

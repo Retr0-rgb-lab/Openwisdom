@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import { DatumMark } from "@/components/site/DatumMark";
+import { BrandLogo } from "@/components/site/BrandLogo";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 
@@ -9,7 +9,7 @@ export default function NotFound() {
 
   return (
     <section className="mx-auto flex w-full max-w-3xl flex-col items-start gap-6 px-6 py-24">
-      <DatumMark className="size-6" />
+      <BrandLogo size={48} className="size-12" alt="Openwisdom" />
       <h1 className="font-serif text-title">{t("notFound.title")}</h1>
       <p className="max-w-prose text-body text-ink-muted">
         {t("notFound.description")}

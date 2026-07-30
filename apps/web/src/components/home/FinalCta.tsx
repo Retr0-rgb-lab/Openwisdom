@@ -13,7 +13,7 @@ export function FinalCta() {
   const t = useTranslations("home.finalCta");
 
   return (
-    <section id="final" className="border-b border-line bg-surface/92">
+    <section id="final" className="border-b border-line bg-surface">
       <Reveal>
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-20 md:grid-cols-[1.15fr_0.95fr] md:items-center md:gap-14 md:py-28">
           <div className="flex flex-col gap-5">

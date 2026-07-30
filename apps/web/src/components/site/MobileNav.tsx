@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/sheet";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
+import { BrandLogo } from "./BrandLogo";
 import { NAV_ITEMS } from "./constants";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 
@@ -39,15 +40,7 @@ export function MobileNav() {
       <SheetContent side="right" className="w-72 gap-0 p-0">
         <SheetHeader className="border-b border-line">
           <SheetTitle className="flex items-center gap-2.5">
-            {/* eslint-disable-next-line @next/next/no-img-element -- brand SVG from public/brand */}
-            <img
-              src="/brand/logo.svg"
-              alt=""
-              width={28}
-              height={28}
-              className="size-7 shrink-0 rounded-md"
-              decoding="async"
-            />
+            <BrandLogo size={28} className="size-7" />
             <span className="font-serif">{siteName}</span>
             <span className="sr-only">{t("nav.menuTitle")}</span>
           </SheetTitle>

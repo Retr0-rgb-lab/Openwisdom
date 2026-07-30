@@ -1,0 +1,121 @@
+{
+  "meta": {
+    "title": "Skills catalog",
+    "description": "Browse, filter, and install Openwisdom scenario skills and discipline references. Analysis runs in your agent, not on this site."
+  },
+  "intro": {
+    "eyebrow": "Library",
+    "title": "Skills catalog",
+    "lede": "Discover official scenario workflows. Filter by layer, discipline, and provenance. Install into your own agent to run analysis.",
+    "resultCount": "{count} skills",
+    "resultCountOne": "1 skill"
+  },
+  "bootstrap": {
+    "title": "Bootstrap + multi-discipline curated",
+    "body": "Three official scenarios are product seeds; others are curated-external GitHub SKILL.md entries tagged by psychology, sociology, history, political science, economics, and philosophy. Platforms like Xiaohongshu are only used when they cite verifiable open repos. Full skills/ tree and heat are not wired. Use discipline chips in the toolbar; search with Ctrl+K / ⌘K."
+  },
+  "provenance": {
+    "official": "Official",
+    "community": "Community",
+    "curated-external": "Curated external"
+  },
+  "filters": {
+    "search": "Search",
+    "searchPlaceholder": "Name, summary, tags…",
+    "layer": "Layer",
+    "layerAll": "All",
+    "source": "Source",
+    "discipline": "Discipline",
+    "language": "Content language",
+    "sort": "Sort",
+    "clearAll": "Clear filters",
+    "openFilters": "Filters",
+    "more": "More",
+    "activeCount": "{count} filters",
+    "apply": "Show results",
+    "done": "Done",
+    "close": "Close"
+  },
+  "sort": {
+    "featured": "Featured",
+    "name": "Name",
+    "updated": "Updated",
+    "popular": "Popular"
+  },
+  "layer": {
+    "scenario": "Scenario",
+    "reference": "Reference"
+  },
+  "scope": {
+    "official": "Official",
+    "community": "Community"
+  },
+  "disciplines": {
+    "psychology": "Psychology",
+    "sociology": "Sociology",
+    "history": "History",
+    "political-science": "Political science",
+    "economics": "Economics",
+    "philosophy": "Philosophy"
+  },
+  "card": {
+    "open": "Open detail",
+    "copyInstall": "Copy install command",
+    "contentLang": "Body {lang}",
+    "moreTags": "+{count}"
+  },
+  "actions": {
+    "copied": "Copied to clipboard",
+    "copyFailed": "Copy failed — select the command and copy manually.",
+    "github": "View on GitHub",
+    "backToCatalog": "Back to catalog",
+    "installNote": "CLI is not on npm yet. Copy the command for later; interactive install ships after publish."
+  },
+  "empty": {
+    "title": "No matching skills",
+    "description": "Clear filters, or start again from the three official scenarios.",
+    "clear": "Clear filters",
+    "communityTitle": "No community skills yet",
+    "communityDescription": "Community entries land via GitHub PR into community/. Contributions welcome with the template.",
+    "featuredTitle": "Official scenarios",
+    "contribute": "How to contribute",
+    "github": "View on GitHub"
+  },
+  "featured": {
+    "title": "Featured scenarios",
+    "subtitle": "Three official analysis workflows for v1"
+  },
+  "detail": {
+    "breadcrumbSkills": "Skills",
+    "when": "When to use",
+    "steps": "Workflow",
+    "output": "Output skeleton",
+    "bias": "Bias checkpoints",
+    "definition": "Definition",
+    "bounds": "Bounds",
+    "misuse": "Common misuse",
+    "questions": "Guiding questions",
+    "references": "Cites / links",
+    "referencesNote": "Linked items exist in the catalog; others are planned labels or upstream concept names.",
+    "related": "Related skills",
+    "version": "Version {version}",
+    "updated": "Updated {date}",
+    "bodyPending": "Full SKILL.md bodies land with the in-repo skills/ tree. This page shows structured metadata and workflow summary for evaluation and install.",
+    "bodyExternal": "Full body lives upstream. This page gives an honest summary, license, and install entry points — read SKILL.md on GitHub.",
+    "attribution": "Source & license",
+    "author": "Author",
+    "license": "License",
+    "credit": "Attribution",
+    "upstream": "Open upstream repo",
+    "tabCli": "CLI",
+    "tabGithub": "GitHub",
+    "tabManual": "Manual",
+    "githubTabBody": "Browse SKILL.md upstream or in the monorepo path; clone and copy into your harness skills directory.",
+    "openUpstream": "Open source",
+    "manual1": "Open the skill folder on GitHub or clone the repo.",
+    "manual2": "Place the skill folder in your agent skills path (e.g. .claude/skills/).",
+    "manual3": "Reload the agent and invoke per the skill docs.",
+    "installHub": "Install hub",
+    "afterInstall": "Analysis runs in your agent, not on this site. After install, call the skill in your harness."
+  }
+}

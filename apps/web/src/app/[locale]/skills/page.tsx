@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { useTranslations } from "next-intl";
+import { Suspense } from "react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { use } from "react";
-import { PlaceholderSection } from "@/components/site/PlaceholderSection";
+import { SkillsCatalog } from "@/components/skills/SkillsCatalog";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type Params = Promise<{ locale: string }>;
 
@@ -12,22 +12,35 @@ export async function generateMetadata({
   params: Params;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "shell" });
+  const t = await getTranslations({ locale, namespace: "skills" });
   return {
-    title: t("placeholder.skills.title"),
-    description: t("placeholder.skills.description"),
+    title: t("meta.title"),
+    description: t("meta.description"),
   };
 }
 
-export default function SkillsPage({ params }: { params: Params }) {
-  const { locale } = use(params);
+function CatalogFallback() {
+  return (
+    <div className="mx-auto max-w-6xl px-6 py-10 md:py-14">
+      <Skeleton className="h-8 w-48" />
+      <Skeleton className="mt-4 h-10 w-full max-w-xl" />
+      <Skeleton className="mt-8 h-11 w-full" />
+      <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <Skeleton className="h-64 rounded-xl" />
+        <Skeleton className="h-64 rounded-xl" />
+        <Skeleton className="h-64 rounded-xl" />
+      </div>
+    </div>
+  );
+}
+
+export default async function SkillsPage({ params }: { params: Params }) {
+  const { locale } = await params;
   setRequestLocale(locale);
-  const t = useTranslations("shell");
 
   return (
-    <PlaceholderSection
-      title={t("placeholder.skills.title")}
-      description={t("placeholder.skills.description")}
-    />
+    <Suspense fallback={<CatalogFallback />}>
+      <SkillsCatalog />
+    </Suspense>
   );
 }

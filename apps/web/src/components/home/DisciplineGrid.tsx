@@ -3,33 +3,37 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Section, SectionHeading } from "@/components/home/Section";
+import { Reveal } from "@/components/bits/Reveal";
 import { Stagger, StaggerItem } from "@/components/bits/Stagger";
 import {
   DISCIPLINE_COLORS,
   DISCIPLINE_ORDER,
 } from "@/components/home/disciplines";
+import { DISCIPLINE_HOME_TO_ID } from "@/data/catalog/types";
 
 /**
- * layout: spine · colorize: name-side color tick · animate: Stagger only
+ * layout: spine · colorize: name-side color tick · animate: heading Reveal + grid Stagger
  */
 export function DisciplineGrid() {
   const t = useTranslations("home");
 
   return (
     <Section id="disciplines" reveal={false}>
-      <SectionHeading
-        title={t("disciplines.title")}
-        subtitle={t("disciplines.subtitle")}
-      />
+      <Reveal>
+        <SectionHeading
+          title={t("disciplines.title")}
+          subtitle={t("disciplines.subtitle")}
+        />
+      </Reveal>
       <Stagger
-        className="grid border-y border-line bg-surface/70 sm:grid-cols-2 lg:grid-cols-5"
+        className="grid border-y border-line bg-surface sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6"
         stagger={0.05}
       >
         {DISCIPLINE_ORDER.map((key) => (
           <StaggerItem key={key} className="h-full">
             <Link
-              href="/skills"
-              className="group flex h-full flex-col gap-2.5 border-b border-line px-4 py-6 transition-colors duration-200 last:border-b-0 hover:bg-mist/12 sm:border-b lg:border-b-0 lg:border-r lg:py-7 lg:last:border-r-0"
+              href={`/skills?discipline=${DISCIPLINE_HOME_TO_ID[key]}`}
+              className="group flex h-full flex-col gap-2.5 border-b border-line px-4 py-6 transition-colors duration-200 last:border-b-0 hover:bg-surface-muted sm:border-b lg:border-b-0 lg:border-r lg:py-7 lg:last:border-r-0"
             >
               <span className="flex items-center gap-2 font-medium tracking-[-0.01em] text-ink">
                 {/* 2px tick under name — colorize without left bar */}

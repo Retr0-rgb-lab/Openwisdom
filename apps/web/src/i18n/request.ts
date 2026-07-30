@@ -8,15 +8,15 @@ export default getRequestConfig(async ({ requestLocale }) => {
     ? requested
     : routing.defaultLocale;
 
-  // Namespaced per file so Wave 2 plans can extend their own namespace
-  // without write conflicts (shell -> Plan B, home -> Plan C).
-  const [shell, home] = await Promise.all([
+  // Namespaced per file (shell / home / skills) to avoid write conflicts.
+  const [shell, home, skills] = await Promise.all([
     import(`../messages/${locale}/shell.json`).then((m) => m.default),
     import(`../messages/${locale}/home.json`).then((m) => m.default),
+    import(`../messages/${locale}/skills.json`).then((m) => m.default),
   ]);
 
   return {
     locale,
-    messages: { shell, home },
+    messages: { shell, home, skills },
   };
 });

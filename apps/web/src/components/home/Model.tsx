@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { useTranslations } from "next-intl";
 import { Section, SectionHeading } from "@/components/home/Section";
@@ -11,9 +10,13 @@ type CiteKey = "macro" | "anchor" | "meta";
 
 const CITE_KEYS: CiteKey[] = ["macro", "anchor", "meta"];
 
+/** Cite bridge path length (viewBox units) for stroke-dash draw. */
+const BRIDGE_LEN = 100;
+
 /**
  * colorize: selected row commits primary · animate: card swap 280ms
  * layout: clear three-column cite plate
+ * motion: SVG cite bridge draws once whileInView (no double fade on label)
  */
 export function Model() {
   const t = useTranslations("home.model");
@@ -21,7 +24,7 @@ export function Model() {
   const [active, setActive] = useState<CiteKey>("macro");
 
   return (
-    <Section id="model" className="bg-surface/92">
+    <Section id="model" className="bg-surface">
       <SectionHeading title={t("title")} subtitle={t("subtitle")} />
 
       <div className="grid items-stretch gap-6 lg:grid-cols-[minmax(13rem,0.9fr)_auto_minmax(15rem,1.25fr)] lg:gap-6">
@@ -46,7 +49,7 @@ export function Model() {
                     "w-full rounded-lg border px-3.5 py-3 text-left text-sm transition-[border-color,background-color,box-shadow] duration-200",
                     pressed
                       ? "border-primary/40 bg-primary/[0.06] text-ink shadow-[0_1px_3px_rgb(28_75_209/0.08)]"
-                      : "border-line bg-surface text-ink hover:border-line hover:bg-field",
+                      : "border-line-strong bg-field text-ink hover:border-line-strong hover:bg-surface-muted",
                   )}
                 >
                   <span className="mb-0.5 block font-mono text-[0.7rem] text-ink-muted">
@@ -60,29 +63,37 @@ export function Model() {
         </div>
 
         <div
-          className="flex flex-col items-center justify-center gap-1 self-center px-1 text-primary"
+          className="flex flex-col items-center justify-center gap-1.5 self-center px-1 text-primary"
           aria-hidden
         >
-          {reduce ? (
-            <span className="inline-flex items-center gap-1 text-meta font-medium text-primary">
-              <ArrowRight className="size-3.5" />
-              {t("citesLabel")}
-            </span>
-          ) : (
-            <motion.span
-              className="inline-flex items-center gap-1 text-meta font-medium text-primary"
-              initial={{ opacity: 0.25, x: -12 }}
-              whileInView={{ opacity: 1, x: 0 }}
+          <svg
+            viewBox="0 0 88 28"
+            className="h-7 w-[5.5rem] text-primary"
+            fill="none"
+          >
+            {/* Horizontal cite bridge + chevron tip */}
+            <motion.path
+              d="M4 14 H68 L60 8 M68 14 L60 20"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeDasharray={BRIDGE_LEN}
+              initial={reduce ? false : { strokeDashoffset: BRIDGE_LEN }}
+              whileInView={reduce ? undefined : { strokeDashoffset: 0 }}
               viewport={{ once: true, amount: 0.5 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <ArrowRight className="size-3.5" />
-              {t("citesLabel")}
-            </motion.span>
-          )}
+              transition={{
+                duration: 0.7,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+            />
+          </svg>
+          <span className="text-meta font-medium text-primary">
+            {t("citesLabel")}
+          </span>
         </div>
 
-        <div className="min-h-[11rem] rounded-xl border border-line bg-field/90 p-5 shadow-[0_1px_4px_rgb(15_23_36/0.04)] md:p-6">
+        <div className="min-h-[11rem] rounded-xl border border-line-strong bg-field p-5 shadow-[0_1px_0_rgb(15_23_36/0.04),0_4px_14px_-2px_rgb(15_23_36/0.08)] md:p-6">
           <p className="mb-2 text-[0.8125rem] font-semibold text-structure">
             {t("referenceLabel")}
           </p>

@@ -15,6 +15,16 @@
     "openMenu": "打开导航菜单",
     "menuTitle": "导航"
   },
+  "search": {
+    "placeholder": "搜索 Skills…",
+    "openAria": "打开搜索（Ctrl+K 或 ⌘K）",
+    "dialogTitle": "搜索 Skills",
+    "dialogDescription": "按名称、摘要或标签搜索 skill，或跳转到站点页面。",
+    "groupSkills": "Skills",
+    "groupJump": "跳转",
+    "searchCatalog": "在目录中搜索「{q}」",
+    "noSkills": "没有匹配的 skill。可改用「在目录中搜索」。"
+  },
   "localeSwitcher": {
     "label": "界面语言",
     "shortZh": "中",

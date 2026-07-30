@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
  * Dot Field background (specs/08 MUST).
  * Point colors = primary / structure / mist (logo tokens); no cursor bulge.
  * RM / optional static = single frame.
+ * Pauses rAF when the document is hidden; re-checks prefers-reduced-motion live.
  */
 export function DotField({
   className,
@@ -24,9 +25,6 @@ export function DotField({
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
     const styles = getComputedStyle(document.documentElement);
     const primary =
       styles.getPropertyValue("--ow-primary").trim() || "#1C4BD1";
@@ -38,6 +36,14 @@ export function DotField({
     let width = 0;
     let height = 0;
     const spacing = 26;
+
+    // Drift clock — frozen while paused so resume continues smoothly
+    let start = performance.now();
+    let pausedAt: number | null = null;
+    let pausedAccum = 0;
+
+    const mqlReduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const mqlMobile = window.matchMedia("(max-width: 767px)");
 
     const jitter = (x: number, y: number) => {
       const n = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
@@ -89,31 +95,93 @@ export function DotField({
       ctx.globalAlpha = 1;
     };
 
-    resize();
-    const isMobile = window.matchMedia("(max-width: 767px)").matches;
-    const staticFrame = forceStatic || reduceMotion;
+    const elapsed = (now: number) => now - start - pausedAccum;
 
-    if (staticFrame) {
-      draw(0, 0);
-    } else {
-      // ~8px/s drift — calm but readable (specs/08 C4)
-      const start = performance.now();
-      const speed = isMobile ? 4 : 8;
-      const tick = (now: number) => {
-        draw(((now - start) / 1000) * speed, now - start);
-        raf = requestAnimationFrame(tick);
-      };
+    const stopLoop = () => {
+      if (raf) {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      }
+    };
+
+    const tick = (now: number) => {
+      const speed = mqlMobile.matches ? 4 : 8;
+      const t = elapsed(now);
+      draw((t / 1000) * speed, t);
       raf = requestAnimationFrame(tick);
-    }
+    };
+
+    const shouldAnimate = () =>
+      !forceStatic && !mqlReduce.matches && !document.hidden;
+
+    const syncMode = () => {
+      stopLoop();
+      resize();
+
+      if (!shouldAnimate()) {
+        // Freeze clock while static/paused so resume continues
+        if (pausedAt === null) pausedAt = performance.now();
+        draw(0, 0);
+        return;
+      }
+
+      // Resume clock after pause (tab hidden or RM off → on)
+      if (pausedAt !== null) {
+        pausedAccum += performance.now() - pausedAt;
+        pausedAt = null;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+
+    const onVisibility = () => {
+      if (document.hidden) {
+        // Pause without tearing down mode
+        if (raf) {
+          stopLoop();
+          if (pausedAt === null) pausedAt = performance.now();
+        }
+        return;
+      }
+      syncMode();
+    };
 
     const onResize = () => {
       resize();
-      if (staticFrame) draw(0, 0);
+      if (!shouldAnimate()) {
+        draw(0, 0);
+      }
+      // Live loop will redraw next frame if animating
     };
+
+    const onReduceChange = () => {
+      // Reset drift origin when RM flips so we don't jump mid-session oddly
+      start = performance.now();
+      pausedAt = null;
+      pausedAccum = 0;
+      syncMode();
+    };
+
+    resize();
+    syncMode();
+
     window.addEventListener("resize", onResize);
+    document.addEventListener("visibilitychange", onVisibility);
+    // Safari < 14 fallback: addListener/removeListener
+    if (typeof mqlReduce.addEventListener === "function") {
+      mqlReduce.addEventListener("change", onReduceChange);
+    } else {
+      mqlReduce.addListener(onReduceChange);
+    }
+
     return () => {
-      cancelAnimationFrame(raf);
+      stopLoop();
       window.removeEventListener("resize", onResize);
+      document.removeEventListener("visibilitychange", onVisibility);
+      if (typeof mqlReduce.removeEventListener === "function") {
+        mqlReduce.removeEventListener("change", onReduceChange);
+      } else {
+        mqlReduce.removeListener(onReduceChange);
+      }
     };
   }, [forceStatic]);
 

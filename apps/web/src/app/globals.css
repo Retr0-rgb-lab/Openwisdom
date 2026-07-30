@@ -5,8 +5,38 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-    --font-heading: var(--font-sans);
-    --font-sans: var(--font-sans);
+    --font-heading: var(--font-serif), var(--font-serif-sc), Georgia, "Times New Roman", serif;
+    --font-sans: var(--font-sans), var(--font-sans-sc), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-serif: var(--font-serif), var(--font-serif-sc), Georgia, "Times New Roman", serif;
+    --font-mono: var(--font-mono), var(--font-sans-sc), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+    /* Type scale — steps >= 1.25 (display / title / body / meta) */
+    --text-display: 2.5rem;
+    --text-display--line-height: 1.15;
+    --text-title: 1.5rem;
+    --text-title--line-height: 1.3;
+    --text-body: 1rem;
+    --text-body--line-height: 1.6;
+    --text-meta: 0.75rem;
+    --text-meta--line-height: 1.4;
+
+    /* Direction B (Atlas Coordinate) raw tokens as utilities */
+    --color-field: var(--ow-field);
+    --color-surface: var(--ow-surface);
+    --color-ink: var(--ow-ink);
+    --color-ink-muted: var(--ow-ink-muted);
+    --color-line: var(--ow-line);
+    --color-datum: var(--ow-datum);
+    --color-datum-pressed: var(--ow-datum-pressed);
+    --color-insight: var(--ow-insight);
+    --color-danger: var(--ow-danger);
+    --color-community: var(--ow-community);
+    --color-psych: var(--ow-psych);
+    --color-socio: var(--ow-socio);
+    --color-history: var(--ow-history);
+    --color-poli: var(--ow-poli);
+    --color-econ: var(--ow-econ);
+
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -48,72 +78,98 @@
 }
 
 :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
+    /* Direction B — Instrument of Orientation (specs/02 §5) */
+    --ow-field: #EEF1F2;
+    --ow-surface: #FAFBFC;
+    --ow-ink: #0E141B;
+    --ow-ink-muted: #4A5560;
+    --ow-line: #C5CDD4;
+    --ow-datum: #B87333;
+    --ow-datum-pressed: #8E5520;
+    --ow-insight: #2F6F6A;
+    --ow-danger: #9B2C2C;
+    --ow-community: #6B5B4F;
+    /* Discipline chips (border or 10% fill only) */
+    --ow-psych: #7D6B8A;
+    --ow-socio: #A67C52;
+    --ow-history: #8B4D3B;
+    --ow-poli: #3D4F7C;
+    --ow-econ: #3F6B4F;
+
+    /* shadcn semantic mapping */
+    --radius: 0.5rem;
+    --background: var(--ow-field);
+    --foreground: var(--ow-ink);
+    --card: var(--ow-surface);
+    --card-foreground: var(--ow-ink);
+    --popover: var(--ow-surface);
+    --popover-foreground: var(--ow-ink);
+    --primary: var(--ow-datum);
+    --primary-foreground: var(--ow-surface);
+    --secondary: var(--ow-surface);
+    --secondary-foreground: var(--ow-ink);
+    --muted: color-mix(in oklab, var(--ow-line) 30%, var(--ow-field));
+    --muted-foreground: var(--ow-ink-muted);
+    --accent: color-mix(in oklab, var(--ow-insight) 10%, var(--ow-surface));
+    --accent-foreground: var(--ow-insight);
+    --destructive: var(--ow-danger);
+    --destructive-foreground: var(--ow-surface);
+    --border: var(--ow-line);
+    --input: var(--ow-line);
+    --ring: var(--ow-datum);
+    --chart-1: var(--ow-datum);
+    --chart-2: var(--ow-insight);
+    --chart-3: var(--ow-poli);
+    --chart-4: var(--ow-econ);
+    --chart-5: var(--ow-community);
+    --sidebar: var(--ow-surface);
+    --sidebar-foreground: var(--ow-ink);
+    --sidebar-primary: var(--ow-datum);
+    --sidebar-primary-foreground: var(--ow-surface);
+    --sidebar-accent: color-mix(in oklab, var(--ow-insight) 10%, var(--ow-surface));
+    --sidebar-accent-foreground: var(--ow-insight);
+    --sidebar-border: var(--ow-line);
+    --sidebar-ring: var(--ow-datum);
 }
 
+/* Dark pair — structural reservation only; no theme switch in v1 (DESIGN.md) */
 .dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
+    --ow-field: #0B1014;
+    --ow-surface: #141A21;
+    --ow-ink: #E6EBEF;
+    --ow-ink-muted: #9AA7B2;
+    --ow-line: #2A333D;
+    --ow-datum: #D4894A;
+    --ow-datum-pressed: #B87333;
+    --ow-insight: #4FA39C;
+
+    --background: var(--ow-field);
+    --foreground: var(--ow-ink);
+    --card: var(--ow-surface);
+    --card-foreground: var(--ow-ink);
+    --popover: var(--ow-surface);
+    --popover-foreground: var(--ow-ink);
+    --primary: var(--ow-datum);
+    --primary-foreground: #0B1014;
+    --secondary: var(--ow-surface);
+    --secondary-foreground: var(--ow-ink);
+    --muted: color-mix(in oklab, var(--ow-line) 40%, var(--ow-field));
+    --muted-foreground: var(--ow-ink-muted);
+    --accent: color-mix(in oklab, var(--ow-insight) 18%, var(--ow-surface));
+    --accent-foreground: var(--ow-insight);
+    --destructive: var(--ow-danger);
+    --destructive-foreground: var(--ow-ink);
+    --border: var(--ow-line);
+    --input: var(--ow-line);
+    --ring: var(--ow-datum);
+    --sidebar: var(--ow-surface);
+    --sidebar-foreground: var(--ow-ink);
+    --sidebar-primary: var(--ow-datum);
+    --sidebar-primary-foreground: #0B1014;
+    --sidebar-accent: color-mix(in oklab, var(--ow-insight) 18%, var(--ow-surface));
+    --sidebar-accent-foreground: var(--ow-insight);
+    --sidebar-border: var(--ow-line);
+    --sidebar-ring: var(--ow-datum);
 }
 
 @layer base {

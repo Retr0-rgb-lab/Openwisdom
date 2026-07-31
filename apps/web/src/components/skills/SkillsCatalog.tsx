@@ -111,13 +111,17 @@ function Chip({
 function SkillGrid({ entries }: { entries: CatalogEntry[] }) {
   return (
     <MagicBentoGrid className="w-full" enableSpotlight spotlightRadius={300}>
+      {/*
+        items-start: same row tops align even when card body heights differ.
+        Uniform gap-6 for row/column rhythm (content size must not shift baseline).
+      */}
       <Stagger
-        className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
+        className="grid auto-rows-auto grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-3"
         stagger={0.06}
       >
         {entries.map((entry) => (
-          <StaggerItem key={entry.slug} className="h-full min-h-0">
-            <div id={`skill-${entry.slug}`} className="h-full scroll-mt-28">
+          <StaggerItem key={entry.slug} className="min-h-0 w-full self-start">
+            <div id={`skill-${entry.slug}`} className="w-full scroll-mt-28">
               <SkillCard entry={entry} />
             </div>
           </StaggerItem>

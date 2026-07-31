@@ -65,17 +65,17 @@ export function StaggerItem({
   return (
     <motion.div
       className={cn(
-        /* h-full so equal-height grids stretch; enter motion stays on this node */
-        "h-full min-h-0 will-change-transform",
+        /* self-start grids: width fills cell; avoid h-full stretch fighting top-align */
+        "min-h-0 w-full will-change-transform",
         className,
       )}
       variants={{
-        /* Opacity always 1 — only lift (y) for entrance polish */
-        hidden: { opacity: 1, y: 16 },
+        /* Opacity always 1 — small lift only (large y left some cards stranded mid-row) */
+        hidden: { opacity: 1, y: 8 },
         show: {
           opacity: 1,
           y: 0,
-          transition: { duration: 0.45, ease },
+          transition: { duration: 0.4, ease },
         },
       }}
     >

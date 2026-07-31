@@ -326,9 +326,11 @@ export function SkillDetail({
             <h2 className="mb-6 font-serif text-xl font-semibold tracking-[-0.02em] text-ink md:text-2xl">
               {t("detail.related")}
             </h2>
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid auto-rows-auto grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((item) => (
-                <SkillCard key={item.slug} entry={item} />
+                <div key={item.slug} className="w-full self-start">
+                  <SkillCard entry={item} />
+                </div>
               ))}
             </div>
           </div>

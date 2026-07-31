@@ -306,7 +306,8 @@ export function MagicBentoCard({
       ref={cardRef}
       data-magic-bento-card=""
       className={cn(
-        "ow-magic-card relative h-full min-h-0 overflow-hidden rounded-xl",
+        /* Default w-full; callers may pass h-full when equal-height stretch is desired */
+        "ow-magic-card relative min-h-0 w-full overflow-hidden rounded-xl",
         enableBorderGlow && "ow-magic-card--border-glow",
         className,
       )}

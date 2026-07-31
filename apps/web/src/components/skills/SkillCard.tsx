@@ -85,7 +85,7 @@ export function SkillCard({ entry }: { entry: CatalogEntry }) {
   return (
     /* Magic Bento plate — reactbits.dev/components/magic-bento (Overlay Atlas) */
     <MagicBentoCard
-      className="h-full"
+      className="w-full"
       enableBorderGlow
       enableStars
       enableTilt={false}
@@ -95,7 +95,8 @@ export function SkillCard({ entry }: { entry: CatalogEntry }) {
     >
       <article
         className={cn(
-          "relative z-[1] flex h-full flex-col gap-3 rounded-xl border border-line-strong bg-surface p-5",
+          /* Natural height; grid uses items-start so tops align across the row */
+          "relative z-[1] flex w-full flex-col gap-3 rounded-xl border border-line-strong bg-surface p-5",
           "shadow-[0_1px_0_rgb(15_23_36/0.05),0_6px_18px_-4px_rgb(15_23_36/0.1)] md:p-6",
         )}
       >
@@ -105,12 +106,13 @@ export function SkillCard({ entry }: { entry: CatalogEntry }) {
           aria-hidden
         />
 
+        {/* Title block: fixed 2-line title slot so headers share a baseline band */}
         <div className="flex items-start justify-between gap-3">
           <div className="flex min-w-0 flex-col gap-1.5">
             <code className="font-mono text-[0.7rem] tracking-wide text-ink-muted">
               {entry.slug}
             </code>
-            <h3 className="flex min-w-0 items-start gap-2 font-serif text-[1.2rem] leading-[1.2] font-semibold tracking-[-0.02em] text-ink md:text-[1.3rem]">
+            <h3 className="flex min-h-[2.6em] min-w-0 items-start gap-2 font-serif text-[1.2rem] leading-[1.3] font-semibold tracking-[-0.02em] text-ink md:text-[1.3rem]">
               {entry.shape ? (
                 <ScenarioShape
                   kind={entry.shape as ScenarioShapeKind}
@@ -127,7 +129,7 @@ export function SkillCard({ entry }: { entry: CatalogEntry }) {
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex min-h-7 flex-wrap content-start gap-1.5">
           <Badge
             variant="outline"
             className="border-line bg-field font-normal text-ink-muted"
@@ -150,17 +152,17 @@ export function SkillCard({ entry }: { entry: CatalogEntry }) {
           </Badge>
         </div>
 
-        <p className="line-clamp-2 text-sm leading-relaxed text-ink-muted">
+        {/* Summary: always reserve 2 lines so following blocks share vertical rhythm */}
+        <p className="line-clamp-2 min-h-[2.75rem] text-sm leading-relaxed text-ink-muted">
           {summary}
         </p>
 
-        {when ? (
-          <p className="line-clamp-2 text-xs leading-relaxed text-ink-muted/90">
-            {when}
-          </p>
-        ) : null}
+        {/* When: reserved slot (empty if missing) to avoid row jump */}
+        <p className="line-clamp-2 min-h-[2.25rem] text-xs leading-relaxed text-ink-muted/90">
+          {when ?? "\u00a0"}
+        </p>
 
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex min-h-7 flex-wrap content-start gap-1.5">
           {entry.disciplines.map((d) => (
             <span
               key={d}
@@ -176,17 +178,21 @@ export function SkillCard({ entry }: { entry: CatalogEntry }) {
           ))}
         </div>
 
-        {tags.length > 0 ? (
-          <p className="font-mono text-[0.7rem] text-ink-muted/90">
-            {tags.join(" · ")}
-            {extraTags > 0
-              ? ` ${t("card.moreTags", { count: extraTags })}`
-              : ""}
-          </p>
-        ) : null}
+        <p className="min-h-[1rem] font-mono text-[0.7rem] text-ink-muted/90">
+          {tags.length > 0 ? (
+            <>
+              {tags.join(" · ")}
+              {extraTags > 0
+                ? ` ${t("card.moreTags", { count: extraTags })}`
+                : ""}
+            </>
+          ) : (
+            "\u00a0"
+          )}
+        </p>
 
         {/* Footer: actions left · heat (side-channel) bottom-right — Spec 06/29 */}
-        <div className="mt-auto flex items-end gap-2 border-t border-line pt-3">
+        <div className="mt-1 flex items-end gap-2 border-t border-line pt-3">
           <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
             {linkOnly ? (
               <>

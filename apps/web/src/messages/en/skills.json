@@ -56,7 +56,7 @@
   "card": {
     "open": "Open detail",
     "copyInstall": "Copy install command",
-    "viewUpstream": "Open upstream",
+    "viewUpstream": "Open repository",
     "copyCliPreview": "Copy install command",
     "download": "Download SKILL.md",
     "whenLabel": "When",
@@ -118,18 +118,17 @@
     "author": "Author",
     "license": "License",
     "credit": "Attribution",
-    "upstream": "Open upstream repo",
+    "upstream": "Open repository",
     "tabCli": "CLI",
     "tabGithub": "GitHub",
     "tabManual": "Manual",
     "githubTabBody": "Open the skill on GitHub, clone, and copy it into your agent skills folder.",
-    "openUpstream": "Open source",
+    "openUpstream": "Open repository",
     "cliPreviewNote": "Full content lives upstream — install from GitHub.",
     "defaultGitHubTab": "",
     "manual1": "Open the skill folder on GitHub or clone the repo.",
     "manual2": "Place the skill folder in your agent skills path (e.g. .claude/skills/).",
     "manual3": "Reload the agent and invoke per the skill docs.",
-    "installHub": "Back to Skills catalog",
-    "afterInstall": "Analysis runs in your agent, not on this site. After install, call the skill there."
+    "installHub": "Back to Skills catalog"
   }
 }

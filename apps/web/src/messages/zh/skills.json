@@ -56,7 +56,7 @@
   "card": {
     "open": "查看详情",
     "copyInstall": "复制安装命令",
-    "viewUpstream": "打开上游",
+    "viewUpstream": "打开仓库",
     "copyCliPreview": "复制安装命令",
     "download": "下载 SKILL.md",
     "whenLabel": "何时用",
@@ -118,18 +118,17 @@
     "author": "作者",
     "license": "许可",
     "credit": "署名",
-    "upstream": "打开上游仓库",
+    "upstream": "打开仓库",
     "tabCli": "CLI",
     "tabGithub": "GitHub",
     "tabManual": "手动",
     "githubTabBody": "在 GitHub 打开 skill 源文件，clone 后拷入你的 Agent skills 目录。",
-    "openUpstream": "打开源码",
+    "openUpstream": "打开仓库",
     "cliPreviewNote": "完整内容在上游仓库，请从 GitHub 安装。",
     "defaultGitHubTab": "",
     "manual1": "从 GitHub 打开 skill 目录或 clone 仓库。",
     "manual2": "将 skill 文件夹放入 Agent 的 skills 路径（如 .claude/skills/）。",
     "manual3": "重启 / 重载 Agent 后按文档调用。",
-    "installHub": "返回 Skills 目录",
-    "afterInstall": "分析在你的 Agent 中运行，不在本站。安装后在 Agent 中调用该 skill。"
+    "installHub": "返回 Skills 目录"
   }
 }

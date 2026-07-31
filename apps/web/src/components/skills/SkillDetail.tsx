@@ -677,10 +677,6 @@ function ScenarioBody({
           </ul>
         </div>
       ) : null}
-
-      <div className="mt-10 rounded-lg border border-line bg-field px-4 py-3 text-sm text-ink-muted">
-        {t("detail.afterInstall")}
-      </div>
     </>
   );
 }
@@ -735,9 +731,6 @@ function ReferenceBody({
           </ul>
         </div>
       ) : null}
-      <div className="mt-10 rounded-lg border border-line bg-field px-4 py-3 text-sm text-ink-muted">
-        {t("detail.afterInstall")}
-      </div>
     </>
   );
 }

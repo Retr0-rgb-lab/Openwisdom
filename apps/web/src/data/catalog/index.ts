@@ -12,10 +12,9 @@ import type {
   ContentLang,
   DisciplineId,
   SkillLayer,
-  SkillScope,
   SortKey,
 } from "./types";
-import { entryProvenance, pickLocalized } from "./types";
+import { pickLocalized } from "./types";
 
 export * from "./types";
 export { BOOTSTRAP_CATALOG, REFERENCE_BOOTSTRAP } from "./bootstrap";
@@ -176,10 +175,9 @@ export function catalogHasHeat(
 }
 
 /**
- * Filter by provenance-facing `source` facet:
- * - official  → provenance official OR scope official
- * - community → provenance community only (excludes curated-external)
- * - curated   → provenance curated-external
+ * Filter catalog for web Operate surface.
+ * One library: layer / discipline / language / q only.
+ * `query.source` is ignored (legacy URL param).
  */
 export function filterCatalog(
   entries: CatalogEntry[],
@@ -187,23 +185,11 @@ export function filterCatalog(
 ): CatalogEntry[] {
   const q = query.q?.trim().toLowerCase() ?? "";
   const layer = query.layer || undefined;
-  const source = query.source || undefined;
   const lang = query.lang || undefined;
   const disciplines = query.disciplines?.filter(Boolean) ?? [];
 
   return entries.filter((entry) => {
     if (layer && entry.layer !== layer) return false;
-
-    if (source) {
-      const prov = entryProvenance(entry);
-      if (source === "official") {
-        if (prov !== "official" && entry.scope !== "official") return false;
-      } else if (source === "community") {
-        if (prov !== "community") return false;
-      } else if (source === "curated") {
-        if (prov !== "curated-external") return false;
-      }
-    }
 
     if (lang && entry.language !== lang) return false;
     if (disciplines.length > 0) {
@@ -227,17 +213,6 @@ export function filterCatalog(
     return true;
   });
 }
-
-const SCOPE_ORDER: Record<SkillScope, number> = {
-  official: 0,
-  community: 1,
-};
-
-const PROVENANCE_ORDER: Record<string, number> = {
-  official: 0,
-  community: 1,
-  "curated-external": 2,
-};
 
 const LAYER_ORDER: Record<SkillLayer, number> = {
   scenario: 0,
@@ -270,16 +245,12 @@ export function sortCatalog(
       }
       case "featured":
       default: {
-        const pa = PROVENANCE_ORDER[entryProvenance(a)] ?? 9;
-        const pb = PROVENANCE_ORDER[entryProvenance(b)] ?? 9;
-        if (pa !== pb) return pa - pb;
-        const scopeDiff = SCOPE_ORDER[a.scope] - SCOPE_ORDER[b.scope];
-        if (scopeDiff !== 0) return scopeDiff;
-        const layerDiff = LAYER_ORDER[a.layer] - LAYER_ORDER[b.layer];
-        if (layerDiff !== 0) return layerDiff;
+        // Editorial rank first; layer second. No Official/Community/Curated product sort.
         const ra = a.featuredRank ?? 999;
         const rb = b.featuredRank ?? 999;
         if (ra !== rb) return ra - rb;
+        const layerDiff = LAYER_ORDER[a.layer] - LAYER_ORDER[b.layer];
+        if (layerDiff !== 0) return layerDiff;
         return a.slug.localeCompare(b.slug);
       }
     }

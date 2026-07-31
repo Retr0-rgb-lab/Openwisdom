@@ -6,7 +6,7 @@
   "intro": {
     "eyebrow": "Library",
     "title": "Skills catalog",
-    "lede": "Discover official scenario workflows. Filter by layer, discipline, and provenance. Install into your own agent to run analysis.",
+    "lede": "One skills library: scenarios, references, and curated entries in a single catalog. Filter by layer, discipline, and language. Install into your own agent to run analysis.",
     "resultCount": "{count} skills",
     "resultCountOne": "1 skill"
   },
@@ -17,15 +17,13 @@
   "provenance": {
     "official": "Official",
     "community": "Community",
-    "curated-external": "Curated"
+    "curated-external": "Listed"
   },
   "filters": {
     "search": "Search",
     "searchPlaceholder": "Name, summary, tags…",
     "layer": "Layer",
     "layerAll": "All",
-    "source": "Source",
-    "curated": "Curated",
     "discipline": "Discipline",
     "language": "Content language",
     "sort": "Sort",
@@ -47,10 +45,6 @@
     "scenario": "Scenario",
     "reference": "Reference"
   },
-  "scope": {
-    "official": "Official",
-    "community": "Community"
-  },
   "disciplines": {
     "psychology": "Psychology",
     "sociology": "Sociology",
@@ -67,7 +61,8 @@
     "download": "Download SKILL.md",
     "whenLabel": "When",
     "contentLang": "Body {lang}",
-    "moreTags": "+{count}"
+    "moreTags": "+{count}",
+    "linkOnly": "External link"
   },
   "heat": {
     "installs30d": "{count} · 30d",
@@ -84,22 +79,20 @@
   },
   "empty": {
     "title": "No matching skills",
-    "description": "Clear filters, or start again from the three official scenarios.",
+    "description": "Clear filters, or start again from the recommended scenarios.",
     "clear": "Clear filters",
-    "communityTitle": "No community skills yet",
-    "communityDescription": "Community skills arrive via GitHub PR. See the contribute guide to add one.",
-    "featuredTitle": "Official scenarios",
+    "featuredTitle": "Recommended scenarios",
     "contribute": "How to contribute",
     "github": "View on GitHub"
   },
   "featured": {
-    "title": "Featured scenarios",
-    "subtitle": "Three official analysis workflows"
+    "title": "Recommended scenarios",
+    "subtitle": "Three analysis workflows"
   },
   "sections": {
-    "officialTitle": "Official scenarios",
-    "packsTitle": "Featured packs",
-    "exploreTitle": "Explore catalog",
+    "featuredTitle": "Recommended scenarios",
+    "packsTitle": "Packs",
+    "exploreTitle": "Browse library",
     "showAll": "Show all",
     "disciplineMenu": "Discipline"
   },

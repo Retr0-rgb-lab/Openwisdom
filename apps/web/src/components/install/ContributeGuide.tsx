@@ -10,13 +10,12 @@ import { Link } from "@/i18n/navigation";
 type Step = { title: string; body: string };
 
 /**
- * Contribute guide — official vs community, PR path, frontmatter checklist.
- * No web upload backend claims.
+ * Contribute guide — one library, GitHub PR path, frontmatter checklist.
+ * No web upload backend claims. No Official/Community product split.
  */
 export async function ContributeGuide() {
   const t = await getTranslations("pages.contribute");
-  const officialPoints = t.raw("officialPoints") as string[];
-  const communityPoints = t.raw("communityPoints") as string[];
+  const libraryPoints = t.raw("libraryPoints") as string[];
   const steps = t.raw("steps") as Step[];
   const frontmatterItems = t.raw("frontmatterItems") as string[];
 
@@ -31,52 +30,30 @@ export async function ContributeGuide() {
         </p>
       </header>
 
-      <section className="mt-12" aria-labelledby="contribute-provenance-heading">
+      <section className="mt-12" aria-labelledby="contribute-library-heading">
         <h2
-          id="contribute-provenance-heading"
+          id="contribute-library-heading"
           className="font-serif text-xl font-semibold text-ink md:text-2xl"
         >
-          {t("provenanceHeading")}
+          {t("libraryHeading")}
         </h2>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          <Card className="border-line shadow-none">
-            <CardHeader className="gap-3">
-              <Badge className="w-fit bg-primary text-primary-foreground hover:bg-primary">
-                {t("officialBadge")}
-              </Badge>
-              <CardTitle className="font-serif text-lg text-ink">
-                {t("officialTitle")}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed text-ink-muted">
-                {officialPoints.map((point) => (
-                  <li key={point}>{point}</li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-          <Card className="border-line shadow-none">
-            <CardHeader className="gap-3">
-              <Badge
-                variant="outline"
-                className="w-fit border-community/40 bg-field font-normal text-ink"
-              >
-                {t("communityBadge")}
-              </Badge>
-              <CardTitle className="font-serif text-lg text-ink">
-                {t("communityTitle")}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed text-ink-muted">
-                {communityPoints.map((point) => (
-                  <li key={point}>{point}</li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-        </div>
+        <Card className="mt-6 border-line shadow-none">
+          <CardHeader className="gap-3">
+            <Badge className="w-fit bg-primary text-primary-foreground hover:bg-primary">
+              {t("libraryBadge")}
+            </Badge>
+            <CardTitle className="font-serif text-lg text-ink">
+              {t("libraryTitle")}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed text-ink-muted">
+              {libraryPoints.map((point) => (
+                <li key={point}>{point}</li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
       </section>
 
       <section className="mt-12" aria-labelledby="contribute-steps-heading">

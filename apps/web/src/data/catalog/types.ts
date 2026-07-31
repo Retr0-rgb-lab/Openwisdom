@@ -18,8 +18,8 @@ export type SkillProvenance =
   | "curated-external";
 
 /**
- * Catalog list source filter (URL `?source=`).
- * `curated` maps to provenance curated-external — not the same as community.
+ * @deprecated Web no longer exposes Official | Community | Curated facets.
+ * Kept for URL compat; `filterCatalog` ignores `CatalogQuery.source`.
  */
 export type CatalogSourceFilter = "official" | "community" | "curated";
 
@@ -77,7 +77,10 @@ export type SortKey = "featured" | "name" | "updated" | "popular";
 export type CatalogQuery = {
   q?: string;
   layer?: SkillLayer | "";
-  /** Provenance-facing filter: official | community | curated */
+  /**
+   * Ignored by filterCatalog — legacy `?source=` only.
+   * @deprecated Single library; no Official/Community/Curated facet.
+   */
   source?: CatalogSourceFilter | "";
   disciplines?: DisciplineId[];
   lang?: ContentLang | "";

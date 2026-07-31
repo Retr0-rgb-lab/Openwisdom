@@ -352,7 +352,7 @@
       "lede": "Openwisdom is a layered social-science Agent Skills library: scenario workflows cite discipline references; the catalog helps you discover and install; analysis runs in your own agent.",
       "toc": {
         "layers": "Scenarios and references",
-        "provenance": "Official and community",
+        "library": "One library",
         "runtime": "Website vs agent",
         "catalog": "How the catalog helps discovery",
         "next": "Next"
@@ -369,21 +369,15 @@
         ["Scenario", "Runnable analysis workflow; e.g. macro-scan, personal-anchor, metacognition-audit"],
         ["Reference", "Discipline theory/method card; e.g. confirmation-bias, collective-action; cited by scenarios"]
       ],
-      "provenanceHeading": "Official and community",
-      "provenanceBody": [
-        "Official and Community mark provenance and review bar—not a second product and not a second install system. Same catalog, same CLI/MCP semantics; filter when you need to.",
-        "Paths in the repo: official content under skills/official/; community contributions default to skills/community/."
+      "libraryHeading": "One library",
+      "libraryBody": [
+        "Openwisdom is a single skills library: scenarios, references, and listed entries share one catalog and the same CLI/MCP semantics.",
+        "Repo paths under skills/ still help maintenance and PRs (e.g. community/ for external contributions)—that is engineering layout, not three storefronts on the website."
       ],
-      "officialTitle": "Official (skills/official/)",
-      "officialPoints": [
-        "Maintainer-merged; bound to the product narrative (macro scan, historical/social orientation, metacognition)",
-        "Higher bar for quality, style, and citability",
-        "v1 intent includes official scenarios (e.g. macro-scan) and official reference depth across five disciplines"
-      ],
-      "communityTitle": "Community (skills/community/)",
-      "communityPoints": [
-        "External contributions default via PR into skills/community/",
-        "Shared conventions and a basic review bar; the catalog grows with the community",
+      "libraryTitle": "Contribute and list",
+      "libraryPoints": [
+        "Recommended scenarios and discipline references are maintained and tied to the product narrative",
+        "External contributions default via GitHub PR into the skills tree and join the same catalog",
         "Skill body language follows the contributor; site UI stays zh/en"
       ],
       "runtimeHeading": "Website vs agent",
@@ -397,9 +391,9 @@
       "runtimeCalloutBody": "Openwisdom ships method and packaging; thinking runs in your agent and model. A hosted analysis session on the web would be outside this product boundary.",
       "catalogHeading": "How the catalog helps discovery",
       "catalogBody": [
-        "The Skills catalog presents the git skills tree as a filterable index. Common facets include layer (scenario / reference), provenance (official / community), discipline, content language, and default featured sort.",
+        "The Skills catalog presents the library as a filterable index. Common facets include layer (scenario / reference), discipline, content language, and default featured sort.",
         "Filter by layer when you need a workflow (scenario) versus a concept card (reference).",
-        "Filter by provenance when you want the maintained baseline (official) or community extensions. Both belong to one library—not parallel storefronts.",
+        "There is no Official / Community / Curated facet: every entry belongs to one library.",
         "Install heat (when shown) is a side-channel activity signal for installs/downloads—not an academic quality score, and it never writes into SKILL.md. Default sort remains featured; see privacy docs for telemetry detail."
       ],
       "nextHeading": "Next",
@@ -408,7 +402,7 @@
         { "text": "Browse the Skills catalog", "href": "/skills" },
         { "text": "Pick an install path (CLI / MCP / GitHub / manual)", "href": "/install" },
         { "text": "Read the FAQ", "href": "/docs/faq" },
-        { "text": "Contribute a skill to community/", "href": "/contribute" }
+        { "text": "Contribute a skill", "href": "/contribute" }
       ]
     },
     "cliPage": {
@@ -678,19 +672,14 @@
       "description": "Contribute a scenario skill or discipline reference to Openwisdom: fork, write SKILL.md, PR into skills/community/. No web upload backend in v1."
     },
     "title": "Contribute",
-    "lede": "v1 has no web upload or moderation backend. Everything goes through GitHub: fork → write SKILL.md from the template → open a PR into community/.",
-    "provenanceHeading": "Official vs Community",
-    "officialBadge": "Official",
-    "officialTitle": "Core-maintained",
-    "officialPoints": [
-      "Official scenarios and discipline references bound to the product narrative",
-      "Higher quality, style, and citability bar; maintainers land changes under official/"
-    ],
-    "communityBadge": "Community",
-    "communityTitle": "Community growth",
-    "communityPoints": [
-      "External contributions default to skills/community/",
-      "Shared conventions and a basic review bar; the catalog grows with the community"
+    "lede": "v1 has no web upload or moderation backend. Everything goes through GitHub: fork → write SKILL.md from the template → open a PR. Merged skills join the same Skills library.",
+    "libraryHeading": "One library, welcome contributions",
+    "libraryBadge": "Skills library",
+    "libraryTitle": "How contributions enter the catalog",
+    "libraryPoints": [
+      "The site has one Skills catalog—not Official / Community / Curated storefronts",
+      "External contributions default via PR into the repo skills tree (often skills/community/) under shared conventions",
+      "After merge, entries are discoverable and installable like any other skill in the library"
     ],
     "stepsHeading": "How to contribute",
     "steps": [
@@ -703,17 +692,17 @@
         "body": "Each skill is a directory with SKILL.md (YAML frontmatter + body). Scenarios: when to use, steps, output, bias checks. References: definition, bounds, common misuse."
       },
       {
-        "title": "PR into skills/community/",
-        "body": "Do not edit official/ unless a maintainer invites you. Open a PR that states intent and applicability bounds."
+        "title": "Open a PR",
+        "body": "Follow the repo contribute path (typically skills/community/). Open a PR that states intent and applicability bounds."
       }
     ],
     "frontmatterHeading": "Frontmatter checklist",
-    "frontmatterIntro": "Exact fields follow the repo authoring guide. Community skills usually need:",
+    "frontmatterIntro": "Exact fields follow the repo authoring guide. Contributed skills usually need:",
     "frontmatterItems": [
       "name / slug and a human-readable title",
       "layer: scenario or reference",
-      "scope: community for community contributions",
-      "disciplines, summary, language, and other discovery metadata"
+      "disciplines, summary, language, and other discovery metadata",
+      "Frontmatter filled per the schema templates"
     ],
     "frontmatterNote": "UI is zh/en; skill body language follows the contributor—do not force bilingual bodies.",
     "linksHeading": "External links",

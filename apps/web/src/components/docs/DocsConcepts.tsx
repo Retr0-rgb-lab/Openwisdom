@@ -9,14 +9,14 @@ import { DocsCallout } from "./DocsCallout";
 import { DocsShell } from "./DocsShell";
 
 /**
- * Concepts — layers, provenance, runtime boundary, catalog discovery.
- * Copy keys: pages.docs.conceptsPage (fill pack).
+ * Concepts — layers, one library, runtime boundary, catalog discovery.
+ * Copy keys: pages.docs.conceptsPage
  */
 export async function DocsConcepts() {
   const t = await getTranslations("pages.docs.conceptsPage");
   const toc = [
     { id: "layers", label: t("toc.layers") },
-    { id: "provenance", label: t("toc.provenance") },
+    { id: "library", label: t("toc.library") },
     { id: "runtime", label: t("toc.runtime") },
     { id: "catalog", label: t("toc.catalog") },
     { id: "next", label: t("toc.next") },
@@ -24,9 +24,8 @@ export async function DocsConcepts() {
   const layersBody = t.raw("layersBody") as string[];
   const layersTableHeaders = t.raw("layersTableHeaders") as string[];
   const layersTableRows = t.raw("layersTableRows") as string[][];
-  const provenanceBody = t.raw("provenanceBody") as string[];
-  const officialPoints = t.raw("officialPoints") as string[];
-  const communityPoints = t.raw("communityPoints") as string[];
+  const libraryBody = t.raw("libraryBody") as string[];
+  const libraryPoints = t.raw("libraryPoints") as string[];
   const runtimeBody = t.raw("runtimeBody") as string[];
   const catalogBody = t.raw("catalogBody") as string[];
   const nextItems = t.raw("nextItems") as { text: string; href: string }[];
@@ -75,22 +74,14 @@ export async function DocsConcepts() {
         </div>
       </DocsSection>
 
-      <DocsSection id="provenance" title={t("provenanceHeading")}>
-        {provenanceBody.map((p) => (
+      <DocsSection id="library" title={t("libraryHeading")}>
+        {libraryBody.map((p) => (
           <p key={p}>{p}</p>
         ))}
-        <div className="mt-4 space-y-5">
-          <div>
-            <p className="font-medium text-ink">{t("officialTitle")}</p>
-            <div className="mt-2">
-              <DocsProseList items={officialPoints} />
-            </div>
-          </div>
-          <div>
-            <p className="font-medium text-ink">{t("communityTitle")}</p>
-            <div className="mt-2">
-              <DocsProseList items={communityPoints} />
-            </div>
+        <div className="mt-4">
+          <p className="font-medium text-ink">{t("libraryTitle")}</p>
+          <div className="mt-2">
+            <DocsProseList items={libraryPoints} />
           </div>
         </div>
       </DocsSection>

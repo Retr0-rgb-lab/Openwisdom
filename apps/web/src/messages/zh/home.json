@@ -100,8 +100,8 @@
     "references": ["前景理论", "精英理论", "路径依赖", "集体行动", "确认偏误"]
   },
   "model": {
-    "title": "场景引用理论；来源分层，不是两套产品",
-    "subtitle": "知识分层可组合。点左侧场景，看它会拉哪张 reference。Official 与 Community 是 provenance，不是平行产品线。",
+    "title": "场景引用理论；一个库，不是两套产品",
+    "subtitle": "知识分层可组合。点左侧场景，看它会拉哪张 reference。官方维护、社区贡献与收录内容都在同一目录里发现与安装。",
     "scenarioLabel": "场景 Skills",
     "referenceLabel": "学科 Reference",
     "citesLabel": "引用",
@@ -128,18 +128,14 @@
         "from": "← metacognition-audit · 心理学"
       }
     },
-    "official": {
-      "badge": "Official",
-      "blurb": "核心维护的三个场景与五学科 reference，绑定产品叙事与更高质量门槛。"
-    },
-    "community": {
-      "badge": "Community",
-      "blurb": "经 GitHub PR 合入 community/，共享规范与基础审查，随社区生长。"
+    "library": {
+      "badge": "同一个库",
+      "blurb": "推荐场景、学科 reference 与收录内容共用 Skills 目录与 CLI/MCP。欢迎通过 GitHub PR 贡献可安装的方法。"
     }
   },
   "disciplines": {
     "title": "六大学科，图书馆的骨架",
-    "subtitle": "每个学科都有 reference 与精选外部 skill，支撑场景引用，而非空壳分类。",
+    "subtitle": "每个学科都有 reference 与收录 skill，支撑场景引用，而非空壳分类。",
     "edgeNote": "场景引用边：macro-scan → 政治学、经济学、社会学；personal-anchor → 历史学、社会学；metacognition-audit → 心理学。哲学支撑批判与概念澄清。",
     "psych": { "name": "心理学", "desc": "个体如何感知、决策与产生偏差" },
     "socio": { "name": "社会学", "desc": "群体、结构与制度如何塑造行为" },

@@ -84,7 +84,6 @@ export function SkillDetail({
   const accent = entry.shape
     ? SHAPE_ACCENT[entry.shape]
     : "var(--ow-primary)";
-  const provenance = entryProvenance(entry);
   const linkOnly = isLinkOnlyEntry(entry);
   const isCatalog = entry.source === "catalog";
   const showHeat =
@@ -136,19 +135,14 @@ export function SkillDetail({
             >
               {t(`layer.${entry.layer}`)}
             </Badge>
-            <Badge
-              variant="outline"
-              className={cn(
-                "font-normal",
-                provenance === "official"
-                  ? "border-structure/30 bg-structure/8 text-structure"
-                  : provenance === "curated-external"
-                    ? "border-mist/40 bg-mist/10 text-ink-muted"
-                    : "border-line bg-field text-ink-muted",
-              )}
-            >
-              {t(`provenance.${provenance}`)}
-            </Badge>
+            {linkOnly ? (
+              <Badge
+                variant="outline"
+                className="border-mist/40 bg-mist/10 font-normal text-ink-muted"
+              >
+                {t("card.linkOnly")}
+              </Badge>
+            ) : null}
             <Badge
               variant="outline"
               className="border-line bg-field font-normal text-ink-muted"
@@ -231,7 +225,7 @@ export function SkillDetail({
             ))}
           </div>
 
-          {provenance === "curated-external" || entry.externalUrl ? (
+          {linkOnly || entry.externalUrl ? (
             <aside className="mt-6 rounded-lg border border-line bg-surface-muted/60 px-4 py-3 md:px-5">
               <p className="text-xs font-semibold tracking-wide text-structure">
                 {t("detail.attribution")}

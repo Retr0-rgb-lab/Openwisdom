@@ -9,11 +9,9 @@ import { pickLocalized } from "@/data/catalog/types";
 import { useLocale } from "next-intl";
 
 export function SkillsEmpty({
-  communityOnly,
   featured,
   onClear,
 }: {
-  communityOnly: boolean;
   featured: CatalogEntry[];
   onClear: () => void;
 }) {
@@ -23,18 +21,16 @@ export function SkillsEmpty({
   return (
     <div className="rounded-xl border border-line bg-surface px-6 py-10 md:px-8 md:py-12">
       <h2 className="font-serif text-xl font-semibold tracking-[-0.02em] text-ink md:text-2xl">
-        {communityOnly ? t("communityTitle") : t("title")}
+        {t("title")}
       </h2>
       <p className="mt-2 max-w-prose text-sm leading-relaxed text-ink-muted md:text-base">
-        {communityOnly ? t("communityDescription") : t("description")}
+        {t("description")}
       </p>
 
       <div className="mt-6 flex flex-wrap gap-2">
-        {!communityOnly ? (
-          <Button type="button" variant="default" onClick={onClear}>
-            {t("clear")}
-          </Button>
-        ) : null}
+        <Button type="button" variant="default" onClick={onClear}>
+          {t("clear")}
+        </Button>
         <Button
           variant="outline"
           render={
@@ -48,7 +44,7 @@ export function SkillsEmpty({
         </Button>
       </div>
 
-      {featured.length > 0 && !communityOnly ? (
+      {featured.length > 0 ? (
         <div className="mt-8 border-t border-line pt-6">
           <p className="text-sm font-medium text-structure">{t("featuredTitle")}</p>
           <ul className="mt-3 flex flex-col gap-2">

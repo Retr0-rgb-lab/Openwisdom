@@ -6,7 +6,7 @@
   "intro": {
     "eyebrow": "图书馆",
     "title": "Skills 目录",
-    "lede": "发现官方场景流程，按层级、学科与来源筛选。安装到你自己的 Agent 后运行分析。",
+    "lede": "一个技能库：场景流程、理论卡片与收录内容都在同一目录。按层级、学科与语言筛选，安装到你自己的 Agent 后运行分析。",
     "resultCount": "{count} 个 skill",
     "resultCountOne": "1 个 skill"
   },
@@ -17,15 +17,13 @@
   "provenance": {
     "official": "官方",
     "community": "社区",
-    "curated-external": "精选"
+    "curated-external": "收录"
   },
   "filters": {
     "search": "搜索",
     "searchPlaceholder": "名称、摘要、标签…",
     "layer": "层级",
     "layerAll": "全部",
-    "source": "来源",
-    "curated": "精选",
     "discipline": "学科",
     "language": "正文语言",
     "sort": "排序",
@@ -38,7 +36,7 @@
     "close": "关闭"
   },
   "sort": {
-    "featured": "精选",
+    "featured": "推荐",
     "name": "名称",
     "updated": "最近更新",
     "popular": "热度"
@@ -46,10 +44,6 @@
   "layer": {
     "scenario": "场景",
     "reference": "理论卡片"
-  },
-  "scope": {
-    "official": "官方",
-    "community": "社区"
   },
   "disciplines": {
     "psychology": "心理学",
@@ -67,7 +61,8 @@
     "download": "下载 SKILL.md",
     "whenLabel": "何时用",
     "contentLang": "正文 {lang}",
-    "moreTags": "+{count}"
+    "moreTags": "+{count}",
+    "linkOnly": "外部链接"
   },
   "heat": {
     "installs30d": "{count} · 30d",
@@ -84,22 +79,20 @@
   },
   "empty": {
     "title": "没有匹配的 skill",
-    "description": "试试清空筛选，或从官方三场景重新开始。",
+    "description": "试试清空筛选，或从推荐场景重新开始。",
     "clear": "清空筛选",
-    "communityTitle": "还没有社区 skill",
-    "communityDescription": "社区 skill 通过 GitHub PR 提交。欢迎按贡献指南参与。",
-    "featuredTitle": "官方场景",
+    "featuredTitle": "推荐场景",
     "contribute": "了解如何贡献",
     "github": "在 GitHub 查看"
   },
   "featured": {
-    "title": "精选场景",
-    "subtitle": "三条官方分析流程"
+    "title": "推荐场景",
+    "subtitle": "三条分析工作流"
   },
   "sections": {
-    "officialTitle": "官方场景",
-    "packsTitle": "精选合集",
-    "exploreTitle": "浏览全部",
+    "featuredTitle": "推荐场景",
+    "packsTitle": "合集",
+    "exploreTitle": "浏览库",
     "showAll": "显示全部",
     "disciplineMenu": "学科"
   },

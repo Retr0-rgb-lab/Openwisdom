@@ -100,8 +100,8 @@
     "references": ["Prospect theory", "Elite theory", "Path dependence", "Collective action", "Confirmation bias"]
   },
   "model": {
-    "title": "Scenarios cite theory; provenance is a layer, not two products",
-    "subtitle": "Knowledge is layered and composable. Select a scenario to see one reference it pulls. Official and community are provenance, not parallel product lines.",
+    "title": "Scenarios cite theory; one library, not two products",
+    "subtitle": "Knowledge is layered and composable. Select a scenario to see one reference it pulls. Maintained skills, community PRs, and listed entries share one catalog.",
     "scenarioLabel": "Scenario skills",
     "referenceLabel": "Discipline reference",
     "citesLabel": "cite",
@@ -128,18 +128,14 @@
         "from": "← metacognition-audit · psychology"
       }
     },
-    "official": {
-      "badge": "Official",
-      "blurb": "Core-maintained scenarios and five-discipline references tied to the product narrative and a higher quality bar."
-    },
-    "community": {
-      "badge": "Community",
-      "blurb": "Merged into community/ via GitHub PR under a shared review bar — grows with the community."
+    "library": {
+      "badge": "One library",
+      "blurb": "Recommended scenarios, discipline references, and listed entries share the Skills catalog and CLI/MCP. Contribute installable methods via GitHub PR."
     }
   },
   "disciplines": {
     "title": "Six disciplines, the skeleton of the library",
-    "subtitle": "Each discipline ships references and curated external skills that scenarios can cite — no empty taxonomy.",
+    "subtitle": "Each discipline ships references and listed skills that scenarios can cite — no empty taxonomy.",
     "edgeNote": "Cite edges: macro-scan → political science, economics, sociology; personal-anchor → history, sociology; metacognition-audit → psychology. Philosophy supports critique and conceptual clarity.",
     "psych": { "name": "Psychology", "desc": "How individuals perceive, decide, and err" },
     "socio": { "name": "Sociology", "desc": "How groups, structures, and institutions shape behavior" },

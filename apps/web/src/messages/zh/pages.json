@@ -352,7 +352,7 @@
       "lede": "Openwisdom 是分层的社会科学 Agent Skills 库：场景工作流引用学科 reference；目录站帮助发现与安装；分析在你自己的 Agent 中运行。",
       "toc": {
         "layers": "场景与 reference",
-        "provenance": "官方与社区",
+        "library": "同一个库",
         "runtime": "网站与 Agent 的分工",
         "catalog": "目录如何帮助发现",
         "next": "下一步"
@@ -369,21 +369,15 @@
         ["场景（scenario）", "可运行的分析工作流；例如 macro-scan、personal-anchor、metacognition-audit"],
         ["Reference", "学科理论/方法卡；例如 confirmation-bias、collective-action；被场景引用"]
       ],
-      "provenanceHeading": "官方与社区",
-      "provenanceBody": [
-        "Official 与 Community 标记的是出处与审查门槛，不是两套产品，也不是两套安装系统。同一目录、同一 CLI/MCP 语义；你按需筛选即可。",
-        "仓库中的路径对应关系：官方内容在 skills/official/；社区贡献默认进入 skills/community/。"
+      "libraryHeading": "同一个库",
+      "libraryBody": [
+        "Openwisdom 只有一个技能库：场景、reference 与收录内容都在同一目录中发现与安装，共享 CLI/MCP 语义。",
+        "仓库里的 skills/ 路径仍便于维护与 PR（例如 community/ 接收外部贡献），但这是工程组织方式，不是网站上的「官方 / 社区 / 精选」三套商店。"
       ],
-      "officialTitle": "Official（skills/official/）",
-      "officialPoints": [
-        "由核心维护者合入，绑定产品叙事（宏观扫描、历史/社会定位、元认知等）",
-        "更高的质量、风格与可引用性门槛",
-        "v1 意图包含官方场景（如 macro-scan）以及五个学科方向上的官方 reference 深度"
-      ],
-      "communityTitle": "Community（skills/community/）",
-      "communityPoints": [
-        "外部贡献默认 PR 到 skills/community/",
-        "共享规范与基础审查，目录随社区扩展",
+      "libraryTitle": "贡献与收录",
+      "libraryPoints": [
+        "推荐场景与学科 reference 由维护者合入并绑定产品叙事",
+        "外部贡献默认通过 GitHub PR 进入仓库 skills 树，合入后进入同一目录",
         "正文语言跟随贡献者；站点 UI 仍是中英双语"
       ],
       "runtimeHeading": "网站与 Agent 的分工",
@@ -397,10 +391,10 @@
       "runtimeCalloutBody": "Openwisdom 交付方法与包装；思考由你的 Agent 与模型完成。若网页上出现「托管分析会话」，那就不在本产品边界内。",
       "catalogHeading": "目录如何帮助发现",
       "catalogBody": [
-        "Skills 目录把 git 中的 skill 树呈现为可筛选索引。常见维度包括：层（scenario / reference）、出处（official / community）、学科、内容语言，以及默认的 featured 排序。",
+        "Skills 目录把 skill 库呈现为可筛选索引。常见维度包括：层（scenario / reference）、学科、内容语言，以及默认的推荐排序。",
         "按层筛选时：若你要「跑一次工作流」，先看 scenario；若你要补强某个概念或边界，再装或查阅对应 reference。",
-        "按出处筛选时：official 适合先建立共同基线；community 适合探索扩展写法。两者同属一个库，不是平行商店。",
-        "安装热度（若显示）是旁路的安装/下载活跃信号，不是学术质量分数，也不会写入 SKILL.md。默认排序仍以 featured 为主；热度细节见隐私相关说明。"
+        "不再提供官方 / 社区 / 精选三分筛选：所有条目属于同一个库。",
+        "安装热度（若显示）是旁路的安装/下载活跃信号，不是学术质量分数，也不会写入 SKILL.md。默认排序仍以推荐为主；热度细节见隐私相关说明。"
       ],
       "nextHeading": "下一步",
       "nextItems": [
@@ -408,7 +402,7 @@
         { "text": "浏览 Skills 目录", "href": "/skills" },
         { "text": "选择安装路径（CLI / MCP / GitHub / 手动）", "href": "/install" },
         { "text": "阅读常见问题", "href": "/docs/faq" },
-        { "text": "向 community/ 贡献 skill", "href": "/contribute" }
+        { "text": "贡献 skill", "href": "/contribute" }
       ]
     },
     "cliPage": {
@@ -678,19 +672,14 @@
       "description": "向 Openwisdom 贡献场景 skill 或学科 reference：fork、撰写 SKILL.md、PR 到 skills/community/。v1 无网页上传后台。"
     },
     "title": "贡献指南",
-    "lede": "v1 不做网页直传与审核后台。一切经由 GitHub：fork → 按模板写 SKILL.md → 向 community/ 开 PR。",
-    "provenanceHeading": "Official 与 Community",
-    "officialBadge": "Official",
-    "officialTitle": "核心维护",
-    "officialPoints": [
-      "与产品叙事绑定的官方场景与学科 reference",
-      "更高的质量、风格与可引用性门槛，由维护者合入 official/"
-    ],
-    "communityBadge": "Community",
-    "communityTitle": "社区生长",
-    "communityPoints": [
-      "外部贡献默认进入 skills/community/",
-      "共享规范与基础审查，随社区共同扩展"
+    "lede": "v1 不做网页直传与审核后台。一切经由 GitHub：fork → 按模板写 SKILL.md → 开 PR。合入后进入同一个 Skills 库。",
+    "libraryHeading": "同一个库，欢迎共建",
+    "libraryBadge": "Skills 库",
+    "libraryTitle": "贡献如何进入目录",
+    "libraryPoints": [
+      "站点只有一个 Skills 目录：不按官方 / 社区 / 精选分店",
+      "外部贡献默认 PR 到仓库 skills/ 树（常见为 skills/community/），共享规范与基础审查",
+      "合入后与推荐场景、reference、收录条目一样可被发现与安装"
     ],
     "stepsHeading": "贡献步骤",
     "steps": [
@@ -703,17 +692,17 @@
         "body": "每个 skill 是一个目录，内含 SKILL.md（YAML frontmatter + 正文）。场景写清何时用、步骤、输出与偏见检查；reference 写清定义、边界与常见误用。"
       },
       {
-        "title": "PR 到 skills/community/",
-        "body": "不要直接改 official/ 除非维护者邀请。打开 PR，说明意图与适用边界。"
+        "title": "打开 PR",
+        "body": "按仓库贡献路径提交（通常是 skills/community/）。打开 PR，说明意图与适用边界。"
       }
     ],
     "frontmatterHeading": "Frontmatter 要点",
-    "frontmatterIntro": "具体字段以仓库编写规范为准。社区 skill 通常需要：",
+    "frontmatterIntro": "具体字段以仓库编写规范为准。贡献 skill 通常需要：",
     "frontmatterItems": [
       "name / 标识（slug）与可读标题",
       "layer：scenario 或 reference",
-      "scope：community（社区贡献）",
-      "disciplines、摘要、语言等便于目录发现的元数据"
+      "disciplines、摘要、语言等便于目录发现的元数据",
+      "按模板填写 frontmatter（以仓库 schema 为准）"
     ],
     "frontmatterNote": "UI 为中英双语；skill 正文语言跟随贡献者，不必强制双语正文。",
     "linksHeading": "外链",

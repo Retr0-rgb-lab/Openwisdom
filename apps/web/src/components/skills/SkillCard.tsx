@@ -12,11 +12,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { CatalogEntry } from "@/data/catalog/types";
-import {
-  entryProvenance,
-  isLinkOnlyEntry,
-  pickLocalized,
-} from "@/data/catalog/types";
+import { isLinkOnlyEntry, pickLocalized } from "@/data/catalog/types";
 import { Link } from "@/i18n/navigation";
 import { reportWebHeat } from "@/lib/heat/client";
 import { cn } from "@/lib/utils";
@@ -138,19 +134,14 @@ export function SkillCard({ entry }: { entry: CatalogEntry }) {
           >
             {t(`layer.${entry.layer}`)}
           </Badge>
-          <Badge
-            variant="outline"
-            className={cn(
-              "font-normal",
-              entryProvenance(entry) === "official"
-                ? "border-structure/30 bg-structure/8 text-structure"
-                : entryProvenance(entry) === "curated-external"
-                  ? "border-mist/40 bg-mist/10 text-ink-muted"
-                  : "border-line bg-field text-ink-muted",
-            )}
-          >
-            {t(`provenance.${entryProvenance(entry)}`)}
-          </Badge>
+          {isLinkOnlyEntry(entry) ? (
+            <Badge
+              variant="outline"
+              className="border-mist/40 bg-mist/10 font-normal text-ink-muted"
+            >
+              {t("card.linkOnly")}
+            </Badge>
+          ) : null}
           <Badge
             variant="outline"
             className="border-line bg-field font-normal text-ink-muted"

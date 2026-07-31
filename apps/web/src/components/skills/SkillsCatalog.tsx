@@ -32,11 +32,9 @@ import {
   parseLangParam,
   parseLayerParam,
   parseSortParam,
-  parseSourceParam,
   sortCatalog,
   type CatalogEntry,
   type CatalogQuery,
-  type CatalogSourceFilter,
   type ContentLang,
   type DisciplineId,
   type SkillLayer,
@@ -50,17 +48,11 @@ import { SkillsEmpty } from "./SkillsEmpty";
 
 const EXPLORE_PREVIEW = 12;
 
-const SOURCE_FILTERS: CatalogSourceFilter[] = [
-  "official",
-  "community",
-  "curated",
-];
-
 function buildQueryString(q: CatalogQuery): string {
   const params = new URLSearchParams();
   if (q.q?.trim()) params.set("q", q.q.trim());
   if (q.layer) params.set("layer", q.layer);
-  if (q.source) params.set("source", q.source);
+  // `source` intentionally omitted — one library, no Official/Community/Curated facet
   if (q.disciplines?.length) {
     params.set("discipline", q.disciplines.join(","));
   }
@@ -70,8 +62,11 @@ function buildQueryString(q: CatalogQuery): string {
   return s ? `?${s}` : "";
 }
 
-function isOfficialScenario(entry: CatalogEntry): boolean {
-  return entry.scope === "official" && entry.layer === "scenario";
+/** Recommended scenario workflows (editorial rank), not a separate product line. */
+function isFeaturedScenario(entry: CatalogEntry): boolean {
+  if (entry.layer !== "scenario") return false;
+  const rank = entry.featuredRank ?? Number.POSITIVE_INFINITY;
+  return rank <= 20;
 }
 
 /** Pack hubs: slug *-pack, principle-skill-pack, or top featured with pack tag. */
@@ -111,14 +106,6 @@ function Chip({
       {children}
     </button>
   );
-}
-
-function sourceChipLabel(
-  source: CatalogSourceFilter,
-  t: ReturnType<typeof useTranslations<"skills">>,
-): string {
-  if (source === "curated") return t("filters.curated");
-  return t(`scope.${source}`);
 }
 
 function SkillGrid({ entries }: { entries: CatalogEntry[] }) {
@@ -184,10 +171,6 @@ function FiltersPanel({
     setQuery({ disciplines: next });
   }
 
-  function toggleSource(source: CatalogSourceFilter) {
-    setQuery({ source: query.source === source ? "" : source });
-  }
-
   function toggleLang(lang: ContentLang) {
     setQuery({ lang: query.lang === lang ? "" : lang });
   }
@@ -218,23 +201,6 @@ function FiltersPanel({
           >
             {t("layer.reference")}
           </Chip>
-        </div>
-      </div>
-
-      <div>
-        <p className="mb-2 text-xs font-semibold tracking-wide text-structure">
-          {t("filters.source")}
-        </p>
-        <div className="flex flex-wrap gap-2">
-          {SOURCE_FILTERS.map((source) => (
-            <Chip
-              key={source}
-              active={query.source === source}
-              onClick={() => toggleSource(source)}
-            >
-              {sourceChipLabel(source, t)}
-            </Chip>
-          ))}
         </div>
       </div>
 
@@ -419,29 +385,6 @@ function SkillsToolbar({
 
       <span className="hidden h-4 w-px shrink-0 bg-line md:block" aria-hidden />
 
-      {/* Source — Official | Community | Curated */}
-      <div
-        className="flex shrink-0 items-center gap-1"
-        role="group"
-        aria-label={t("filters.source")}
-      >
-        {SOURCE_FILTERS.map((source) => (
-          <Chip
-            key={source}
-            active={query.source === source}
-            onClick={() =>
-              setQuery({
-                source: query.source === source ? "" : source,
-              })
-            }
-          >
-            {sourceChipLabel(source, t)}
-          </Chip>
-        ))}
-      </div>
-
-      <span className="hidden h-4 w-px shrink-0 bg-line md:block" aria-hidden />
-
       {/* Sort dropdown — one control, not 3 chips */}
       <DropdownMenu>
         <DropdownMenuTrigger
@@ -565,7 +508,6 @@ export function SkillsCatalog({
     return {
       q: searchParams.get("q") ?? "",
       layer: parseLayerParam(searchParams.get("layer") ?? undefined),
-      source: parseSourceParam(searchParams.get("source") ?? undefined),
       disciplines: parseDisciplineParam(
         searchParams.get("discipline") ?? undefined,
       ),
@@ -587,14 +529,13 @@ export function SkillsCatalog({
     [catalog, query, locale],
   );
 
-  /** Empty-state featured strip only (official scenarios). */
+  /** Empty-state recommended scenarios strip. */
   const featured = useMemo(
     () =>
       sortCatalog(
         filterCatalog(catalog, {
           sort: "featured",
           layer: "scenario",
-          source: "official",
         }),
         "featured",
         locale,
@@ -606,7 +547,6 @@ export function SkillsCatalog({
     let n = 0;
     if (query.q?.trim()) n += 1;
     if (query.layer) n += 1;
-    if (query.source) n += 1;
     if (query.lang) n += 1;
     if (query.disciplines?.length) n += query.disciplines.length;
     if (query.sort && query.sort !== "featured") n += 1;
@@ -616,32 +556,30 @@ export function SkillsCatalog({
   const hardFiltersActive = Boolean(
     query.q?.trim() ||
       query.layer ||
-      query.source ||
       query.lang ||
       (query.disciplines?.length ?? 0) > 0,
   );
 
-  /** Distill layout: official scenarios → packs → rest of catalog.
-   * Named catalogSections so it never shadows i18n key path `sections.*`. */
+  /** Distill layout: recommended scenarios → packs → rest of one library. */
   const catalogSections = useMemo(() => {
     if (hardFiltersActive) {
       return {
-        official: [] as CatalogEntry[],
+        featured: [] as CatalogEntry[],
         packs: [] as CatalogEntry[],
         explore: [] as CatalogEntry[],
       };
     }
 
-    const official = results.filter(isOfficialScenario);
-    const officialSlugs = new Set(official.map((e) => e.slug));
+    const featuredScenarios = results.filter(isFeaturedScenario);
+    const featuredSlugs = new Set(featuredScenarios.map((e) => e.slug));
     const packs = results.filter(
-      (e) => isFeaturedPack(e) && !officialSlugs.has(e.slug),
+      (e) => isFeaturedPack(e) && !featuredSlugs.has(e.slug),
     );
     const packSlugs = new Set(packs.map((e) => e.slug));
     const explore = results.filter(
-      (e) => !officialSlugs.has(e.slug) && !packSlugs.has(e.slug),
+      (e) => !featuredSlugs.has(e.slug) && !packSlugs.has(e.slug),
     );
-    return { official, packs, explore };
+    return { featured: featuredScenarios, packs, explore };
   }, [hardFiltersActive, results]);
 
   const exploreVisible = useMemo(() => {
@@ -672,8 +610,6 @@ export function SkillsCatalog({
     setExploreExpanded(false);
     pushQuery({ sort: "featured" });
   }, [pushQuery]);
-
-  const communityOnly = query.source === "community" && results.length === 0;
 
   const countLabel =
     results.length === 1
@@ -718,11 +654,7 @@ export function SkillsCatalog({
       {results.length === 0 ? (
         <section className="border-b border-line">
           <div className="mx-auto max-w-6xl px-6 py-8 md:py-10">
-            <SkillsEmpty
-              communityOnly={communityOnly}
-              featured={featured}
-              onClear={clearAll}
-            />
+            <SkillsEmpty featured={featured} onClear={clearAll} />
           </div>
         </section>
       ) : hardFiltersActive ? (
@@ -733,12 +665,12 @@ export function SkillsCatalog({
         </section>
       ) : (
         <>
-          {catalogSections.official.length > 0 ? (
+          {catalogSections.featured.length > 0 ? (
             <CatalogSection
-              title={t("sections.officialTitle")}
+              title={t("sections.featuredTitle")}
               className="bg-surface-muted"
             >
-              <SkillGrid entries={catalogSections.official} />
+              <SkillGrid entries={catalogSections.featured} />
             </CatalogSection>
           ) : null}
 

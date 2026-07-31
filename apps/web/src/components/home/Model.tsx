@@ -116,23 +116,13 @@ export function Model() {
         </div>
       </div>
 
-      <div className="mt-10 grid gap-6 border-t border-line pt-8 sm:grid-cols-2 sm:gap-0 sm:divide-x sm:divide-line">
-        <div className="flex flex-col gap-2 sm:pr-8">
-          <h4 className="text-sm font-semibold text-structure">
-            {t("official.badge")}
-          </h4>
-          <p className="text-sm leading-relaxed text-ink-muted">
-            {t("official.blurb")}
-          </p>
-        </div>
-        <div className="flex flex-col gap-2 sm:pl-8">
-          <h4 className="text-sm font-semibold text-community">
-            {t("community.badge")}
-          </h4>
-          <p className="text-sm leading-relaxed text-ink-muted">
-            {t("community.blurb")}
-          </p>
-        </div>
+      <div className="mt-10 border-t border-line pt-8">
+        <h4 className="text-sm font-semibold text-structure">
+          {t("library.badge")}
+        </h4>
+        <p className="mt-2 max-w-prose text-sm leading-relaxed text-ink-muted">
+          {t("library.blurb")}
+        </p>
       </div>
     </Section>
   );

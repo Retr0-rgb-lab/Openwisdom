@@ -30,7 +30,7 @@ const main = defineCommand({
     name: "openwisdom",
     version: CLI_VERSION,
     description:
-      "Openwisdom skill package manager — search / list / install / update (no hosted LLM)",
+      "Openwisdom skill package manager — search [--tag] / list / install [--bundle] / update (no hosted LLM)",
   },
   subCommands: {
     search: searchCommand,

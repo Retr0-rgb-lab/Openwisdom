@@ -28,10 +28,14 @@ Openwisdom is an **open-source social-science Agent Skills library** delivered a
 
 **Success (v1 intuition):**
 - A stranger understands the product in about a minute and can start install with one command.
-- Official **three scenario skills** (macro-scan, personal-anchor, metacognition-audit) plus **official references across five disciplines** are browsable and installable.
-- User completes a real analysis flow **in their own agent**.
+- Official **three orientation scenario skills** (macro-scan, personal-anchor, metacognition-audit) plus **official references across five disciplines** are browsable and installable.
+- User completes a real analysis flow **in their own agent** (Openwisdom does **not** host analysis).
 - Contributors can PR into `community/` from web-guided GitHub workflow.
 - Skill **install heat** (web download + successful CLI/MCP install) is visible; default sort remains editorial `featured`.
+
+**Success (post-v1 / v1.1 content, still not hosted analysis):**
+- Official **Handoff layer** scenarios (`responsibility-scope`, `responsibility-bridge`, `analysis-closure`) are installable alongside the orientation triad—bridging recognition → agency/scope → closure **inside the user’s agent**.
+- Catalog may expose optional **pipeline metadata** and **bundles** for discover/combine-install only; CLI/MCP remain package managers (no `run` / analyze / recommend tools).
 
 ## Positioning
 
@@ -94,18 +98,18 @@ Content language follows the contributor; **UI is zh/en**. Analysis runtime stay
 - **Language product commitment:** Website UI Chinese and English; skill body language = contributor’s language; metadata must support discovery by language.
 - **Experience bar:** Catalog and marketing craft should feel like a serious product site (impeccable.style-level density and finish as a **maturity bar**), themed for wisdom / social science / orientation—not generic AI-SaaS purple glow, not a clone of Impeccable’s design-slop brand.
 - **Voice (strategic, not visual):** Calm, non-hype, evidence-aware; no “supercharge / unlock your potential” marketing voice. Prefer clarity about limits (analysis runs in your agent).
-- **No other binding brand assets** yet (no locked logo file, slogan, or trademark pack beyond the name). Visual world is **out of scope for this file** (see design specs under `docs/specs/` as working design intent, not PRODUCT authority).
+- **No other binding brand assets** beyond name + logo-aligned Overlay Atlas in `DESIGN.md`. Visual world is **out of scope for this file** (`DESIGN.md` is visual authority, not PRODUCT).
 
 ## Evidence on Hand
 
 | Asset | Path / note |
 |-------|-------------|
-| Product decisions & vision | `docs/知识库/01–04` |
-| Architecture, IA, visual direction, components, telemetry specs | `docs/specs/` (draft design specs; not a substitute for DESIGN.md) |
-| Remote repo | https://github.com/Retr0-rgb-lab/Openwisdom (empty of app code at init time) |
-| Runnable web app / CLI package | **Absent** at init—greenfield implementation |
-| Logos, screenshots, testimonials, real install metrics | **None**—do not fabricate social proof or download numbers |
-| Official skill bodies | **Not yet authored** in-repo—planned content, not shippable evidence |
+| Product decisions & vision | `docs/知识库/01–04` (+ index `00`; topics `07`–`14` as present) |
+| System status / doc map | `docs/知识库/05` · `06` · `00-索引.md` |
+| Visual tokens | `DESIGN.md` (not PRODUCT) |
+| Remote repo | https://github.com/Retr0-rgb-lab/Openwisdom |
+| Logos, screenshots, testimonials, real install metrics | Do not fabricate social proof or download numbers |
+| Official skill bodies | Orientation triad + references as in repo; Handoff layer is post-v1/v1.1 official content (D1) |
 
 ## Product Principles
 

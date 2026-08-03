@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "description": "Candidates to re-check next run (unclear license, no repo yet, author pending).",
+  "entries": [
+    {
+      "id": "github.com/jordan-gibbs/hyperresearch",
+      "reason": "Installer-bound product harness; revisit if portable skill-only extract appears",
+      "url": "https://github.com/jordan-gibbs/hyperresearch"
+    },
+    {
+      "id": "reddit.com/r/claudexplorers/comments/1t8xy2q",
+      "reason": "Book Intelligence skill body on Reddit only; no public repo",
+      "url": "https://www.reddit.com/r/claudexplorers/comments/1t8xy2q/made_a_claude_skill_that_breaks_down_a_book_so/"
+    },
+    {
+      "id": "github.com/tenfoldmarc/llm-council-skill",
+      "reason": "shortlisted but not DeepDive'd in manual run; score next cycle",
+      "url": "https://github.com/tenfoldmarc/llm-council-skill"
+    },
+    {
+      "id": "github.com/cookiy-ai/user-research-skill",
+      "reason": "approved offline methods pending; strip commercial API before land",
+      "url": "https://github.com/cookiy-ai/user-research-skill"
+    },
+    {
+      "id": "github.com/altmbr/claude-research-skill",
+      "reason": "optional lower priority; frontmatter hygiene",
+      "url": "https://github.com/altmbr/claude-research-skill"
+    }
+  ]
+}

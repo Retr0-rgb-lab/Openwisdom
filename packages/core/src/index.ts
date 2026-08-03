@@ -32,6 +32,7 @@ export {
   loadCatalog,
   scanSkillsToCatalog,
   searchCatalog,
+  resolveBundle,
   type LoadedCatalog,
 } from "./catalog.js";
 

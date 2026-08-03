@@ -1,0 +1,60 @@
+{
+  "skill_name": "framing-decisions",
+  "evals": [
+    {
+      "id": 1,
+      "name": "forces-do-nothing-and-risk-form",
+      "prompt": "We have about 90k in the bank and burn 30k a quarter. I want to decide between spending the next quarter shipping a paid tier or doubling down on SEO. The paid tier could be huge but could also cost us a quarter and land nothing. What should we do?",
+      "expected_output": "Frames the decision explicitly rather than answering from intuition: enumerates at least three actions including doing nothing, names the hidden variable, sources a prior, scores outcomes as a resulting cash position on one scale, and argues for a concave utility because the downside touches runway.",
+      "files": [],
+      "assertions": [
+        "Adds a third option beyond the two given, including a do-nothing or status-quo option",
+        "Names an explicit hidden variable or uncertain state that the decision turns on",
+        "States a prior probability for each state and says where the number came from",
+        "Scores outcomes as the resulting cash position rather than as a revenue delta",
+        "Recommends log or power utility rather than linear, on the grounds that the downside is material against 90k of cash",
+        "Runs or shows the meu command with a JSON input, rather than doing the arithmetic in prose",
+        "Reports the advantage of the second-place option, not only the winner"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "detects-that-numbers-do-not-decide",
+      "prompt": "Two marketing plans. Plan A: 60% chance of 20k extra revenue, 40% chance of 8k. Plan B: 50% chance of 21k, 50% chance of 8.5k. Which one?",
+      "expected_output": "Computes both, finds them nearly indistinguishable, and says so plainly instead of manufacturing a winner. Recommends choosing on reversibility or cost rather than on the expected value gap.",
+      "files": [],
+      "assertions": [
+        "Computes expected values or expected utilities for both plans",
+        "States that the two options are effectively tied rather than declaring a confident winner",
+        "Recommends deciding on a secondary criterion such as reversibility, cost, or optionality",
+        "Does not invent precision that the input numbers do not support"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "catches-the-framing-flip",
+      "prompt": "Our retention plan keeps 94% of customers. The alternative plan loses 8% of customers but brings in 30% more new ones. I feel strongly we should protect the 94%. Sanity-check me.",
+      "expected_output": "Restates both options in the same frame (both as retention, or both as loss), points out that the stated preference is partly a framing artefact, and asks for the two plans to be scored on one common outcome.",
+      "files": [],
+      "assertions": [
+        "Notices that the two options are described in different frames, one as a retained percentage and one as a loss",
+        "Restates them in a single consistent frame",
+        "Explicitly names the framing effect as a known reversal of preference rather than a vague bias warning",
+        "Asks for both plans to be scored on the same outcome scale, such as end-of-period customers or revenue"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "refuses-to-model-a-catastrophic-branch",
+      "prompt": "Option C has a 3% chance of a regulatory fine that would end the company, but the expected value is much higher than anything else on the table. The expected value calculation says take it. Do we take it?",
+      "expected_output": "Declines to let expected utility trade a small probability of ruin for upside. Recommends removing the action or capping the downside first, then scoring what remains.",
+      "files": [],
+      "assertions": [
+        "States that an option with a company-ending branch should not simply be scored against the others",
+        "Recommends either removing the option or capping or insuring the downside before scoring",
+        "Explains that expected utility will happily accept a small probability of ruin if the upside is large enough, which is why the option must be handled before scoring rather than inside the scoring",
+        "Does not simply recommend taking the option because the expected value is higher"
+      ]
+    }
+  ]
+}

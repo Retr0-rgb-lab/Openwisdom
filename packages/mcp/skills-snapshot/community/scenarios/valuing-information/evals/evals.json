@@ -1,0 +1,61 @@
+{
+  "skill_name": "valuing-information",
+  "evals": [
+    {
+      "id": 1,
+      "name": "zero-value-despite-high-accuracy",
+      "prompt": "We can build a churn prediction model that flags at-risk accounts with about 92% accuracy. Three weeks of engineering. Right now we send the same retention email to every account in the at-risk segment, and sending an email costs us essentially nothing. The 92% number is really good. Should we build it?",
+      "expected_output": "Recognises that because the intervention is free, the optimal action is to email everyone regardless of what the model predicts, so no prediction changes the action and the value of information is zero despite 92% accuracy. Identifies that the model only becomes valuable once the intervention has a real per-customer cost, and suggests testing that instead.",
+      "files": [],
+      "assertions": [
+        "States that the value of information is zero because the action does not change whatever the model predicts",
+        "Explicitly notes that emailing everyone is already optimal when the intervention costs nothing",
+        "States that the 92% accuracy figure is irrelevant to the decision value, and does not treat high accuracy as a reason to build",
+        "Identifies that the model would become valuable only if the retention intervention had a meaningful per-customer cost",
+        "Recommends against three weeks of engineering, or conditions it on first making the intervention costly enough to be worth targeting"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "prices-a-real-study-net-of-cost-and-delay",
+      "prompt": "We are deciding whether to raise prices 40%, raise 15%, or hold. If the market tolerates 40% we make about 45k more a year; if it does not we lose about 28k. Roughly a third chance the market tolerates 40%. A survey of 200 users costs 1500 and takes three weeks. Should we run it?",
+      "expected_output": "Builds the states, actions and utilities, estimates how discriminating a survey actually is, computes VOI net of cost, and includes the three-week delay as part of the cost.",
+      "files": [],
+      "assertions": [
+        "Builds an explicit table of states, actions and utilities",
+        "States sensitivity and specificity, or an equivalent likelihood table, for the survey",
+        "Notes that stated willingness to pay is a weak predictor of revealed willingness to pay and sets the likelihoods conservatively",
+        "Computes VOI and subtracts the cost to give a net figure",
+        "Counts the three-week delay as a cost, not only the 1500",
+        "Names which survey result would flip the decision to which action"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "sizes-a-rare-event-study-correctly",
+      "prompt": "Our dispute rate looks like about 0.2%. I want to measure whether a checkout change moved it. How many transactions do we need?",
+      "expected_output": "Uses the relative standard error rather than the absolute one, computes a sample size in the tens of thousands, and suggests oversampling disputed transactions with reweighting if a full sample is impractical.",
+      "files": [],
+      "assertions": [
+        "Uses relative standard error rather than absolute standard error for the rare rate",
+        "Produces a sample size in the tens of thousands or larger",
+        "Explains that halving the error costs four times the sample",
+        "Mentions oversampling the rare segment with importance weights as an alternative when the full sample is impractical",
+        "Warns against reading a 0.2% rate off a few thousand transactions"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "caps-the-answer-with-perfect-information",
+      "prompt": "A consultancy wants 25k to tell us which of two market segments to enter. Is that worth it?",
+      "expected_output": "Computes the value of perfect information as an upper bound first, and compares 25k against that ceiling before considering the consultancy's actual accuracy.",
+      "files": [],
+      "assertions": [
+        "Computes or asks for the value of perfect information as an upper bound",
+        "Compares the 25k fee against that ceiling",
+        "States that no real study can be worth more than perfect information",
+        "Asks what the decision is and what would be done today without the study"
+      ]
+    }
+  ]
+}

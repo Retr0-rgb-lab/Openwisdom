@@ -55,6 +55,99 @@ describe("catalog search", () => {
     const hits = searchCatalog(index, "macro");
     expect(hits.some((s) => s.id === "macro-scan")).toBe(true);
   });
+
+  it("exact tag filter matches skills with that tag", () => {
+    const index = {
+      schemaVersion: 1 as const,
+      skills: [
+        {
+          id: "macro-scan",
+          name: "macro-scan",
+          description: "Macro",
+          layer: "scenario" as const,
+          scope: "official" as const,
+          disciplines: ["economics"],
+          language: "en",
+          tags: ["macro", "structure"],
+          version: "0.1.0",
+          updated: "2026-07-30",
+          repoPath: "skills/official/scenarios/macro-scan",
+          install: { cli: "npx openwisdom install macro-scan" },
+        },
+        {
+          id: "responsibility-scope",
+          name: "responsibility-scope",
+          description: "Scope",
+          layer: "scenario" as const,
+          scope: "official" as const,
+          disciplines: ["sociology"],
+          language: "en",
+          tags: ["orientation-pipeline", "responsibility"],
+          version: "0.1.0",
+          updated: "2026-07-31",
+          repoPath: "skills/official/scenarios/responsibility-scope",
+          pipeline: {
+            id: "orientation-handoff",
+            order: 1,
+          },
+          install: { cli: "npx openwisdom install responsibility-scope" },
+        },
+      ],
+      bundles: [
+        {
+          id: "orientation-handoff",
+          title: "Orientation handoff",
+          description: "Agency levels → ownership → analysis closure",
+          skillIds: [
+            "responsibility-scope",
+            "responsibility-bridge",
+            "analysis-closure",
+          ],
+        },
+      ],
+    };
+    const hits = searchCatalog(index, "", {
+      tag: "orientation-pipeline",
+    });
+    expect(hits.map((s) => s.id)).toEqual(["responsibility-scope"]);
+    // free-text soft tag include still works without exact tag filter
+    const soft = searchCatalog(index, "orientation");
+    expect(soft.some((s) => s.id === "responsibility-scope")).toBe(true);
+  });
+});
+
+describe("resolveBundle", () => {
+  it("returns ordered skillIds for orientation-handoff", async () => {
+    const { resolveBundle } = await import("./catalog.js");
+    const index = {
+      schemaVersion: 1 as const,
+      skills: [],
+      bundles: [
+        {
+          id: "orientation-handoff",
+          title: "Orientation handoff",
+          description: "Agency levels → ownership → analysis closure",
+          skillIds: [
+            "responsibility-scope",
+            "responsibility-bridge",
+            "analysis-closure",
+          ],
+        },
+      ],
+    };
+    expect(resolveBundle(index, "orientation-handoff")).toEqual([
+      "responsibility-scope",
+      "responsibility-bridge",
+      "analysis-closure",
+    ]);
+  });
+
+  it("throws on unknown bundle", async () => {
+    const { resolveBundle } = await import("./catalog.js");
+    expect(() =>
+      resolveBundle({ schemaVersion: 1, skills: [] }, "nope"),
+    ).toThrow(/Unknown bundle/);
+  });
 });
 
 describe("resolveProviderIds", () => {

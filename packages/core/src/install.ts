@@ -13,7 +13,7 @@ import {
 } from "@openwisdom/providers";
 import type { CatalogIndex, CatalogSkill } from "@openwisdom/schema";
 import { writeSkillDir, type WriteOutcome } from "./copy-skill.js";
-import { loadCatalog } from "./catalog.js";
+import { loadCatalog, resolveBundle } from "./catalog.js";
 import { locateSkillDir, resolveSkillsRoot } from "./skills-root.js";
 import {
   reportInstallSuccess,
@@ -25,7 +25,16 @@ export type Scope = "project" | "global";
 export type LogLevel = "info" | "warn" | "error";
 
 export type InstallOptions = {
+  /**
+   * Explicit skill ids. May be empty when `bundle` is set (Spec 33).
+   * Combined with bundle expansion, then references[] deps unless noDeps.
+   */
   skillIds: string[];
+  /**
+   * Catalog bundle id (e.g. orientation-handoff). Expanded via resolveBundle
+   * before reference deps. Providers path already multi-skill.
+   */
+  bundle?: string;
   providers?: string; // CSV
   providerIds?: ProviderId[];
   scope?: Scope;
@@ -182,9 +191,12 @@ export function runInstall(opts: InstallOptions): InstallResult {
   // Library default: non-interactive
   const isTty = opts.isTty ?? false;
 
-  if (!opts.skillIds.length) {
+  const explicitIds = (opts.skillIds ?? []).map((s) => s.trim()).filter(Boolean);
+  const bundleId = opts.bundle?.trim() || undefined;
+
+  if (!explicitIds.length && !bundleId) {
     throw new UsageError(
-      "No skill ids given. Example: openwisdom install macro-scan -y",
+      "No skill ids or --bundle given. Example: openwisdom install macro-scan -y  or  openwisdom install --bundle=orientation-handoff -y",
     );
   }
 
@@ -223,7 +235,23 @@ export function runInstall(opts: InstallOptions): InstallResult {
     catalog = { schemaVersion: 1, skills: [] };
   }
 
-  const ids = expandWithDeps(opts.skillIds, catalog, noDeps, opts);
+  // Spec 33: bundle ∪ explicit ids, then expandWithDeps(references)
+  let seedIds = [...explicitIds];
+  if (bundleId) {
+    try {
+      const fromBundle = resolveBundle(catalog, bundleId);
+      seedIds = [...seedIds, ...fromBundle];
+      log(
+        opts,
+        "info",
+        `bundle ${bundleId}: ${fromBundle.join(", ")}`,
+      );
+    } catch (err) {
+      throw new UsageError(err instanceof Error ? err.message : String(err));
+    }
+  }
+
+  const ids = expandWithDeps(seedIds, catalog, noDeps, opts);
   const results: InstallSkillResult[] = [];
 
   for (const skillId of ids) {

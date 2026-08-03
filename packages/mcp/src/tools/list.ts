@@ -23,6 +23,8 @@ export type ListInput = {
   layer?: "scenario" | "reference";
   /** available only */
   discipline?: string;
+  /** available only — exact tag filter (Spec 33) */
+  tag?: string;
   /** available only — free text (reuses searchCatalog) */
   q?: string;
   detail?: DetailLevel;
@@ -58,11 +60,12 @@ export async function handleList(input: ListInput = {}): Promise<ToolResult> {
           ? input.scope
           : undefined;
 
-      // q empty + optional filters → full catalog slice after filters (Spec 31).
+      // q empty + optional filters → full catalog slice after filters (Spec 31/33).
       const hits = searchCatalog(index, input.q?.trim() ?? "", {
         layer: input.layer,
         scope: catalogScope,
         discipline: input.discipline?.trim() || undefined,
+        tag: input.tag?.trim() || undefined,
         limit,
       });
 

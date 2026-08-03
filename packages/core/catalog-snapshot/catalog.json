@@ -109,6 +109,32 @@
       }
     },
     {
+      "id": "allocating-effort",
+      "name": "allocating-effort",
+      "description": "Splits scarce time, budget or traffic across competing products, channels, campaigns or variants by treating them as a multi-armed bandit - Thompson sampling over beta posteriors, with optimism for anything not yet tried enough to judge. Use when deciding what to work on next, how to divide a marketing budget, which product to prioritise, whether to kill something that is underperforming, or when picking a winner among test variants.",
+      "layer": "scenario",
+      "scope": "community",
+      "disciplines": [
+        "psychology",
+        "economics"
+      ],
+      "language": "en",
+      "tags": [
+        "decision-making",
+        "expected-utility",
+        "critical-thinking",
+        "algorithms-for-decision-making",
+        "curated-external",
+        "openwisdom"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-08-03",
+      "repoPath": "skills/community/scenarios/allocating-effort",
+      "install": {
+        "cli": "npx openwisdom install allocating-effort"
+      }
+    },
+    {
       "id": "american-historical-review-skills",
       "name": "american-historical-review-skills",
       "description": "Journal-oriented history writing and submission skill pack (upstream monorepo).",
@@ -154,6 +180,38 @@
       "repoPath": "skills/community/scenarios/american-sociological-review-skills",
       "install": {
         "cli": "npx openwisdom install american-sociological-review-skills"
+      }
+    },
+    {
+      "id": "analysis-closure",
+      "name": "analysis-closure",
+      "description": "End an analysis run with ship / pause / abandon; freeze open questions and revisit triggers. Use when more thinking feels productive but outputs stopped changing.",
+      "layer": "scenario",
+      "scope": "official",
+      "disciplines": [
+        "psychology"
+      ],
+      "language": "zh",
+      "tags": [
+        "closure",
+        "stop",
+        "orientation-pipeline",
+        "decision",
+        "roi"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-07-31",
+      "repoPath": "skills/official/scenarios/analysis-closure",
+      "references": [
+        "confirmation-bias",
+        "prospect-theory"
+      ],
+      "pipeline": {
+        "id": "orientation-handoff",
+        "order": 3
+      },
+      "install": {
+        "cli": "npx openwisdom install analysis-closure"
       }
     },
     {
@@ -311,6 +369,32 @@
       }
     },
     {
+      "id": "central-historical-question-evaluator",
+      "name": "central-historical-question-evaluator",
+      "description": "Evaluate a teacher-drafted central historical question for its capacity to drive genuine historical inquiry. Use when assessing whether a question will generate real evidence-weighing or produce shallow responses.",
+      "layer": "scenario",
+      "scope": "community",
+      "disciplines": [
+        "history"
+      ],
+      "language": "en",
+      "tags": [
+        "history",
+        "historical-thinking",
+        "education",
+        "sourcing",
+        "cc-by-sa-4.0",
+        "curated-external",
+        "openwisdom"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-08-03",
+      "repoPath": "skills/community/scenarios/central-historical-question-evaluator",
+      "install": {
+        "cli": "npx openwisdom install central-historical-question-evaluator"
+      }
+    },
+    {
       "id": "chinese-history-pack",
       "name": "chinese-history-pack",
       "description": "以《史记》《资治通鉴》为源的「以史为鉴」分析技能合集：成品双镜 skill + 单书存档 + 人镜/事镜/模式/考信 references。",
@@ -391,6 +475,32 @@
       }
     },
     {
+      "id": "close-reading-skill-builder",
+      "name": "close-reading-skill-builder",
+      "description": "Build students' capacity to read historical documents closely — attending to word choice, tone, and rhetoric as evidence of perspective. Use when students summarise sources without analysing language.",
+      "layer": "scenario",
+      "scope": "community",
+      "disciplines": [
+        "history"
+      ],
+      "language": "en",
+      "tags": [
+        "history",
+        "historical-thinking",
+        "education",
+        "sourcing",
+        "cc-by-sa-4.0",
+        "curated-external",
+        "openwisdom"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-08-03",
+      "repoPath": "skills/community/scenarios/close-reading-skill-builder",
+      "install": {
+        "cli": "npx openwisdom install close-reading-skill-builder"
+      }
+    },
+    {
       "id": "collective-action",
       "name": "collective-action",
       "description": "Reference card for collective action problems: free-riding, selective incentives, and how groups organize (or fail to) under shared goals. Load when mapping who benefits, who pays, and who can veto or free-ride.",
@@ -435,6 +545,58 @@
       "repoPath": "skills/official/references/confirmation-bias",
       "install": {
         "cli": "npx openwisdom install confirmation-bias"
+      }
+    },
+    {
+      "id": "contextualisation-skill-builder",
+      "name": "contextualisation-skill-builder",
+      "description": "Build students' capacity to place historical documents in their temporal and social context. Use when students read sources without considering what was happening at the time, or know the context but don't deploy it.",
+      "layer": "scenario",
+      "scope": "community",
+      "disciplines": [
+        "history"
+      ],
+      "language": "en",
+      "tags": [
+        "history",
+        "historical-thinking",
+        "education",
+        "sourcing",
+        "cc-by-sa-4.0",
+        "curated-external",
+        "openwisdom"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-08-03",
+      "repoPath": "skills/community/scenarios/contextualisation-skill-builder",
+      "install": {
+        "cli": "npx openwisdom install contextualisation-skill-builder"
+      }
+    },
+    {
+      "id": "corroboration-skill-builder",
+      "name": "corroboration-skill-builder",
+      "description": "Build students' capacity to compare accounts across multiple historical sources — identifying agreements, contradictions, and gaps. Use when students treat individual documents as complete answers rather than partial perspectives.",
+      "layer": "scenario",
+      "scope": "community",
+      "disciplines": [
+        "history"
+      ],
+      "language": "en",
+      "tags": [
+        "history",
+        "historical-thinking",
+        "education",
+        "sourcing",
+        "cc-by-sa-4.0",
+        "curated-external",
+        "openwisdom"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-08-03",
+      "repoPath": "skills/community/scenarios/corroboration-skill-builder",
+      "install": {
+        "cli": "npx openwisdom install corroboration-skill-builder"
       }
     },
     {
@@ -670,6 +832,59 @@
       }
     },
     {
+      "id": "dishant-deep-research",
+      "name": "dishant-deep-research",
+      "description": "Conduct deep, structured research on any topic — markets, products, features, competitors, problems, industries, regulations, or opportunities. Trigger whenever the user wants to research, explore, investigate, analyze, or understand something. This includes: entering new markets, evaluating products or services, exploring features, solving business problems, competitive landscapes, regulatory research, or any \"I need to understand X\" scenario. Also trigger for: \"look into,\" \"dig into,\" \"explore whether,\" \"map out the landscape,\" \"what are the options for X,\" \"how does Y work in practice.\" Trigger aggressively — if there's research intent, use this skill. Covers: market research, competitive analysis, feature exploration, regulatory deep-dives, product evaluation, problem-solving, opportunity assessment, landscape mapping.",
+      "layer": "scenario",
+      "scope": "community",
+      "disciplines": [
+        "political-science",
+        "economics",
+        "sociology"
+      ],
+      "language": "en",
+      "tags": [
+        "deep-research",
+        "red-team",
+        "pestel",
+        "market-research",
+        "curated-external",
+        "openwisdom"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-08-03",
+      "repoPath": "skills/community/scenarios/dishant-deep-research",
+      "install": {
+        "cli": "npx openwisdom install dishant-deep-research"
+      }
+    },
+    {
+      "id": "document-based-lesson-designer",
+      "name": "document-based-lesson-designer",
+      "description": "Design a complete document-based history lesson using the Reading Like a Historian four-part structure. Use when planning a primary source inquiry lesson or converting a textbook lesson into document-based investigation.",
+      "layer": "scenario",
+      "scope": "community",
+      "disciplines": [
+        "history"
+      ],
+      "language": "en",
+      "tags": [
+        "history",
+        "historical-thinking",
+        "education",
+        "sourcing",
+        "cc-by-sa-4.0",
+        "curated-external",
+        "openwisdom"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-08-03",
+      "repoPath": "skills/community/scenarios/document-based-lesson-designer",
+      "install": {
+        "cli": "npx openwisdom install document-based-lesson-designer"
+      }
+    },
+    {
       "id": "econ-write",
       "name": "econ-write",
       "description": "Economist writing guides distilled: ID-strategy narrative, rewrite, submission audits.",
@@ -716,6 +931,32 @@
       "repoPath": "skills/community/scenarios/elicitation",
       "install": {
         "cli": "npx openwisdom install elicitation"
+      }
+    },
+    {
+      "id": "error-analysis-protocol",
+      "name": "error-analysis-protocol",
+      "description": "Design an error analysis protocol to diagnose the root cause of student mistakes and misconceptions. Use when error patterns appear in student work and targeted feedback is needed.",
+      "layer": "scenario",
+      "scope": "community",
+      "disciplines": [
+        "psychology"
+      ],
+      "language": "en",
+      "tags": [
+        "psychology",
+        "metacognition",
+        "self-regulated-learning",
+        "education",
+        "cc-by-sa-4.0",
+        "curated-external",
+        "openwisdom"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-08-03",
+      "repoPath": "skills/community/scenarios/error-analysis-protocol",
+      "install": {
+        "cli": "npx openwisdom install error-analysis-protocol"
       }
     },
     {
@@ -768,6 +1009,32 @@
       }
     },
     {
+      "id": "framing-decisions",
+      "name": "framing-decisions",
+      "description": "Turns a vague \"what should we do about X\" into a scored decision - explicit actions, an explicit unknown, an explicit prior, and one utility scale - then picks by maximum expected utility and checks the result for framing effects. Use when facing a choice between options under uncertainty, when a decision has stalled in circular debate, when someone asks \"should we do A or B\", or before writing any decision record, strategy memo, or roadmap commitment.",
+      "layer": "scenario",
+      "scope": "community",
+      "disciplines": [
+        "psychology",
+        "economics"
+      ],
+      "language": "en",
+      "tags": [
+        "decision-making",
+        "expected-utility",
+        "critical-thinking",
+        "algorithms-for-decision-making",
+        "curated-external",
+        "openwisdom"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-08-03",
+      "repoPath": "skills/community/scenarios/framing-decisions",
+      "install": {
+        "cli": "npx openwisdom install framing-decisions"
+      }
+    },
+    {
       "id": "genealogy-research",
       "name": "genealogy-research",
       "description": "Genealogical Proof Standard workflows: multi-language sources, databases, evidence levels.",
@@ -789,6 +1056,32 @@
       "repoPath": "skills/community/scenarios/genealogy-research",
       "install": {
         "cli": "npx openwisdom install genealogy-research"
+      }
+    },
+    {
+      "id": "goal-setting-protocol-designer",
+      "name": "goal-setting-protocol-designer",
+      "description": "Design a structured goal-setting protocol using SMART or implementation-intention frameworks for students. Use when launching units, projects, or developing student self-direction habits.",
+      "layer": "scenario",
+      "scope": "community",
+      "disciplines": [
+        "psychology"
+      ],
+      "language": "en",
+      "tags": [
+        "psychology",
+        "metacognition",
+        "self-regulated-learning",
+        "education",
+        "cc-by-sa-4.0",
+        "curated-external",
+        "openwisdom"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-08-03",
+      "repoPath": "skills/community/scenarios/goal-setting-protocol-designer",
+      "install": {
+        "cli": "npx openwisdom install goal-setting-protocol-designer"
       }
     },
     {
@@ -840,6 +1133,110 @@
       "repoPath": "skills/community/scenarios/hegelion",
       "install": {
         "cli": "npx openwisdom install hegelion"
+      }
+    },
+    {
+      "id": "historical-document-set-curator",
+      "name": "historical-document-set-curator",
+      "description": "Design a document set for a document-based lesson — selecting and sequencing sources for analytical tension around a central question. Use when assembling sources for a new lesson or when an existing set produces flat responses.",
+      "layer": "scenario",
+      "scope": "community",
+      "disciplines": [
+        "history"
+      ],
+      "language": "en",
+      "tags": [
+        "history",
+        "historical-thinking",
+        "education",
+        "sourcing",
+        "cc-by-sa-4.0",
+        "curated-external",
+        "openwisdom"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-08-03",
+      "repoPath": "skills/community/scenarios/historical-document-set-curator",
+      "install": {
+        "cli": "npx openwisdom install historical-document-set-curator"
+      }
+    },
+    {
+      "id": "historical-source-adapter",
+      "name": "historical-source-adapter",
+      "description": "Adapt a historical primary source for classroom use — modifying complexity and length while preserving features for sourcing, close reading, and corroboration. Use when a primary source is too complex for the target age group.",
+      "layer": "scenario",
+      "scope": "community",
+      "disciplines": [
+        "history"
+      ],
+      "language": "en",
+      "tags": [
+        "history",
+        "historical-thinking",
+        "education",
+        "sourcing",
+        "cc-by-sa-4.0",
+        "curated-external",
+        "openwisdom"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-08-03",
+      "repoPath": "skills/community/scenarios/historical-source-adapter",
+      "install": {
+        "cli": "npx openwisdom install historical-source-adapter"
+      }
+    },
+    {
+      "id": "historical-thinking-assessment-designer",
+      "name": "historical-thinking-assessment-designer",
+      "description": "Design formative assessments that make students' historical thinking visible — revealing whether they source, close-read, contextualise, and corroborate. Use when assessing historical thinking skills or planning a diagnostic.",
+      "layer": "scenario",
+      "scope": "community",
+      "disciplines": [
+        "history"
+      ],
+      "language": "en",
+      "tags": [
+        "history",
+        "historical-thinking",
+        "education",
+        "sourcing",
+        "cc-by-sa-4.0",
+        "curated-external",
+        "openwisdom"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-08-03",
+      "repoPath": "skills/community/scenarios/historical-thinking-assessment-designer",
+      "install": {
+        "cli": "npx openwisdom install historical-thinking-assessment-designer"
+      }
+    },
+    {
+      "id": "historical-thinking-strategy-modelling-guide",
+      "name": "historical-thinking-strategy-modelling-guide",
+      "description": "Design a teacher think-aloud that models historical thinking strategies with a specific document. Use when planning explicit strategy instruction or when students follow a protocol without understanding the underlying reasoning.",
+      "layer": "scenario",
+      "scope": "community",
+      "disciplines": [
+        "history"
+      ],
+      "language": "en",
+      "tags": [
+        "history",
+        "historical-thinking",
+        "education",
+        "sourcing",
+        "cc-by-sa-4.0",
+        "curated-external",
+        "openwisdom"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-08-03",
+      "repoPath": "skills/community/scenarios/historical-thinking-strategy-modelling-guide",
+      "install": {
+        "cli": "npx openwisdom install historical-thinking-strategy-modelling-guide"
       }
     },
     {
@@ -947,6 +1344,33 @@
       }
     },
     {
+      "id": "knock",
+      "name": "knock",
+      "description": "Single-option 10-order knock-on effect tracing for decisions, policies, and system changes (portable extract from psychology-agent).",
+      "layer": "scenario",
+      "scope": "community",
+      "disciplines": [
+        "psychology",
+        "sociology",
+        "political-science"
+      ],
+      "language": "en",
+      "tags": [
+        "knock-on",
+        "second-order-effects",
+        "decision-analysis",
+        "systems",
+        "curated-external",
+        "openwisdom"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-08-03",
+      "repoPath": "skills/community/scenarios/knock",
+      "install": {
+        "cli": "npx openwisdom install knock"
+      }
+    },
+    {
       "id": "leader-cycle-fit",
       "name": "leader-cycle-fit",
       "description": "评估国家制度能力是否匹配当前阶段（非领导人个人打分）。",
@@ -970,6 +1394,32 @@
       "repoPath": "skills/community/scenarios/leader-cycle-fit",
       "install": {
         "cli": "npx openwisdom install leader-cycle-fit"
+      }
+    },
+    {
+      "id": "learning-from-outcomes",
+      "name": "learning-from-outcomes",
+      "description": "Turns past decisions into calibrated judgment - scoring old predictions against what happened, assigning credit for delayed results, and separating a bad decision from a good decision that lost. Use during a retrospective, postmortem, quarterly or monthly review, when reviewing decisions taken 30+ days ago, when attributing a result to a cause, or when someone claims to have called something.",
+      "layer": "scenario",
+      "scope": "community",
+      "disciplines": [
+        "psychology",
+        "economics"
+      ],
+      "language": "en",
+      "tags": [
+        "decision-making",
+        "expected-utility",
+        "critical-thinking",
+        "algorithms-for-decision-making",
+        "curated-external",
+        "openwisdom"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-08-03",
+      "repoPath": "skills/community/scenarios/learning-from-outcomes",
+      "install": {
+        "cli": "npx openwisdom install learning-from-outcomes"
       }
     },
     {
@@ -1039,7 +1489,7 @@
         "systems"
       ],
       "version": "0.1.0",
-      "updated": "2026-07-30",
+      "updated": "2026-07-31",
       "repoPath": "skills/official/scenarios/macro-scan",
       "references": [
         "path-dependence",
@@ -1065,7 +1515,7 @@
         "audit"
       ],
       "version": "0.1.0",
-      "updated": "2026-07-30",
+      "updated": "2026-07-31",
       "repoPath": "skills/official/scenarios/metacognition-audit",
       "references": [
         "confirmation-bias",
@@ -1073,6 +1523,59 @@
       ],
       "install": {
         "cli": "npx openwisdom install metacognition-audit"
+      }
+    },
+    {
+      "id": "metacognitive-prompt-library",
+      "name": "metacognitive-prompt-library",
+      "description": "Build a library of metacognitive prompts targeting planning, monitoring, or evaluation for a specific task. Use when developing students' thinking-about-thinking during independent work.",
+      "layer": "scenario",
+      "scope": "community",
+      "disciplines": [
+        "psychology"
+      ],
+      "language": "en",
+      "tags": [
+        "psychology",
+        "metacognition",
+        "self-regulated-learning",
+        "education",
+        "cc-by-sa-4.0",
+        "curated-external",
+        "openwisdom"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-08-03",
+      "repoPath": "skills/community/scenarios/metacognitive-prompt-library",
+      "install": {
+        "cli": "npx openwisdom install metacognitive-prompt-library"
+      }
+    },
+    {
+      "id": "objective-analysis",
+      "name": "objective-analysis",
+      "description": "Analyze claims, arguments, decisions, policies, drafts, current events, and works of art through Ayn Rand's philosophy of Objectivism while auditing evidence, concepts, logical fallacies, and cognitive-bias risks. Use when explicitly invoked as $objective-analysis or when the user explicitly requests Ayn Rand, Objectivism, an Objectivist lens, or an Objectivist audit. Do not use merely because the user asks for an objective analysis, a reality check, neutrality, or objectivity; do not use for Objective-C, optical objective lenses, ordinary software logic, or statistical model bias without explicit philosophical intent.",
+      "layer": "scenario",
+      "scope": "community",
+      "disciplines": [
+        "psychology",
+        "political-science"
+      ],
+      "language": "en",
+      "tags": [
+        "objectivism",
+        "critical-thinking",
+        "fallacies",
+        "cognitive-bias",
+        "ideology-labeled",
+        "curated-external",
+        "openwisdom"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-08-03",
+      "repoPath": "skills/community/scenarios/objective-analysis",
+      "install": {
+        "cli": "npx openwisdom install objective-analysis"
       }
     },
     {
@@ -1116,13 +1619,39 @@
         "orientation"
       ],
       "version": "0.1.0",
-      "updated": "2026-07-30",
+      "updated": "2026-07-31",
       "repoPath": "skills/official/scenarios/personal-anchor",
       "references": [
         "social-stratification"
       ],
       "install": {
         "cli": "npx openwisdom install personal-anchor"
+      }
+    },
+    {
+      "id": "planning-horizons",
+      "name": "planning-horizons",
+      "description": "Decides how far ahead to plan, what to discount future payoffs by, and which backlog items can be dropped without analysis - using receding-horizon planning, an explicit discount factor, and branch-and-bound pruning against the incumbent. Use when building a roadmap, prioritising a backlog, arguing about short-term versus long-term, setting quarterly or annual plans, or when planning has become an end in itself.",
+      "layer": "scenario",
+      "scope": "community",
+      "disciplines": [
+        "psychology",
+        "economics"
+      ],
+      "language": "en",
+      "tags": [
+        "decision-making",
+        "expected-utility",
+        "critical-thinking",
+        "algorithms-for-decision-making",
+        "curated-external",
+        "openwisdom"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-08-03",
+      "repoPath": "skills/community/scenarios/planning-horizons",
+      "install": {
+        "cli": "npx openwisdom install planning-horizons"
       }
     },
     {
@@ -1363,6 +1892,32 @@
       }
     },
     {
+      "id": "reading-rivals",
+      "name": "reading-rivals",
+      "description": "Models what a competitor will do next and what happens if you respond - best response, equilibrium, and the difference between a rival who optimises perfectly and one who does not. Use before a price change or price war, when a competitor launches something, when deciding whether to match a rival's move, when analysing a market with few players, or when someone asks \"what will they do if we do this\".",
+      "layer": "scenario",
+      "scope": "community",
+      "disciplines": [
+        "psychology",
+        "economics"
+      ],
+      "language": "en",
+      "tags": [
+        "decision-making",
+        "expected-utility",
+        "critical-thinking",
+        "algorithms-for-decision-making",
+        "curated-external",
+        "openwisdom"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-08-03",
+      "repoPath": "skills/community/scenarios/reading-rivals",
+      "install": {
+        "cli": "npx openwisdom install reading-rivals"
+      }
+    },
+    {
       "id": "redline-mapper",
       "name": "redline-mapper",
       "description": "三层利益 X/Y/Z 映射识别红线与可交换筹码。",
@@ -1548,6 +2103,77 @@
       }
     },
     {
+      "id": "responsibility-bridge",
+      "name": "responsibility-bridge",
+      "description": "Turn structured recognition into explicit ownership: what you will hold, refuse, share, or escalate. Use after macro-scan / personal-anchor / any clear map when insight must become accountable action without total guilt or total deflection.",
+      "layer": "scenario",
+      "scope": "official",
+      "disciplines": [
+        "psychology",
+        "sociology",
+        "political-science"
+      ],
+      "language": "zh",
+      "tags": [
+        "responsibility",
+        "ownership",
+        "agency",
+        "handoff",
+        "orientation-pipeline"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-07-31",
+      "repoPath": "skills/official/scenarios/responsibility-bridge",
+      "references": [
+        "social-stratification",
+        "collective-action"
+      ],
+      "pipeline": {
+        "id": "orientation-handoff",
+        "order": 2,
+        "next": "analysis-closure"
+      },
+      "install": {
+        "cli": "npx openwisdom install responsibility-bridge"
+      }
+    },
+    {
+      "id": "responsibility-scope",
+      "name": "responsibility-scope",
+      "description": "Sort duty and control across individual, organizational, and institutional levels—who can decide, who must act, who only witnesses. Use when blame or reform talk collapses levels.",
+      "layer": "scenario",
+      "scope": "official",
+      "disciplines": [
+        "political-science",
+        "sociology",
+        "economics"
+      ],
+      "language": "zh",
+      "tags": [
+        "responsibility",
+        "scope",
+        "mandate",
+        "institution",
+        "organization",
+        "orientation-pipeline"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-07-31",
+      "repoPath": "skills/official/scenarios/responsibility-scope",
+      "references": [
+        "collective-action",
+        "path-dependence"
+      ],
+      "pipeline": {
+        "id": "orientation-handoff",
+        "order": 1,
+        "next": "responsibility-bridge"
+      },
+      "install": {
+        "cli": "npx openwisdom install responsibility-scope"
+      }
+    },
+    {
       "id": "s4h-epistemology-justification",
       "name": "s4h-epistemology-justification",
       "description": "Trace justification (foundationalism / coherentism / reliabilism); find the weakest link.",
@@ -1698,6 +2324,57 @@
       "repoPath": "skills/community/references/scientific-critical-thinking",
       "install": {
         "cli": "npx openwisdom install scientific-critical-thinking"
+      }
+    },
+    {
+      "id": "self-regulation-scaffold-generator",
+      "name": "self-regulation-scaffold-generator",
+      "description": "Generate scaffolds supporting student self-regulation across planning, monitoring, and evaluation phases. Use when students struggle to manage their own learning during extended or independent tasks.",
+      "layer": "scenario",
+      "scope": "community",
+      "disciplines": [
+        "psychology"
+      ],
+      "language": "en",
+      "tags": [
+        "psychology",
+        "metacognition",
+        "self-regulated-learning",
+        "education",
+        "cc-by-sa-4.0",
+        "curated-external",
+        "openwisdom"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-08-03",
+      "repoPath": "skills/community/scenarios/self-regulation-scaffold-generator",
+      "install": {
+        "cli": "npx openwisdom install self-regulation-scaffold-generator"
+      }
+    },
+    {
+      "id": "session-retrospect",
+      "name": "session-retrospect",
+      "description": "Portable four-layer retrospect (audit, reflect, route, prescribe) adapted from psychology-agent without mesh transport dependencies.",
+      "layer": "scenario",
+      "scope": "community",
+      "disciplines": [
+        "psychology"
+      ],
+      "language": "en",
+      "tags": [
+        "metacognition",
+        "retrospect",
+        "reflection",
+        "session-review",
+        "curated-external",
+        "openwisdom"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-08-03",
+      "repoPath": "skills/community/scenarios/session-retrospect",
+      "install": {
+        "cli": "npx openwisdom install session-retrospect"
       }
     },
     {
@@ -1855,6 +2532,32 @@
       }
     },
     {
+      "id": "sourcing-skill-builder",
+      "name": "sourcing-skill-builder",
+      "description": "Build students' capacity to interrogate a historical source before reading — asking who authored it, when, why, and what this means for reliability. Use when students read documents without attending to authorship.",
+      "layer": "scenario",
+      "scope": "community",
+      "disciplines": [
+        "history"
+      ],
+      "language": "en",
+      "tags": [
+        "history",
+        "historical-thinking",
+        "education",
+        "sourcing",
+        "cc-by-sa-4.0",
+        "curated-external",
+        "openwisdom"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-08-03",
+      "repoPath": "skills/community/scenarios/sourcing-skill-builder",
+      "install": {
+        "cli": "npx openwisdom install sourcing-skill-builder"
+      }
+    },
+    {
       "id": "stakeholder-analysis-ba",
       "name": "stakeholder-analysis-ba",
       "description": "Power–interest grid, RACI, and comms plans from a BA skill pack — portable to policy.",
@@ -1927,6 +2630,32 @@
       "repoPath": "skills/community/scenarios/stoic-skills",
       "install": {
         "cli": "npx openwisdom install stoic-skills"
+      }
+    },
+    {
+      "id": "stress-testing-plans",
+      "name": "stress-testing-plans",
+      "description": "Validates a plan before committing to it - checks whether the ranking survives the assumptions, finds the most likely way it fails, and makes the trade-offs explicit via a Pareto frontier instead of an invented single score. Use before a launch, price change, migration, infrastructure change or major commitment, when running a premortem, when two objectives conflict, or when a decision depends on an assumption nobody has tested.",
+      "layer": "scenario",
+      "scope": "community",
+      "disciplines": [
+        "psychology",
+        "economics"
+      ],
+      "language": "en",
+      "tags": [
+        "decision-making",
+        "expected-utility",
+        "critical-thinking",
+        "algorithms-for-decision-making",
+        "curated-external",
+        "openwisdom"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-08-03",
+      "repoPath": "skills/community/scenarios/stress-testing-plans",
+      "install": {
+        "cli": "npx openwisdom install stress-testing-plans"
       }
     },
     {
@@ -2186,6 +2915,58 @@
       }
     },
     {
+      "id": "tracking-beliefs",
+      "name": "tracking-beliefs",
+      "description": "Separates signal from noise in metrics you cannot observe directly, updating a belief from evidence instead of reacting to the latest reading - Bayesian updates over competing explanations, and a filter that says whether this week's move is real. Use when a metric moves and someone wants to act, when diagnosing why traffic or revenue changed, when a dashboard number contradicts intuition, or when deciding whether a trend is real yet.",
+      "layer": "scenario",
+      "scope": "community",
+      "disciplines": [
+        "psychology",
+        "economics"
+      ],
+      "language": "en",
+      "tags": [
+        "decision-making",
+        "expected-utility",
+        "critical-thinking",
+        "algorithms-for-decision-making",
+        "curated-external",
+        "openwisdom"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-08-03",
+      "repoPath": "skills/community/scenarios/tracking-beliefs",
+      "install": {
+        "cli": "npx openwisdom install tracking-beliefs"
+      }
+    },
+    {
+      "id": "valuing-information",
+      "name": "valuing-information",
+      "description": "Prices research, tests, surveys, dashboards and experiments before running them, by computing how much the result would raise expected utility - which is zero whenever no outcome would change the decision. Use when someone proposes an A/B test, user survey, market study, competitor analysis, analytics build, consultant, pilot, or \"let's gather more data\", and when deciding how large a study needs to be.",
+      "layer": "scenario",
+      "scope": "community",
+      "disciplines": [
+        "psychology",
+        "economics"
+      ],
+      "language": "en",
+      "tags": [
+        "decision-making",
+        "expected-utility",
+        "critical-thinking",
+        "algorithms-for-decision-making",
+        "curated-external",
+        "openwisdom"
+      ],
+      "version": "0.1.0",
+      "updated": "2026-08-03",
+      "repoPath": "skills/community/scenarios/valuing-information",
+      "install": {
+        "cli": "npx openwisdom install valuing-information"
+      }
+    },
+    {
       "id": "working-with-data",
       "name": "working-with-data",
       "description": "DIME-aligned data discipline: unit of analysis, IDs, merge checks, PII, immutable raw.",
@@ -2289,6 +3070,18 @@
       "install": {
         "cli": "npx openwisdom install zizek-skill"
       }
+    }
+  ],
+  "bundles": [
+    {
+      "id": "orientation-handoff",
+      "title": "Orientation handoff",
+      "description": "Agency levels → ownership → analysis closure",
+      "skillIds": [
+        "responsibility-scope",
+        "responsibility-bridge",
+        "analysis-closure"
+      ]
     }
   ]
 }

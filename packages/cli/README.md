@@ -11,14 +11,34 @@ npx openwisdom update macro-scan -y --providers=claude
 
 Does **not** call models. Analysis runs in your coding agent (Claude Code, Cursor, Codex, …).
 
+### After you “see the pattern” (Orientation handoff)
+
+Reddit-shaped gaps — ownership, agency levels, stop discipline — are installable as official **handoff** skills:
+
+```bash
+# Find the three handoff skills
+npx openwisdom search --tag orientation-pipeline
+
+# Install the ordered pack (scope → bridge → closure) + theory refs
+npx openwisdom install --bundle=orientation-handoff -y --providers=claude --scope=project
+
+# Or multi-id
+npx openwisdom install responsibility-scope responsibility-bridge analysis-closure \
+  -y --providers=claude --scope=project
+```
+
+Then invoke those skills **in your agent session** (not via this CLI).
+
 ## Commands
 
 | Command | Purpose |
 |---------|---------|
-| `search <query>` | Filter bundled / scanned catalog by id, name, description, tags |
+| `search <query>` | Filter catalog by id, name, description, tags |
+| `search --tag <tag>` | Exact tag filter (e.g. `orientation-pipeline`) |
 | `list` | Available skills from catalog |
 | `list --installed` | Skills found under known provider paths |
 | `install [ids…]` | Copy skill directories into harness skill roots |
+| `install --bundle <id>` | Expand a catalog bundle then install (e.g. `orientation-handoff`) |
 | `update [ids…]` | Re-copy from local skills root (same write path as install) |
 
 ## Common flags
@@ -28,6 +48,8 @@ Does **not** call models. Analysis runs in your coding agent (Claude Code, Curso
 | `--providers <ids>` | Comma-separated: `claude`, `cursor`, `agents`, … |
 | `--scope project\|global` | Write under `--cwd` or home |
 | `-y` / `--yes` | Non-interactive; default providers = detect or `claude,agents`; scope = `project` |
+| `--bundle <id>` | Install catalog bundle (with `install`) |
+| `--tag <tag>` | Exact tag filter (with `search`) |
 | `--force` | Overwrite different `SKILL.md` content |
 | `--dry-run` | Print plan only |
 | `--cwd <path>` | Project root for project scope |
@@ -75,9 +97,9 @@ Runtime index load order:
 1. Package `catalog-snapshot/catalog.json`
 2. Scan `OPENWISDOM_SKILLS_ROOT` / monorepo `skills/` if snapshot missing
 
-## Specs
+## Docs
 
-- `docs/specs/17-CLI总控-SPE.md`
+- Product & contracts: `docs/知识库/11-CLI与MCP契约.md`, `docs/知识库/13-Orientation交接层.md`
 - `docs/specs/18-CLI命令与UX.md`
 - `docs/specs/19-CLI-providers与安装写入.md`
 - `docs/specs/20-CLI-monorepo-catalog-发布.md`

@@ -13,16 +13,35 @@ Uses **`@modelcontextprotocol/server` v2** (`McpServer` + `StdioServerTransport`
 
 | Tool | Role |
 |------|------|
-| `openwisdom_list` | Browse full installable Official catalog (or installed) |
-| `openwisdom_search` | Search catalog by keywords / layer / scope / discipline |
+| `openwisdom_list` | Browse full installable catalog (or installed); optional `tag` |
+| `openwisdom_search` | Keywords / layer / scope / discipline / **tag** |
 | `openwisdom_get` | Open one skill: catalog row + **SKILL.md body** (read before install) |
-| `openwisdom_install` | Install skills (requires `providers[]`) |
+| `openwisdom_install` | Install skills (requires `providers[]`; multi `skills[]`) |
 | `openwisdom_update` | Refresh installed skills |
 | `openwisdom_detect_providers` | Detect harness paths (read-only) |
 
-Covers the **installable Official** library (same registry source as the website Official filter). Not a hosted analyzer — no `run` / LLM tools.
+Installable library = website registry (official + community packs). **No** `run` / analyze / recommend tools.
 
-Recommended agent flow:
+### Reddit / handoff discovery (after macro-scan)
+
+User: *“I see the pattern but not what I own vs the company vs the state, and when to stop.”*
+
+```text
+openwisdom_search({ tag: "orientation-pipeline" })
+  # → responsibility-scope (order 1), responsibility-bridge (order 2), analysis-closure (order 3)
+  → openwisdom_get each (optional, read body)
+  → openwisdom_detect_providers
+  → openwisdom_install({
+      skills: ["responsibility-scope","responsibility-bridge","analysis-closure"],
+      providers: ["claude"],   // or from detect
+      dryRun: true             // then false
+    })
+  → invoke skills in the Agent session — not via MCP
+```
+
+Keyword tips (AND tokens): `responsibility`, `ownership`, `closure`, `stop`, `mandate`. Prefer **short tokens** or `tag`, not full English sentences.
+
+Recommended agent flow (general):
 
 ```text
 openwisdom_list | openwisdom_search

@@ -1,0 +1,60 @@
+{
+  "skill_name": "reading-rivals",
+  "evals": [
+    {
+      "id": 1,
+      "name": "recognises-the-price-war-structure",
+      "prompt": "Our main competitor just cut their price 30%. My instinct is to match immediately so we do not look weak. We each make about 100k a year at current prices; if one of us cuts and the other holds, the cutter takes most of the market. Should we match?",
+      "expected_output": "Builds the payoff table, recognises the prisoner's dilemma structure, shows that iterated best response drives both to the worse cell, and recommends changing the game rather than playing it faster.",
+      "files": [],
+      "assertions": [
+        "Builds an explicit two-by-two payoff table with both players' payoffs",
+        "Identifies the prisoner's dilemma structure by name",
+        "Shows that both cutting is worse for both than both holding, and that neither side made a mistake",
+        "Recommends changing the game, for example through switching costs, contracts, or competing on a different axis",
+        "Does not recommend matching quickly to signal strength",
+        "Notes that a price cut is easy to match and hard to reverse"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "infers-the-objective-from-behaviour",
+      "prompt": "A rival keeps giving away enterprise pilots for free, hired three enterprise sales reps last quarter, and their pricing page has not changed in two years. They just raised a Series A. What are they doing?",
+      "expected_output": "Infers the objective from the observed moves rather than accepting a profit assumption, tests candidate objectives against all the observations, and states what it predicts about their next move.",
+      "files": [],
+      "assertions": [
+        "Explicitly declines to assume the rival is maximising profit",
+        "Tests candidate objectives against all the listed behaviours rather than most of them",
+        "Weights the observed moves such as hiring and giveaways above public statements",
+        "Notes that the funding round is evidence about constraints rather than about objectives",
+        "Makes a dated, falsifiable prediction about their next move"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "does-not-model-a-non-player-as-a-player",
+      "prompt": "There is a tiny competitor with maybe 2% share who has never mentioned us. Should we cut price to squeeze them out before they grow?",
+      "expected_output": "Notes that a rival who is not modelling you is not in a game with you, warns that an aggressive move could put you on their radar, and recommends copying tactically rather than responding strategically.",
+      "files": [],
+      "assertions": [
+        "Notes that the small competitor may not be modelling us at all",
+        "Warns that an aggressive move could create the competitive dynamic it is meant to prevent",
+        "Recommends learning from them tactically rather than responding strategically",
+        "Points out that a price cut also costs us margin against every other customer"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "uses-observed-frequencies-for-a-near-term-forecast",
+      "prompt": "Our rival has held price nine times out of the last eleven opportunities to change it. The Nash equilibrium of our payoff table says they should cut. What will they do next quarter?",
+      "expected_output": "Prefers the empirical frequency for a near-term forecast, explains that equilibrium predicts a destination rather than the next move, and notes that a rival may not be playing the equilibrium at all.",
+      "files": [],
+      "assertions": [
+        "Forecasts that the rival will most likely hold, based on the observed frequency",
+        "Explains that equilibrium predicts where an exchange of responses settles, not what happens next quarter",
+        "Notes that real competitors often do not play equilibrium strategies",
+        "Gives a probability rather than a bare assertion"
+      ]
+    }
+  ]
+}

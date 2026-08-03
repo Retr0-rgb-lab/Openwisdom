@@ -1,0 +1,62 @@
+{
+  "skill_name": "learning-from-outcomes",
+  "evals": [
+    {
+      "id": 1,
+      "name": "separates-decision-quality-from-outcome",
+      "prompt": "Last quarter we chose the paid tier over the SEO push. It flopped. The decision record shows the paid tier won by 0.4% of expected utility. The team wants to fire the process. Run the retro.",
+      "expected_output": "Places the decision in the process-versus-outcome grid, notes the 0.4% margin means it was effectively a coin flip, and warns that punishing variance teaches people to avoid it rather than to decide well.",
+      "files": [],
+      "assertions": [
+        "Places the decision in a process-versus-outcome grid rather than judging on the outcome alone",
+        "Uses the 0.4% margin to argue the decision was close to a coin flip and the outcome carries little information about the process",
+        "Warns that punishing a good decision that lost teaches variance avoidance",
+        "Still asks whether anything in the process was actually wrong",
+        "Does not conclude that the process should be changed because the outcome was bad"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "scores-calibration-and-names-the-bias",
+      "prompt": "Here are twelve predictions from our decision log with outcomes. Are we any good at this?",
+      "expected_output": "Runs the calibration tool, compares the Brier score against the always-base-rate benchmark, reads the bin table, and names over- or underconfidence with a concrete correction.",
+      "files": ["examples/calibrate.json"],
+      "assertions": [
+        "Runs the calibrate command rather than eyeballing the predictions",
+        "Compares the Brier score against the always-base-rate benchmark and says what it means if the comparison is unfavourable",
+        "Reads the bin table and identifies which confidence bands are miscalibrated",
+        "Names over- or underconfidence explicitly",
+        "Gives a concrete correction, such as shading stated probabilities downward",
+        "Notes that twelve predictions supports a direction but not a firm per-bin verdict"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "assigns-credit-across-time",
+      "prompt": "Revenue jumped 20% this quarter. We launched the paid tier this quarter, rewrote the landing page last quarter, fixed onboarding two quarters ago, and started SEO five quarters ago. Everyone is crediting the paid tier. Right?",
+      "expected_output": "Runs credit assignment with a decay, puts the older decisions back on the table, and notes that a result with a single obvious cause is suspicious.",
+      "files": [],
+      "assertions": [
+        "Runs the credit command with an explicit decay parameter",
+        "Puts the SEO programme and the onboarding fix back into the discussion rather than accepting the paid tier explanation",
+        "Notes that SEO effects are slow and argues for a higher decay parameter on that basis, or otherwise adjusts for the different speeds",
+        "States that a result with one obvious cause is suspicious",
+        "Frames the output as a prompt for a better argument rather than a verdict"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "produces-changed-numbers-not-lessons",
+      "prompt": "Write up the lessons from this quarter's review: the landing page rebuild took twice as long as planned for the third time, and two of our last four traffic drops turned out to be tracking bugs.",
+      "expected_output": "Converts both observations into specific changed numbers in named documents, rather than into prose lessons.",
+      "files": [],
+      "assertions": [
+        "Converts the landing page overrun into a revised reference-class estimate with a specific number",
+        "Converts the traffic drop finding into a revised prior for the tracking explanation with a specific number",
+        "Names where each number lives so it will be read next time",
+        "States that a lesson which does not change a number will not change a decision",
+        "Does not produce a list of generic lessons learned"
+      ]
+    }
+  ]
+}

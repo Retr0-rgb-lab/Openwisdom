@@ -113,6 +113,9 @@ export function scanSkillsToCatalog(skillsRoot: string): CatalogSkill[] {
         references: fm.references,
         install: { cli: `npx openwisdom install ${id}` },
       };
+      if (fm.pipeline) {
+        entry.pipeline = fm.pipeline;
+      }
       out.push(entry);
     } catch (err) {
       console.error(
@@ -179,6 +182,12 @@ export function searchCatalog(
     layer?: "scenario" | "reference";
     scope?: "official" | "community";
     discipline?: string;
+    /**
+     * Exact tag filter (case-insensitive). Any skill tag must equal `tag`.
+     * Spec 33: discovery for orientation-pipeline etc. Free-text still
+     * scores soft tag includes when query tokens are present.
+     */
+    tag?: string;
     limit?: number;
   },
 ): CatalogSkill[] {
@@ -192,6 +201,12 @@ export function searchCatalog(
   if (opts?.discipline) {
     list = list.filter((s) =>
       s.disciplines.some((d) => d.toLowerCase() === opts.discipline!.toLowerCase()),
+    );
+  }
+  if (opts?.tag?.trim()) {
+    const want = opts.tag.trim().toLowerCase();
+    list = list.filter((s) =>
+      s.tags.some((tag) => tag.toLowerCase() === want),
     );
   }
 
@@ -222,4 +237,25 @@ export function searchCatalog(
     .sort((a, b) => b.score - a.score || a.s.id.localeCompare(b.s.id));
 
   return scored.slice(0, limit).map((x) => x.s);
+}
+
+/**
+ * Resolve a catalog bundle id to ordered skillIds (Spec 33 §5.3).
+ * Throws if the bundle is unknown (callers map to UsageError).
+ */
+export function resolveBundle(
+  index: CatalogIndex,
+  id: string,
+): string[] {
+  const key = id.trim();
+  if (!key) {
+    throw new Error("Bundle id is empty");
+  }
+  const bundle = index.bundles?.find((b) => b.id === key);
+  if (!bundle) {
+    const known =
+      index.bundles?.map((b) => b.id).join(", ") || "(none in catalog)";
+    throw new Error(`Unknown bundle: ${key}. Known bundles: ${known}`);
+  }
+  return [...bundle.skillIds];
 }

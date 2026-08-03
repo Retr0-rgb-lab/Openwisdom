@@ -1,0 +1,34 @@
+【标题】
+Openwisdom：开源的社科 Agent Skills 库
+
+【正文】
+Openwisdom 是什么？一句话：
+
+开源的社会科学 Agent Skills 库——把心理学、社会学、历史学、政治学、经济学等方法，做成可以装进你已有 coding agent 的技能包。
+
+它不是又一个网页聊天机器人，也不在云端替你「生成人生答案」。你把它装进 Claude Code、Cursor、Codex 等已经在用的 Agent，分析仍在你自己的 Agent 与模型额度里跑。CLI / MCP 只负责 search / install / update / list，不调模型。
+
+官方先备好三条场景 skill（可执行流程）：
+
+· macro-scan 宏观扫描 — 拆局势：行动者、激励、约束、轨迹
+· personal-anchor 个人锚点 — 把「我」放进历史与社会坐标
+· metacognition-audit 元认知体检 — 查偏见、盲区、证据缺口
+
+并配五大学科 reference（理论卡片），给场景引用，而不是一整坨临时提示词。
+
+适合谁：已经在用 AI 做研究、策略、复盘、处境分析的人——嫌回答「流畅但空」，想要可复用的社科结构。
+
+开始：
+官网浏览目录 → https://openwisdom.vercel.app
+安装示例 → npx openwisdom install macro-scan
+开源 MIT → GitHub Retr0-rgb-lab/Openwisdom
+
+库还很早，欢迎一起贡献：新的场景 skill、学科 reference，或文档与安装体验改进，都欢迎走 GitHub PR 进 community/（官网 Contribute 页有指引）。你用得顺手的方法，也可以变成别人可安装的公共件。
+
+方法在库里，判断在你手里；库靠大家一起长。
+
+【标签】
+#Openwisdom #AgentSkills #开源 #开源贡献 #社会科学 #ClaudeCode #Cursor #宏观扫描 #个人锚点 #元认知
+
+【配图顺序】
+01-cover → 02-not-chat → 03-scenarios → 04-layers → 05-install → 06-close

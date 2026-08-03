@@ -68,11 +68,25 @@ Place your situation on historical and social coordinates: which curve you are o
 3. Coordinates — 历史层 + 社会位置（证据与不确定处）
 4. Path dependence — 已锁定项与沉没承诺
 5. Room to move — 杠杆、选项、可逆性
-6. Next steps — 小步实验 + 复盘日期
+6. Next steps — 小步实验（可观察信号）+ 观察期 + 复盘日期
 7. Open questions — 需要再收集的信息
 ```
 
 语气冷静、可修订；坐标是工具，不是判决书。
+
+### Next steps 可观察性 / Observable next steps
+
+每个小步至少写清四项（缺一则宁可少写一步）：
+
+| 字段 | 要求 |
+|------|------|
+| **Action** | 可在观察期内完成的具体动作（非口号） |
+| **Observable signal** | 如何判断「有进展 / 无效」——可检验信号，非心情 |
+| **Horizon** | 观察期与复盘日（日历或触发事件） |
+| **Reversibility** | 可逆 / 半可逆 / 高沉没；失败成本上限 |
+
+- 成功标准写在 Decision frame 时，须能对照上述 signal 验收。  
+- **勿层级塌缩：** 若「我该 / 组织该 / 制度该」仍混在一起，或认领与拒绝边界不清 → 转 handoff：`responsibility-scope`、`responsibility-bridge`。本 skill 只标个人可动空间，不写 mandate 矩阵或道德负荷分区。
 
 ## Bias / metacognition checkpoints
 
@@ -81,7 +95,8 @@ Place your situation on historical and social coordinates: which curve you are o
 - **幸存者偏差**：是否只对标公开成功者的故事？  
 - **时间近视**：是否用短期情绪覆盖长期坐标？  
 - **阶层失语或阶层傲慢**：描述位置时是否羞辱或美化？  
-- **虚假独特性**：是否忽略同位置上常见的约束与剧本？
+- **虚假独特性**：是否忽略同位置上常见的约束与剧本？  
+- **不可观察小步**：是否只写「多思考 / 保持开放」而无信号与复盘日？
 
 高影响选择落地前，可用 `metacognition-audit` 检查推理与证据缺口。
 
@@ -90,4 +105,5 @@ Place your situation on historical and social coordinates: which curve you are o
 - 分析在用户自己的 coding agent 中运行，不在 Openwisdom 服务器上。  
   Analysis runs in the user's coding agent, not on Openwisdom servers.
 - 本 skill 为 workflow；理论细节见 frontmatter `references`：`social-stratification`。  
-- 不编造统计、身份标签或安装热度；涉及敏感身份时优先用户自述与可撤销措辞。
+- 不编造统计、身份标签或安装热度；涉及敏感身份时优先用户自述与可撤销措辞。  
+- **多级责任仍模糊时：** 用 `responsibility-scope` 拆层级、`responsibility-bridge` 写认领/拒绝；会话收尾冻结见 `analysis-closure`。

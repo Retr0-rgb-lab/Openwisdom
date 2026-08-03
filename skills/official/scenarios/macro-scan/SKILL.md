@@ -66,12 +66,24 @@ Break a situation, an industry, or a system into structure: actors, incentives, 
 1. Scope — 对象、边界、时间尺度、分析目标
 2. Actors — 行动者表：角色 / 激励 / 约束 / 证据
 3. Structure — 关系、制度节点、否决点、资源流
-4. Trajectories — 情景或趋势 + 触发条件 + 否证信号
-5. Gaps — 证据缺口与下一步可收集信息
-6. Checkpoints — 复盘时要回看的假设
+4. Agency / scope (optional) — 谁能行动 / 谁声称能行动 / 谁受约束（描述性）
+5. Trajectories — 情景或趋势 + 触发条件 + 否证信号
+6. Gaps — 证据缺口与下一步可收集信息
+7. Checkpoints — 复盘时要回看的假设
 ```
 
 语气保持克制：优先结构与条件，不抢着给单一结论。
+
+### Agency / scope（可选）/ Agency & scope (optional)
+
+结构图完成后，可加一列**描述性**能力边界——不写所有权合同、不做道德归责：
+
+| 行动者 | Can act / 能行动 | Claims to act / 声称 | Constrained / 受约束 | 证据 |
+|--------|------------------|----------------------|----------------------|------|
+| … | 权限、资源、否决点 | 公开表态与叙事 | 制度、路径依赖、集体行动 | … |
+
+- 只记录可观察的「能 / 声称 / 受制」，不把个人、组织、机构揉成同一责任主体。  
+- 若下一步要做层级拆分或认领/拒绝/移交，转 handoff：`responsibility-scope`、`responsibility-bridge`。
 
 ## Bias / metacognition checkpoints
 
@@ -82,7 +94,8 @@ Break a situation, an industry, or a system into structure: actors, incentives, 
 - **激励单维**：是否只用「利益」解释一切，忽略身份、制度与声誉？  
 - **时间尺度偷换**：短期波动是否被写成长期趋势？  
 - **可得性偏见**：是否过度依赖最近新闻与热搜？  
-- **路径依赖盲区**：是否把「现在」当成可任意重写的空白画布？
+- **路径依赖盲区**：是否把「现在」当成可任意重写的空白画布？  
+- **层级塌缩**：是否把制度失败写成个人道德、或把个人搭便车写成「系统必然」？
 
 若结论高影响，建议再跑一次 `metacognition-audit` 做推理体检。
 
@@ -91,4 +104,5 @@ Break a situation, an industry, or a system into structure: actors, incentives, 
 - 分析在用户自己的 coding agent 中运行，不在 Openwisdom 服务器上。  
   Analysis runs in the user's coding agent, not on Openwisdom servers.
 - 本 skill 为 workflow（场景技能）；理论细节见 frontmatter `references`：`path-dependence`、`collective-action`。  
-- 不编造数据、客户或安装热度；证据不足时写「未知」比写满更有用。
+- 不编造数据、客户或安装热度；证据不足时写「未知」比写满更有用。  
+- **高影响交接：** 结构已清且涉及谁该/谁能行动时，考虑 handoff skills `responsibility-scope`、`responsibility-bridge`；需推理体检用 `metacognition-audit`；会话级停机与冻结包用 `analysis-closure`。本 skill **不**写所有权合同或 ship/pause/abandon 包。

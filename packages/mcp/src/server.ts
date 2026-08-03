@@ -31,13 +31,13 @@ export function createServer(): McpServer {
     {
       title: "Search Openwisdom skills",
       description:
-        "Search the installable Official catalog (Web Official registry source) by free text and/or layer/scope/discipline filters. Read-only. Query may be empty when a filter is set. Prefer list→get→install: use this to find candidates, openwisdom_get to read SKILL.md, then install. Empty hits are success with skills=[].",
+        "Search the installable catalog by free text and/or layer/scope/discipline/tag filters. Read-only. Query may be empty when a filter is set. Discovery algorithm (handoff / orientation): (1) search or list with tag=orientation-pipeline; (2) list mode=installed; (3) client: missing skills by pipeline.order; (4) get → install(skills: [...]); (5) analysis runs in the agent session — not via MCP. Prefer list|search → get → install. Cards include tags/references and optional pipeline. Empty hits are success with skills=[]. No recommend/run/analyze tools.",
       inputSchema: z.object({
         query: z
           .string()
           .optional()
           .describe(
-            "Free-text query (AND-matched tokens). Optional if layer, scope, or discipline is set.",
+            "Free-text query (AND-matched tokens). Optional if layer, scope, discipline, or tag is set.",
           ),
         layer: z
           .enum(["scenario", "reference"])
@@ -51,6 +51,12 @@ export function createServer(): McpServer {
           .string()
           .optional()
           .describe("Filter by discipline id (e.g. psychology)"),
+        tag: z
+          .string()
+          .optional()
+          .describe(
+            "Exact tag filter (e.g. orientation-pipeline). Case-insensitive equality on skill tags.",
+          ),
         limit: z
           .number()
           .int()
@@ -62,7 +68,7 @@ export function createServer(): McpServer {
           .enum(["card", "full"])
           .optional()
           .describe(
-            "card (default): description truncated at 400; full: full description. tags/references always returned.",
+            "card (default): description truncated at 400; full: full description. tags/references/pipeline always returned when present.",
           ),
         refresh: z
           .boolean()
@@ -86,7 +92,7 @@ export function createServer(): McpServer {
     {
       title: "List Openwisdom skills",
       description:
-        "Browse the full installable Official catalog (available) or list skills already installed under harness paths. Read-only. Recommended flow: list|search → openwisdom_get(skill) → detect_providers → install. available supports layer/scope/discipline/q filters; cards always include tags/references.",
+        "Browse the full installable catalog (available) or list skills already installed under harness paths. Read-only. Discovery algorithm: search/list with tag → list mode=installed → install missing by pipeline.order → analysis in agent session (not MCP). Recommended flow: list|search → openwisdom_get(skill) → detect_providers → install. available supports layer/scope/discipline/tag/q filters; cards include tags/references and optional pipeline. No recommend/run tools.",
       inputSchema: z.object({
         mode: z
           .enum(["available", "installed"])
@@ -110,6 +116,12 @@ export function createServer(): McpServer {
           .string()
           .optional()
           .describe("available only: filter by discipline id"),
+        tag: z
+          .string()
+          .optional()
+          .describe(
+            "available only: exact tag filter (e.g. orientation-pipeline)",
+          ),
         q: z
           .string()
           .optional()
@@ -118,7 +130,7 @@ export function createServer(): McpServer {
           .enum(["card", "full"])
           .optional()
           .describe(
-            "card (default): description may truncate at 400; full: no truncate. tags/references always returned.",
+            "card (default): description may truncate at 400; full: no truncate. tags/references/pipeline when present.",
           ),
         limit: z
           .number()
@@ -178,7 +190,7 @@ export function createServer(): McpServer {
     {
       title: "Install Openwisdom skills",
       description:
-        "Install catalog skills into selected agent harness directories. Non-interactive: providers is required. Prefer openwisdom_get first to read SKILL.md, then detect_providers → install(dryRun:true) → install. Does not run analysis or call models.",
+        "Install catalog skills into selected agent harness directories. Non-interactive: providers is required. Prefer openwisdom_get first to read SKILL.md, then detect_providers → install(dryRun:true) → install. For multi-skill pipelines: search/list by tag, compute missing vs installed, pass ordered skill ids here. Does not run analysis or call models — package manager only.",
       inputSchema: z.object({
         skills: z
           .array(z.string().min(1))

@@ -120,7 +120,7 @@ Purple/cyan AI gradients · glassmorphism buttons · glow shadows · gradient he
 | React Bits | `apps/web/src/components/bits/*` — DotField, BlurText, Noise, LogoLoop, Reveal, SpotlightCard |
 | Install object | `apps/web/src/components/install/InstallCommand.tsx` (Tabs **CLI \| MCP** + honest not-yet-on-npm status) |
 | i18n | next-intl v4; `apps/web/src/messages/{zh,en}/{shell,home}.json` |
-| Specs (authority) | `docs/specs/07`–`11` + plans `docs/plans/2026-07-30-visual-rebrand/` |
+| Visual authority | `DESIGN.md` + `docs/知识库/09-视觉与动效.md` + plans `docs/plans/2026-07-30-visual-rebrand/` |
 
 Home heavy budget: DotField + BlurText + (optional) LogoLoop ≤3; Noise light.
 
@@ -128,7 +128,6 @@ Home heavy budget: DotField + BlurText + (optional) LogoLoop ≤3; Noise light.
 
 - `apps/web/public/brand/logo.svg` (brand authority)
 - PRODUCT.md
-- docs/specs/07-品牌与Logo对齐视觉系统.md
-- docs/specs/08-动效与ReactBits锁定.md
-- docs/specs/09–11 Impeccable / Home IA / SPE
-- docs/specs/02–04 (historical; copper Direction B superseded for primary brand)
+- docs/知识库/09-视觉与动效.md
+- docs/知识库/08-页面IA与路由.md
+- docs/plans/* (historical process only)

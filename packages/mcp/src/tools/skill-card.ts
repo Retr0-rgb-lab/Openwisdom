@@ -1,5 +1,5 @@
 /**
- * Shared catalog skill card shaping for search / list (Spec 31).
+ * Shared catalog skill card shaping for search / list (Spec 31 + Spec 33).
  */
 import type { CatalogSkill } from "@openwisdom/schema";
 
@@ -7,7 +7,10 @@ export type DetailLevel = "card" | "full";
 
 const CARD_DESC_MAX = 400;
 
-/** Always includes tags / references / repoPath / updated for scenario matching. */
+/**
+ * Always includes tags / references / repoPath / updated for scenario matching.
+ * Includes optional `pipeline` when present (Spec 33) — discovery only, not an execution graph.
+ */
 export function toSkillCard(
   s: CatalogSkill,
   detail: DetailLevel = "card",
@@ -17,7 +20,7 @@ export function toSkillCard(
       ? s.description
       : s.description.slice(0, CARD_DESC_MAX - 3) + "...";
 
-  return {
+  const card: Record<string, unknown> = {
     id: s.id,
     name: s.name,
     layer: s.layer,
@@ -31,4 +34,10 @@ export function toSkillCard(
     repoPath: s.repoPath,
     updated: s.updated,
   };
+
+  if (s.pipeline) {
+    card.pipeline = s.pipeline;
+  }
+
+  return card;
 }

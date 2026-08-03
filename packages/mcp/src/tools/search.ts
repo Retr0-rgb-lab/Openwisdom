@@ -9,11 +9,13 @@ import { toErrorResult, toTextResult, type ToolResult } from "../lib/result.js";
 import { toSkillCard, type DetailLevel } from "./skill-card.js";
 
 export type SearchInput = {
-  /** Free text; may be empty when layer|scope|discipline is set (Spec 31). */
+  /** Free text; may be empty when layer|scope|discipline|tag is set (Spec 31/33). */
   query?: string;
   layer?: "scenario" | "reference";
   scope?: "official" | "community";
   discipline?: string;
+  /** Exact tag filter (e.g. orientation-pipeline). Spec 33. */
+  tag?: string;
   limit?: number;
   detail?: DetailLevel;
   /** Reserved: remote catalog refresh (not implemented; ignored). */
@@ -25,14 +27,18 @@ export async function handleSearch(input: SearchInput = {}): Promise<ToolResult>
   try {
     const query = input.query?.trim() ?? "";
     const hasFilter = Boolean(
-      input.layer || input.scope || input.discipline?.trim(),
+      input.layer ||
+        input.scope ||
+        input.discipline?.trim() ||
+        input.tag?.trim(),
     );
 
     if (!query && !hasFilter) {
       return toErrorResult(
         [
-          "Missing query (and no layer/scope/discipline filter).",
+          "Missing query (and no layer/scope/discipline/tag filter).",
           'Example: openwisdom_search({ query: "macro" })',
+          'or openwisdom_search({ tag: "orientation-pipeline" })',
           'or openwisdom_search({ query: "", layer: "scenario" })',
           "or openwisdom_list to browse the full Official catalog.",
         ].join(" "),
@@ -56,6 +62,7 @@ export async function handleSearch(input: SearchInput = {}): Promise<ToolResult>
       layer: input.layer,
       scope: input.scope,
       discipline: input.discipline?.trim() || undefined,
+      tag: input.tag?.trim() || undefined,
       limit,
     });
 
@@ -66,6 +73,7 @@ export async function handleSearch(input: SearchInput = {}): Promise<ToolResult>
       input.discipline?.trim()
         ? `discipline=${input.discipline.trim()}`
         : null,
+      input.tag?.trim() ? `tag=${input.tag.trim()}` : null,
     ]
       .filter(Boolean)
       .join(", ");

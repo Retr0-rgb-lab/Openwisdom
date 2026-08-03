@@ -14,7 +14,7 @@ E:\学习软件\Openwisdom\docs\design\home-centered-demo.html
 
 | Agent | 范围 |
 |-------|------|
-| Specs / motion | `docs/specs/04,07–11`、`DESIGN.md`、Bits 实现 vs Spec 08 |
+| Visual / motion | `DESIGN.md`、`docs/知识库/09-视觉与动效.md`、Bits 实现 |
 | AI 味审计 | 现站 Home + **旧 demo**（含左侧色条） |
 | 方向 | **Orientation Plate** 可落地线框 |
 

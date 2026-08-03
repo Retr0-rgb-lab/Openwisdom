@@ -4,13 +4,19 @@ import { loadCatalog, searchCatalog } from "@openwisdom/core";
 export const searchCommand = defineCommand({
   meta: {
     name: "search",
-    description: "Search the skill catalog by id, name, description, or tags",
+    description:
+      "Search the skill catalog by id, name, description, or tags (use --tag for exact tag match)",
   },
   args: {
     query: {
       type: "positional",
-      description: "Search query (words are AND-matched)",
+      description: "Search query (words are AND-matched); optional if --tag is set",
       required: false,
+    },
+    tag: {
+      type: "string",
+      description:
+        "Exact tag filter (e.g. orientation-pipeline). Can be used alone or with query",
     },
     layer: {
       type: "string",
@@ -46,11 +52,13 @@ export const searchCommand = defineCommand({
       "official",
       "community",
     ]);
+    const tag = typeof args.tag === "string" ? args.tag.trim() : "";
     const query = tokens
       .filter((t) => {
         if (args.layer && t === args.layer) return false;
         if (args.scope && t === args.scope) return false;
         if (args.discipline && t === args.discipline) return false;
+        if (tag && t === tag) return false;
         if (args.limit && t === String(args.limit)) return false;
         if (skipNext.has(t) && (args.layer === t || args.scope === t))
           return false;
@@ -59,8 +67,10 @@ export const searchCommand = defineCommand({
       .join(" ")
       .trim();
 
-    if (!query) {
-      console.error("Usage: openwisdom search <query>");
+    if (!query && !tag) {
+      console.error(
+        "Usage: openwisdom search <query>  |  openwisdom search --tag <tag>",
+      );
       process.exitCode = 2;
       return;
     }
@@ -79,11 +89,15 @@ export const searchCommand = defineCommand({
       layer,
       scope,
       discipline: args.discipline,
+      tag: tag || undefined,
       limit: Math.max(1, Number(args.limit) || 20),
     });
 
     if (hits.length === 0) {
-      console.log(`No skills matched "${query}".`);
+      const label = query
+        ? `"${query}"${tag ? ` tag=${tag}` : ""}`
+        : `tag=${tag}`;
+      console.log(`No skills matched ${label}.`);
       return;
     }
 

@@ -7,12 +7,12 @@
 | Layer | When to load | What it is |
 |-------|----------------|------------|
 | **L0** | **Always** (this whole section + Hard rules) | Identity, non-goals, truth sources map |
-| **L1** | After you know the task type | Task router → open **one** deep doc |
-| **L2** | Only when implementing that area | Specs / PRODUCT / DESIGN / code paths below |
-| **L3** | Rare | Full research notes, long IA briefs |
+| **L1** | After you know the task type | Task router → `docs/知识库/00-索引.md` then **one** topic file |
+| **L2** | Only when implementing that area | PRODUCT / DESIGN / code paths + named knowledge-base topic |
+| **L3** | Rare | Plans, archive research, long historical briefs |
 
-**Do not** bulk-read `docs/specs/*` and `docs/知识库/*` on every turn.  
-**Do** open the single file the router names for your task.
+**Do not** bulk-read the whole knowledge base or any retired tree on every turn.  
+**Do** open `docs/知识库/00-索引.md`, then only the single topic the router names.
 
 ---
 
@@ -40,45 +40,47 @@ License: **MIT**
 3. **Heat is a side channel** — Install telemetry (web download + CLI/MCP install success) must not write into `SKILL.md`. Fail open: install works if stats API is down. Copy-command is funnel-only, not primary popularity.
 4. **Layered content** — **Scenario skills** (workflows) cite **discipline references** (theory cards). Official vs community is provenance, not a second product.
 5. **UI zh/en; skill body language = contributor** — Don’t force bilingual skill bodies.
-6. **Design world = Overlay Atlas (logo-aligned)** — Field `#F8F9FA`, primary `#1C4BD1`, structure `#2E6975`, signal `#E69622`; logo at `apps/web/public/brand/logo.svg`. Specs **07–11** + `DESIGN.md` win over old copper Direction B. No purple AI-SaaS skin, no fake testimonials/metrics.
+6. **Design world = Overlay Atlas (logo-aligned)** — Field `#F8F9FA`, primary `#1C4BD1`, structure `#2E6975`, signal `#E69622`; logo at `apps/web/public/brand/logo.svg`. **`DESIGN.md`** wins over old copper Direction B. No purple AI-SaaS skin, no fake testimonials/metrics.
 7. **Don’t fabricate** commercial claims, customers, install counts, or skill text that isn’t in repo.
 
 ### Truth sources (open only when needed)
 
 | Need | File |
 |------|------|
+| **Doc map / task entry** | [`docs/知识库/00-索引.md`](./docs/知识库/00-索引.md) — **primary router for all deep topics** |
 | Product truth (users, purpose, non-goals) | [`PRODUCT.md`](./PRODUCT.md) |
-| Visual system tokens & bans | [`DESIGN.md`](./DESIGN.md) (Overlay Atlas; logo tokens) · authority specs [`07`](./docs/specs/07-品牌与Logo对齐视觉系统.md)–[`11`](./docs/specs/11-视觉整改总控-SPE.md) |
+| Visual system tokens & bans | [`DESIGN.md`](./DESIGN.md) (Overlay Atlas; logo tokens) |
+| Vision one-pager | [`docs/知识库/01-项目定位与愿景.md`](./docs/知识库/01-项目定位与愿景.md) |
 | Product decisions log | [`docs/知识库/02-产品决策记录.md`](./docs/知识库/02-产品决策记录.md) |
 | v1 scope checklist | [`docs/知识库/03-v1交付范围.md`](./docs/知识库/03-v1交付范围.md) |
+| Experience maturity bar | [`docs/知识库/04-对标Impeccable与体验标准.md`](./docs/知识库/04-对标Impeccable与体验标准.md) |
 | Repo status map | [`docs/知识库/05-系统现状与实现地图.md`](./docs/知识库/05-系统现状与实现地图.md) |
 | Doc governance | [`docs/知识库/06-文档治理与规格分层.md`](./docs/知识库/06-文档治理与规格分层.md) |
-| Specs index (live) | [`docs/specs/00-索引.md`](./docs/specs/00-索引.md) · archive under `docs/specs/archive/` |
-| Architecture / monorepo / catalog pipeline | [`docs/specs/01-架构方案.md`](./docs/specs/01-架构方案.md) · MCP dual-surface: Specs **22–24** |
-| Page IA / routes | [`docs/specs/03-页面信息架构.md`](./docs/specs/03-页面信息架构.md) |
-| Components + motion policy | [`docs/specs/04-组件与动效.md`](./docs/specs/04-组件与动效.md) |
-| Install heat / telemetry | [`docs/specs/06-热度与遥测.md`](./docs/specs/06-热度与遥测.md) |
-| Vision one-pager | [`docs/知识库/01-项目定位与愿景.md`](./docs/知识库/01-项目定位与愿景.md) |
+| Architecture · IA · visual · skills · CLI · MCP · heat · handoff | **`docs/知识库/07`–`14`** (topic files; listed in `00-索引`) |
+
+**Note:** `docs/specs/*` is **retired** as a primary authority. Do not treat live/archive specs as the first source of truth. Prefer knowledge-base topics + `PRODUCT.md` / `DESIGN.md` / code. Historical plans may remain under `docs/plans/` for execution trails only.
 
 ---
 
 ## L1 — Task router
 
-Pick the task row; load **only** the linked L2 material.
+1. Open [`docs/知识库/00-索引.md`](./docs/知识库/00-索引.md).  
+2. Pick the task row; load **only** the linked knowledge-base topic (plus code paths when implementing).
 
 | Task | Open next | Notes |
 |------|-----------|--------|
-| **Product / scope / “should we build X?”** | `PRODUCT.md` + `docs/知识库/02` + `03` | Prefer decisions already recorded |
-| **Architecture / monorepo / CLI package layout** | `docs/specs/01-架构方案.md` | Index-centric monorepo (Option A) |
-| **UI / visual / landing polish** | **`docs/specs/07`–`11`（权威）** + `docs/plans/2026-07-30-visual-rebrand/` | Logo-aligned tokens; 08 motion; 09 P0/P1; 10 Home 6-beat. Old copper Direction B superseded for primary brand. |
-| **New page / IA / nav** | `docs/specs/03-页面信息架构.md` | Home = Persuade; Skills = Operate+Read; Docs = Read |
-| **Home page only** | `apps/web` home components + `PRODUCT`/`DESIGN` | Already implemented (see L2 Web) |
-| **Skills catalog / detail / install pages** | `docs/specs/03` then implement under `apps/web` | Routes linked from Home may 404 until built |
-| **Author official skills / references** | `docs/specs/01` skill frontmatter + v1 content in `docs/知识库/03` | Three scenarios + five disciplines |
-| **CLI install / providers** | **`docs/specs/17`–`20`（执行权威）** · 调研 `21` · 背景 `01` §7 | No LLM; interactive multi-harness; 实现前先读 17 总控 |
-| **MCP install surface / core extract** | **`docs/specs/22`–`24`（执行权威）** · 调研 `25` · plan `docs/plans/2026-07-30-mcp/` | Dual surface with CLI; package manager only; no LLM; stdio tools |
-| **Telemetry / heat ranking** | Spec **06**（语义）+ **27–29**（API 实现） | Third tier; fail-open; copy not on main rank |
-| **i18n copy** | `apps/web/src/messages/{zh,en}.ts` | Keep parity between locales |
+| **Product / scope / “should we build X?”** | `PRODUCT.md` + `docs/知识库/02` + `03` | Prefer decisions already recorded (incl. D1 Handoff) |
+| **Architecture / monorepo / catalog pipeline** | `00-索引` → topic **`07`–`14`** (arch / catalog) + `05` | Index-centric monorepo; status in `05` |
+| **UI / visual / landing polish** | `DESIGN.md` + `00-索引` → visual topic in **`07`–`14`** | Logo-aligned Overlay Atlas; no copper primary |
+| **New page / IA / nav** | `00-索引` → IA/routes topic in **`07`–`14`** | Home = Persuade; Skills = Operate+Read; Docs = Read |
+| **Home page only** | `apps/web` home components + `PRODUCT` / `DESIGN` | Already implemented (see L2 Web) |
+| **Skills catalog / detail / install pages** | `00-索引` → skills/web topic in **`07`–`14`** then `apps/web` | Implement under `apps/web` |
+| **Author official skills / references** | `docs/知识库/03` + skills/handoff topics in **`07`–`14`** | Triad core; Handoff layer post-v1/v1.1 (D1) |
+| **CLI install / providers** | `00-索引` → CLI topic in **`07`–`14`** + `05` | No LLM; interactive multi-harness; package manager only |
+| **MCP install surface / core** | `00-索引` → MCP/core topic in **`07`–`14`** + `05` | Dual surface with CLI; no LLM; stdio tools only |
+| **Telemetry / heat ranking** | `00-索引` → heat topic in **`07`–`14`** + `02` #11 | Third tier; fail-open; copy not on main rank |
+| **Handoff / orientation pipeline / bundles** | `docs/知识库/02` §18 + handoff topic in **`07`–`14`** | D1: triad core + official handoff; catalog pipeline/bundles optional for discover/install |
+| **i18n copy** | `apps/web/src/messages/{zh,en}/` | Keep parity between locales |
 | **Impeccable design commands** | `PRODUCT.md` / `DESIGN.md` already present | Don’t re-init unless stale |
 
 ---
@@ -93,15 +95,15 @@ Openwisdom/
 ├── PRODUCT.md                ← product truth (Impeccable)
 ├── DESIGN.md                 ← visual system Overlay Atlas (logo-aligned)
 ├── apps/web/                 ← Next.js 16 site (Home live)
-├── docs/知识库/               ← decisions & vision
-├── docs/specs/               ← architecture / IA / components / telemetry
-├── skills/                   ← PLANNED: official/ + community/
-├── packages/                 ← PLANNED: cli, catalog, schema, providers
-└── package.json              ← PLANNED monorepo root (optional today)
+├── docs/知识库/               ← primary truth: 00-index + 01–14 topics
+├── docs/plans/               ← execution trails only (not product authority)
+├── skills/                   ← official/ + community/ (as present in repo)
+├── packages/                 ← cli, catalog, schema, providers, core, mcp (as present)
+└── package.json              ← monorepo root (as present)
 ```
 
-**Implemented today:** `apps/web` Home at `/zh` and `/en` (**6-beat** Persuade per Spec 10), Overlay Atlas tokens, logo chrome, honest placeholders for `/skills` `/install` `/docs` `/contribute` `/about`.  
-**Not implemented yet:** Real Skills catalog/detail pages, docs content, CLI package, `skills/` tree, stats API.
+**Doc authority:** `docs/知识库/` (+ `PRODUCT.md` / `DESIGN.md`). **`docs/specs/*` is retired** — do not use as primary.  
+**Home surface:** `/zh` and `/en` 6-beat Persuade, Overlay Atlas tokens, logo chrome. Status detail: knowledge-base `05`.
 
 ### Web (`apps/web`)
 
@@ -111,11 +113,11 @@ Openwisdom/
 | Locales | next-intl v4: `/zh`, `/en`; middleware prefixes missing locale; default `zh` |
 | i18n wiring | `src/i18n/{routing,request,navigation}.ts`; internal links via `@/i18n/navigation` only |
 | Copy | `src/messages/{zh,en}/shell.json` (chrome) + `{zh,en}/home.json` (home), namespaced `shell`/`home` |
-| Design tokens | `src/app/globals.css` (logo-aligned `--ow-*` + shadcn; Spec 07), fonts in `src/lib/fonts.ts` |
+| Design tokens | `src/app/globals.css` (logo-aligned `--ow-*` + shadcn; `DESIGN.md`), fonts in `src/lib/fonts.ts` |
 | Logo | `public/brand/logo.svg` |
 | Home | `src/components/home/*` (6 beats) + `src/app/[locale]/page.tsx` |
 | Shell | `src/components/site/*`, `src/components/ui/*` (shadcn) |
-| Bits (MUST/MAY) | `src/components/bits/*` — DotField, BlurText, Noise, LogoLoop, Reveal, SpotlightCard (Spec 08) |
+| Bits (MUST/MAY) | `src/components/bits/*` — DotField, BlurText, Noise, LogoLoop, Reveal, SpotlightCard |
 | Install snippet | `src/components/install/InstallCommand.tsx` (Tabs CLI \| GitHub \| Manual + Sonner) |
 
 **Commands:**
@@ -127,7 +129,7 @@ pnpm build
 pnpm lint
 ```
 
-**When adding a page:** follow `docs/specs/03` route table; reuse `SiteHeader` / `SiteFooter`; add strings to **both** message files; keep **logo-aligned** Overlay Atlas tokens (`primary` / `structure` / `signal`)—no copper primary, no purple gradient brand.
+**When adding a page:** follow IA topic in `docs/知识库/07`–`14` (via `00-索引`); reuse `SiteHeader` / `SiteFooter`; add strings to **both** message files; keep **logo-aligned** Overlay Atlas tokens (`primary` / `structure` / `signal`)—no copper primary, no purple gradient brand.
 
 **Secondary routes** (`/skills`, `/install`, `/docs`, `/contribute`) may be linked from Home but empty—prefer implementing stubs over leaving broken UX if you touch nav.
 
@@ -135,32 +137,34 @@ pnpm lint
 
 - Unit: directory with `SKILL.md` (+ optional assets).
 - Layers: `scenario` | `reference`; scope: `official` | `community`.
-- Official scenarios (v1): `macro-scan`, `personal-anchor`, `metacognition-audit`.
+- Official orientation core (v1): `macro-scan`, `personal-anchor`, `metacognition-audit`.
+- Official Handoff layer (post-v1 / v1.1, D1): `responsibility-scope`, `responsibility-bridge`, `analysis-closure`.
 - Disciplines: psychology, sociology, history, political-science, economics.
-- Frontmatter validated by planned `packages/schema`; catalog build feeds web + CLI.
-- Details: `docs/specs/01-架构方案.md` § skill unit + pipeline.
+- Frontmatter validated by `packages/schema`; catalog build feeds web + CLI + MCP.
+- Details: skills/handoff topics in `docs/知识库/07`–`14` + `02` §18.
 
 ### CLI + MCP (install surfaces)
 
 Dual package-manager surfaces (**no LLM**, no analysis runners)—same catalog/install semantics, two adapters:
 
-| Surface | Role | Authority | Package (planned / implementing) |
-|---------|------|-----------|----------------------------------|
-| **CLI** | Human terminal; interactive multi-harness | Specs **17–20** (+ research **21**) | `packages/cli` |
-| **MCP** | Agent session tools over **stdio** | Specs **22–24** (+ research **25**) | `packages/mcp` |
-| **Core** | Shared non-interactive search / list / install / update / telemetry | Spec **24** | `packages/core` |
+| Surface | Role | Authority | Package |
+|---------|------|-----------|---------|
+| **CLI** | Human terminal; interactive multi-harness | Knowledge-base CLI topic (`07`–`14`) + `05` | `packages/cli` |
+| **MCP** | Agent session tools over **stdio** | Knowledge-base MCP topic (`07`–`14`) + `05` | `packages/mcp` |
+| **Core** | Shared non-interactive search / list / install / update / telemetry | Knowledge-base core/catalog topics + `05` | `packages/core` |
 
-- Skilldex-style *two interfaces, one core*: extract install/catalog into `packages/core`; CLI and MCP are thin adapters only.
+- Skilldex-style *two interfaces, one core*: install/catalog in `packages/core`; CLI and MCP are thin adapters only.
 - CLI: multi-provider interactive install; non-interactive flags for scripts; `--no-telemetry` / CI off.
 - MCP: non-interactive tools; explicit providers; telemetry `source: "mcp"`; no TTY prompts; stdout reserved for protocol.
-- Do not add model API keys, hosted sessions, or `run`/analysis tools.
+- Optional catalog `pipeline` / `bundles` for discover/combine-install only.
+- Do not add model API keys, hosted sessions, or `run` / analyze / recommend tools.
 
 ### Design / Impeccable
 
-- World: **Overlay Atlas** — logo-aligned tokens (`DESIGN.md`; Specs **07–11** authority for visual work).
+- World: **Overlay Atlas** — logo-aligned tokens (`DESIGN.md` authority for visual work).
 - Logo asset: `apps/web/public/brand/logo.svg`.
 - Home mode: **Persuade** (+ Read), ≤6 beats. Catalog: **Operate** + Read.
-- Motion: Spec **08** constitution (still content default; one-shot entrances; tool feedback; RM off); Bits MUST/MAY only.
+- Motion: still content default; one-shot entrances; tool feedback; respect reduced motion; Bits MUST/MAY only.
 - Ban list summary: purple/cyan AI glow, glassmorphism, nested cards, fake social proof, Inter-as-brand face, copper as primary CTA.
 
 ---
@@ -171,10 +175,10 @@ Only if you must audit history or research trail:
 
 | Doc | Why |
 |-----|-----|
-| `docs/specs/01-web-ia-page-design-brief.md` | Long English IA research dump |
-| `docs/specs/05-调研来源.md` | Research links |
+| `docs/plans/*` | Dated execution plans/reports (not product authority) |
 | `docs/知识库/04-对标Impeccable与体验标准.md` | Maturity bar vs impeccable.style |
 | `apps/web/.impeccable-home-surface.md` | Home surface brief notes |
+| Retired `docs/specs/*` (if still on disk) | Historical only — **not** primary truth |
 
 ---
 
@@ -185,7 +189,7 @@ Only if you must audit history or research trail:
 3. **Confirm before destructive git / force-push / remote publish.**
 4. **Label synthetic data** if you mock catalog stats or skill bodies in UI demos.
 5. **After substantial UI** — keep zh/en strings in sync; run `pnpm build` in `apps/web`.
-6. **If PRODUCT and a draft spec conflict** — PRODUCT + decision log (`02`) win for product scope; Specs **07–11** + `DESIGN.md` win for visual tokens (logo Overlay Atlas over old copper Direction B) unless the user reopens direction.
+6. **If PRODUCT and another doc conflict** — PRODUCT + decision log (`02`) win for product scope; `DESIGN.md` wins for visual tokens (logo Overlay Atlas over old copper Direction B) unless the user reopens direction. Knowledge-base topics beat retired `docs/specs/*`.
 
 ---
 
@@ -194,13 +198,14 @@ Only if you must audit history or research trail:
 | You want to… | Start here |
 |--------------|------------|
 | Understand the product in 2 minutes | L0 + `PRODUCT.md` |
+| Find any deep topic | [`docs/知识库/00-索引.md`](./docs/知识库/00-索引.md) → **`07`–`14`** |
 | Ship the next website page | L1 UI/IA rows + `apps/web` |
-| Design / rebrand | Stop → `DESIGN.md` + Specs **07–11** first |
-| Build CLI | Specs **17–20** + hard rule #1（`01` 仅背景） |
-| Build MCP / extract core | Specs **22–24** (+ **25**) + hard rule #1 · plan `docs/plans/2026-07-30-mcp/` |
-| Add a skill | Wait for / create `skills/` per § Skills + schema in `01` |
-| Change install heat | `docs/specs/06` only |
+| Design / rebrand | Stop → `DESIGN.md` + visual topic in **`07`–`14`** |
+| Build CLI | L1 CLI row + hard rule #1 + `05` |
+| Build MCP / extract core | L1 MCP row + hard rule #1 + `05` |
+| Add a skill | `03` + skills/handoff topics in **`07`–`14`**; triad core, Handoff D1 |
+| Change install heat | Heat topic in **`07`–`14`** + `02` #11 |
 
 ---
 
-*Last aligned with repo state: Home 6-beat + Overlay Atlas visual rebrand (Waves 1–3) under `apps/web`; monorepo packages and skills tree still planned. Update this map when major surfaces land.*
+*Last aligned: knowledge-base primary (`00` + `01`–`14`); `docs/specs/*` retired as authority; Home 6-beat + Overlay Atlas under `apps/web`; D1 Handoff layer recorded in `02`. Update this map when major surfaces land.*

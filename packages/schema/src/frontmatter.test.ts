@@ -119,4 +119,41 @@ describe("skillFrontmatterSchema / parseSkillFrontmatter", () => {
     });
     expect(result.success).toBe(false);
   });
+
+  it("accepts optional pipeline", () => {
+    const parsed = parseSkillFrontmatter({
+      name: "responsibility-scope",
+      description: "Sort agency levels.",
+      pipeline: {
+        id: "orientation-handoff",
+        order: 1,
+        next: "responsibility-bridge",
+      },
+    });
+    expect(parsed.pipeline).toEqual({
+      id: "orientation-handoff",
+      order: 1,
+      next: "responsibility-bridge",
+    });
+  });
+
+  it("promotes metadata.pipeline when top-level omitted", () => {
+    const parsed = parseSkillFrontmatter({
+      name: "analysis-closure",
+      description: "Close the analysis run.",
+      metadata: {
+        openwisdom: true,
+        pipeline: { id: "orientation-handoff", order: 3 },
+      },
+    });
+    expect(parsed.pipeline).toEqual({
+      id: "orientation-handoff",
+      order: 3,
+    });
+  });
+
+  it("parses without pipeline (old skills)", () => {
+    const parsed = parseSkillFrontmatter(macroScanLike);
+    expect(parsed.pipeline).toBeUndefined();
+  });
 });

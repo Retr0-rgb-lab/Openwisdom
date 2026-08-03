@@ -25,6 +25,7 @@ function collectSkillIds(rawArgs: string[], positional?: string): string[] {
     "--cwd",
     "--lang",
     "--registry",
+    "--bundle",
   ]);
   for (let i = 0; i < rawArgs.length; i++) {
     const a = rawArgs[i]!;
@@ -39,6 +40,7 @@ function collectSkillIds(rawArgs: string[], positional?: string): string[] {
     }
     if (a.startsWith("--providers=") || a.startsWith("--scope=")) continue;
     if (a.startsWith("--cwd=") || a.startsWith("--lang=")) continue;
+    if (a.startsWith("--bundle=")) continue;
     if (a.startsWith("-")) continue;
     if (!ids.includes(a)) ids.push(a);
   }
@@ -85,13 +87,19 @@ function cliOnLog(level: LogLevel, message: string): void {
 export const installCommand = defineCommand({
   meta: {
     name: "install",
-    description: "Copy skill(s) into selected agent skill directories",
+    description:
+      "Copy skill(s) into agent skill dirs (ids and/or --bundle; multi-id: install id1 id2)",
   },
   args: {
     skill: {
       type: "positional",
-      description: "Skill id(s) to install",
+      description: "Skill id(s) to install (optional if --bundle is set)",
       required: false,
+    },
+    bundle: {
+      type: "string",
+      description:
+        "Catalog bundle id to expand (e.g. orientation-handoff). Combines with explicit skill ids",
     },
     providers: {
       type: "string",
@@ -143,6 +151,8 @@ export const installCommand = defineCommand({
         rawArgs,
         args.skill as string | undefined,
       );
+      const bundle =
+        typeof args.bundle === "string" ? args.bundle.trim() : "";
       const cwd = path.resolve(
         (args.cwd as string | undefined) || process.cwd(),
       );
@@ -151,9 +161,9 @@ export const installCommand = defineCommand({
       const isTty = Boolean(process.stdin.isTTY);
       const ci = process.env.CI === "true" || process.env.CI === "1";
 
-      if (!skillIds.length) {
+      if (!skillIds.length && !bundle) {
         console.error(
-          "error: No skill ids given. Example: openwisdom install macro-scan -y --providers=claude",
+          "error: No skill ids or --bundle given. Example: openwisdom install macro-scan -y --providers=claude  or  openwisdom install --bundle=orientation-handoff -y",
         );
         process.exitCode = 2;
         return;
@@ -203,6 +213,7 @@ export const installCommand = defineCommand({
 
       const result = runInstall({
         skillIds,
+        bundle: bundle || undefined,
         providers: args.providers as string | undefined,
         providerIds: interactiveProviders ?? undefined,
         scope: scope as Scope,

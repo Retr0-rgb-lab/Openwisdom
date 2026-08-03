@@ -58,7 +58,7 @@ A checkup for your thinking: expose biases, blind spots, and evidence gaps inste
    - 列出必须补的证据或可做的廉价检验。  
    - 改写结论：保留可辩护部分，降级或删除无支撑部分。  
    - 给出「仍可行动但须标注不确定」与「暂缓行动」的分界。  
-   - 设定复盘触发条件（新数据、反例、截止日）。
+   - 设定**重开条件**（见下）：新数据、强反例、截止日、关键前提被否证——无触发则不因焦虑重开。
 
 ## Output / 输出结构
 
@@ -69,10 +69,23 @@ A checkup for your thinking: expose biases, blind spots, and evidence gaps inste
 4. Biases & blind spots — 点名 + 在本文中的具体表现
 5. Evidence gaps — 缺口、为何重要、如何廉价检验
 6. Revised claim — 修订后主张 + 置信表述
-7. Commit / wait — 可落地条件 vs 暂缓条件
+7. Commit / wait — 可落地条件 vs 暂缓条件 + 重开触发器
 ```
 
 目标是提高可辩护性，不是把结论磨成无法证伪的口号。
+
+### Commit / wait + 重开 / Commit, wait & reopen
+
+| 模式 | 何时 | 须写清 |
+|------|------|--------|
+| **Commit** | 关键环节可辩护；剩余不确定可标注且不阻断行动 | 行动边界、置信表述、仍开放的非阻塞缺口 |
+| **Wait** | 最弱一环未过廉价检验，或否证风险高 | 缺什么证据、如何廉价补、暂缓到何时 |
+
+**重开条件（写进交付，避免半截循环）：**
+
+- **允许重开：** 预写触发器命中（新硬证据、强反例、截止日、关键前提被否证）。  
+- **不因重开：** 「还想再想想」、无新信息的叙事抛光、重复清单表演。  
+- 若边际洞察≈0、多 skill 管线该收尾、或需要会话级 **ship / pause / abandon 冻结包** → 转 `analysis-closure`。本 skill 管主张质量，**不**做 pipeline 停机包。
 
 ## Bias / metacognition checkpoints
 
@@ -80,7 +93,8 @@ A checkup for your thinking: expose biases, blind spots, and evidence gaps inste
 - **清单表演**：是否堆偏见名称却不改结论？  
 - **对称性表演**：是否假平衡（两边各打五十大板）掩盖证据不对称？  
 - **事后合理化**：是否在结论已定后才编理由？  
-- **范围蠕变**：体检是否偷换成重新做一整盘战略？
+- **范围蠕变**：体检是否偷换成重新做一整盘战略？  
+- **无触发重开**：是否在无新证据时反复体检代替行动或停机？
 
 若问题主要是系统结构而非推理质量，转用 `macro-scan`；若是人生坐标问题，转用 `personal-anchor`。
 
@@ -89,4 +103,5 @@ A checkup for your thinking: expose biases, blind spots, and evidence gaps inste
 - 分析在用户自己的 coding agent 中运行，不在 Openwisdom 服务器上。  
   Analysis runs in the user's coding agent, not on Openwisdom servers.
 - 本 skill 为 workflow；理论细节见 frontmatter `references`：`confirmation-bias`、`prospect-theory`。  
-- 不编造实验结果或安装热度；对用户情绪保持克制，不替代专业心理咨询。
+- 不编造实验结果或安装热度；对用户情绪保持克制，不替代专业心理咨询。  
+- **会话级冻结包：** ship / pause / abandon、冻结未决问题与非重开规则 → `analysis-closure`。责任层级与认领合同 → `responsibility-scope` / `responsibility-bridge`。

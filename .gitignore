@@ -27,3 +27,6 @@ coverage/
 .impeccable/
 apps/web/_layout_backup.txt
 
+
+# fetch-skill local clones (do not ship)
+docs/ops/fetch-skill/runs/**/upstream/

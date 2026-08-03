@@ -12,8 +12,21 @@ export const kebabNameSchema = z
   });
 
 /**
+ * Optional pipeline frontmatter (Spec 33 §5.2).
+ * Shared shape with catalog skill.pipeline.
+ */
+export const skillPipelineSchema = z.object({
+  id: kebabNameSchema,
+  order: z.number().int().positive(),
+  next: kebabNameSchema.optional(),
+});
+
+export type SkillPipeline = z.infer<typeof skillPipelineSchema>;
+
+/**
  * SKILL.md YAML frontmatter (agentskills minimum + Openwisdom extensions).
  * `id` defaults to `name` after parse.
+ * Optional `pipeline` (or metadata.pipeline) for handoff chains (Spec 33).
  */
 export const skillFrontmatterSchema = z
   .object({
@@ -28,17 +41,24 @@ export const skillFrontmatterSchema = z
     version: z.string().min(1).optional(),
     references: z.array(kebabNameSchema).optional(),
     license: z.string().min(1).optional(),
+    pipeline: skillPipelineSchema.optional(),
     metadata: z
       .object({
         openwisdom: z.union([z.boolean(), z.string()]).optional(),
+        pipeline: skillPipelineSchema.optional(),
       })
       .passthrough()
       .optional(),
   })
-  .transform((data) => ({
-    ...data,
-    id: data.id ?? data.name,
-  }));
+  .transform((data) => {
+    // Prefer top-level pipeline; fall back to metadata.pipeline (partial lands / YAML variants).
+    const pipeline = data.pipeline ?? data.metadata?.pipeline;
+    return {
+      ...data,
+      id: data.id ?? data.name,
+      ...(pipeline ? { pipeline } : {}),
+    };
+  });
 
 export type SkillFrontmatter = z.infer<typeof skillFrontmatterSchema>;
 

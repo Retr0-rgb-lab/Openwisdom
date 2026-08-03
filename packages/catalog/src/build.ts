@@ -24,12 +24,30 @@ import {
   assertNameMatchesDir,
   catalogIndexSchema,
   parseSkillFrontmatter,
+  type CatalogBundle,
   type CatalogIndex,
   type CatalogSkill,
 } from "@openwisdom/schema";
 
 const CLI_MIN_VERSION = "0.1.0";
 const SCHEMA_VERSION = 1 as const;
+
+/**
+ * Official catalog bundles (Spec 33 §5.6).
+ * Truth lives here + catalog.json — never hardcode in CLI/MCP only.
+ */
+const OFFICIAL_BUNDLES: CatalogBundle[] = [
+  {
+    id: "orientation-handoff",
+    title: "Orientation handoff",
+    description: "Agency levels → ownership → analysis closure",
+    skillIds: [
+      "responsibility-scope",
+      "responsibility-bridge",
+      "analysis-closure",
+    ],
+  },
+];
 
 function findMonorepoRoot(starts: string[]): string {
   for (const start of starts) {
@@ -146,12 +164,35 @@ function contentHash(skills: CatalogSkill[]): string {
       version: s.version,
       repoPath: s.repoPath,
       references: s.references ?? null,
+      pipeline: s.pipeline ?? null,
       install: s.install,
     }));
   const hex = createHash("sha256")
     .update(JSON.stringify(canonical), "utf8")
     .digest("hex");
   return `sha256-${hex}`;
+}
+
+/**
+ * Emit official bundles; warn (not fail) when skillIds missing during partial land.
+ * When every declared id is present, still emit; missing ids stay listed for install
+ * expansion once skills land (Spec 33 partial-land soft rule).
+ */
+function resolveBundles(
+  skillIds: Set<string>,
+  declared: CatalogBundle[],
+): CatalogBundle[] {
+  const out: CatalogBundle[] = [];
+  for (const bundle of declared) {
+    const missing = bundle.skillIds.filter((id) => !skillIds.has(id));
+    if (missing.length > 0) {
+      console.warn(
+        `[@openwisdom/catalog] warn: bundle "${bundle.id}" missing skill(s): ${missing.join(", ")} (partial land — still emitting)`,
+      );
+    }
+    out.push(bundle);
+  }
+  return out;
 }
 
 function skillDirName(skillMdPath: string): string {
@@ -201,6 +242,11 @@ function buildSkillEntry(
 
   if (fm.references && fm.references.length > 0) {
     entry.references = fm.references;
+  }
+
+  // Spec 33: optional pipeline from frontmatter (or metadata.pipeline via parse transform)
+  if (fm.pipeline) {
+    entry.pipeline = fm.pipeline;
   }
 
   return entry;
@@ -283,9 +329,12 @@ function main(): void {
 
   skills.sort((a, b) => a.id.localeCompare(b.id));
 
+  const bundles = resolveBundles(seenIds, OFFICIAL_BUNDLES);
+
   const catalog: CatalogIndex = catalogIndexSchema.parse({
     schemaVersion: SCHEMA_VERSION,
     skills,
+    bundles,
   });
 
   const manifest = {

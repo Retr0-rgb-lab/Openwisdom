@@ -9,14 +9,18 @@ export {
 
 export {
   kebabNameSchema,
+  skillPipelineSchema,
   skillFrontmatterSchema,
   parseSkillFrontmatter,
   type SkillFrontmatter,
+  type SkillPipeline,
 } from "./frontmatter.js";
 
 export {
   catalogSkillSchema,
+  catalogBundleSchema,
   catalogIndexSchema,
   type CatalogSkill,
+  type CatalogBundle,
   type CatalogIndex,
 } from "./catalog.js";

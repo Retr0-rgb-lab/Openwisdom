@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "description": "Fingerprints / URLs / slugs to skip in fetch-skill Scoop & Normalize. Append after human decline or duplicate noise.",
+  "entries": [
+    {
+      "id": "github.com/Imbad0202/academic-research-skills",
+      "reason": "license_not_redistributable_for_catalog: CC-BY-NC-4.0",
+      "url": "https://github.com/Imbad0202/academic-research-skills"
+    },
+    {
+      "id": "github.com/brycewang-stanford/Auto-Empirical-Research-Skills",
+      "reason": "duplicate_upstream: aers-empirical-hub",
+      "url": "https://github.com/brycewang-stanford/Auto-Empirical-Research-Skills"
+    },
+    {
+      "id": "github.com/meleantonio/awesome-econ-ai-stuff",
+      "reason": "duplicate_upstream: already curated community packs",
+      "url": "https://github.com/meleantonio/awesome-econ-ai-stuff"
+    },
+    {
+      "id": "github.com/K-Dense-AI/scientific-agent-skills",
+      "reason": "duplicate_upstream + residual STEM-heavy",
+      "url": "https://github.com/K-Dense-AI/scientific-agent-skills"
+    },
+    {
+      "id": "github.com/tjboudreaux/cc-thinking-skills",
+      "reason": "duplicate_upstream: thinking-* references curated",
+      "url": "https://github.com/tjboudreaux/cc-thinking-skills"
+    },
+    {
+      "id": "github.com/KyleAMathews/field-lab",
+      "reason": "duplicate_upstream: field-lab",
+      "url": "https://github.com/KyleAMathews/field-lab"
+    },
+    {
+      "id": "github.com/serenakeyitan/open-exam-skills",
+      "reason": "domain_weak: exam-prep UX",
+      "url": "https://github.com/serenakeyitan/open-exam-skills"
+    },
+    {
+      "id": "psychology-agent-full-monorepo",
+      "reason": "extract-only: knock + portable session-retrospect landed; do not re-import full harness",
+      "url": "https://github.com/safety-quotient-lab/psychology-agent"
+    }
+  ]
+}

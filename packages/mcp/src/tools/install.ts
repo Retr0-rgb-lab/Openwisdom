@@ -134,7 +134,7 @@ export async function handleInstall(input: InstallInput): Promise<ToolResult> {
     const noTelemetry = Boolean(input.noTelemetry);
     const packageRoot = getMcpPackageRoot();
 
-    const result = runInstall({
+    const result = await runInstall({
       skillIds: skills,
       providerIds: providers,
       scope,

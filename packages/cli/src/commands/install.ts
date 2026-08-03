@@ -27,6 +27,7 @@ function collectSkillIds(rawArgs: string[], positional?: string): string[] {
     "--registry",
     "--bundle",
   ]);
+  // --no-remote is boolean (no value)
   for (let i = 0; i < rawArgs.length; i++) {
     const a = rawArgs[i]!;
     if (skipNext) {
@@ -144,6 +145,15 @@ export const installCommand = defineCommand({
       description: "Do not install catalog references[]",
       default: false,
     },
+    registry: {
+      type: "string",
+      description: "Remote registry base URL (or OPENWISDOM_REGISTRY)",
+    },
+    "no-remote": {
+      type: "boolean",
+      description: "Skip remote registry; local skills/snapshot only",
+      default: false,
+    },
   },
   async run({ args, rawArgs }) {
     try {
@@ -211,7 +221,7 @@ export const installCommand = defineCommand({
         return;
       }
 
-      const result = runInstall({
+      const result = await runInstall({
         skillIds,
         bundle: bundle || undefined,
         providers: args.providers as string | undefined,
@@ -229,6 +239,8 @@ export const installCommand = defineCommand({
         onLog: cliOnLog,
         telemetrySource: "cli",
         clientVersion: CLI_VERSION,
+        registry: args.registry as string | undefined,
+        noRemote: Boolean(args["no-remote"]),
       });
 
       console.error(

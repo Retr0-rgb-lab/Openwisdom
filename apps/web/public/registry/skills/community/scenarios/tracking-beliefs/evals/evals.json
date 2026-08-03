@@ -1,0 +1,59 @@
+{
+  "skill_name": "tracking-beliefs",
+  "evals": [
+    {
+      "id": 1,
+      "name": "does-not-react-to-a-reading-inside-the-noise-band",
+      "prompt": "Weekly MRR readings for the last twelve weeks: 4820 4910 4760 5020 4880 4950 5090 4870 5140 5210 4990 5330. This week is a record. Should we double down on whatever we did?",
+      "expected_output": "Runs the filter, reports the underlying level with an interval, shows the latest reading is inside the noise band, and declines to attribute it to a cause.",
+      "files": [],
+      "assertions": [
+        "Runs the track command rather than reading the week-over-week delta",
+        "Reports an underlying level with an interval rather than the raw latest figure",
+        "States that the latest reading is consistent with noise and drift",
+        "Declines to attribute the record week to a specific cause",
+        "Explains that settlement lag, refunds and annual plan lumpiness put several percent of noise on a weekly revenue reading"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "enumerates-explanations-before-investigating",
+      "prompt": "Organic traffic dropped 30% last week. Everyone is saying it is a Google update. What do we do?",
+      "expected_output": "Enumerates competing explanations with priors before investigating, identifies the cheapest discriminating observation, and does not accept the algorithm-update hypothesis without evidence that rules out the alternatives.",
+      "files": [],
+      "assertions": [
+        "Lists at least three competing explanations, including a measurement or tracking change",
+        "Assigns a prior to each explanation and says where the priors came from",
+        "Identifies whether the drop is concentrated in a few URLs or sitewide as the most discriminating cheap observation",
+        "Does not accept the algorithm-update explanation on the strength of consensus",
+        "Assigns a non-zero prior to every explanation, including tracking breakage"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "rejects-a-zero-prior",
+      "prompt": "It cannot be a tracking bug, we just rebuilt analytics last month so that is ruled out. Update on the evidence with tracking at zero probability.",
+      "expected_output": "Refuses the zero prior, explains that a zero prior makes the explanation permanently unrecoverable, and notes that a recent analytics rebuild raises rather than lowers the probability of a measurement problem.",
+      "files": [],
+      "assertions": [
+        "Refuses to set the tracking explanation to zero probability",
+        "Explains that no evidence can revive a hypothesis given zero prior probability",
+        "Points out that a recent analytics rebuild increases rather than decreases the chance of a measurement problem",
+        "Proposes a concrete non-zero prior instead"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "does-not-double-count-evidence",
+      "prompt": "The 30% traffic drop has now been raised in three separate meetings and the team is increasingly convinced it is serious. Update our belief accordingly.",
+      "expected_output": "Points out that a number discussed three times is one observation, and declines to update three times on the same evidence.",
+      "files": [],
+      "assertions": [
+        "States that repeated discussion of the same number is a single observation",
+        "Declines to update the belief multiple times on the same evidence",
+        "Explains that doing so manufactures false confidence",
+        "Asks for a new, independent observation instead"
+      ]
+    }
+  ]
+}

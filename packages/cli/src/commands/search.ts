@@ -1,5 +1,9 @@
 import { defineCommand } from "citty";
-import { loadCatalog, searchCatalog } from "@openwisdom/core";
+import {
+  ensureRemoteCatalog,
+  loadCatalog,
+  searchCatalog,
+} from "@openwisdom/core";
 
 export const searchCommand = defineCommand({
   meta: {
@@ -35,8 +39,22 @@ export const searchCommand = defineCommand({
       description: "Max results (default 20)",
       default: "20",
     },
+    registry: {
+      type: "string",
+      description: "Remote registry base URL (or OPENWISDOM_REGISTRY)",
+    },
+    "no-remote": {
+      type: "boolean",
+      description: "Skip remote registry; local snapshot/monorepo only",
+      default: false,
+    },
+    refresh: {
+      type: "boolean",
+      description: "Force re-download remote catalog cache",
+      default: false,
+    },
   },
-  run({ args, rawArgs }) {
+  async run({ args, rawArgs }) {
     // Collect query tokens: positional + leftover non-flag args
     const tokens: string[] = [];
     if (args.query) tokens.push(String(args.query));
@@ -84,7 +102,19 @@ export const searchCommand = defineCommand({
         ? args.scope
         : undefined;
 
-    const { index, source } = loadCatalog();
+    if (!args["no-remote"]) {
+      await ensureRemoteCatalog({
+        registry: args.registry as string | undefined,
+        forceRefresh: Boolean(args.refresh),
+        onLog: (level, message) => {
+          if (level !== "info") console.error(message);
+        },
+      });
+    }
+
+    const { index, source } = loadCatalog({
+      env: process.env,
+    });
     const hits = searchCatalog(index, query, {
       layer,
       scope,

@@ -1,0 +1,773 @@
+{
+  "schemaVersion": 1,
+  "skills": {
+    "academic-writing-yuanzhao": {
+      "repoPath": "skills/community/scenarios/academic-writing-yuanzhao",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "adversaria-steelman": {
+      "repoPath": "skills/community/scenarios/adversaria-steelman",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "aers-empirical-hub": {
+      "repoPath": "skills/community/scenarios/aers-empirical-hub",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "ajps-journal-skills": {
+      "repoPath": "skills/community/scenarios/ajps-journal-skills",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "allocating-effort": {
+      "repoPath": "skills/community/scenarios/allocating-effort",
+      "files": [
+        "evals/evals.json",
+        "examples",
+        "references/arms-and-wins.md",
+        "references/exploration-strategies.md",
+        "scripts",
+        "SKILL.md"
+      ]
+    },
+    "american-historical-review-skills": {
+      "repoPath": "skills/community/scenarios/american-historical-review-skills",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "american-sociological-review-skills": {
+      "repoPath": "skills/community/scenarios/american-sociological-review-skills",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "analysis-closure": {
+      "repoPath": "skills/official/scenarios/analysis-closure",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "api-data-fetcher": {
+      "repoPath": "skills/community/scenarios/api-data-fetcher",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "apsa-style": {
+      "repoPath": "skills/community/references/apsa-style",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "assess-outline": {
+      "repoPath": "skills/community/scenarios/assess-outline",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "balanced-dialog": {
+      "repoPath": "skills/community/scenarios/balanced-dialog",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "causal-inference-guide": {
+      "repoPath": "skills/community/references/causal-inference-guide",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "causal-inference-mixtape": {
+      "repoPath": "skills/community/scenarios/causal-inference-mixtape",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "central-historical-question-evaluator": {
+      "repoPath": "skills/community/scenarios/central-historical-question-evaluator",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "chinese-history-pack": {
+      "repoPath": "skills/community/scenarios/chinese-history-pack",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "civic-analytics-agent-workflow": {
+      "repoPath": "skills/community/scenarios/civic-analytics-agent-workflow",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "clarity-gate": {
+      "repoPath": "skills/community/scenarios/clarity-gate",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "close-reading-skill-builder": {
+      "repoPath": "skills/community/scenarios/close-reading-skill-builder",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "collective-action": {
+      "repoPath": "skills/official/references/collective-action",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "confirmation-bias": {
+      "repoPath": "skills/official/references/confirmation-bias",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "contextualisation-skill-builder": {
+      "repoPath": "skills/community/scenarios/contextualisation-skill-builder",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "corroboration-skill-builder": {
+      "repoPath": "skills/community/scenarios/corroboration-skill-builder",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "critical-thinking-logical-reasoning": {
+      "repoPath": "skills/community/scenarios/critical-thinking-logical-reasoning",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "currency-crisis-scanner": {
+      "repoPath": "skills/community/scenarios/currency-crisis-scanner",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "currency-regime-classifier": {
+      "repoPath": "skills/community/scenarios/currency-regime-classifier",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "cycle-correlation-scenario": {
+      "repoPath": "skills/community/scenarios/cycle-correlation-scenario",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "cycle-stage-detector": {
+      "repoPath": "skills/community/scenarios/cycle-stage-detector",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "daymade-deep-research": {
+      "repoPath": "skills/community/scenarios/daymade-deep-research",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "debt-risk-triple-ratio": {
+      "repoPath": "skills/community/scenarios/debt-risk-triple-ratio",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "decision-auditor": {
+      "repoPath": "skills/community/scenarios/decision-auditor",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "dichotomy-of-control": {
+      "repoPath": "skills/community/references/dichotomy-of-control",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "dishant-deep-research": {
+      "repoPath": "skills/community/scenarios/dishant-deep-research",
+      "files": [
+        "references/examples.md",
+        "references/frameworks.md",
+        "references/playbooks.md",
+        "references/source-selection.md",
+        "references/synthesis-engine.md",
+        "SKILL.md"
+      ]
+    },
+    "document-based-lesson-designer": {
+      "repoPath": "skills/community/scenarios/document-based-lesson-designer",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "econ-write": {
+      "repoPath": "skills/community/scenarios/econ-write",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "elicitation": {
+      "repoPath": "skills/community/scenarios/elicitation",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "error-analysis-protocol": {
+      "repoPath": "skills/community/scenarios/error-analysis-protocol",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "field-lab": {
+      "repoPath": "skills/community/scenarios/field-lab",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "first-principles-skill": {
+      "repoPath": "skills/community/scenarios/first-principles-skill",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "framing-decisions": {
+      "repoPath": "skills/community/scenarios/framing-decisions",
+      "files": [
+        "evals/evals.json",
+        "examples",
+        "references/bias-checks.md",
+        "references/decision-networks.md",
+        "references/decision-record.md",
+        "references/utility-curves.md",
+        "scripts",
+        "SKILL.md"
+      ]
+    },
+    "genealogy-research": {
+      "repoPath": "skills/community/scenarios/genealogy-research",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "goal-setting-protocol-designer": {
+      "repoPath": "skills/community/scenarios/goal-setting-protocol-designer",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "grad-narrative": {
+      "repoPath": "skills/community/references/grad-narrative",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "hegelion": {
+      "repoPath": "skills/community/scenarios/hegelion",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "historical-document-set-curator": {
+      "repoPath": "skills/community/scenarios/historical-document-set-curator",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "historical-source-adapter": {
+      "repoPath": "skills/community/scenarios/historical-source-adapter",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "historical-thinking-assessment-designer": {
+      "repoPath": "skills/community/scenarios/historical-thinking-assessment-designer",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "historical-thinking-strategy-modelling-guide": {
+      "repoPath": "skills/community/scenarios/historical-thinking-strategy-modelling-guide",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "history-research-guide": {
+      "repoPath": "skills/community/scenarios/history-research-guide",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "hum-historical-analogy": {
+      "repoPath": "skills/community/scenarios/hum-historical-analogy",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "hum-source-criticism": {
+      "repoPath": "skills/community/references/hum-source-criticism",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "humanities-writing-companion": {
+      "repoPath": "skills/community/scenarios/humanities-writing-companion",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "knock": {
+      "repoPath": "skills/community/scenarios/knock",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "leader-cycle-fit": {
+      "repoPath": "skills/community/scenarios/leader-cycle-fit",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "learning-from-outcomes": {
+      "repoPath": "skills/community/scenarios/learning-from-outcomes",
+      "files": [
+        "evals/evals.json",
+        "examples",
+        "references/calibration.md",
+        "references/review-format.md",
+        "scripts",
+        "SKILL.md"
+      ]
+    },
+    "lit-review-assistant": {
+      "repoPath": "skills/community/scenarios/lit-review-assistant",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "literature-helper-polsci": {
+      "repoPath": "skills/community/scenarios/literature-helper-polsci",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "macro-scan": {
+      "repoPath": "skills/official/scenarios/macro-scan",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "metacognition-audit": {
+      "repoPath": "skills/official/scenarios/metacognition-audit",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "metacognitive-prompt-library": {
+      "repoPath": "skills/community/scenarios/metacognitive-prompt-library",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "objective-analysis": {
+      "repoPath": "skills/community/scenarios/objective-analysis",
+      "files": [
+        ".gitignore",
+        "LICENSE",
+        "README.md",
+        "references/argument-and-evidence.md",
+        "references/cognitive-bias-catalog.md",
+        "references/epistemology-and-concepts.md",
+        "references/esthetics.md",
+        "references/ethics.md",
+        "references/fallacy-catalog.md",
+        "references/objectivism-foundations.md",
+        "references/output-templates.md",
+        "references/politics.md",
+        "references/sources.md",
+        "SKILL.md"
+      ]
+    },
+    "path-dependence": {
+      "repoPath": "skills/official/references/path-dependence",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "personal-anchor": {
+      "repoPath": "skills/official/scenarios/personal-anchor",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "planning-horizons": {
+      "repoPath": "skills/community/scenarios/planning-horizons",
+      "files": [
+        "evals/evals.json",
+        "examples",
+        "references/receding-horizon.md",
+        "references/search-strategies.md",
+        "scripts",
+        "SKILL.md"
+      ]
+    },
+    "political-science-analysis-riksdag": {
+      "repoPath": "skills/community/references/political-science-analysis-riksdag",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "post-rival-purge-forecast": {
+      "repoPath": "skills/community/scenarios/post-rival-purge-forecast",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "principle-skill-pack": {
+      "repoPath": "skills/community/scenarios/principle-skill-pack",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "prospect-theory": {
+      "repoPath": "skills/official/references/prospect-theory",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "purchasing-power-defender": {
+      "repoPath": "skills/community/scenarios/purchasing-power-defender",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "python-panel-data": {
+      "repoPath": "skills/community/scenarios/python-panel-data",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "qiushi-skill": {
+      "repoPath": "skills/community/scenarios/qiushi-skill",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "qualitative-research-full-pipeline": {
+      "repoPath": "skills/community/scenarios/qualitative-research-full-pipeline",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "r-econometrics": {
+      "repoPath": "skills/community/scenarios/r-econometrics",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "reading-rivals": {
+      "repoPath": "skills/community/scenarios/reading-rivals",
+      "files": [
+        "evals/evals.json",
+        "examples",
+        "references/inferring-objectives.md",
+        "references/market-structures.md",
+        "scripts",
+        "SKILL.md"
+      ]
+    },
+    "redline-mapper": {
+      "repoPath": "skills/community/scenarios/redline-mapper",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "research-copilot-ethics-committee": {
+      "repoPath": "skills/community/scenarios/research-copilot-ethics-committee",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "research-copilot-methodology-advisor": {
+      "repoPath": "skills/community/scenarios/research-copilot-methodology-advisor",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "research-copilot-qualitative-coding": {
+      "repoPath": "skills/community/scenarios/research-copilot-qualitative-coding",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "research-copilot-survey-design": {
+      "repoPath": "skills/community/scenarios/research-copilot-survey-design",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "research-ideation": {
+      "repoPath": "skills/community/scenarios/research-ideation",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "research-proposal": {
+      "repoPath": "skills/community/scenarios/research-proposal",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "responsibility-bridge": {
+      "repoPath": "skills/official/scenarios/responsibility-bridge",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "responsibility-scope": {
+      "repoPath": "skills/official/scenarios/responsibility-scope",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "s4h-epistemology-justification": {
+      "repoPath": "skills/community/references/s4h-epistemology-justification",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "s4h-ethics-council": {
+      "repoPath": "skills/community/scenarios/s4h-ethics-council",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "s4h-logic-argument-validation": {
+      "repoPath": "skills/community/references/s4h-logic-argument-validation",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "s4h-mindset-stoic": {
+      "repoPath": "skills/community/references/s4h-mindset-stoic",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "satori": {
+      "repoPath": "skills/community/scenarios/satori",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "scientific-critical-thinking": {
+      "repoPath": "skills/community/references/scientific-critical-thinking",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "self-regulation-scaffold-generator": {
+      "repoPath": "skills/community/scenarios/self-regulation-scaffold-generator",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "session-retrospect": {
+      "repoPath": "skills/community/scenarios/session-retrospect",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "shiji-tongjian": {
+      "repoPath": "skills/community/scenarios/shiji-tongjian",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "social-science-research-pipeline": {
+      "repoPath": "skills/community/scenarios/social-science-research-pipeline",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "social-stratification": {
+      "repoPath": "skills/official/references/social-stratification",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "socrates": {
+      "repoPath": "skills/community/scenarios/socrates",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "socratic-clarify": {
+      "repoPath": "skills/community/scenarios/socratic-clarify",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "socratic-method-skill": {
+      "repoPath": "skills/community/scenarios/socratic-method-skill",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "sourcing-skill-builder": {
+      "repoPath": "skills/community/scenarios/sourcing-skill-builder",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "stakeholder-analysis-ba": {
+      "repoPath": "skills/community/scenarios/stakeholder-analysis-ba",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "steelman-decisions": {
+      "repoPath": "skills/community/scenarios/steelman-decisions",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "stoic-skills": {
+      "repoPath": "skills/community/scenarios/stoic-skills",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "stress-testing-plans": {
+      "repoPath": "skills/community/scenarios/stress-testing-plans",
+      "files": [
+        "evals/evals.json",
+        "examples",
+        "references/premortem.md",
+        "references/robustness.md",
+        "scripts",
+        "SKILL.md"
+      ]
+    },
+    "study-strategy-selector": {
+      "repoPath": "skills/community/scenarios/study-strategy-selector",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "taishigong-mind": {
+      "repoPath": "skills/community/scenarios/taishigong-mind",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "the-fool": {
+      "repoPath": "skills/community/scenarios/the-fool",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "thematic-analysis-braun-clarke": {
+      "repoPath": "skills/community/scenarios/thematic-analysis-braun-clarke",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "thinking-first-principles": {
+      "repoPath": "skills/community/references/thinking-first-principles",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "thinking-pre-mortem": {
+      "repoPath": "skills/community/references/thinking-pre-mortem",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "thinking-probabilistic": {
+      "repoPath": "skills/community/references/thinking-probabilistic",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "thinking-socratic": {
+      "repoPath": "skills/community/references/thinking-socratic",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "thinking-steel-manning": {
+      "repoPath": "skills/community/references/thinking-steel-manning",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "tongjian-mind": {
+      "repoPath": "skills/community/scenarios/tongjian-mind",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "tracking-beliefs": {
+      "repoPath": "skills/community/scenarios/tracking-beliefs",
+      "files": [
+        "evals/evals.json",
+        "examples",
+        "references/diagnosis.md",
+        "references/noise-models.md",
+        "scripts",
+        "SKILL.md"
+      ]
+    },
+    "valuing-information": {
+      "repoPath": "skills/community/scenarios/valuing-information",
+      "files": [
+        "evals/evals.json",
+        "examples",
+        "references/likelihoods.md",
+        "references/sizing-studies.md",
+        "scripts",
+        "SKILL.md"
+      ]
+    },
+    "working-with-data": {
+      "repoPath": "skills/community/scenarios/working-with-data",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "worst-case-decision-guard": {
+      "repoPath": "skills/community/scenarios/worst-case-decision-guard",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "zhouli-trilogy": {
+      "repoPath": "skills/community/references/zhouli-trilogy",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    "zizek-skill": {
+      "repoPath": "skills/community/scenarios/zizek-skill",
+      "files": [
+        "SKILL.md"
+      ]
+    }
+  }
+}

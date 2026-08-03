@@ -1,4 +1,5 @@
 import {
+  ensureRemoteCatalog,
   loadCatalog,
   listInstalled,
   searchCatalog,
@@ -43,6 +44,7 @@ export async function handleList(input: ListInput = {}): Promise<ToolResult> {
     const packageRoot = getMcpPackageRoot();
 
     if (mode === "available") {
+      await ensureRemoteCatalog({ env: process.env });
       const { index, source } = loadCatalog({
         env: process.env,
         cwd,

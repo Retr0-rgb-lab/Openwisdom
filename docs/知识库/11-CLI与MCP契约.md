@@ -161,9 +161,15 @@ list|search → get → detect_providers → install(dryRun) → install
 
 ```text
 OPENWISDOM_SKILLS_ROOT → monorepo skills/ → package skills-snapshot/
+（远程）OPENWISDOM_REGISTRY → ~/.openwisdom/cache/registry → 按需下 skills/<id>
 ```
 
 索引：`catalog-snapshot/catalog.json`（与 web registry 同构）。  
+**远程 registry（SPE 33）：** 默认 base `https://openwisdom.vercel.app/registry`（`OPENWISDOM_REGISTRY` / `--registry` 可覆盖）。  
+CLI/MCP 先 best-effort 拉 `manifest`+`catalog`+`payload-index` 到磁盘缓存；失败 fail-open。  
+install 载荷：本地 skills → 远程 `{base}/{repoPath}/…` → 包内 skills-snapshot。  
+`OPENWISDOM_NO_REMOTE=1` / `--no-remote` 关闭远程。  
+`openwisdom update --refresh-only` 强制刷新缓存。  
 `get` **禁止**伪造正文；定位失败 → error。
 
 ---

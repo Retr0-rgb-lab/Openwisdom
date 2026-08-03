@@ -65,7 +65,7 @@ describe("catalog search (cli → core)", () => {
 });
 
 describe("install (cli → core)", () => {
-  it("installs macro-scan into tmp .claude/skills with -y", () => {
+  it("installs macro-scan into tmp .claude/skills with -y", async () => {
     expect(
       existsSync(
         path.join(skillsRoot, "official", "scenarios", "macro-scan", "SKILL.md"),
@@ -73,7 +73,7 @@ describe("install (cli → core)", () => {
     ).toBe(true);
 
     const cwd = makeTmp();
-    const result = runInstall({
+    const result = await runInstall({
       skillIds: ["macro-scan"],
       providers: "claude",
       scope: "project",
@@ -82,6 +82,7 @@ describe("install (cli → core)", () => {
       force: false,
       dryRun: false,
       noTelemetry: true,
+      noRemote: true,
       isTty: false,
       telemetrySource: "cli",
       env: { ...process.env, OPENWISDOM_SKILLS_ROOT: skillsRoot },
@@ -100,10 +101,10 @@ describe("install (cli → core)", () => {
     expect(body).toContain("name: macro-scan");
   });
 
-  it("same content install is up-to-date", () => {
+  it("same content install is up-to-date", async () => {
     const cwd = makeTmp();
     const env = { ...process.env, OPENWISDOM_SKILLS_ROOT: skillsRoot };
-    const once = () =>
+    const once = async () =>
       runInstall({
         skillIds: ["macro-scan"],
         providers: "claude",
@@ -111,29 +112,31 @@ describe("install (cli → core)", () => {
         cwd,
         yes: true,
         noTelemetry: true,
+        noRemote: true,
         isTty: false,
         env,
       });
 
-    expect(once().exitCode).toBe(0);
-    const again = once();
+    expect((await once()).exitCode).toBe(0);
+    const again = await once();
     expect(again.exitCode).toBe(0);
     expect(
       again.results[0]?.outcomes.some((o) => o.outcome.status === "up-to-date"),
     ).toBe(true);
   });
 
-  it("conflict without force fails (exit 1)", () => {
+  it("conflict without force fails (exit 1)", async () => {
     const cwd = makeTmp();
     const env = { ...process.env, OPENWISDOM_SKILLS_ROOT: skillsRoot };
 
-    const first = runInstall({
+    const first = await runInstall({
       skillIds: ["macro-scan"],
       providers: "claude",
       scope: "project",
       cwd,
       yes: true,
       noTelemetry: true,
+      noRemote: true,
       isTty: false,
       env,
     });
@@ -152,7 +155,7 @@ describe("install (cli → core)", () => {
       "utf8",
     );
 
-    const second = runInstall({
+    const second = await runInstall({
       skillIds: ["macro-scan"],
       providers: "claude",
       scope: "project",
@@ -160,6 +163,7 @@ describe("install (cli → core)", () => {
       yes: true,
       force: false,
       noTelemetry: true,
+      noRemote: true,
       isTty: false,
       env,
     });

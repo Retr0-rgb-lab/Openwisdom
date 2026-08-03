@@ -74,7 +74,7 @@ export function createServer(): McpServer {
           .boolean()
           .optional()
           .describe(
-            "Reserved: try remote catalog refresh (currently no-op; uses local snapshot)",
+            "Force re-download of remote registry catalog into local cache (fail-open on network errors)",
           ),
       }),
       annotations: {

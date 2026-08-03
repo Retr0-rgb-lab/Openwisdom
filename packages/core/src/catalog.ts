@@ -1,7 +1,10 @@
 /**
- * Catalog index load order (Plan 06 / Spec 20 simplified + Plan 03 MCP):
- * 1. catalog-snapshot/catalog.json relative to packageRoot (core/cli/mcp)
- * 2. Synthesize by scanning OPENWISDOM_SKILLS_ROOT / monorepo / skills-snapshot
+ * Catalog index load order (SPE 33 / Plan 06):
+ * 1. explicit catalogPath
+ * 2. monorepo / OPENWISDOM_SKILLS_ROOT → package snapshot or scan (local truth)
+ * 3. disk cache from remote registry (after ensureRemoteCatalog)
+ * 4. package catalog-snapshot
+ * 5. scan skills tree
  */
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
@@ -14,15 +17,37 @@ import {
   catalogSnapshotPath,
   findMonorepoRoot,
   getPackageRoot,
+  looksLikeSkillsTree,
 } from "./paths.js";
 import { parseSkillMarkdown } from "./frontmatter.js";
 import { resolveSkillsRoot } from "./skills-root.js";
+import {
+  defaultRegistryCacheDir,
+  isRemoteDisabled,
+  loadCachedCatalog,
+} from "./registry.js";
+
+export type CatalogSource = "snapshot" | "scan" | "cache" | "remote-cache";
 
 export type LoadedCatalog = {
   index: CatalogIndex;
-  source: "snapshot" | "scan";
+  source: CatalogSource;
   path?: string;
 };
+
+function tryLoadSnapshot(snapshotPath: string): LoadedCatalog | null {
+  if (!existsSync(snapshotPath)) return null;
+  try {
+    const raw = JSON.parse(readFileSync(snapshotPath, "utf8"));
+    const index = catalogIndexSchema.parse(raw);
+    return { index, source: "snapshot", path: snapshotPath };
+  } catch (err) {
+    console.error(
+      `warn: catalog snapshot invalid (${snapshotPath}): ${err instanceof Error ? err.message : err}`,
+    );
+    return null;
+  }
+}
 
 export function loadCatalog(opts?: {
   packageRoot?: string;
@@ -33,35 +58,80 @@ export function loadCatalog(opts?: {
   env?: NodeJS.ProcessEnv;
   /** import.meta.url for host package when bundled (MCP/CLI) */
   fromUrl?: string;
+  /** Prefer remote disk cache even inside monorepo (tests / force) */
+  preferRegistryCache?: boolean;
+  /** Registry cache directory override */
+  registryCacheDir?: string;
 }): LoadedCatalog {
+  const env = opts?.env ?? process.env;
+  const cwd = opts?.cwd ?? process.cwd();
   const packageRoot =
     opts?.packageRoot ?? getPackageRoot(opts?.fromUrl);
-  const snapshot = opts?.catalogPath ?? catalogSnapshotPath(packageRoot);
 
-  if (existsSync(snapshot)) {
-    try {
-      const raw = JSON.parse(readFileSync(snapshot, "utf8"));
-      const index = catalogIndexSchema.parse(raw);
-      return { index, source: "snapshot", path: snapshot };
-    } catch (err) {
-      // Fall through to scan if snapshot corrupt
-      console.error(
-        `warn: catalog snapshot invalid (${snapshot}): ${err instanceof Error ? err.message : err}`,
-      );
+  // 1) Explicit path
+  if (opts?.catalogPath) {
+    const hit = tryLoadSnapshot(opts.catalogPath);
+    if (hit) return hit;
+    throw new Error(`catalogPath not loadable: ${opts.catalogPath}`);
+  }
+
+  const mono = findMonorepoRoot(cwd);
+  const localSkills =
+    opts?.skillsRoot ||
+    (env.OPENWISDOM_SKILLS_ROOT?.trim()
+      ? path.resolve(env.OPENWISDOM_SKILLS_ROOT.trim())
+      : mono && existsSync(path.join(mono, "skills"))
+        ? path.join(mono, "skills")
+        : null);
+
+  // 2) Local monorepo / skills root: package snapshot next to host, else scan
+  const preferLocal =
+    !opts?.preferRegistryCache &&
+    localSkills &&
+    existsSync(localSkills) &&
+    looksLikeSkillsTree(localSkills);
+
+  if (preferLocal) {
+    const snap = tryLoadSnapshot(catalogSnapshotPath(packageRoot));
+    if (snap) return snap;
+    const skills = scanSkillsToCatalog(localSkills);
+    return {
+      index: { schemaVersion: 1, skills },
+      source: "scan",
+      path: localSkills,
+    };
+  }
+
+  // 3) Registry disk cache (filled by ensureRemoteCatalog)
+  if (!isRemoteDisabled(env)) {
+    const cached = loadCachedCatalog(
+      opts?.registryCacheDir ?? defaultRegistryCacheDir(),
+    );
+    if (cached) {
+      return {
+        index: cached.index,
+        source: "remote-cache",
+        path: cached.path,
+      };
     }
   }
 
+  // 4) Package snapshot
+  const snapshot = catalogSnapshotPath(packageRoot);
+  const snapHit = tryLoadSnapshot(snapshot);
+  if (snapHit) return snapHit;
+
+  // 5) Scan any resolvable skills root
   let skillsRoot = opts?.skillsRoot;
   if (!skillsRoot) {
     try {
       skillsRoot = resolveSkillsRoot({
-        env: opts?.env ?? process.env,
-        cwd: opts?.cwd ?? process.cwd(),
+        env,
+        cwd,
         packageRoot,
         fromUrl: opts?.fromUrl,
       });
     } catch {
-      const mono = findMonorepoRoot(opts?.cwd ?? process.cwd());
       if (mono && existsSync(path.join(mono, "skills"))) {
         skillsRoot = path.join(mono, "skills");
       }
@@ -71,10 +141,11 @@ export function loadCatalog(opts?: {
   if (!skillsRoot || !existsSync(skillsRoot)) {
     throw new Error(
       [
-        "No catalog snapshot and no skills tree to scan.",
+        "No catalog snapshot, registry cache, or skills tree to scan.",
         `Expected snapshot at ${snapshot},`,
         "or set OPENWISDOM_SKILLS_ROOT / run inside monorepo with skills/,",
-        "or use a package build with catalog-snapshot + skills-snapshot.",
+        "or refresh remote registry (OPENWISDOM_REGISTRY),",
+        "or install a package build with catalog-snapshot + skills-snapshot.",
       ].join(" "),
     );
   }

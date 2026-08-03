@@ -172,7 +172,7 @@ describe("resolveProviderIds", () => {
 });
 
 describe("install", () => {
-  it("installs macro-scan into tmp .claude/skills with -y", () => {
+  it("installs macro-scan into tmp .claude/skills with -y", async () => {
     expect(
       existsSync(
         path.join(skillsRoot, "official", "scenarios", "macro-scan", "SKILL.md"),
@@ -180,7 +180,7 @@ describe("install", () => {
     ).toBe(true);
 
     const cwd = makeTmp();
-    const result = runInstall({
+    const result = await runInstall({
       skillIds: ["macro-scan"],
       providers: "claude",
       scope: "project",
@@ -189,6 +189,7 @@ describe("install", () => {
       force: false,
       dryRun: false,
       noTelemetry: true,
+      noRemote: true,
       isTty: false,
       env: { ...process.env, OPENWISDOM_SKILLS_ROOT: skillsRoot },
     });
@@ -206,10 +207,10 @@ describe("install", () => {
     expect(body).toContain("name: macro-scan");
   });
 
-  it("same content install is up-to-date", () => {
+  it("same content install is up-to-date", async () => {
     const cwd = makeTmp();
     const env = { ...process.env, OPENWISDOM_SKILLS_ROOT: skillsRoot };
-    const once = () =>
+    const once = async () =>
       runInstall({
         skillIds: ["macro-scan"],
         providers: "claude",
@@ -217,29 +218,31 @@ describe("install", () => {
         cwd,
         yes: true,
         noTelemetry: true,
+        noRemote: true,
         isTty: false,
         env,
       });
 
-    expect(once().exitCode).toBe(0);
-    const again = once();
+    expect((await once()).exitCode).toBe(0);
+    const again = await once();
     expect(again.exitCode).toBe(0);
     expect(
       again.results[0]?.outcomes.some((o) => o.outcome.status === "up-to-date"),
     ).toBe(true);
   });
 
-  it("conflict without force fails (exit 1)", () => {
+  it("conflict without force fails (exit 1)", async () => {
     const cwd = makeTmp();
     const env = { ...process.env, OPENWISDOM_SKILLS_ROOT: skillsRoot };
 
-    const first = runInstall({
+    const first = await runInstall({
       skillIds: ["macro-scan"],
       providers: "claude",
       scope: "project",
       cwd,
       yes: true,
       noTelemetry: true,
+      noRemote: true,
       isTty: false,
       env,
     });
@@ -258,7 +261,7 @@ describe("install", () => {
       "utf8",
     );
 
-    const second = runInstall({
+    const second = await runInstall({
       skillIds: ["macro-scan"],
       providers: "claude",
       scope: "project",
@@ -266,6 +269,7 @@ describe("install", () => {
       yes: true,
       force: false,
       noTelemetry: true,
+      noRemote: true,
       isTty: false,
       env,
     });
@@ -363,13 +367,14 @@ describe("skills-snapshot offline (Plan 03)", () => {
     expect(existsSync(monoSkill)).toBe(true);
     writeFileSync(path.join(skillDir, "SKILL.md"), readFileSync(monoSkill, "utf8"), "utf8");
 
-    const result = runInstall({
+    const result = await runInstall({
       skillIds: ["macro-scan"],
       providers: "claude",
       scope: "project",
       cwd,
       yes: true,
       noTelemetry: true,
+      noRemote: true,
       isTty: false,
       packageRoot: outsidePkg,
       env: {

@@ -81,7 +81,7 @@ export async function handleUpdate(input: UpdateInput): Promise<ToolResult> {
     const noDeps = Boolean(input.noDeps);
     const noTelemetry = Boolean(input.noTelemetry);
 
-    const result = runInstall({
+    const result = await runInstall({
       skillIds: skills,
       providerIds: providers,
       scope,

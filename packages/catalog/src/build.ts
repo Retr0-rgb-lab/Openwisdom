@@ -261,6 +261,81 @@ function writeJson(filePath: string, value: unknown): void {
  * Mirror monorepo skills/ into package skills-snapshot/ (install payload).
  * Prefer full tree; at minimum official/ is required for offline install.
  */
+/** List relative files under a skill directory (for remote install payload-index). */
+function listSkillRelativeFiles(skillDir: string): string[] {
+  const out: string[] = [];
+  function walk(dir: string, prefix: string): void {
+    let entries;
+    try {
+      entries = readdirSync(dir, { withFileTypes: true });
+    } catch {
+      return;
+    }
+    for (const ent of entries) {
+      if (ent.name === "node_modules" || ent.name === ".git" || ent.name === ".DS_Store") {
+        continue;
+      }
+      const rel = prefix ? `${prefix}/${ent.name}` : ent.name;
+      const full = join(dir, ent.name);
+      if (ent.isDirectory()) walk(full, rel);
+      else if (ent.isFile()) out.push(rel.replace(/\\/g, "/"));
+    }
+  }
+  walk(skillDir, "");
+  out.sort((a, b) => a.localeCompare(b));
+  return out;
+}
+
+function buildPayloadIndex(
+  skillsRoot: string,
+  skills: CatalogSkill[],
+): {
+  schemaVersion: number;
+  skills: Record<string, { repoPath: string; files: string[] }>;
+} {
+  const map: Record<string, { repoPath: string; files: string[] }> = {};
+  for (const s of skills) {
+    // repoPath is relative to monorepo root: skills/community/scenarios/id
+    const relUnderSkills = s.repoPath
+      .replace(/\\/g, "/")
+      .replace(/^skills\/?/, "");
+    const skillDir = join(skillsRoot, ...relUnderSkills.split("/").filter(Boolean));
+    const files = existsSync(skillDir)
+      ? listSkillRelativeFiles(skillDir)
+      : ["SKILL.md"];
+    map[s.id] = {
+      repoPath: s.repoPath.replace(/\\/g, "/"),
+      files: files.length ? files : ["SKILL.md"],
+    };
+  }
+  return { schemaVersion: 1, skills: map };
+}
+
+/**
+ * Mirror skills/ → apps/web/public/registry/skills/ so
+ * {registryBase}/skills/community/... serves install payloads (SPE 33).
+ */
+function stageRegistrySkills(skillsRoot: string, registryDir: string): void {
+  const dest = join(registryDir, "skills");
+  if (existsSync(dest)) {
+    rmSync(dest, { recursive: true, force: true });
+  }
+  mkdirSync(registryDir, { recursive: true });
+  cpSync(skillsRoot, dest, {
+    recursive: true,
+    filter: (src) => {
+      const base = src.split(sep).pop() ?? "";
+      if (base === "node_modules" || base === ".git" || base === ".DS_Store") {
+        return false;
+      }
+      return true;
+    },
+  });
+  console.log(
+    `  → ${toPosix(dest)}/ (remote registry skill trees)`,
+  );
+}
+
 function syncSkillsSnapshot(
   skillsRoot: string,
   monorepoRoot: string,
@@ -344,7 +419,15 @@ function main(): void {
     contentHash: contentHash(catalog.skills),
     skillCount: catalog.skills.length,
     cliMinVersion: CLI_MIN_VERSION,
+    mcpMinVersion: CLI_MIN_VERSION,
+    payload: {
+      mode: "per-skill-tree",
+      basePath: "skills",
+      format: "dir",
+    },
   };
+
+  const payloadIndex = buildPayloadIndex(skillsRoot, catalog.skills);
 
   // Spec 24 + Plan 03: dual-write snapshots for CLI + core + MCP; keep web registry.
   const catalogTargets = [
@@ -358,6 +441,7 @@ function main(): void {
   for (const dir of catalogTargets) {
     writeJson(join(dir, "catalog.json"), catalog);
     writeJson(join(dir, "manifest.json"), manifest);
+    writeJson(join(dir, "payload-index.json"), payloadIndex);
   }
 
   // Skills payload for offline install (no monorepo skills/ checkout).
@@ -366,6 +450,9 @@ function main(): void {
     "packages/cli",
     "packages/mcp",
   ]);
+
+  // SPE 33: static remote registry skill trees on the web app
+  stageRegistrySkills(skillsRoot, join(monorepoRoot, "apps/web/public/registry"));
 
   const ids = catalog.skills.map((s) => s.id).join(", ");
   console.log(

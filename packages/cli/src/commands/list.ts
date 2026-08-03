@@ -1,6 +1,11 @@
 import { defineCommand } from "citty";
 import { parseProvidersFlag } from "@openwisdom/providers";
-import { loadCatalog, listInstalled, UsageError } from "@openwisdom/core";
+import {
+  ensureRemoteCatalog,
+  loadCatalog,
+  listInstalled,
+  UsageError,
+} from "@openwisdom/core";
 
 export const listCommand = defineCommand({
   meta: {
@@ -33,14 +38,28 @@ export const listCommand = defineCommand({
       type: "string",
       description: "Project root for installed scan",
     },
+    registry: {
+      type: "string",
+      description: "Remote registry base URL",
+    },
+    "no-remote": {
+      type: "boolean",
+      description: "Skip remote registry",
+      default: false,
+    },
   },
-  run({ args }) {
+  async run({ args }) {
     try {
       const wantInstalled = Boolean(args.installed);
       const wantAvailable = Boolean(args.available) || !wantInstalled;
 
       if (wantAvailable && !wantInstalled) {
-        const { index, source } = loadCatalog();
+        if (!args["no-remote"]) {
+          await ensureRemoteCatalog({
+            registry: args.registry as string | undefined,
+          });
+        }
+        const { index, source } = loadCatalog({ env: process.env });
         console.error(`# available (${source}): ${index.skills.length}`);
         console.log(
           ["id", "layer", "scope", "version", "description"].join("\t"),

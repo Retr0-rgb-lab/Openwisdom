@@ -34,7 +34,24 @@ export {
   searchCatalog,
   resolveBundle,
   type LoadedCatalog,
+  type CatalogSource,
 } from "./catalog.js";
+
+export {
+  DEFAULT_REGISTRY_BASE,
+  ensureRemoteCatalog,
+  ensureRemoteSkillDir,
+  resolveRegistryBase,
+  isRemoteDisabled,
+  loadCachedCatalog,
+  loadPayloadIndex,
+  defaultRegistryCacheDir,
+  registryCachePaths,
+  type RegistryManifest,
+  type PayloadIndex,
+  type RegistryResolveOpts,
+  type EnsureCatalogResult,
+} from "./registry.js";
 
 export {
   isTelemetryEnabled,
@@ -50,6 +67,7 @@ export {
 
 export {
   runInstall,
+  resolveInstallSourceDir,
   listInstalled,
   resolveProviderIds,
   defaultProviderIds,

@@ -62,7 +62,7 @@ describe("buildInstallSuccessPayload (cli → core)", () => {
       skillId: "macro-scan",
       ts: "2026-07-29T12:00:00.000Z",
       source: "cli",
-      cliVersion: "0.1.0",
+      cliVersion: CLI_VERSION,
       meta: {
         providers: ["claude", "cursor"],
         scope: "project",

@@ -84,8 +84,10 @@ skills/**/SKILL.md
 | 消费者 | 行为 |
 |--------|------|
 | Web | 构建/运行读 registry；UI 可 merge heat（**12**） |
-| CLI/MCP | 优先包内 snapshot；可选 `OPENWISDOM_REGISTRY` 刷新 |
-| Install 载荷 | `OPENWISDOM_SKILLS_ROOT` → monorepo `skills/` → `skills-snapshot/` |
+| CLI/MCP | 远程 registry（默认站点 `/registry`）→ 磁盘缓存 → 包内 snapshot；`OPENWISDOM_NO_REMOTE` 关远程（SPE 33） |
+| Install 载荷 | `OPENWISDOM_SKILLS_ROOT` → monorepo `skills/` → 远程 skill 树 → `skills-snapshot/` |
+
+`catalog:build` 额外写出 `apps/web/public/registry/skills/**` 与 `payload-index.json` 供 CDN 安装。
 
 **铁律：** 站点不得发明不在 `skills/**` 或其生成物中的「可安装」元数据。
 

@@ -16,9 +16,20 @@ import { writeSkillDir, type WriteOutcome } from "./copy-skill.js";
 import { loadCatalog, resolveBundle } from "./catalog.js";
 import { locateSkillDir, resolveSkillsRoot } from "./skills-root.js";
 import {
+  ensureRemoteCatalog,
+  ensureRemoteSkillDir,
+  loadPayloadIndex,
+  type RegistryResolveOpts,
+} from "./registry.js";
+import {
   reportInstallSuccess,
   type TelemetrySource,
 } from "./telemetry.js";
+import {
+  findMonorepoRoot,
+  getPackageRoot,
+  skillsSnapshotPath,
+} from "./paths.js";
 
 export type Scope = "project" | "global";
 
@@ -63,6 +74,17 @@ export type InstallOptions = {
   packageRoot?: string;
   /** Absolute catalog.json path override */
   catalogPath?: string;
+  /** Remote registry base URL */
+  registry?: string;
+  /** Skip remote catalog/payload (tests / offline) */
+  noRemote?: boolean;
+  /** Force registry re-download */
+  forceRegistryRefresh?: boolean;
+  /** Inject registry cache dir / fetch (tests) */
+  registryCacheDir?: string;
+  fetchImpl?: typeof fetch;
+  /** Prefer registry cache over monorepo local catalog */
+  preferRegistryCache?: boolean;
 };
 
 export type InstallSkillResult = {
@@ -180,7 +202,93 @@ function expandWithDeps(
   return out;
 }
 
-export function runInstall(opts: InstallOptions): InstallResult {
+function registryOptsFromInstall(opts: InstallOptions): RegistryResolveOpts {
+  const env = { ...(opts.env ?? process.env) };
+  if (opts.noRemote) env.OPENWISDOM_NO_REMOTE = "1";
+  return {
+    env,
+    registry: opts.registry,
+    forceRefresh: opts.forceRegistryRefresh,
+    cacheDir: opts.registryCacheDir,
+    fetchImpl: opts.fetchImpl,
+    onLog: opts.onLog
+      ? (level, message) => opts.onLog!(level, message)
+      : undefined,
+  };
+}
+
+/**
+ * Resolve on-disk skill directory for install (SPE 33):
+ * 1) OPENWISDOM_SKILLS_ROOT / monorepo skills/ only (not package snapshot)
+ * 2) remote registry download into cache
+ * 3) package skills-snapshot (offline fallback)
+ */
+export async function resolveInstallSourceDir(opts: {
+  skillId: string;
+  catalog: CatalogIndex;
+  skillsRoot?: string;
+  env?: NodeJS.ProcessEnv;
+  cwd?: string;
+  packageRoot?: string;
+  registry?: RegistryResolveOpts;
+}): Promise<string> {
+  const skillId = opts.skillId;
+  const env = opts.env ?? process.env;
+  const cwd = opts.cwd ?? process.cwd();
+  const localRoots: string[] = [];
+
+  if (opts.skillsRoot) localRoots.push(opts.skillsRoot);
+
+  const fromEnv = env.OPENWISDOM_SKILLS_ROOT?.trim();
+  if (fromEnv) localRoots.push(path.resolve(fromEnv));
+
+  const mono = findMonorepoRoot(cwd);
+  if (mono) {
+    const skills = path.join(mono, "skills");
+    if (existsSync(skills)) localRoots.push(skills);
+  }
+
+  const tried = new Set<string>();
+  for (const root of localRoots) {
+    const key = path.normalize(root);
+    if (tried.has(key) || !existsSync(root)) continue;
+    tried.add(key);
+    try {
+      return locateSkillDir(root, skillId);
+    } catch {
+      /* try next */
+    }
+  }
+
+  const entry =
+    opts.catalog.skills.find((s) => s.id === skillId || s.name === skillId) ??
+    null;
+  if (entry && opts.registry) {
+    // Prefer remote over package snapshot so content deploys beat stale npm payloads
+    const dir = await ensureRemoteSkillDir(entry, {
+      ...opts.registry,
+      forceRefresh: opts.registry.forceRefresh,
+      payloadIndex: loadPayloadIndex(opts.registry.cacheDir),
+    });
+    if (dir) return dir;
+  }
+
+  const pkg = opts.packageRoot ?? getPackageRoot();
+  const snap = skillsSnapshotPath(pkg);
+  if (existsSync(snap)) {
+    try {
+      return locateSkillDir(snap, skillId);
+    } catch {
+      /* fall through */
+    }
+  }
+
+  throw new Error(
+    `Skill not found locally or via registry: ${skillId}. Try openwisdom update --refresh-only or set OPENWISDOM_SKILLS_ROOT.`,
+  );
+}
+
+export async function runInstall(opts: InstallOptions): Promise<InstallResult> {
   const env = opts.env ?? process.env;
   const cwd = path.resolve(opts.cwd ?? process.cwd());
   const home = opts.home ?? os.homedir();
@@ -221,7 +329,22 @@ export function runInstall(opts: InstallOptions): InstallResult {
     throw new UsageError(`Invalid --scope: ${scope}`);
   }
 
-  const skillsRoot = resolveSkillsRoot({ env, cwd, packageRoot: opts.packageRoot });
+  const regOpts = registryOptsFromInstall(opts);
+  if (!opts.noRemote) {
+    await ensureRemoteCatalog(regOpts);
+  }
+
+  let skillsRoot: string | undefined;
+  try {
+    skillsRoot = resolveSkillsRoot({
+      env,
+      cwd,
+      packageRoot: opts.packageRoot,
+    });
+  } catch {
+    skillsRoot = undefined;
+  }
+
   let catalog: CatalogIndex;
   try {
     catalog = loadCatalog({
@@ -230,6 +353,8 @@ export function runInstall(opts: InstallOptions): InstallResult {
       env,
       packageRoot: opts.packageRoot,
       catalogPath: opts.catalogPath,
+      preferRegistryCache: opts.preferRegistryCache,
+      registryCacheDir: opts.registryCacheDir,
     }).index;
   } catch {
     catalog = { schemaVersion: 1, skills: [] };
@@ -255,7 +380,30 @@ export function runInstall(opts: InstallOptions): InstallResult {
   const results: InstallSkillResult[] = [];
 
   for (const skillId of ids) {
-    const sourceDir = locateSkillDir(skillsRoot, skillId);
+    let sourceDir: string;
+    try {
+      sourceDir = await resolveInstallSourceDir({
+        skillId,
+        catalog,
+        skillsRoot,
+        env,
+        cwd,
+        packageRoot: opts.packageRoot,
+        registry: opts.noRemote ? undefined : regOpts,
+      });
+    } catch (err) {
+      log(
+        opts,
+        "error",
+        err instanceof Error ? err.message : String(err),
+      );
+      results.push({
+        skillId,
+        outcomes: [],
+        ok: false,
+      });
+      continue;
+    }
     const targets = uniqueWriteTargets(
       providerIds,
       scope,

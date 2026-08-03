@@ -1,4 +1,5 @@
 import {
+  ensureRemoteCatalog,
   loadCatalog,
   searchCatalog,
   UsageError,
@@ -18,7 +19,7 @@ export type SearchInput = {
   tag?: string;
   limit?: number;
   detail?: DetailLevel;
-  /** Reserved: remote catalog refresh (not implemented; ignored). */
+  /** Force remote catalog re-download into cache. */
   refresh?: boolean;
 };
 
@@ -45,8 +46,10 @@ export async function handleSearch(input: SearchInput = {}): Promise<ToolResult>
       );
     }
 
-    // refresh is accepted for schema parity; remote refresh not implemented (fail-open local).
-    void input.refresh;
+    await ensureRemoteCatalog({
+      env: process.env,
+      forceRefresh: Boolean(input.refresh),
+    });
 
     const { index, source } = loadCatalog({
       env: process.env,

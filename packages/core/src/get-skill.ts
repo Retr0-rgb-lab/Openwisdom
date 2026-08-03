@@ -8,6 +8,10 @@ import type { CatalogSkill } from "@openwisdom/schema";
 import { loadCatalog } from "./catalog.js";
 import { getCatalogSkill, RuntimeError, UsageError } from "./install.js";
 import { resolveSkillsRoot, locateSkillDir } from "./skills-root.js";
+import {
+  defaultRegistryCacheDir,
+  registryCachePaths,
+} from "./registry.js";
 
 export type GetSkillDetailOpts = {
   skill: string;
@@ -27,7 +31,7 @@ export type GetSkillDetailOpts = {
 export type SkillDetail = {
   ok: true;
   installable: true;
-  catalogSource: "snapshot" | "scan";
+  catalogSource: "snapshot" | "scan" | "cache" | "remote-cache";
   skill: CatalogSkill;
   body?: {
     /** Relative repoPath/SKILL.md when available, else absolute display path */
@@ -106,20 +110,30 @@ export function getSkillDetail(opts: GetSkillDetailOpts): SkillDetail {
     }
   }
 
-  let sourceDir: string;
+  let sourceDir: string | null = null;
   try {
     sourceDir = locateSkillDir(skillsRoot, entry.id);
-  } catch (err) {
-    // Fall back to name if id folder differs (should be rare)
+  } catch {
     try {
       sourceDir = locateSkillDir(skillsRoot, entry.name);
     } catch {
-      throw new RuntimeError(
-        err instanceof Error
-          ? err.message
-          : `Skill directory not found under skills root: ${entry.id}`,
-      );
+      sourceDir = null;
     }
+  }
+  // Prefer already-downloaded registry cache (sync; call ensureRemote* first if needed)
+  if (!sourceDir) {
+    const cached = path.join(
+      registryCachePaths(defaultRegistryCacheDir()).skills,
+      entry.id,
+    );
+    if (existsSync(path.join(cached, "SKILL.md"))) {
+      sourceDir = cached;
+    }
+  }
+  if (!sourceDir) {
+    throw new RuntimeError(
+      `Skill directory not found under skills root or registry cache: ${entry.id}`,
+    );
   }
 
   const skillMdAbs = path.join(sourceDir, "SKILL.md");

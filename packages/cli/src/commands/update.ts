@@ -2,6 +2,7 @@ import { defineCommand } from "citty";
 import os from "node:os";
 import path from "node:path";
 import {
+  ensureRemoteCatalog,
   listInstalled,
   runInstall,
   UsageError,
@@ -91,21 +92,51 @@ export const updateCommand = defineCommand({
     },
     "refresh-only": {
       type: "boolean",
-      description: "Reserved: catalog cache refresh (no skill write)",
+      description: "Refresh remote catalog cache only (no skill write)",
       default: false,
     },
     "no-deps": {
       type: "boolean",
       default: false,
     },
+    registry: {
+      type: "string",
+      description: "Remote registry base URL",
+    },
+    "no-remote": {
+      type: "boolean",
+      description: "Skip remote registry",
+      default: false,
+    },
   },
-  run({ args, rawArgs }) {
+  async run({ args, rawArgs }) {
     try {
       if (args["refresh-only"]) {
-        console.log(
-          "Catalog remote refresh is not implemented in this wave (local snapshot only).",
-        );
-        process.exitCode = 0;
+        if (args["no-remote"]) {
+          console.error("error: --refresh-only requires remote (drop --no-remote)");
+          process.exitCode = 2;
+          return;
+        }
+        const result = await ensureRemoteCatalog({
+          registry: args.registry as string | undefined,
+          forceRefresh: true,
+          onLog: (level, message) => {
+            if (level === "info") console.log(message);
+            else console.error(message);
+          },
+        });
+        if (result.ok) {
+          console.log(
+            `Catalog cache ok (${result.source})${result.contentHash ? ` hash=${result.contentHash}` : ""}`,
+          );
+          if (result.catalogPath) console.log(`  ${result.catalogPath}`);
+          process.exitCode = 0;
+        } else {
+          console.error(
+            `error: registry refresh failed${result.message ? `: ${result.message}` : ""}`,
+          );
+          process.exitCode = 1;
+        }
         return;
       }
 
@@ -145,7 +176,7 @@ export const updateCommand = defineCommand({
 
       // update is non-interactive by default when -y or CI; require providers or -y defaults
       const yes = Boolean(args.yes) || !isTty;
-      const result = runInstall({
+      const result = await runInstall({
         skillIds,
         providers: args.providers as string | undefined,
         scope: scope as Scope,
@@ -160,6 +191,8 @@ export const updateCommand = defineCommand({
         onLog: cliOnLog,
         telemetrySource: "cli",
         clientVersion: CLI_VERSION,
+        registry: args.registry as string | undefined,
+        noRemote: Boolean(args["no-remote"]),
       });
 
       process.exitCode = result.exitCode;

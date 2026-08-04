@@ -134,9 +134,9 @@
     }
   },
   "disciplines": {
-    "title": "六大学科，图书馆的骨架",
-    "subtitle": "每个学科都有 reference 与收录 skill，支撑场景引用，而非空壳分类。",
-    "edgeNote": "场景引用边：macro-scan → 政治学、经济学、社会学；personal-anchor → 历史学、社会学；metacognition-audit → 心理学。哲学支撑批判与概念澄清。",
+    "title": "七大学科，图书馆的骨架",
+    "subtitle": "七科可筛选入口与 skill 覆盖；场景在已有理论卡处引用 reference——不宣称每科都有官方 reference 深度。",
+    "edgeNote": "场景引用边：macro-scan → 政治学、经济学、社会学；personal-anchor → 历史学、社会学；metacognition-audit → 心理学。哲学与教育学同级并列：前者支撑批判与概念澄清，后者覆盖学习如何发生与如何被教；官方 reference 深度仍在分期补齐。",
     "psych": { "name": "心理学", "desc": "个体如何感知、决策与产生偏差" },
     "socio": { "name": "社会学", "desc": "群体、结构与制度如何塑造行为" },
     "history": { "name": "历史学", "desc": "长时段中的路径依赖与周期" },

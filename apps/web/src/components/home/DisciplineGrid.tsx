@@ -26,14 +26,14 @@ export function DisciplineGrid() {
         />
       </Reveal>
       <Stagger
-        className="grid border-y border-line bg-surface sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6"
+        className="grid border-y border-line bg-surface sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7"
         stagger={0.05}
       >
         {DISCIPLINE_ORDER.map((key) => (
           <StaggerItem key={key} className="h-full">
             <Link
               href={`/skills?discipline=${DISCIPLINE_HOME_TO_ID[key]}`}
-              className="group flex h-full flex-col gap-2.5 border-b border-line px-4 py-6 transition-colors duration-200 last:border-b-0 hover:bg-surface-muted sm:border-b lg:border-b-0 lg:border-r lg:py-7 lg:last:border-r-0"
+              className="group flex h-full flex-col gap-2.5 border-b border-line px-4 py-6 transition-colors duration-200 last:border-b-0 hover:bg-surface-muted sm:border-b xl:border-b-0 xl:border-r xl:py-7 xl:last:border-r-0"
             >
               <span className="flex items-center gap-2 font-medium tracking-[-0.01em] text-ink">
                 {/* 2px tick under name — colorize without left bar */}

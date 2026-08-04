@@ -134,9 +134,9 @@
     }
   },
   "disciplines": {
-    "title": "Six disciplines, the skeleton of the library",
-    "subtitle": "Each discipline ships references and listed skills that scenarios can cite — no empty taxonomy.",
-    "edgeNote": "Cite edges: macro-scan → political science, economics, sociology; personal-anchor → history, sociology; metacognition-audit → psychology. Philosophy supports critique and conceptual clarity.",
+    "title": "Seven disciplines, the skeleton of the library",
+    "subtitle": "Seven filterable discipline entries with skill coverage. Scenarios cite references where theory cards exist — not a claim of official reference depth for every field.",
+    "edgeNote": "Cite edges: macro-scan → political science, economics, sociology; personal-anchor → history, sociology; metacognition-audit → psychology. Philosophy and education are peer entries—critique and conceptual clarity, and how learning happens and is taught; official reference depth is still phased.",
     "psych": { "name": "Psychology", "desc": "How individuals perceive, decide, and err" },
     "socio": { "name": "Sociology", "desc": "How groups, structures, and institutions shape behavior" },
     "history": { "name": "History", "desc": "Path dependence and cycles in the long run" },

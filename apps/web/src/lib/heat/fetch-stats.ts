@@ -1,24 +1,13 @@
 /**
  * Server-side (or universal) stats fetch for catalog heat merge (Spec 29).
  * Fail-open: network / parse / empty API → null (UI hides heat).
+ *
+ * Stats shape lives in ./types only (SPE 37 G6) — re-exported here for callers.
  */
 
-export type SkillHeatStats = {
-  installsTotal: number;
-  installs30d: number;
-  cliInstallsTotal?: number;
-  cliInstalls30d?: number;
-  downloadsTotal?: number;
-  downloads30d?: number;
-  copiesTotal?: number;
-  copies30d?: number;
-};
+import type { SkillHeatStats, StatsResponse } from "./types";
 
-export type StatsResponse = {
-  schemaVersion: 1;
-  updatedAt: string;
-  skills: Record<string, SkillHeatStats>;
-};
+export type { SkillHeatStats, StatsResponse };
 
 function resolveStatsUrl(): string {
   const explicit =

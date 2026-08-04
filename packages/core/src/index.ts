@@ -37,6 +37,18 @@ export {
   type CatalogSource,
 } from "./catalog.js";
 
+/** PayloadResolve seam (SPE 35) — preferred names; old names remain above. */
+export {
+  resolveSkillsTreeRoot,
+  resolveSkillPayloadDir,
+  ensureCatalogForUse,
+  type LoadCatalogOpts,
+  type ResolveSkillsTreeRootOpts,
+  type ResolveSkillPayloadDirOpts,
+  type EnsureCatalogForUseOpts,
+  type PayloadResolveBaseOpts,
+} from "./payload-resolve.js";
+
 export {
   DEFAULT_REGISTRY_BASE,
   ensureRemoteCatalog,

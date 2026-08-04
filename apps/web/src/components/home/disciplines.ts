@@ -1,5 +1,12 @@
 // Discipline chip colors (specs/07 §2 + SPE 34): logo-同源; border or 10% fill only —
 // never full-card rainbow. Philosophy = sage stone; education = growth green.
+// Order / allowlist: data/catalog/types DISCIPLINE_HOME_* (SPE 37 G1).
+
+import {
+  DISCIPLINE_HOME_KEYS,
+  type DisciplineHomeKey,
+} from "@/data/catalog/types";
+
 export const DISCIPLINE_COLORS = {
   psych: "var(--ow-psych)", // #E69622 signal
   socio: "var(--ow-socio)", // #1C4BD1 primary
@@ -8,16 +15,9 @@ export const DISCIPLINE_COLORS = {
   econ: "var(--ow-econ)", // #2E6975 structure
   philo: "var(--ow-philosophy)", // #5E6A4E sage
   edu: "var(--ow-education)", // #3D7A6A growth green
-} as const;
+} as const satisfies Record<DisciplineHomeKey, string>;
 
-export type DisciplineKey = keyof typeof DISCIPLINE_COLORS;
+export type DisciplineKey = DisciplineHomeKey;
 
-export const DISCIPLINE_ORDER: DisciplineKey[] = [
-  "psych",
-  "socio",
-  "history",
-  "poli",
-  "econ",
-  "philo",
-  "edu",
-];
+/** Home grid order — single source via DISCIPLINE_HOME_KEYS. */
+export const DISCIPLINE_ORDER: DisciplineKey[] = [...DISCIPLINE_HOME_KEYS];

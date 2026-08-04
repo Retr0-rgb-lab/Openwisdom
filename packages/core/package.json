@@ -14,8 +14,6 @@
   "types": "./dist/index.d.ts",
   "files": [
     "dist",
-    "catalog-snapshot",
-    "skills-snapshot",
     "LICENSE",
     "README.md"
   ],

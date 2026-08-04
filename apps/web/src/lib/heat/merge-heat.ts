@@ -1,10 +1,12 @@
 /**
- * Merge side-channel heat stats onto catalog entries (Spec 29).
+ * Merge side-channel heat stats onto catalog entries (Spec 29 / SPE 37 G4).
  * Never fill missing skills with 0 — only write when API has a key.
+ *
+ * Prefer catalog `attachHeat` / `getCatalogWithHeat` so callers do not hand-roll merge.
  */
 
 import type { CatalogEntry } from "@/data/catalog/types";
-import type { StatsResponse } from "./fetch-stats";
+import type { StatsResponse } from "./types";
 
 /**
  * For each entry, if `stats.skills[entry.id]` exists, set
@@ -35,3 +37,6 @@ export function mergeHeat(
     return next;
   });
 }
+
+/** Alias — same fail-open semantics (SPE 37 step 4). */
+export const attachHeat = mergeHeat;

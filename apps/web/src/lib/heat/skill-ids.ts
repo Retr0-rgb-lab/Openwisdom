@@ -1,18 +1,14 @@
 /**
- * Skill id whitelist from machine registry (Spec 28 §5).
+ * Skill id whitelist from machine registry (Spec 28 §5 / SPE 37 G3).
  * Unknown skillId → 400; never create garbage keys.
+ *
+ * **Single registry path:** reuses `loadRegistrySkillsLenient` from
+ * `data/catalog/registry-source` (the only static catalog.json import).
+ * Avoids pulling `@openwisdom/schema` into API / tsx test graphs; skill set
+ * matches getCatalog() after the same per-item parse.
  */
 
-import registryJson from "../../../public/registry/catalog.json";
-
-type RegistrySkill = {
-  id?: string;
-  repoPath?: string;
-};
-
-type RegistryIndex = {
-  skills?: RegistrySkill[];
-};
+import { loadRegistrySkillsLenient } from "@/data/catalog/registry-source";
 
 let cachedIds: Set<string> | null = null;
 let cachedRepoPaths: Map<string, string> | null = null;
@@ -22,14 +18,10 @@ function loadRegistry(): void {
   const ids = new Set<string>();
   const paths = new Map<string, string>();
   try {
-    const root = registryJson as RegistryIndex;
-    const skills = Array.isArray(root?.skills) ? root.skills : [];
-    for (const s of skills) {
-      const id = typeof s.id === "string" ? s.id.trim() : "";
-      if (!id) continue;
-      ids.add(id);
-      if (typeof s.repoPath === "string" && s.repoPath.trim()) {
-        paths.set(id, s.repoPath.trim());
+    for (const s of loadRegistrySkillsLenient()) {
+      ids.add(s.id);
+      if (s.repoPath) {
+        paths.set(s.id, s.repoPath);
       }
     }
   } catch {

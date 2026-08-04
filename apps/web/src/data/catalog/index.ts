@@ -1,3 +1,16 @@
+/**
+ * Web catalog truth (SPE 37).
+ *
+ * Merge order (frozen — callers must not hand-roll a 5th merge):
+ * 1. `loadRegistrySkills()` → `mapRegistryToEntry` → CatalogEntry[] (`source: "catalog"`)
+ * 2. Overlay BOOTSTRAP / REFERENCE_BOOTSTRAP: same id keeps install truth, fills bilingual UI
+ * 3. Seeds (principle / history / philosophy / external / discipline):
+ *    registry present → keep install + seed UI; else discovery-only
+ * 4. `attachHeat(entries, stats | null)` via `getCatalogWithHeat` — fail-open
+ *
+ * Heat never lives in SKILL.md / catalog.json (side channel only).
+ */
+
 import { BOOTSTRAP_CATALOG, REFERENCE_BOOTSTRAP } from "./bootstrap";
 import { DISCIPLINE_SEED } from "./discipline-seed";
 import { EXTERNAL_SEED } from "./external-seed";
@@ -8,13 +21,14 @@ import { PRINCIPLE_SEED } from "./principle-seed";
 import type {
   CatalogEntry,
   CatalogQuery,
-  CatalogSourceFilter,
   ContentLang,
   DisciplineId,
   SkillLayer,
   SortKey,
 } from "./types";
-import { pickLocalized } from "./types";
+import { isDisciplineId, pickLocalized } from "./types";
+import { mergeHeat } from "@/lib/heat/merge-heat";
+import type { StatsResponse } from "@/lib/heat/types";
 
 export * from "./types";
 export { BOOTSTRAP_CATALOG, REFERENCE_BOOTSTRAP } from "./bootstrap";
@@ -91,14 +105,8 @@ function overlayBootstrap(
 }
 
 /**
- * Single catalog truth for web UI.
- *
- * Merge order:
- * 1. Machine registry (installable) — source: "catalog"
- * 2. Bootstrap overlay for UI fields on matching slugs (keeps source: "catalog")
- * 3. Curated seeds (principle/external/discipline/philosophy) as discovery only
- *
- * If registry missing/empty: bootstrap three scenarios + curated seeds + honesty banner.
+ * Single catalog truth for web UI (static merge steps 1–3).
+ * For heat-aware entries use `getCatalogWithHeat(stats)`.
  */
 export function getCatalog(): CatalogEntry[] {
   const map = new Map<string, CatalogEntry>();
@@ -160,8 +168,34 @@ export function getCatalog(): CatalogEntry[] {
   return [...map.values()];
 }
 
+/**
+ * Attach side-channel heat (SPE 37 step 4). Fail-open: null stats → unchanged entries.
+ * Alias of mergeHeat — prefer this name on catalog read paths.
+ */
+export function attachHeat(
+  entries: CatalogEntry[],
+  stats: StatsResponse | null,
+): CatalogEntry[] {
+  return mergeHeat(entries, stats);
+}
+
+/** Steps 1–4: static catalog + optional heat. */
+export function getCatalogWithHeat(
+  stats: StatsResponse | null,
+): CatalogEntry[] {
+  return attachHeat(getCatalog(), stats);
+}
+
 export function getSkillBySlug(slug: string): CatalogEntry | undefined {
   return getCatalog().find((e) => e.slug === slug);
+}
+
+/** Detail / related lookups with the same heat merge as the list page. */
+export function getSkillBySlugWithHeat(
+  slug: string,
+  stats: StatsResponse | null,
+): CatalogEntry | undefined {
+  return getCatalogWithHeat(stats).find((e) => e.slug === slug);
 }
 
 export function catalogHasHeat(
@@ -259,12 +293,16 @@ export function sortCatalog(
   return list;
 }
 
+/**
+ * Query helper. Pass `entries` (e.g. heat-merged) to avoid a second getCatalog().
+ */
 export function queryCatalog(
   query: CatalogQuery,
   locale = "zh",
+  entries: CatalogEntry[] = getCatalog(),
 ): CatalogEntry[] {
   return sortCatalog(
-    filterCatalog(getCatalog(), query),
+    filterCatalog(entries, query),
     query.sort ?? "featured",
     locale,
   );
@@ -275,18 +313,9 @@ export function parseDisciplineParam(
 ): DisciplineId[] {
   if (!raw) return [];
   const parts = Array.isArray(raw) ? raw : raw.split(",");
-  const allowed = new Set<string>([
-    "psychology",
-    "sociology",
-    "history",
-    "political-science",
-    "economics",
-    "philosophy",
-    "education",
-  ]);
   return parts
     .map((p) => p.trim())
-    .filter((p): p is DisciplineId => allowed.has(p));
+    .filter(isDisciplineId);
 }
 
 export function parseLayerParam(
@@ -296,12 +325,14 @@ export function parseLayerParam(
   return "";
 }
 
+/**
+ * @deprecated Web filter ignores `source` (single library). Not used by SkillsCatalog.
+ * Kept only so old `?source=` URLs do not throw if something still imports this.
+ */
 export function parseSourceParam(
   raw: string | undefined,
-): CatalogSourceFilter | "" {
-  if (raw === "official" || raw === "community" || raw === "curated") {
-    return raw;
-  }
+): "" {
+  void raw;
   return "";
 }
 

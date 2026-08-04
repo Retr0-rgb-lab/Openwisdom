@@ -14,31 +14,10 @@ import { Button } from "@/components/ui/button";
 import type { CatalogEntry } from "@/data/catalog/types";
 import { isLinkOnlyEntry, pickLocalized } from "@/data/catalog/types";
 import { Link } from "@/i18n/navigation";
+import { copyText } from "@/lib/clipboard";
 import { reportWebHeat } from "@/lib/heat/client";
 import { cn } from "@/lib/utils";
 import { DISCIPLINE_CSS, SHAPE_ACCENT } from "./disciplineStyles";
-
-async function copyText(text: string): Promise<boolean> {
-  try {
-    await navigator.clipboard.writeText(text);
-    return true;
-  } catch {
-    try {
-      const ta = document.createElement("textarea");
-      ta.value = text;
-      ta.setAttribute("readonly", "");
-      ta.style.position = "fixed";
-      ta.style.left = "-9999px";
-      document.body.appendChild(ta);
-      ta.select();
-      const ok = document.execCommand("copy");
-      document.body.removeChild(ta);
-      return ok;
-    } catch {
-      return false;
-    }
-  }
-}
 
 export function SkillCard({ entry }: { entry: CatalogEntry }) {
   const t = useTranslations("skills");

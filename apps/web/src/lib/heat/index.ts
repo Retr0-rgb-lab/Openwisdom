@@ -1,6 +1,6 @@
 /**
- * Heat API library (Plan 01).
- * Note: client.ts / fetch-stats.ts / merge-heat.ts are Plan 02 — not here.
+ * Heat API library (Plan 01 + SPE 37).
+ * Stats shape: ./types only. Catalog heat merge: mergeHeat / attachHeat.
  */
 
 export type {
@@ -26,3 +26,5 @@ export {
 export { checkRateLimit, clientIp, resetRateLimitForTests } from "./rate-limit";
 export { validateTelemetryBody } from "./validate";
 export { hasUpstashEnv, getRateLimitPerMin } from "./config";
+export { fetchStats } from "./fetch-stats";
+export { mergeHeat, attachHeat } from "./merge-heat";

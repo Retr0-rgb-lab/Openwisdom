@@ -20,13 +20,25 @@ import {
 import { Input } from "@/components/ui/input";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import {
+  attachHeat,
   getCatalog,
   pickLocalized,
   queryCatalog,
   type CatalogEntry,
 } from "@/data/catalog";
 import { usePathname, useRouter } from "@/i18n/navigation";
+import type { StatsResponse } from "@/lib/heat/types";
 import { cn } from "@/lib/utils";
+
+function parseStatsResponse(data: unknown): StatsResponse | null {
+  if (!data || typeof data !== "object") return null;
+  const obj = data as Record<string, unknown>;
+  if (obj.schemaVersion !== 1) return null;
+  if (!obj.skills || typeof obj.skills !== "object" || Array.isArray(obj.skills)) {
+    return null;
+  }
+  return data as StatsResponse;
+}
 
 const JUMP_LINKS = [
   { href: "/skills" as const, key: "skills" },
@@ -175,6 +187,8 @@ function CommandPalette({
   const listRef = useRef<HTMLDivElement>(null);
   const [q, setQ] = useState(seedQ);
   const [active, setActive] = useState(0);
+  /** Heat side-channel; fail-open null (SPE 37 G4). */
+  const [stats, setStats] = useState<StatsResponse | null>(null);
 
   // Focus input when dialog opens (DOM only — no setState).
   useEffect(() => {
@@ -183,15 +197,36 @@ function CommandPalette({
     return () => window.clearTimeout(id);
   }, [open]);
 
+  // Same attachHeat path as list/detail — client fetch, never throw
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/stats", { headers: { accept: "application/json" } })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data: unknown) => {
+        if (!cancelled) setStats(parseStatsResponse(data));
+      })
+      .catch(() => {
+        if (!cancelled) setStats(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const catalog = useMemo(
+    () => attachHeat(getCatalog(), stats),
+    [stats],
+  );
+
   const skillHits = useMemo(() => {
-    return queryCatalog({ q, sort: "featured" }, locale).slice(0, 8);
-  }, [q, locale]);
+    return queryCatalog({ q, sort: "featured" }, locale, catalog).slice(0, 8);
+  }, [q, locale, catalog]);
 
   const featured = useMemo(() => {
-    return getCatalog()
+    return catalog
       .filter((e) => e.scope === "official" && e.layer === "scenario")
       .slice(0, 3);
-  }, []);
+  }, [catalog]);
 
   const rows: Row[] = useMemo(() => {
     const out: Row[] = [];

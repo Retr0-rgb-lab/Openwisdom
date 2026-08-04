@@ -1,5 +1,6 @@
 import os from "node:os";
 import {
+  ensureRemoteCatalog,
   listInstalled,
   runInstall,
   UsageError,
@@ -15,7 +16,11 @@ import { formatInstallPayload } from "./install.js";
 export type UpdateInput = {
   /** Optional; default = installed skill ids under scope */
   skills?: string[];
-  providers: string[];
+  /**
+   * Target harness ids. Required for skill update path; optional when
+   * refreshOnly is true (catalog cache only, no skill write).
+   */
+  providers?: string[];
   scope?: "project" | "global";
   cwd?: string;
   /**
@@ -26,18 +31,64 @@ export type UpdateInput = {
   dryRun?: boolean;
   noDeps?: boolean;
   noTelemetry?: boolean;
+  /**
+   * When true: only ensureRemoteCatalog (force refresh); no skill write.
+   * Aligns with CLI `openwisdom update --refresh-only`.
+   */
+  refreshOnly?: boolean;
+  /** Remote registry base URL (or OPENWISDOM_REGISTRY env). */
+  registry?: string;
+  /** Skip remote registry; local skills/snapshot only. */
+  noRemote?: boolean;
 };
 
 /** Pure handler — unit-testable without MCP transport. */
 export async function handleUpdate(input: UpdateInput): Promise<ToolResult> {
   try {
+    const registry =
+      typeof input.registry === "string" && input.registry.trim()
+        ? input.registry.trim()
+        : undefined;
+    const noRemote = Boolean(input.noRemote);
+
+    // —— refreshOnly: catalog cache only (CLI --refresh-only parity) ——
+    if (input.refreshOnly) {
+      if (noRemote) {
+        return toErrorResult(
+          "refreshOnly requires remote (drop noRemote / OPENWISDOM_NO_REMOTE).",
+        );
+      }
+      const result = await ensureRemoteCatalog({
+        registry,
+        forceRefresh: true,
+        env: process.env,
+      });
+      if (result.ok) {
+        const payload = {
+          ok: true,
+          refreshOnly: true,
+          source: result.source,
+          contentHash: result.contentHash ?? null,
+          catalogPath: result.catalogPath ?? null,
+          base: result.base ?? null,
+          exitCode: 0,
+        };
+        return toTextResult(payload, {
+          summary: `Catalog cache ok (${result.source})${result.contentHash ? ` hash=${result.contentHash}` : ""}.`,
+        });
+      }
+      return toErrorResult(
+        `registry refresh failed${result.message ? `: ${result.message}` : ""}`,
+      );
+    }
+
     const providers = (input.providers ?? [])
       .map((p) => p.trim())
       .filter(Boolean);
 
     if (!providers.length) {
       return toErrorResult(
-        "Missing providers[]. MCP update is non-interactive — pass explicit harness ids (e.g. [\"claude\"]). Call openwisdom_detect_providers first if unsure.",
+        "Missing providers[]. MCP update is non-interactive — pass explicit harness ids (e.g. [\"claude\"]). Call openwisdom_detect_providers first if unsure. Or use refreshOnly: true to refresh catalog cache only.",
       );
     }
 
@@ -97,6 +148,8 @@ export async function handleUpdate(input: UpdateInput): Promise<ToolResult> {
       clientVersion: MCP_VERSION,
       env: process.env,
       packageRoot,
+      registry,
+      noRemote,
       onLog: () => {
         /* no-op */
       },

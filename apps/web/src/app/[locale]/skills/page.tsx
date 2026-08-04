@@ -3,9 +3,8 @@ import { Suspense } from "react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SkillsCatalog } from "@/components/skills/SkillsCatalog";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getCatalog } from "@/data/catalog";
+import { getCatalogWithHeat } from "@/data/catalog";
 import { fetchStats } from "@/lib/heat/fetch-stats";
-import { mergeHeat } from "@/lib/heat/merge-heat";
 
 type Params = Promise<{ locale: string }>;
 
@@ -38,9 +37,9 @@ function CatalogFallback() {
 }
 
 async function SkillsCatalogWithHeat() {
-  // Fail-open: missing /api/stats (plan 01) → null → no fake heat zeros
+  // Fail-open: missing /api/stats → null → no fake heat zeros
   const stats = await fetchStats();
-  const entries = mergeHeat(getCatalog(), stats);
+  const entries = getCatalogWithHeat(stats);
   return <SkillsCatalog entries={entries} />;
 }
 

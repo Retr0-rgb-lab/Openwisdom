@@ -11,16 +11,18 @@ Uses **`@modelcontextprotocol/server` v2** (`McpServer` + `StdioServerTransport`
 
 ## Tools
 
-| Tool | Role |
-|------|------|
-| `openwisdom_list` | Browse full installable catalog (or installed); optional `tag` |
-| `openwisdom_search` | Keywords / layer / scope / discipline / **tag** |
-| `openwisdom_get` | Open one skill: catalog row + **SKILL.md body** (read before install) |
-| `openwisdom_install` | Install skills (requires `providers[]`; multi `skills[]`) |
-| `openwisdom_update` | Refresh installed skills |
-| `openwisdom_detect_providers` | Detect harness paths (read-only) |
+| Tool | Role | CLI parity |
+|------|------|------------|
+| `openwisdom_list` | Browse full installable catalog (or installed); optional `tag` | `openwisdom list` |
+| `openwisdom_search` | Keywords / layer / scope / discipline / **tag**; optional `refresh` | `openwisdom search` |
+| `openwisdom_get` | Open one skill: catalog row + **SKILL.md body** (read before install) | — |
+| `openwisdom_install` | Install skills and/or **`bundle`**; optional `registry`, `noRemote` (requires `providers[]`) | `openwisdom install` / `--bundle` / `--registry` / `--no-remote` |
+| `openwisdom_update` | Update installed skills; **`refreshOnly`**, optional `registry`, `noRemote` | `openwisdom update` / `--refresh-only` |
+| `openwisdom_detect_providers` | Detect harness paths (read-only) | (CLI interactive detect) |
 
 Installable library = website registry (official + community packs). **No** `run` / analyze / recommend tools.
+
+**InstallOps (SPE 39):** MCP and CLI share `@openwisdom/core` `runInstall` / `ensureRemoteCatalog`. Bundle install: `openwisdom_install({ bundle: "orientation-handoff", providers: ["claude"] })`. Catalog-only refresh: `openwisdom_update({ refreshOnly: true })`.
 
 ### Reddit / handoff discovery (after macro-scan)
 
@@ -143,6 +145,8 @@ Or project `.mcp.json`:
 | `OPENWISDOM_NO_TELEMETRY=1` | Disable install telemetry |
 | `OPENWISDOM_TELEMETRY_URL` | Telemetry endpoint (unset = no report) |
 | `OPENWISDOM_SKILLS_ROOT` | Local skills tree (dev / monorepo) |
+| `OPENWISDOM_REGISTRY` | Remote registry base URL (override default; also `registry` tool field) |
+| `OPENWISDOM_NO_REMOTE=1` | Skip remote catalog/payload (also `noRemote: true` on install/update) |
 | `CLAUDE_PROJECT_DIR` | Default project cwd for installs |
 | `CI` | Treated as telemetry off (same as CLI) |
 

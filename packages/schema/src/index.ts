@@ -24,3 +24,5 @@ export {
   type CatalogBundle,
   type CatalogIndex,
 } from "./catalog.js";
+
+export { inferScopeAndLayer } from "./scope-layer.js";

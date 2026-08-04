@@ -11,9 +11,13 @@ import { findMonorepoRoot, getPackageRoot } from "./paths.js";
 
 const packageRoot = getPackageRoot();
 const monorepoRoot = findMonorepoRoot(packageRoot);
+/** SPE 36: offline snapshots live on published hosts (cli/mcp), not core. */
+const offlinePackageRoot = monorepoRoot
+  ? path.join(monorepoRoot, "packages", "cli")
+  : packageRoot;
 const skillsRoot = monorepoRoot
   ? path.join(monorepoRoot, "skills")
-  : path.join(packageRoot, "skills-snapshot");
+  : path.join(offlinePackageRoot, "skills-snapshot");
 
 const tmpDirs: string[] = [];
 
@@ -61,10 +65,11 @@ describe("getSkillDetail", () => {
   });
 
   it("resolves via package skills-snapshot without monorepo OPENWISDOM_SKILLS_ROOT", () => {
-    const snapshotRoot = path.join(packageRoot, "skills-snapshot");
+    // SPE 36: use cli offline snapshot (core no longer ships skills-snapshot)
+    const snapshotRoot = path.join(offlinePackageRoot, "skills-snapshot");
     const detail = getSkillDetail({
       skill: "macro-scan",
-      packageRoot,
+      packageRoot: offlinePackageRoot,
       skillsRoot: snapshotRoot,
       env: {
         PATH: process.env.PATH,
@@ -127,6 +132,7 @@ describe("getSkillDetail", () => {
 
   it("throws RuntimeError when skills root is missing", () => {
     // Catalog-only package outside monorepo: snapshot loads, body root fails
+    // SPE 36: seed catalog from cli snapshot (core no longer ships catalog-snapshot)
     const empty = path.join(
       os.tmpdir(),
       `ow-get-empty-${Date.now()}-${Math.random().toString(16).slice(2)}`,
@@ -134,7 +140,7 @@ describe("getSkillDetail", () => {
     mkdirSync(path.join(empty, "catalog-snapshot"), { recursive: true });
     tmpDirs.push(empty);
     copyFileSync(
-      path.join(packageRoot, "catalog-snapshot", "catalog.json"),
+      path.join(offlinePackageRoot, "catalog-snapshot", "catalog.json"),
       path.join(empty, "catalog-snapshot", "catalog.json"),
     );
 

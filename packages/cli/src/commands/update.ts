@@ -10,35 +10,7 @@ import {
   type Scope,
 } from "@openwisdom/core";
 import { CLI_VERSION } from "../version.js";
-
-function collectSkillIds(rawArgs: string[], positional?: string): string[] {
-  const ids: string[] = [];
-  if (positional) ids.push(positional);
-  let skipNext = false;
-  const flagValueKeys = new Set([
-    "--providers",
-    "--scope",
-    "--cwd",
-    "--lang",
-  ]);
-  for (let i = 0; i < rawArgs.length; i++) {
-    const a = rawArgs[i]!;
-    if (skipNext) {
-      skipNext = false;
-      continue;
-    }
-    if (a === "update") continue;
-    if (flagValueKeys.has(a)) {
-      skipNext = true;
-      continue;
-    }
-    if (a.startsWith("--providers=") || a.startsWith("--scope=")) continue;
-    if (a.startsWith("--cwd=")) continue;
-    if (a.startsWith("-")) continue;
-    if (!ids.includes(a)) ids.push(a);
-  }
-  return ids;
-}
+import { collectSkillIds } from "../lib/collect-skill-ids.js";
 
 function cliOnLog(level: LogLevel, message: string): void {
   if (level === "info") console.log(message);

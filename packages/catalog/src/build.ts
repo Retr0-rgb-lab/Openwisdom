@@ -1,9 +1,15 @@
 #!/usr/bin/env node
 /**
- * Scan skills/ tree for SKILL.md; emit catalog.json + manifest.json.
- * Writes to packages/catalog/dist, packages/{cli,core,mcp}/catalog-snapshot,
- * apps/web/public/registry. Also copies skills/ → packages/{cli,core,mcp}/skills-snapshot
- * so install works without a monorepo checkout (Plan 03).
+ * Scan skills/ tree for SKILL.md; emit catalog.json + manifest.json + payload-index.
+ *
+ * Artifact fan-out (SPE 36):
+ * - packages/catalog/dist          — build intermediate
+ * - packages/cli/{catalog,skills}-snapshot  — npm `openwisdom` offline
+ * - packages/mcp/{catalog,skills}-snapshot  — npm `openwisdom-mcp` offline
+ * - apps/web/public/registry (+ skills/**)  — SPE 33 CDN remote face
+ *
+ * Does NOT write packages/core/*-snapshot (core is private; CLI/MCP host
+ * packageRoot carries offline payload at runtime).
  */
 import { createHash } from "node:crypto";
 import {
@@ -17,12 +23,13 @@ import {
   writeFileSync,
 } from "node:fs";
 import { dirname, join, relative, resolve, sep } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { execSync } from "node:child_process";
 import matter from "gray-matter";
 import {
   assertNameMatchesDir,
   catalogIndexSchema,
+  inferScopeAndLayer,
   parseSkillFrontmatter,
   type CatalogBundle,
   type CatalogIndex,
@@ -74,7 +81,7 @@ function toPosix(p: string): string {
 }
 
 /** Recursively collect absolute paths to SKILL.md under skillsRoot. */
-function findSkillMdFiles(skillsRoot: string): string[] {
+export function findSkillMdFiles(skillsRoot: string): string[] {
   const results: string[] = [];
 
   function walk(dir: string): void {
@@ -99,32 +106,6 @@ function findSkillMdFiles(skillsRoot: string): string[] {
     walk(skillsRoot);
   }
   return results;
-}
-
-/**
- * Infer scope + layer from repo-relative posix path:
- * skills/{official|community}/{scenarios|references}/...
- */
-function inferScopeAndLayer(repoPathPosix: string): {
-  scope?: "official" | "community";
-  layer?: "scenario" | "reference";
-} {
-  const parts = repoPathPosix.split("/").filter(Boolean);
-  // skills / scope / kind / name...
-  if (parts[0] !== "skills") return {};
-  const scopePart = parts[1];
-  const kindPart = parts[2];
-  const scope =
-    scopePart === "official" || scopePart === "community"
-      ? scopePart
-      : undefined;
-  const layer =
-    kindPart === "scenarios"
-      ? "scenario"
-      : kindPart === "references"
-        ? "reference"
-        : undefined;
-  return { scope, layer };
 }
 
 function gitSha(root: string): string {
@@ -199,7 +180,7 @@ function skillDirName(skillMdPath: string): string {
   return dirname(skillMdPath).split(sep).pop() ?? "";
 }
 
-function buildSkillEntry(
+export function buildSkillEntry(
   skillMdPath: string,
   monorepoRoot: string,
 ): CatalogSkill {
@@ -370,24 +351,23 @@ function syncSkillsSnapshot(
   }
 }
 
-function main(): void {
-  const here = dirname(fileURLToPath(import.meta.url));
-  const monorepoRoot = findMonorepoRoot([process.cwd(), here]);
-  const skillsRoot = join(monorepoRoot, "skills");
-
+/**
+ * Scan skills tree and build CatalogSkill entries (no disk dual-write).
+ * Throws when skills root missing or empty (SPE 38 test surface).
+ */
+export function collectCatalogSkills(
+  skillsRoot: string,
+  monorepoRoot: string,
+): CatalogSkill[] {
   if (!existsSync(skillsRoot)) {
-    console.error(
-      `[@openwisdom/catalog] skills/ not found at ${skillsRoot} — refusing empty catalog`,
+    throw new Error(
+      `skills/ not found at ${skillsRoot} — refusing empty catalog`,
     );
-    process.exit(1);
   }
 
   const skillFiles = findSkillMdFiles(skillsRoot);
   if (skillFiles.length === 0) {
-    console.error(
-      "[@openwisdom/catalog] no SKILL.md under skills/ — refusing empty catalog",
-    );
-    process.exit(1);
+    throw new Error("no SKILL.md under skills/ — refusing empty catalog");
   }
 
   const skills: CatalogSkill[] = [];
@@ -403,6 +383,25 @@ function main(): void {
   }
 
   skills.sort((a, b) => a.id.localeCompare(b.id));
+  return skills;
+}
+
+function main(): void {
+  const here = dirname(fileURLToPath(import.meta.url));
+  const monorepoRoot = findMonorepoRoot([process.cwd(), here]);
+  const skillsRoot = join(monorepoRoot, "skills");
+
+  let skills: CatalogSkill[];
+  try {
+    skills = collectCatalogSkills(skillsRoot, monorepoRoot);
+  } catch (err) {
+    console.error(
+      `[@openwisdom/catalog] ${err instanceof Error ? err.message : err}`,
+    );
+    process.exit(1);
+  }
+
+  const seenIds = new Set(skills.map((s) => s.id));
 
   const bundles = resolveBundles(seenIds, OFFICIAL_BUNDLES);
 
@@ -429,27 +428,29 @@ function main(): void {
 
   const payloadIndex = buildPayloadIndex(skillsRoot, catalog.skills);
 
-  // Spec 24 + Plan 03: dual-write snapshots for CLI + core + MCP; keep web registry.
+  // SPE 36: published offline = cli + mcp only; remote = web registry; no core copy.
   const catalogTargets = [
     join(monorepoRoot, "packages/catalog/dist"),
     join(monorepoRoot, "packages/cli/catalog-snapshot"),
-    join(monorepoRoot, "packages/core/catalog-snapshot"),
     join(monorepoRoot, "packages/mcp/catalog-snapshot"),
     join(monorepoRoot, "apps/web/public/registry"),
   ];
 
+  console.log(
+    `[@openwisdom/catalog] catalog targets (${catalogTargets.length}):`,
+  );
   for (const dir of catalogTargets) {
     writeJson(join(dir, "catalog.json"), catalog);
     writeJson(join(dir, "manifest.json"), manifest);
     writeJson(join(dir, "payload-index.json"), payloadIndex);
   }
 
-  // Skills payload for offline install (no monorepo skills/ checkout).
-  syncSkillsSnapshot(skillsRoot, monorepoRoot, [
-    "packages/core",
-    "packages/cli",
-    "packages/mcp",
-  ]);
+  // Skills payload for offline install (published bins only; SPE 36 drops core).
+  const skillsSnapshotPackages = ["packages/cli", "packages/mcp"];
+  console.log(
+    `[@openwisdom/catalog] skills-snapshot packages: ${skillsSnapshotPackages.join(", ")}`,
+  );
+  syncSkillsSnapshot(skillsRoot, monorepoRoot, skillsSnapshotPackages);
 
   // SPE 33: static remote registry skill trees on the web app
   stageRegistrySkills(skillsRoot, join(monorepoRoot, "apps/web/public/registry"));
@@ -465,4 +466,17 @@ function main(): void {
   }
 }
 
-main();
+/** Run only when executed as CLI entry (not when imported by tests). */
+const isDirectRun = (() => {
+  try {
+    const entry = process.argv[1];
+    if (!entry) return false;
+    return import.meta.url === pathToFileURL(resolve(entry)).href;
+  } catch {
+    return false;
+  }
+})();
+
+if (isDirectRun) {
+  main();
+}

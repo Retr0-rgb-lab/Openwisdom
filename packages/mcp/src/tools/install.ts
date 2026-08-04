@@ -13,7 +13,10 @@ import { toErrorResult, toTextResult, type ToolResult } from "../lib/result.js";
 import { MCP_VERSION } from "../version.js";
 
 export type InstallInput = {
-  skills: string[];
+  /** Catalog skill ids; may be empty when `bundle` is set (SPE 39 / CLI parity). */
+  skills?: string[];
+  /** Catalog bundle id (e.g. orientation-handoff). Expanded via core resolveBundle. */
+  bundle?: string;
   providers: string[];
   scope?: "project" | "global";
   cwd?: string;
@@ -21,6 +24,10 @@ export type InstallInput = {
   dryRun?: boolean;
   noDeps?: boolean;
   noTelemetry?: boolean;
+  /** Remote registry base URL (or OPENWISDOM_REGISTRY env). */
+  registry?: string;
+  /** Skip remote registry; local skills/snapshot only. */
+  noRemote?: boolean;
 };
 
 function outcomeAction(
@@ -107,13 +114,15 @@ function formatInstallPayload(
 export async function handleInstall(input: InstallInput): Promise<ToolResult> {
   try {
     const skills = (input.skills ?? []).map((s) => s.trim()).filter(Boolean);
+    const bundle =
+      typeof input.bundle === "string" ? input.bundle.trim() : "";
     const providers = (input.providers ?? [])
       .map((p) => p.trim())
       .filter(Boolean);
 
-    if (!skills.length) {
+    if (!skills.length && !bundle) {
       return toErrorResult(
-        "Missing skills[]. Pass at least one catalog id/slug. Example: openwisdom_install({ skills: [\"macro-scan\"], providers: [\"claude\"] })",
+        'Missing skills[] and bundle. Pass at least one catalog id/slug, or bundle (e.g. "orientation-handoff"). Example: openwisdom_install({ skills: ["macro-scan"], providers: ["claude"] }) or openwisdom_install({ bundle: "orientation-handoff", providers: ["claude"] })',
       );
     }
     if (!providers.length) {
@@ -132,10 +141,16 @@ export async function handleInstall(input: InstallInput): Promise<ToolResult> {
     const force = Boolean(input.force);
     const noDeps = Boolean(input.noDeps);
     const noTelemetry = Boolean(input.noTelemetry);
+    const noRemote = Boolean(input.noRemote);
+    const registry =
+      typeof input.registry === "string" && input.registry.trim()
+        ? input.registry.trim()
+        : undefined;
     const packageRoot = getMcpPackageRoot();
 
     const result = await runInstall({
       skillIds: skills,
+      bundle: bundle || undefined,
       providerIds: providers,
       scope,
       cwd,
@@ -150,19 +165,25 @@ export async function handleInstall(input: InstallInput): Promise<ToolResult> {
       clientVersion: MCP_VERSION,
       env: process.env,
       packageRoot,
+      registry,
+      noRemote,
       // Silence success noise — never console.log on MCP stdio
       onLog: () => {
         /* no-op: tool result carries status */
       },
     });
 
+    const targetLabel = bundle
+      ? `bundle ${bundle}${skills.length ? ` + ${skills.length} skill(s)` : ""}`
+      : `${skills.length} skill(s)`;
+
     const payload = formatInstallPayload(result, { dryRun });
     const isError = !payload.ok;
     const summary = isError
       ? `Install finished with errors (exit ${payload.exitCode}).`
       : dryRun
-        ? `Dry-run plan for ${skills.length} skill(s) → ${providers.join(",")}.`
-        : `Installed ${skills.length} skill(s) → ${providers.join(",")}.`;
+        ? `Dry-run plan for ${targetLabel} → ${providers.join(",")}.`
+        : `Installed ${targetLabel} → ${providers.join(",")}.`;
 
     return toTextResult(payload, { summary, isError });
   } catch (err) {

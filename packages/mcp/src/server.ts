@@ -31,7 +31,7 @@ export function createServer(): McpServer {
     {
       title: "Search Openwisdom skills",
       description:
-        "Search the installable catalog by free text and/or layer/scope/discipline/tag filters. Read-only. Query may be empty when a filter is set. Discovery algorithm (handoff / orientation): (1) search or list with tag=orientation-pipeline; (2) list mode=installed; (3) client: missing skills by pipeline.order; (4) get → install(skills: [...]); (5) analysis runs in the agent session — not via MCP. Prefer list|search → get → install. Cards include tags/references and optional pipeline. Empty hits are success with skills=[]. No recommend/run/analyze tools.",
+        "Search the installable catalog by free text and/or layer/scope/discipline/tag filters. Read-only. Query may be empty when a filter is set. Remote registry base from OPENWISDOM_REGISTRY (or default); set OPENWISDOM_NO_REMOTE=1 to skip remote. Discovery algorithm (handoff / orientation): (1) search or list with tag=orientation-pipeline; (2) list mode=installed; (3) client: missing skills by pipeline.order; (4) get → install(skills: [...]) or install(bundle); (5) analysis runs in the agent session — not via MCP. Prefer list|search → get → install. Cards include tags/references and optional pipeline. Empty hits are success with skills=[]. No recommend/run/analyze tools.",
       inputSchema: z.object({
         query: z
           .string()
@@ -74,7 +74,7 @@ export function createServer(): McpServer {
           .boolean()
           .optional()
           .describe(
-            "Force re-download of remote registry catalog into local cache (fail-open on network errors)",
+            "Force re-download of remote registry catalog into local cache (fail-open on network errors). Registry URL: OPENWISDOM_REGISTRY env.",
           ),
       }),
       annotations: {
@@ -190,12 +190,21 @@ export function createServer(): McpServer {
     {
       title: "Install Openwisdom skills",
       description:
-        "Install catalog skills into selected agent harness directories. Non-interactive: providers is required. Prefer openwisdom_get first to read SKILL.md, then detect_providers → install(dryRun:true) → install. For multi-skill pipelines: search/list by tag, compute missing vs installed, pass ordered skill ids here. Does not run analysis or call models — package manager only.",
+        "Install catalog skills (and/or a catalog bundle) into selected agent harness directories. Non-interactive: providers is required. skills[] and/or bundle required (same as CLI). Prefer openwisdom_get first to read SKILL.md, then detect_providers → install(dryRun:true) → install. For multi-skill pipelines: search/list by tag, or pass bundle (e.g. orientation-handoff). Optional registry / noRemote align with CLI. Does not run analysis or call models — package manager only.",
       inputSchema: z.object({
         skills: z
           .array(z.string().min(1))
+          .optional()
+          .describe(
+            "Catalog skill id/slug list. Optional when bundle is set; may combine with bundle.",
+          ),
+        bundle: z
+          .string()
           .min(1)
-          .describe("Catalog skill id/slug list (at least one)"),
+          .optional()
+          .describe(
+            'Catalog bundle id to expand (e.g. "orientation-handoff"). Combines with skills[].',
+          ),
         providers: z
           .array(providerId)
           .min(1)
@@ -226,6 +235,19 @@ export function createServer(): McpServer {
           .boolean()
           .optional()
           .describe("Disable install success telemetry for this call"),
+        registry: z
+          .string()
+          .min(1)
+          .optional()
+          .describe(
+            "Remote registry base URL (overrides OPENWISDOM_REGISTRY env)",
+          ),
+        noRemote: z
+          .boolean()
+          .optional()
+          .describe(
+            "Skip remote registry; local skills/snapshot only (default false)",
+          ),
       }),
       annotations: {
         readOnlyHint: false,
@@ -243,7 +265,7 @@ export function createServer(): McpServer {
     {
       title: "Update installed Openwisdom skills",
       description:
-        "Re-copy installed (or named) skills from the current catalog/skills root. skills optional (default: all installed under scope). force defaults false (matches CLI openwisdom update). providers required.",
+        "Re-copy installed (or named) skills from the current catalog/skills root, or refreshOnly to re-download remote catalog cache (CLI --refresh-only). skills optional (default: all installed under scope). force defaults false. providers required for skill update; optional when refreshOnly is true. Optional registry / noRemote align with CLI.",
       inputSchema: z.object({
         skills: z
           .array(z.string().min(1))
@@ -251,8 +273,10 @@ export function createServer(): McpServer {
           .describe("Skill ids; omit to update all installed under scope"),
         providers: z
           .array(providerId)
-          .min(1)
-          .describe("Target harness ids (required)"),
+          .optional()
+          .describe(
+            "Target harness ids (required for skill update; optional when refreshOnly)",
+          ),
         scope: z
           .enum(["project", "global"])
           .optional()
@@ -267,6 +291,25 @@ export function createServer(): McpServer {
         dryRun: z.boolean().optional().describe("Plan only"),
         noDeps: z.boolean().optional(),
         noTelemetry: z.boolean().optional(),
+        refreshOnly: z
+          .boolean()
+          .optional()
+          .describe(
+            "Refresh remote catalog cache only (no skill write). Requires remote (not noRemote).",
+          ),
+        registry: z
+          .string()
+          .min(1)
+          .optional()
+          .describe(
+            "Remote registry base URL (overrides OPENWISDOM_REGISTRY env)",
+          ),
+        noRemote: z
+          .boolean()
+          .optional()
+          .describe(
+            "Skip remote registry; local skills/snapshot only (default false)",
+          ),
       }),
       annotations: {
         readOnlyHint: false,
@@ -274,11 +317,7 @@ export function createServer(): McpServer {
         openWorldHint: true,
       },
     },
-    async (args) =>
-      handleUpdate({
-        ...args,
-        providers: args.providers,
-      }),
+    async (args) => handleUpdate(args),
   );
 
   // —— openwisdom_detect_providers ——

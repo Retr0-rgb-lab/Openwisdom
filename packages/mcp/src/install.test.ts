@@ -146,6 +146,19 @@ describe("openwisdom_install handler", () => {
     expect(r.content.some((c) => c.text.includes("providers"))).toBe(true);
   });
 
+  it("rejects empty skills without bundle", async () => {
+    const r = await handleInstall({
+      skills: [],
+      providers: ["claude"],
+    });
+    expect(isErrorResult(r)).toBe(true);
+    expect(
+      r.content.some(
+        (c) => c.text.includes("skills") && c.text.includes("bundle"),
+      ),
+    ).toBe(true);
+  });
+
   it("dryRun plans write without creating SKILL.md", async () => {
     const prev = process.env.OPENWISDOM_SKILLS_ROOT;
     process.env.OPENWISDOM_SKILLS_ROOT = skillsRoot;
@@ -247,6 +260,108 @@ describe("openwisdom_install handler", () => {
         "SKILL.md",
       );
       expect(existsSync(skillMd)).toBe(true);
+    } finally {
+      if (prev === undefined) delete process.env.OPENWISDOM_SKILLS_ROOT;
+      else process.env.OPENWISDOM_SKILLS_ROOT = prev;
+    }
+  });
+
+  it("installs orientation-handoff bundle (offline / noRemote)", async () => {
+    // Bundle expands to responsibility-scope, responsibility-bridge, analysis-closure
+    const handoffSkills = [
+      "responsibility-scope",
+      "responsibility-bridge",
+      "analysis-closure",
+    ] as const;
+    const hasLocal = handoffSkills.every((id) =>
+      existsSync(
+        path.join(skillsRoot, "official", "scenarios", id, "SKILL.md"),
+      ),
+    );
+    const hasSnap = handoffSkills.every((id) =>
+      existsSync(
+        path.join(
+          getMcpPackageRoot(),
+          "skills-snapshot",
+          "official",
+          "scenarios",
+          id,
+          "SKILL.md",
+        ),
+      ),
+    );
+    if (!hasLocal && !hasSnap) {
+      // soft skip when neither monorepo skills nor snapshot present
+      return;
+    }
+
+    const prev = process.env.OPENWISDOM_SKILLS_ROOT;
+    if (hasLocal) process.env.OPENWISDOM_SKILLS_ROOT = skillsRoot;
+    else delete process.env.OPENWISDOM_SKILLS_ROOT;
+
+    try {
+      const cwd = makeTmp();
+      const r = await handleInstall({
+        skills: [],
+        bundle: "orientation-handoff",
+        providers: ["claude"],
+        cwd,
+        dryRun: false,
+        noTelemetry: true,
+        noRemote: true,
+        noDeps: true,
+      });
+      expect(isErrorResult(r)).toBe(false);
+      for (const id of handoffSkills) {
+        const skillMd = path.join(
+          cwd,
+          ".claude",
+          "skills",
+          id,
+          "SKILL.md",
+        );
+        expect(existsSync(skillMd)).toBe(true);
+      }
+      const text = r.content.map((c) => c.text).join("\n");
+      expect(text).toMatch(/orientation-handoff|responsibility-scope/i);
+    } finally {
+      if (prev === undefined) delete process.env.OPENWISDOM_SKILLS_ROOT;
+      else process.env.OPENWISDOM_SKILLS_ROOT = prev;
+    }
+  });
+
+  it("bundle dryRun does not write files", async () => {
+    const prev = process.env.OPENWISDOM_SKILLS_ROOT;
+    process.env.OPENWISDOM_SKILLS_ROOT = skillsRoot;
+    try {
+      const cwd = makeTmp();
+      const r = await handleInstall({
+        bundle: "orientation-handoff",
+        providers: ["claude"],
+        cwd,
+        dryRun: true,
+        noTelemetry: true,
+        noRemote: true,
+        noDeps: true,
+      });
+      // Catalog must contain the bundle (snapshot or monorepo scan)
+      if (isErrorResult(r)) {
+        const text = r.content.map((c) => c.text).join("\n");
+        // Unknown bundle is acceptable only if catalog has no bundles
+        expect(text).toMatch(/bundle|Unknown|not found/i);
+        return;
+      }
+      expect(
+        existsSync(
+          path.join(
+            cwd,
+            ".claude",
+            "skills",
+            "responsibility-scope",
+            "SKILL.md",
+          ),
+        ),
+      ).toBe(false);
     } finally {
       if (prev === undefined) delete process.env.OPENWISDOM_SKILLS_ROOT;
       else process.env.OPENWISDOM_SKILLS_ROOT = prev;

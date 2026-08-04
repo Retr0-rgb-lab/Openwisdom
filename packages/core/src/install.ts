@@ -14,22 +14,18 @@ import {
 import type { CatalogIndex, CatalogSkill } from "@openwisdom/schema";
 import { writeSkillDir, type WriteOutcome } from "./copy-skill.js";
 import { loadCatalog, resolveBundle } from "./catalog.js";
-import { locateSkillDir, resolveSkillsRoot } from "./skills-root.js";
+import { resolveSkillsRoot } from "./skills-root.js";
+import {
+  resolveSkillPayloadDir,
+} from "./payload-resolve.js";
 import {
   ensureRemoteCatalog,
-  ensureRemoteSkillDir,
-  loadPayloadIndex,
   type RegistryResolveOpts,
 } from "./registry.js";
 import {
   reportInstallSuccess,
   type TelemetrySource,
 } from "./telemetry.js";
-import {
-  findMonorepoRoot,
-  getPackageRoot,
-  skillsSnapshotPath,
-} from "./paths.js";
 
 export type Scope = "project" | "global";
 
@@ -218,7 +214,8 @@ function registryOptsFromInstall(opts: InstallOptions): RegistryResolveOpts {
 }
 
 /**
- * Resolve on-disk skill directory for install (SPE 33):
+ * Resolve on-disk skill directory for install (SPE 33 / SPE 35).
+ * Implementation: payload-resolve resolveSkillPayloadDir
  * 1) OPENWISDOM_SKILLS_ROOT / monorepo skills/ only (not package snapshot)
  * 2) remote registry download into cache
  * 3) package skills-snapshot (offline fallback)
@@ -232,60 +229,7 @@ export async function resolveInstallSourceDir(opts: {
   packageRoot?: string;
   registry?: RegistryResolveOpts;
 }): Promise<string> {
-  const skillId = opts.skillId;
-  const env = opts.env ?? process.env;
-  const cwd = opts.cwd ?? process.cwd();
-  const localRoots: string[] = [];
-
-  if (opts.skillsRoot) localRoots.push(opts.skillsRoot);
-
-  const fromEnv = env.OPENWISDOM_SKILLS_ROOT?.trim();
-  if (fromEnv) localRoots.push(path.resolve(fromEnv));
-
-  const mono = findMonorepoRoot(cwd);
-  if (mono) {
-    const skills = path.join(mono, "skills");
-    if (existsSync(skills)) localRoots.push(skills);
-  }
-
-  const tried = new Set<string>();
-  for (const root of localRoots) {
-    const key = path.normalize(root);
-    if (tried.has(key) || !existsSync(root)) continue;
-    tried.add(key);
-    try {
-      return locateSkillDir(root, skillId);
-    } catch {
-      /* try next */
-    }
-  }
-
-  const entry =
-    opts.catalog.skills.find((s) => s.id === skillId || s.name === skillId) ??
-    null;
-  if (entry && opts.registry) {
-    // Prefer remote over package snapshot so content deploys beat stale npm payloads
-    const dir = await ensureRemoteSkillDir(entry, {
-      ...opts.registry,
-      forceRefresh: opts.registry.forceRefresh,
-      payloadIndex: loadPayloadIndex(opts.registry.cacheDir),
-    });
-    if (dir) return dir;
-  }
-
-  const pkg = opts.packageRoot ?? getPackageRoot();
-  const snap = skillsSnapshotPath(pkg);
-  if (existsSync(snap)) {
-    try {
-      return locateSkillDir(snap, skillId);
-    } catch {
-      /* fall through */
-    }
-  }
-
-  throw new Error(
-    `Skill not found locally or via registry: ${skillId}. Try openwisdom update --refresh-only or set OPENWISDOM_SKILLS_ROOT.`,
-  );
+  return resolveSkillPayloadDir(opts);
 }
 
 export async function runInstall(opts: InstallOptions): Promise<InstallResult> {

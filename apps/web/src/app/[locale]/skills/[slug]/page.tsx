@@ -4,9 +4,12 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SkillDetail } from "@/components/skills/SkillDetail";
 import {
   getCatalog,
+  getCatalogWithHeat,
   getSkillBySlug,
+  getSkillBySlugWithHeat,
   pickLocalized,
 } from "@/data/catalog";
+import { fetchStats } from "@/lib/heat/fetch-stats";
 import { routing } from "@/i18n/routing";
 
 type Params = Promise<{ locale: string; slug: string }>;
@@ -45,12 +48,14 @@ export default async function SkillDetailPage({
   const { locale, slug } = await params;
   setRequestLocale(locale);
 
-  const entry = getSkillBySlug(slug);
+  // Same heat merge as list (SPE 37 G4); fail-open when stats unavailable
+  const stats = await fetchStats();
+  const entry = getSkillBySlugWithHeat(slug, stats);
   if (!entry) {
     notFound();
   }
 
-  const related = getCatalog()
+  const related = getCatalogWithHeat(stats)
     .filter((e) => e.slug !== entry.slug)
     .filter(
       (e) =>

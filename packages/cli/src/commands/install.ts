@@ -14,39 +14,7 @@ import {
 import os from "node:os";
 import path from "node:path";
 import { CLI_VERSION } from "../version.js";
-
-function collectSkillIds(rawArgs: string[], positional?: string): string[] {
-  const ids: string[] = [];
-  if (positional) ids.push(positional);
-  let skipNext = false;
-  const flagValueKeys = new Set([
-    "--providers",
-    "--scope",
-    "--cwd",
-    "--lang",
-    "--registry",
-    "--bundle",
-  ]);
-  // --no-remote is boolean (no value)
-  for (let i = 0; i < rawArgs.length; i++) {
-    const a = rawArgs[i]!;
-    if (skipNext) {
-      skipNext = false;
-      continue;
-    }
-    if (a === "install") continue;
-    if (flagValueKeys.has(a)) {
-      skipNext = true;
-      continue;
-    }
-    if (a.startsWith("--providers=") || a.startsWith("--scope=")) continue;
-    if (a.startsWith("--cwd=") || a.startsWith("--lang=")) continue;
-    if (a.startsWith("--bundle=")) continue;
-    if (a.startsWith("-")) continue;
-    if (!ids.includes(a)) ids.push(a);
-  }
-  return ids;
-}
+import { collectSkillIds } from "../lib/collect-skill-ids.js";
 
 async function promptProviders(
   cwd: string,

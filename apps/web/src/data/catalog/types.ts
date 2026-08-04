@@ -88,7 +88,27 @@ export type CatalogQuery = {
   sort?: SortKey;
 };
 
-/** Home short keys → filter IDs (Spec 15 / SPE 34). */
+/**
+ * Single web discipline allowlist (SPE 37 G1).
+ * load-registry / URL parse / home / styles must import from here — no second hard-coded seven-id list.
+ */
+export const DISCIPLINE_IDS = [
+  "psychology",
+  "sociology",
+  "history",
+  "political-science",
+  "economics",
+  "philosophy",
+  "education",
+] as const satisfies readonly DisciplineId[];
+
+export const DISCIPLINE_SET: ReadonlySet<string> = new Set(DISCIPLINE_IDS);
+
+export function isDisciplineId(value: string): value is DisciplineId {
+  return DISCIPLINE_SET.has(value);
+}
+
+/** Home short keys → filter IDs (Spec 15 / SPE 34). Authority for home grid order. */
 export const DISCIPLINE_HOME_TO_ID = {
   psych: "psychology",
   socio: "sociology",
@@ -97,16 +117,19 @@ export const DISCIPLINE_HOME_TO_ID = {
   econ: "economics",
   philo: "philosophy",
   edu: "education",
-} as const;
+} as const satisfies Record<string, DisciplineId>;
 
-export const DISCIPLINE_IDS: DisciplineId[] = [
-  "psychology",
-  "sociology",
+export type DisciplineHomeKey = keyof typeof DISCIPLINE_HOME_TO_ID;
+
+/** Ordered home short keys (same order as DISCIPLINE_IDS). */
+export const DISCIPLINE_HOME_KEYS: DisciplineHomeKey[] = [
+  "psych",
+  "socio",
   "history",
-  "political-science",
-  "economics",
-  "philosophy",
-  "education",
+  "poli",
+  "econ",
+  "philo",
+  "edu",
 ];
 
 export function pickLocalized(

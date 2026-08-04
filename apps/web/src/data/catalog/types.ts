@@ -9,7 +9,8 @@ export type DisciplineId =
   | "history"
   | "political-science"
   | "economics"
-  | "philosophy";
+  | "philosophy"
+  | "education";
 
 /** Honest provenance for UI badges (Spec 16). */
 export type SkillProvenance =
@@ -87,7 +88,7 @@ export type CatalogQuery = {
   sort?: SortKey;
 };
 
-/** Home short keys → filter IDs (Spec 15). */
+/** Home short keys → filter IDs (Spec 15 / SPE 34). */
 export const DISCIPLINE_HOME_TO_ID = {
   psych: "psychology",
   socio: "sociology",
@@ -95,6 +96,7 @@ export const DISCIPLINE_HOME_TO_ID = {
   poli: "political-science",
   econ: "economics",
   philo: "philosophy",
+  edu: "education",
 } as const;
 
 export const DISCIPLINE_IDS: DisciplineId[] = [
@@ -104,6 +106,7 @@ export const DISCIPLINE_IDS: DisciplineId[] = [
   "political-science",
   "economics",
   "philosophy",
+  "education",
 ];
 
 export function pickLocalized(

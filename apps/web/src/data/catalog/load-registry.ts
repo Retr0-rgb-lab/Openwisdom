@@ -45,6 +45,7 @@ const DISCIPLINE_SET = new Set<string>([
   "political-science",
   "economics",
   "philosophy",
+  "education",
 ]);
 
 function asDiscipline(id: string): DisciplineId | null {

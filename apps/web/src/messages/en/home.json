@@ -142,7 +142,8 @@
     "history": { "name": "History", "desc": "Path dependence and cycles in the long run" },
     "poli": { "name": "Political Science", "desc": "Power, governance, and collective action" },
     "econ": { "name": "Economics", "desc": "Incentives, scarcity, and equilibrium" },
-    "philo": { "name": "Philosophy", "desc": "Concepts, argument, ethics, and epistemology" }
+    "philo": { "name": "Philosophy", "desc": "Concepts, argument, ethics, and epistemology" },
+    "edu": { "name": "Education", "desc": "How learning happens, how it is taught, and how structures shape it" }
   },
   "paths": {
     "eyebrow": "Install",

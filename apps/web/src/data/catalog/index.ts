@@ -282,6 +282,7 @@ export function parseDisciplineParam(
     "political-science",
     "economics",
     "philosophy",
+    "education",
   ]);
   return parts
     .map((p) => p.trim())

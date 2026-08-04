@@ -8,6 +8,7 @@ export const DISCIPLINE_CSS: Record<DisciplineId, string> = {
   "political-science": "var(--ow-poli)",
   economics: "var(--ow-econ)",
   philosophy: "var(--ow-philosophy)",
+  education: "var(--ow-education)",
 };
 
 export const SHAPE_ACCENT: Record<

@@ -47,6 +47,8 @@ Dark pair (structural reservation only; no v1 theme switch): field `#0B1014`, su
 | economics | `#2E6975` |
 | history | `#5C7A8A` |
 | political-science | `#3D4F8C` (low sat; **no bright purple**) |
+| philosophy | `#5E6A4E` (sage stone; not bright purple) |
+| education | `#3D7A6A` (growth green; SPE 34) |
 
 ### Copper retirement
 

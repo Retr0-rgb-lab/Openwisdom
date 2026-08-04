@@ -41,6 +41,7 @@
     --color-poli: var(--ow-poli);
     --color-econ: var(--ow-econ);
     --color-philosophy: var(--ow-philosophy);
+    --color-education: var(--ow-education);
     /* One-release aliases: copper/insight → signal/structure (do not use for new code) */
     --color-datum: var(--ow-signal);
     --color-datum-pressed: var(--ow-primary-pressed);
@@ -112,6 +113,8 @@
     --ow-econ: #2E6975;
     /* Philosophy — sage stone; not bright purple */
     --ow-philosophy: #5E6A4E;
+    /* Education — growth green (SPE 34) */
+    --ow-education: #3D7A6A;
     /* Temporary aliases (one release): copper datum → signal; insight → structure */
     --ow-datum: var(--ow-signal);
     --ow-datum-pressed: var(--ow-primary-pressed);
@@ -174,6 +177,7 @@
     --ow-poli: #6B7AB0;
     --ow-econ: #5A9AAA;
     --ow-philosophy: #8A9678;
+    --ow-education: #5A9A88;
     --ow-datum: var(--ow-signal);
     --ow-datum-pressed: var(--ow-primary-pressed);
     --ow-insight: var(--ow-structure);

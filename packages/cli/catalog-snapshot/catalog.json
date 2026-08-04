@@ -375,7 +375,8 @@
       "layer": "scenario",
       "scope": "community",
       "disciplines": [
-        "history"
+        "history",
+        "education"
       ],
       "language": "en",
       "tags": [
@@ -388,7 +389,7 @@
         "openwisdom"
       ],
       "version": "0.1.0",
-      "updated": "2026-08-03",
+      "updated": "2026-08-04",
       "repoPath": "skills/community/scenarios/central-historical-question-evaluator",
       "install": {
         "cli": "npx openwisdom install central-historical-question-evaluator"
@@ -481,7 +482,8 @@
       "layer": "scenario",
       "scope": "community",
       "disciplines": [
-        "history"
+        "history",
+        "education"
       ],
       "language": "en",
       "tags": [
@@ -494,7 +496,7 @@
         "openwisdom"
       ],
       "version": "0.1.0",
-      "updated": "2026-08-03",
+      "updated": "2026-08-04",
       "repoPath": "skills/community/scenarios/close-reading-skill-builder",
       "install": {
         "cli": "npx openwisdom install close-reading-skill-builder"
@@ -554,7 +556,8 @@
       "layer": "scenario",
       "scope": "community",
       "disciplines": [
-        "history"
+        "history",
+        "education"
       ],
       "language": "en",
       "tags": [
@@ -567,7 +570,7 @@
         "openwisdom"
       ],
       "version": "0.1.0",
-      "updated": "2026-08-03",
+      "updated": "2026-08-04",
       "repoPath": "skills/community/scenarios/contextualisation-skill-builder",
       "install": {
         "cli": "npx openwisdom install contextualisation-skill-builder"
@@ -580,7 +583,8 @@
       "layer": "scenario",
       "scope": "community",
       "disciplines": [
-        "history"
+        "history",
+        "education"
       ],
       "language": "en",
       "tags": [
@@ -593,7 +597,7 @@
         "openwisdom"
       ],
       "version": "0.1.0",
-      "updated": "2026-08-03",
+      "updated": "2026-08-04",
       "repoPath": "skills/community/scenarios/corroboration-skill-builder",
       "install": {
         "cli": "npx openwisdom install corroboration-skill-builder"
@@ -865,7 +869,8 @@
       "layer": "scenario",
       "scope": "community",
       "disciplines": [
-        "history"
+        "history",
+        "education"
       ],
       "language": "en",
       "tags": [
@@ -878,7 +883,7 @@
         "openwisdom"
       ],
       "version": "0.1.0",
-      "updated": "2026-08-03",
+      "updated": "2026-08-04",
       "repoPath": "skills/community/scenarios/document-based-lesson-designer",
       "install": {
         "cli": "npx openwisdom install document-based-lesson-designer"
@@ -940,7 +945,8 @@
       "layer": "scenario",
       "scope": "community",
       "disciplines": [
-        "psychology"
+        "psychology",
+        "education"
       ],
       "language": "en",
       "tags": [
@@ -953,7 +959,7 @@
         "openwisdom"
       ],
       "version": "0.1.0",
-      "updated": "2026-08-03",
+      "updated": "2026-08-04",
       "repoPath": "skills/community/scenarios/error-analysis-protocol",
       "install": {
         "cli": "npx openwisdom install error-analysis-protocol"
@@ -1065,7 +1071,8 @@
       "layer": "scenario",
       "scope": "community",
       "disciplines": [
-        "psychology"
+        "psychology",
+        "education"
       ],
       "language": "en",
       "tags": [
@@ -1078,7 +1085,7 @@
         "openwisdom"
       ],
       "version": "0.1.0",
-      "updated": "2026-08-03",
+      "updated": "2026-08-04",
       "repoPath": "skills/community/scenarios/goal-setting-protocol-designer",
       "install": {
         "cli": "npx openwisdom install goal-setting-protocol-designer"
@@ -1142,7 +1149,8 @@
       "layer": "scenario",
       "scope": "community",
       "disciplines": [
-        "history"
+        "history",
+        "education"
       ],
       "language": "en",
       "tags": [
@@ -1155,7 +1163,7 @@
         "openwisdom"
       ],
       "version": "0.1.0",
-      "updated": "2026-08-03",
+      "updated": "2026-08-04",
       "repoPath": "skills/community/scenarios/historical-document-set-curator",
       "install": {
         "cli": "npx openwisdom install historical-document-set-curator"
@@ -1168,7 +1176,8 @@
       "layer": "scenario",
       "scope": "community",
       "disciplines": [
-        "history"
+        "history",
+        "education"
       ],
       "language": "en",
       "tags": [
@@ -1181,7 +1190,7 @@
         "openwisdom"
       ],
       "version": "0.1.0",
-      "updated": "2026-08-03",
+      "updated": "2026-08-04",
       "repoPath": "skills/community/scenarios/historical-source-adapter",
       "install": {
         "cli": "npx openwisdom install historical-source-adapter"
@@ -1194,7 +1203,8 @@
       "layer": "scenario",
       "scope": "community",
       "disciplines": [
-        "history"
+        "history",
+        "education"
       ],
       "language": "en",
       "tags": [
@@ -1207,7 +1217,7 @@
         "openwisdom"
       ],
       "version": "0.1.0",
-      "updated": "2026-08-03",
+      "updated": "2026-08-04",
       "repoPath": "skills/community/scenarios/historical-thinking-assessment-designer",
       "install": {
         "cli": "npx openwisdom install historical-thinking-assessment-designer"
@@ -1220,7 +1230,8 @@
       "layer": "scenario",
       "scope": "community",
       "disciplines": [
-        "history"
+        "history",
+        "education"
       ],
       "language": "en",
       "tags": [
@@ -1233,7 +1244,7 @@
         "openwisdom"
       ],
       "version": "0.1.0",
-      "updated": "2026-08-03",
+      "updated": "2026-08-04",
       "repoPath": "skills/community/scenarios/historical-thinking-strategy-modelling-guide",
       "install": {
         "cli": "npx openwisdom install historical-thinking-strategy-modelling-guide"
@@ -1532,7 +1543,8 @@
       "layer": "scenario",
       "scope": "community",
       "disciplines": [
-        "psychology"
+        "psychology",
+        "education"
       ],
       "language": "en",
       "tags": [
@@ -1545,7 +1557,7 @@
         "openwisdom"
       ],
       "version": "0.1.0",
-      "updated": "2026-08-03",
+      "updated": "2026-08-04",
       "repoPath": "skills/community/scenarios/metacognitive-prompt-library",
       "install": {
         "cli": "npx openwisdom install metacognitive-prompt-library"
@@ -2333,7 +2345,8 @@
       "layer": "scenario",
       "scope": "community",
       "disciplines": [
-        "psychology"
+        "psychology",
+        "education"
       ],
       "language": "en",
       "tags": [
@@ -2346,7 +2359,7 @@
         "openwisdom"
       ],
       "version": "0.1.0",
-      "updated": "2026-08-03",
+      "updated": "2026-08-04",
       "repoPath": "skills/community/scenarios/self-regulation-scaffold-generator",
       "install": {
         "cli": "npx openwisdom install self-regulation-scaffold-generator"
@@ -2463,7 +2476,8 @@
       "scope": "community",
       "disciplines": [
         "psychology",
-        "philosophy"
+        "philosophy",
+        "education"
       ],
       "language": "en",
       "tags": [
@@ -2474,7 +2488,7 @@
         "openwisdom"
       ],
       "version": "0.1.0",
-      "updated": "2026-07-30",
+      "updated": "2026-08-04",
       "repoPath": "skills/community/scenarios/socrates",
       "install": {
         "cli": "npx openwisdom install socrates"
@@ -2513,7 +2527,8 @@
       "scope": "community",
       "disciplines": [
         "philosophy",
-        "psychology"
+        "psychology",
+        "education"
       ],
       "language": "en",
       "tags": [
@@ -2525,7 +2540,7 @@
         "openwisdom"
       ],
       "version": "0.1.0",
-      "updated": "2026-07-30",
+      "updated": "2026-08-04",
       "repoPath": "skills/community/scenarios/socratic-method-skill",
       "install": {
         "cli": "npx openwisdom install socratic-method-skill"
@@ -2538,7 +2553,8 @@
       "layer": "scenario",
       "scope": "community",
       "disciplines": [
-        "history"
+        "history",
+        "education"
       ],
       "language": "en",
       "tags": [
@@ -2551,7 +2567,7 @@
         "openwisdom"
       ],
       "version": "0.1.0",
-      "updated": "2026-08-03",
+      "updated": "2026-08-04",
       "repoPath": "skills/community/scenarios/sourcing-skill-builder",
       "install": {
         "cli": "npx openwisdom install sourcing-skill-builder"
@@ -2665,18 +2681,20 @@
       "layer": "scenario",
       "scope": "community",
       "disciplines": [
-        "psychology"
+        "psychology",
+        "education"
       ],
       "language": "en",
       "tags": [
         "metacognition",
         "learning-science",
         "self-regulated-learning",
+        "education",
         "curated-external",
         "openwisdom"
       ],
       "version": "0.1.0",
-      "updated": "2026-07-30",
+      "updated": "2026-08-04",
       "repoPath": "skills/community/scenarios/study-strategy-selector",
       "install": {
         "cli": "npx openwisdom install study-strategy-selector"

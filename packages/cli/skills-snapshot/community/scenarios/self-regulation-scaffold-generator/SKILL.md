@@ -3,7 +3,7 @@ name: self-regulation-scaffold-generator
 description: "Generate scaffolds supporting student self-regulation across planning, monitoring, and evaluation phases. Use when students struggle to manage their own learning during extended or independent tasks."
 layer: scenario
 scope: community
-disciplines: ["psychology"]
+disciplines: ["psychology", "education"]
 language: "en"
 tags: ["psychology", "metacognition", "self-regulated-learning", "education", "cc-by-sa-4.0", "curated-external", "openwisdom"]
 version: "0.1.0"

@@ -3,7 +3,7 @@ name: historical-source-adapter
 description: "Adapt a historical primary source for classroom use — modifying complexity and length while preserving features for sourcing, close reading, and corroboration. Use when a primary source is too complex for the target age group."
 layer: scenario
 scope: community
-disciplines: ["history"]
+disciplines: ["history", "education"]
 language: "en"
 tags: ["history", "historical-thinking", "education", "sourcing", "cc-by-sa-4.0", "curated-external", "openwisdom"]
 version: "0.1.0"

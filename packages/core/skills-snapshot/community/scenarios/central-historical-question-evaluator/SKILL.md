@@ -3,7 +3,7 @@ name: central-historical-question-evaluator
 description: "Evaluate a teacher-drafted central historical question for its capacity to drive genuine historical inquiry. Use when assessing whether a question will generate real evidence-weighing or produce shallow responses."
 layer: scenario
 scope: community
-disciplines: ["history"]
+disciplines: ["history", "education"]
 language: "en"
 tags: ["history", "historical-thinking", "education", "sourcing", "cc-by-sa-4.0", "curated-external", "openwisdom"]
 version: "0.1.0"

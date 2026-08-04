@@ -3,7 +3,7 @@ name: corroboration-skill-builder
 description: "Build students' capacity to compare accounts across multiple historical sources — identifying agreements, contradictions, and gaps. Use when students treat individual documents as complete answers rather than partial perspectives."
 layer: scenario
 scope: community
-disciplines: ["history"]
+disciplines: ["history", "education"]
 language: "en"
 tags: ["history", "historical-thinking", "education", "sourcing", "cc-by-sa-4.0", "curated-external", "openwisdom"]
 version: "0.1.0"

@@ -3,7 +3,7 @@ name: contextualisation-skill-builder
 description: "Build students' capacity to place historical documents in their temporal and social context. Use when students read sources without considering what was happening at the time, or know the context but don't deploy it."
 layer: scenario
 scope: community
-disciplines: ["history"]
+disciplines: ["history", "education"]
 language: "en"
 tags: ["history", "historical-thinking", "education", "sourcing", "cc-by-sa-4.0", "curated-external", "openwisdom"]
 version: "0.1.0"

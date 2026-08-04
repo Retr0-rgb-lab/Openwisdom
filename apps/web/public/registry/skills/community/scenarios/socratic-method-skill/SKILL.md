@@ -3,7 +3,7 @@ name: socratic-method-skill
 description: "Six question types for discovery: clarification, assumption, evidence, perspective, implication, meta."
 layer: scenario
 scope: community
-disciplines: ["philosophy", "psychology"]
+disciplines: ["philosophy", "psychology", "education"]
 language: "en"
 tags: ["socratic", "dialectic", "epistemology", "pedagogy", "curated-external", "openwisdom"]
 version: "0.1.0"

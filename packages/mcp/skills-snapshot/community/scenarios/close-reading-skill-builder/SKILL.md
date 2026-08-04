@@ -3,7 +3,7 @@ name: close-reading-skill-builder
 description: "Build students' capacity to read historical documents closely — attending to word choice, tone, and rhetoric as evidence of perspective. Use when students summarise sources without analysing language."
 layer: scenario
 scope: community
-disciplines: ["history"]
+disciplines: ["history", "education"]
 language: "en"
 tags: ["history", "historical-thinking", "education", "sourcing", "cc-by-sa-4.0", "curated-external", "openwisdom"]
 version: "0.1.0"

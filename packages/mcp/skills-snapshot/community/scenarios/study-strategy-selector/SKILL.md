@@ -3,9 +3,9 @@ name: study-strategy-selector
 description: "Maps tasks to high-utility strategies (retrieval, spacing, interleaving) from learning science."
 layer: scenario
 scope: community
-disciplines: ["psychology"]
+disciplines: ["psychology", "education"]
 language: "en"
-tags: ["metacognition", "learning-science", "self-regulated-learning", "curated-external", "openwisdom"]
+tags: ["metacognition", "learning-science", "self-regulated-learning", "education", "curated-external", "openwisdom"]
 version: "0.1.0"
 license: "CC-BY-SA-4.0"
 metadata:

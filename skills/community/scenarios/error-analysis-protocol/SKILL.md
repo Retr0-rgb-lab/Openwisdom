@@ -3,7 +3,7 @@ name: error-analysis-protocol
 description: "Design an error analysis protocol to diagnose the root cause of student mistakes and misconceptions. Use when error patterns appear in student work and targeted feedback is needed."
 layer: scenario
 scope: community
-disciplines: ["psychology"]
+disciplines: ["psychology", "education"]
 language: "en"
 tags: ["psychology", "metacognition", "self-regulated-learning", "education", "cc-by-sa-4.0", "curated-external", "openwisdom"]
 version: "0.1.0"

@@ -3,7 +3,7 @@ name: metacognitive-prompt-library
 description: "Build a library of metacognitive prompts targeting planning, monitoring, or evaluation for a specific task. Use when developing students' thinking-about-thinking during independent work."
 layer: scenario
 scope: community
-disciplines: ["psychology"]
+disciplines: ["psychology", "education"]
 language: "en"
 tags: ["psychology", "metacognition", "self-regulated-learning", "education", "cc-by-sa-4.0", "curated-external", "openwisdom"]
 version: "0.1.0"

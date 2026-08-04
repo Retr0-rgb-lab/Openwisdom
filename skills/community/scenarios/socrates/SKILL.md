@@ -3,7 +3,7 @@ name: socrates
 description: "Agent never answers directly; five-step guided discovery for teaching and metacognition."
 layer: scenario
 scope: community
-disciplines: ["psychology", "philosophy"]
+disciplines: ["psychology", "philosophy", "education"]
 language: "en"
 tags: ["socratic", "tutoring", "discovery-learning", "curated-external", "openwisdom"]
 version: "0.1.0"

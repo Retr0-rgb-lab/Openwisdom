@@ -3,7 +3,7 @@ name: goal-setting-protocol-designer
 description: "Design a structured goal-setting protocol using SMART or implementation-intention frameworks for students. Use when launching units, projects, or developing student self-direction habits."
 layer: scenario
 scope: community
-disciplines: ["psychology"]
+disciplines: ["psychology", "education"]
 language: "en"
 tags: ["psychology", "metacognition", "self-regulated-learning", "education", "cc-by-sa-4.0", "curated-external", "openwisdom"]
 version: "0.1.0"

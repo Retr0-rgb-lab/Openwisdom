@@ -14,9 +14,11 @@
    - 许可不明 → `deferred` / watchlist，不得 `approved`。
 
 3. **领域拟合（Openwisdom）**  
-   - 心理学 / 社会学 / 历史学 / 政治学 / 经济学，或  
+   - 心理学 / 社会学 / 历史学 / 政治学 / 经济学 / **哲学** / **教育学**（七科统称社科），或  
    - 可执行的研究/批判思维/决策/元认知/取向类工作流。  
-   - 拒绝：纯 frontend、devops、营销文案、通用 coding 脚手架（除非明确社科方法工具）。
+   - **教育学 fit：** 学习科学、教法分析、教学会话范式（ZPD / SRL 等）——仍是 **分析/方法 skill**，非托管家教 SaaS。  
+   - 拒绝：纯 frontend、devops、营销文案、通用 coding 脚手架（除非明确社科方法工具）。  
+   - 拒绝：**exam-prep / 题库 / 区域课标教案工厂 / LMS 全栈**（即使挂 education 标签）。
 
 4. **层级可映射**  
    - `scenario`：有「何时用 + 分步流程 + 输出结构」  
@@ -33,7 +35,7 @@
 
 | 维度 | 含义 |
 |------|------|
-| `fit` | 与五学科 / 取向三场景 / Handoff 的互补度 |
+| `fit` | 与七科（含 philosophy / education）/ 取向三场景 / Handoff 的互补度 |
 | `quality` | 步骤完整性、可执行性、非空壳 |
 | `license_clear` | 许可是否清晰可再分发 |
 | `maintainability` | 结构清晰、可改编进 community 树 |

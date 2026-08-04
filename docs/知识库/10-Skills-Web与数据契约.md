@@ -46,9 +46,15 @@
 ```ts
 type SkillLayer = "scenario" | "reference";
 type SkillScope = "official" | "community";
+/** Web allowlist — seven peer disciplines (决策 #22 / SPE 34) */
 type DisciplineId =
-  | "psychology" | "sociology" | "history"
-  | "political-science" | "economics";
+  | "psychology"
+  | "sociology"
+  | "history"
+  | "political-science"
+  | "economics"
+  | "philosophy"
+  | "education";
 
 type CatalogEntry = {
   id: string;
@@ -81,8 +87,12 @@ type CatalogEntry = {
 | history | history |
 | poli | political-science |
 | econ | economics |
+| philo | philosophy |
+| **edu** | **education** |
 
-筛选 URL 使用 **DisciplineId**（`discipline=psychology`）。
+筛选 URL 使用 **DisciplineId**（`discipline=psychology` · `discipline=education` 等）。
+
+**Catalog 真相 vs Web allowlist：** `packages/schema` 中 `disciplines` 为 free `string[]`；core/CLI/MCP 按字符串精确匹配过滤。Web `DisciplineId` / `DISCIPLINE_SET` / `parseDisciplineParam` 为 **七元组 allowlist**——未知 id 不得静默丢弃已登记七科（漏 `education` 会导致 dual-write 后筛空）。
 
 ### 内部 API
 

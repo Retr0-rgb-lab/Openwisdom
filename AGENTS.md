@@ -139,7 +139,7 @@ pnpm lint
 - Layers: `scenario` | `reference`; scope: `official` | `community`.
 - Official orientation core (v1): `macro-scan`, `personal-anchor`, `metacognition-audit`.
 - Official Handoff layer (post-v1 / v1.1, D1): `responsibility-scope`, `responsibility-bridge`, `analysis-closure`.
-- Disciplines: psychology, sociology, history, political-science, economics.
+- Disciplines (seven peer UI/catalog ids): psychology, sociology, history, political-science, economics, philosophy, education.
 - Frontmatter validated by `packages/schema`; catalog build feeds web + CLI + MCP.
 - Details: skills/handoff topics in `docs/知识库/07`–`14` + `02` §18.
 

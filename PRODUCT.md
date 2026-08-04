@@ -24,11 +24,11 @@ Openwisdom is an **open-source social-science Agent Skills library** delivered a
 2. **Bilingual catalog website** — discover, filter, search, detail, download, install guidance, contribute path; product-grade finish (maturity bar inspired by impeccable.style’s craft, not its domain).
 3. **Install package managers (CLI + MCP)** — same skill package-manager job, two surfaces: **CLI** (`search` / `install` / `update` / `list`, interactive multi-provider like Impeccable) and **MCP** (stdio tools for agent sessions). Shared install/catalog semantics; **neither calls models nor runs analysis.**
 
-**Why it exists:** Give people durable, composable social-science method (psychology, sociology, history, political science, economics) as agent skills so AI-assisted thinking is structured, situated, and self-critical—not generic vibes.
+**Why it exists:** Give people durable, composable social-science method—**seven catalog disciplines under a social-science umbrella** (psychology, sociology, history, political science, economics, philosophy, education)—as agent skills so AI-assisted thinking is structured, situated, and self-critical—not generic vibes.
 
 **Success (v1 intuition):**
 - A stranger understands the product in about a minute and can start install with one command.
-- Official **three orientation scenario skills** (macro-scan, personal-anchor, metacognition-audit) plus **official references across five disciplines** are browsable and installable.
+- Official **three orientation scenario skills** (macro-scan, personal-anchor, metacognition-audit) plus **official discipline references at five-card magnitude** (psychology · sociology · history · political-science · economics) are browsable and installable. Catalog UI lists **seven peer disciplines** (adds philosophy + education); philosophy/education may ship as filter/browse entries **without** claiming full official reference depth for all seven.
 - User completes a real analysis flow **in their own agent** (Openwisdom does **not** host analysis).
 - Contributors can PR into `community/` from web-guided GitHub workflow.
 - Skill **install heat** (web download + successful CLI/MCP install) is visible; default sort remains editorial `featured`.
@@ -57,7 +57,7 @@ Content language follows the contributor; **UI is zh/en**. Analysis runtime stay
 ### Confirmed capabilities (v1 intent)
 
 - Catalog site: home (IA option C), skills grid with facets, skill detail, install hub, docs skeleton, contribute, about; zh/en UI.
-- Content model **D:** scenario skills + discipline references; official three scenarios; five disciplines with official reference depth (not empty taxonomy).
+- Content model **D:** scenario skills + discipline references; official three scenarios; **seven UI/catalog discipline entries** (统称社科); **honest official reference depth** still five-card magnitude on the five core social-science cards—philosophy and education are peer filter entries, not a claim that every discipline already has official reference depth.
 - CLI package manager only; multi-provider interactive install; non-interactive flags for scripts.
 - **MCP install surface** (alongside CLI): local stdio skill package manager for agent tools; same search/list/install/update semantics; **no LLM**.
 - Registry/index pipeline: skills git → `catalog.json` → web + CLI + MCP; machine-readable `/registry` style index.
@@ -89,7 +89,7 @@ Content language follows the contributor; **UI is zh/en**. Analysis runtime stay
 - Exact stats store (e.g. Upstash/Vercel KV) implementation choice.
 - Whether Disciplines hub pages are P0 or P1 (specs lean P1 strong).
 - Docs engine: Fumadocs headless vs thin custom MDX (architecture recommends Fumadocs).
-- Quantitative count of official references per discipline (principle fixed: enough to support scenarios).
+- Quantitative count of official references per discipline (principle fixed: enough to support scenarios; roadmap: education ≥3 official references; philosophy if still empty on same backlog).
 
 ## Brand Commitments
 

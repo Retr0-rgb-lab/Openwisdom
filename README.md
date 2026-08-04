@@ -2,7 +2,7 @@
 
 **Open-source social-science Agent Skills for the agents you already use.**
 
-Openwisdom is **not** a hosted chatbot. It is a library of structured skills—scenario workflows plus discipline reference cards—that install into Claude Code, Cursor, Codex, and similar coding agents. Analysis runs in **your** agent and model budget.
+Many skills library are available all over the internet right now. But few of them touches the spiritual needs of humanity. Openwisdom is not a library storing coding skills. It only helps people to understand the world better: Your role, the time , the history and human-being. Wisdom is different from knowledge and techne. Wisdom is far more than that.
 
 | Surface | What it is |
 |---------|------------|

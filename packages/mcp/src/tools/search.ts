@@ -1,6 +1,5 @@
 import {
-  ensureRemoteCatalog,
-  loadCatalog,
+  ensureCatalogForUse,
   searchCatalog,
   UsageError,
   RuntimeError,
@@ -21,6 +20,10 @@ export type SearchInput = {
   detail?: DetailLevel;
   /** Force remote catalog re-download into cache. */
   refresh?: boolean;
+  /** Remote registry base URL (or OPENWISDOM_REGISTRY env). */
+  registry?: string;
+  /** Skip remote registry; local skills/snapshot only. */
+  noRemote?: boolean;
 };
 
 /** Pure handler — unit-testable without MCP transport. */
@@ -46,15 +49,19 @@ export async function handleSearch(input: SearchInput = {}): Promise<ToolResult>
       );
     }
 
-    await ensureRemoteCatalog({
-      env: process.env,
-      forceRefresh: Boolean(input.refresh),
-    });
+    const registry =
+      typeof input.registry === "string" && input.registry.trim()
+        ? input.registry.trim()
+        : undefined;
+    const noRemote = Boolean(input.noRemote);
 
-    const { index, source } = loadCatalog({
+    const { index, source } = await ensureCatalogForUse({
       env: process.env,
       cwd: process.cwd(),
       packageRoot: getMcpPackageRoot(),
+      registry,
+      noRemote,
+      forceRegistryRefresh: Boolean(input.refresh),
     });
 
     const limit = Math.min(50, Math.max(1, input.limit ?? 20));

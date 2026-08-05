@@ -27,7 +27,6 @@ import {
   catalogHasHeat,
   DISCIPLINE_IDS,
   filterCatalog,
-  getCatalog,
   parseDisciplineParam,
   parseLangParam,
   parseLayerParam,
@@ -491,14 +490,14 @@ function SkillsToolbar({
 
 /**
  * Skills catalog Operate surface.
- * Optional `entries` should be heat-merged server-side (Spec 29).
- * Without heat, do not invent installs* zeros.
+ * `entries` must be heat-merged (or static) on the server (Spec 29).
+ * Without heat, do not invent installs* zeros. Never import getCatalog here.
  */
 export function SkillsCatalog({
   entries,
 }: {
-  /** Pre-merged catalog (static + optional heat). Falls back to getCatalog(). */
-  entries?: CatalogEntry[];
+  /** Pre-merged catalog (static + optional heat) from Server Component. */
+  entries: CatalogEntry[];
 }) {
   const t = useTranslations("skills");
   const locale = useLocale();
@@ -520,7 +519,7 @@ export function SkillsCatalog({
     };
   }, [searchParams]);
 
-  const catalog = entries ?? getCatalog();
+  const catalog = entries;
   const showPopular = catalogHasHeat(catalog);
 
   const results = useMemo(

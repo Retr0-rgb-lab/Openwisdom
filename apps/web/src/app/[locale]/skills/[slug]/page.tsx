@@ -7,9 +7,9 @@ import {
   getCatalogWithHeat,
   getSkillBySlug,
   getSkillBySlugWithHeat,
-  pickLocalized,
-} from "@/data/catalog";
-import { fetchStats } from "@/lib/heat/fetch-stats";
+} from "@/data/catalog/server";
+import { pickLocalized } from "@/data/catalog/types";
+import { getStatsInProcess } from "@/lib/heat/get-stats";
 import { routing } from "@/i18n/routing";
 
 type Params = Promise<{ locale: string; slug: string }>;
@@ -48,14 +48,15 @@ export default async function SkillDetailPage({
   const { locale, slug } = await params;
   setRequestLocale(locale);
 
-  // Same heat merge as list (SPE 37 G4); fail-open when stats unavailable
-  const stats = await fetchStats();
+  // Same heat merge as list (SPE 37 G4); in-process stats; fail-open
+  const stats = await getStatsInProcess();
+  const catalog = getCatalogWithHeat(stats);
   const entry = getSkillBySlugWithHeat(slug, stats);
   if (!entry) {
     notFound();
   }
 
-  const related = getCatalogWithHeat(stats)
+  const related = catalog
     .filter((e) => e.slug !== entry.slug)
     .filter(
       (e) =>
@@ -64,5 +65,10 @@ export default async function SkillDetailPage({
     )
     .slice(0, 3);
 
-  return <SkillDetail entry={entry} related={related} />;
+  // Client resolves reference chips without importing getCatalog
+  const knownSlugs = catalog.map((e) => e.slug);
+
+  return (
+    <SkillDetail entry={entry} related={related} knownSlugs={knownSlugs} />
+  );
 }

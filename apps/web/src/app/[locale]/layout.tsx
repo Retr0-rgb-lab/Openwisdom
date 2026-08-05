@@ -7,6 +7,8 @@ import { SiteBackdrop } from "@/components/site/SiteBackdrop";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { Toaster } from "@/components/ui/sonner";
+import type { CatalogEntry } from "@/data/catalog/types";
+import { getCatalogSearchIndex } from "@/data/catalog/server";
 import { routing } from "@/i18n/routing";
 
 export const metadata: Metadata = {
@@ -36,13 +38,15 @@ export default async function LocaleLayout({
   // Explicit messages so client components (e.g. SkillsCatalog) always see
   // full namespaces: shell / home / skills — including nested sections.* keys.
   const messages = await getMessages();
+  // Slim static index for chrome search (server merge only; heat via /api/stats)
+  const catalogIndex = getCatalogSearchIndex() as CatalogEntry[];
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       {/* Fixed field under chrome; path-aware static/drift via usePathname */}
       <SiteBackdrop />
       <div className="relative z-10 flex min-h-screen flex-col">
-        <SiteHeader />
+        <SiteHeader catalogIndex={catalogIndex} />
         <main className="flex-1">{children}</main>
         <SiteFooter />
         <Toaster />

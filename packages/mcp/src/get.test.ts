@@ -21,6 +21,17 @@ const skillsRoot = monorepoRoot
   ? path.join(monorepoRoot, "skills")
   : path.join(packageRoot, "..", "..", "skills");
 
+/**
+ * Soft-skip only outside CI. When CI=true/1 or OPENWISDOM_REQUIRE_SNAPSHOTS=1,
+ * missing packaging artifacts hard-fail.
+ */
+function requiresSnapshots(): boolean {
+  const ci = process.env.CI?.trim().toLowerCase();
+  if (ci === "true" || ci === "1" || ci === "yes") return true;
+  const force = process.env.OPENWISDOM_REQUIRE_SNAPSHOTS?.trim().toLowerCase();
+  return force === "1" || force === "true" || force === "yes";
+}
+
 function parsePayload(r: { content: Array<{ text: string }> }): Record<string, unknown> {
   const jsonBlock = r.content
     .map((c) => c.text)
@@ -34,27 +45,27 @@ describe("openwisdom_get handler", () => {
     const prev = process.env.OPENWISDOM_SKILLS_ROOT;
     process.env.OPENWISDOM_SKILLS_ROOT = skillsRoot;
     try {
-      if (
-        !existsSync(
-          path.join(
-            skillsRoot,
-            "official",
-            "scenarios",
-            "macro-scan",
-            "SKILL.md",
-          ),
-        ) &&
-        !existsSync(
-          path.join(
-            getMcpPackageRoot(),
-            "skills-snapshot",
-            "official",
-            "scenarios",
-            "macro-scan",
-            "SKILL.md",
-          ),
-        )
-      ) {
+      const local = path.join(
+        skillsRoot,
+        "official",
+        "scenarios",
+        "macro-scan",
+        "SKILL.md",
+      );
+      const snap = path.join(
+        getMcpPackageRoot(),
+        "skills-snapshot",
+        "official",
+        "scenarios",
+        "macro-scan",
+        "SKILL.md",
+      );
+      if (!existsSync(local) && !existsSync(snap)) {
+        if (requiresSnapshots()) {
+          expect.fail(
+            `Missing macro-scan SKILL.md in monorepo skills and skills-snapshot (CI hard-fail)`,
+          );
+        }
         return;
       }
 
@@ -196,7 +207,14 @@ describe("skills-snapshot body integrity", () => {
       "macro-scan",
       "SKILL.md",
     );
-    if (!existsSync(snap)) return;
+    if (!existsSync(snap)) {
+      if (requiresSnapshots()) {
+        expect.fail(
+          `Missing required skills-snapshot: ${snap} (CI / OPENWISDOM_REQUIRE_SNAPSHOTS hard-fail)`,
+        );
+      }
+      return;
+    }
     const body = readFileSync(snap, "utf8");
     expect(body.startsWith("---")).toBe(true);
     expect(body).toContain("name: macro-scan");

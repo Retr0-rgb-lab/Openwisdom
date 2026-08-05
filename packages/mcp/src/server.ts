@@ -31,7 +31,7 @@ export function createServer(): McpServer {
     {
       title: "Search Openwisdom skills",
       description:
-        "Search the installable catalog by free text and/or layer/scope/discipline/tag filters. Read-only. Query may be empty when a filter is set. Remote registry base from OPENWISDOM_REGISTRY (or default); set OPENWISDOM_NO_REMOTE=1 to skip remote. Discovery algorithm (handoff / orientation): (1) search or list with tag=orientation-pipeline; (2) list mode=installed; (3) client: missing skills by pipeline.order; (4) get → install(skills: [...]) or install(bundle); (5) analysis runs in the agent session — not via MCP. Prefer list|search → get → install. Cards include tags/references and optional pipeline. Empty hits are success with skills=[]. No recommend/run/analyze tools.",
+        "Search the installable catalog by free text and/or layer/scope/discipline/tag filters. Read-only. Query may be empty when a filter is set. Optional registry / noRemote align with install/update and CLI (also OPENWISDOM_REGISTRY / OPENWISDOM_NO_REMOTE env). Discovery algorithm (handoff / orientation): (1) search or list with tag=orientation-pipeline; (2) list mode=installed; (3) client: missing skills by pipeline.order; (4) get → install(skills: [...]) or install(bundle); (5) analysis runs in the agent session — not via MCP. Prefer list|search → get → install. Cards include tags/references and optional pipeline. Empty hits are success with skills=[]. No recommend/run/analyze tools.",
       inputSchema: z.object({
         query: z
           .string()
@@ -74,7 +74,20 @@ export function createServer(): McpServer {
           .boolean()
           .optional()
           .describe(
-            "Force re-download of remote registry catalog into local cache (fail-open on network errors). Registry URL: OPENWISDOM_REGISTRY env.",
+            "Force re-download of remote registry catalog into local cache (fail-open on network errors). Registry URL: registry field or OPENWISDOM_REGISTRY env.",
+          ),
+        registry: z
+          .string()
+          .min(1)
+          .optional()
+          .describe(
+            "Remote registry base URL (overrides OPENWISDOM_REGISTRY env)",
+          ),
+        noRemote: z
+          .boolean()
+          .optional()
+          .describe(
+            "Skip remote registry; local skills/snapshot only (default false)",
           ),
       }),
       annotations: {
@@ -92,7 +105,7 @@ export function createServer(): McpServer {
     {
       title: "List Openwisdom skills",
       description:
-        "Browse the full installable catalog (available) or list skills already installed under harness paths. Read-only. Discovery algorithm: search/list with tag → list mode=installed → install missing by pipeline.order → analysis in agent session (not MCP). Recommended flow: list|search → openwisdom_get(skill) → detect_providers → install. available supports layer/scope/discipline/tag/q filters; cards include tags/references and optional pipeline. No recommend/run tools.",
+        "Browse the full installable catalog (available) or list skills already installed under harness paths. Read-only. Optional registry / noRemote align with install/update and CLI. Discovery algorithm: search/list with tag → list mode=installed → install missing by pipeline.order → analysis in agent session (not MCP). Recommended flow: list|search → openwisdom_get(skill) → detect_providers → install. available supports layer/scope/discipline/tag/q filters; cards include tags/references and optional pipeline. No recommend/run tools.",
       inputSchema: z.object({
         mode: z
           .enum(["available", "installed"])
@@ -142,6 +155,19 @@ export function createServer(): McpServer {
           .string()
           .optional()
           .describe("Project root; default CLAUDE_PROJECT_DIR or process.cwd()"),
+        registry: z
+          .string()
+          .min(1)
+          .optional()
+          .describe(
+            "Remote registry base URL (overrides OPENWISDOM_REGISTRY env)",
+          ),
+        noRemote: z
+          .boolean()
+          .optional()
+          .describe(
+            "Skip remote registry; local skills/snapshot only (default false)",
+          ),
       }),
       annotations: {
         readOnlyHint: true,

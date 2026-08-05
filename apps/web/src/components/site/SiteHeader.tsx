@@ -9,6 +9,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
+import type { CatalogEntry } from "@/data/catalog/types";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { GITHUB_URL, NAV_ITEMS } from "./constants";
@@ -19,7 +20,12 @@ import { BrandLogo } from "./BrandLogo";
 import { MobileNav } from "./MobileNav";
 
 // Brand chrome (specs/07 §6): logo.svg mark + wordmark + nav + search + utilities.
-export function SiteHeader() {
+export function SiteHeader({
+  catalogIndex,
+}: {
+  /** Slim server catalog for GlobalSearch — no client getCatalog. */
+  catalogIndex: CatalogEntry[];
+}) {
   const t = useTranslations("shell");
   const pathname = usePathname();
   const siteName = t("meta.siteName");
@@ -69,7 +75,11 @@ export function SiteHeader() {
               <div className="h-9 max-w-[22rem] rounded-full border border-line bg-field" />
             }
           >
-            <GlobalSearchTrigger compact className="max-w-[22rem] md:ml-auto" />
+            <GlobalSearchTrigger
+              compact
+              className="max-w-[22rem] md:ml-auto"
+              catalogIndex={catalogIndex}
+            />
           </Suspense>
         </div>
 

@@ -71,10 +71,8 @@ function log(
   level: "info" | "warn" | "error",
   message: string,
 ): void {
+  // Library default: silent when onLog omitted (MCP / embedded hosts).
   if (opts?.onLog) opts.onLog(level, message);
-  else if (level !== "info") {
-    console.error(message);
-  }
 }
 
 export function isRemoteDisabled(env: NodeJS.ProcessEnv = process.env): boolean {

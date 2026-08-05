@@ -27,6 +27,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { execSync } from "node:child_process";
 import matter from "gray-matter";
 import {
+  SCHEMA_VERSION,
   assertNameMatchesDir,
   catalogIndexSchema,
   inferScopeAndLayer,
@@ -37,7 +38,6 @@ import {
 } from "@openwisdom/schema";
 
 const CLI_MIN_VERSION = "0.1.0";
-const SCHEMA_VERSION = 1 as const;
 
 /**
  * Official catalog bundles (Spec 33 §5.6).
@@ -129,8 +129,74 @@ function updatedFromMtime(filePath: string): string {
   }
 }
 
-/** Stable sha256 of skills payload (excludes volatile `updated`). */
-function contentHash(skills: CatalogSkill[]): string {
+/** List relative files under a skill directory (for payload-index + contentHash). */
+function listSkillRelativeFiles(skillDir: string): string[] {
+  const out: string[] = [];
+  function walk(dir: string, prefix: string): void {
+    let entries;
+    try {
+      entries = readdirSync(dir, { withFileTypes: true });
+    } catch {
+      return;
+    }
+    for (const ent of entries) {
+      if (ent.name === "node_modules" || ent.name === ".git" || ent.name === ".DS_Store") {
+        continue;
+      }
+      const rel = prefix ? `${prefix}/${ent.name}` : ent.name;
+      const full = join(dir, ent.name);
+      if (ent.isDirectory()) walk(full, rel);
+      else if (ent.isFile()) out.push(rel.replace(/\\/g, "/"));
+    }
+  }
+  walk(skillDir, "");
+  out.sort((a, b) => a.localeCompare(b));
+  return out;
+}
+
+/**
+ * Stable digest of skill tree files under monorepoRoot/skill.repoPath.
+ * Sorted relative paths + binary contents; body-only edits change this.
+ */
+export function skillPayloadDigest(
+  monorepoRoot: string,
+  skill: CatalogSkill,
+): string {
+  const skillDir = join(
+    monorepoRoot,
+    ...skill.repoPath.replace(/\\/g, "/").split("/").filter(Boolean),
+  );
+  const files = existsSync(skillDir)
+    ? listSkillRelativeFiles(skillDir)
+    : [];
+  const h = createHash("sha256");
+  if (files.length === 0) {
+    // Missing tree: still incorporate id/path so hash is defined
+    h.update(`missing:${skill.repoPath}\n`, "utf8");
+    return h.digest("hex");
+  }
+  for (const rel of files) {
+    h.update(rel, "utf8");
+    h.update("\0");
+    const abs = join(skillDir, ...rel.split("/").filter(Boolean));
+    try {
+      h.update(readFileSync(abs));
+    } catch {
+      h.update(`unreadable:${rel}`, "utf8");
+    }
+    h.update("\0");
+  }
+  return h.digest("hex");
+}
+
+/**
+ * Stable sha256 of skills metadata + per-skill payload digests
+ * (excludes volatile `updated`). Body/asset drift changes the hash.
+ */
+export function contentHash(
+  skills: CatalogSkill[],
+  monorepoRoot: string,
+): string {
   const canonical = [...skills]
     .sort((a, b) => a.id.localeCompare(b.id))
     .map((s) => ({
@@ -147,6 +213,7 @@ function contentHash(skills: CatalogSkill[]): string {
       references: s.references ?? null,
       pipeline: s.pipeline ?? null,
       install: s.install,
+      payloadDigest: skillPayloadDigest(monorepoRoot, s),
     }));
   const hex = createHash("sha256")
     .update(JSON.stringify(canonical), "utf8")
@@ -155,11 +222,10 @@ function contentHash(skills: CatalogSkill[]): string {
 }
 
 /**
- * Emit official bundles; warn (not fail) when skillIds missing during partial land.
- * When every declared id is present, still emit; missing ids stay listed for install
- * expansion once skills land (Spec 33 partial-land soft rule).
+ * Emit official bundles; hard-fail when any skillIds are missing from the catalog.
+ * Ship path must not emit broken bundles.
  */
-function resolveBundles(
+export function resolveBundles(
   skillIds: Set<string>,
   declared: CatalogBundle[],
 ): CatalogBundle[] {
@@ -167,13 +233,51 @@ function resolveBundles(
   for (const bundle of declared) {
     const missing = bundle.skillIds.filter((id) => !skillIds.has(id));
     if (missing.length > 0) {
-      console.warn(
-        `[@openwisdom/catalog] warn: bundle "${bundle.id}" missing skill(s): ${missing.join(", ")} (partial land — still emitting)`,
+      throw new Error(
+        `bundle "${bundle.id}" missing skill(s): ${missing.join(", ")}`,
       );
     }
     out.push(bundle);
   }
   return out;
+}
+
+/**
+ * Hard-fail when any skill.references[] entry points at a missing skill id.
+ */
+export function assertReferencesExist(
+  skills: CatalogSkill[],
+  skillIds: Set<string>,
+): void {
+  for (const s of skills) {
+    if (!s.references?.length) continue;
+    const missing = s.references.filter((id) => !skillIds.has(id));
+    if (missing.length > 0) {
+      throw new Error(
+        `skill "${s.id}" references missing skill id(s): ${missing.join(", ")}`,
+      );
+    }
+  }
+}
+
+/**
+ * Compare contentHash strings from dual-write targets; throw if any differ.
+ * Parity helper for ship/CI (scripts/check-catalog-hash can reuse the idea).
+ */
+export function assertContentHashParity(
+  entries: ReadonlyArray<{ label: string; contentHash: string }>,
+): void {
+  if (entries.length === 0) {
+    throw new Error("assertContentHashParity: no manifests provided");
+  }
+  const first = entries[0]!;
+  for (const e of entries) {
+    if (e.contentHash !== first.contentHash) {
+      throw new Error(
+        `contentHash mismatch: ${first.label}=${first.contentHash} vs ${e.label}=${e.contentHash}`,
+      );
+    }
+  }
 }
 
 function skillDirName(skillMdPath: string): string {
@@ -242,31 +346,6 @@ function writeJson(filePath: string, value: unknown): void {
  * Mirror monorepo skills/ into package skills-snapshot/ (install payload).
  * Prefer full tree; at minimum official/ is required for offline install.
  */
-/** List relative files under a skill directory (for remote install payload-index). */
-function listSkillRelativeFiles(skillDir: string): string[] {
-  const out: string[] = [];
-  function walk(dir: string, prefix: string): void {
-    let entries;
-    try {
-      entries = readdirSync(dir, { withFileTypes: true });
-    } catch {
-      return;
-    }
-    for (const ent of entries) {
-      if (ent.name === "node_modules" || ent.name === ".git" || ent.name === ".DS_Store") {
-        continue;
-      }
-      const rel = prefix ? `${prefix}/${ent.name}` : ent.name;
-      const full = join(dir, ent.name);
-      if (ent.isDirectory()) walk(full, rel);
-      else if (ent.isFile()) out.push(rel.replace(/\\/g, "/"));
-    }
-  }
-  walk(skillDir, "");
-  out.sort((a, b) => a.localeCompare(b));
-  return out;
-}
-
 function buildPayloadIndex(
   skillsRoot: string,
   skills: CatalogSkill[],
@@ -403,7 +482,24 @@ function main(): void {
 
   const seenIds = new Set(skills.map((s) => s.id));
 
-  const bundles = resolveBundles(seenIds, OFFICIAL_BUNDLES);
+  try {
+    assertReferencesExist(skills, seenIds);
+  } catch (err) {
+    console.error(
+      `[@openwisdom/catalog] ${err instanceof Error ? err.message : err}`,
+    );
+    process.exit(1);
+  }
+
+  let bundles: CatalogBundle[];
+  try {
+    bundles = resolveBundles(seenIds, OFFICIAL_BUNDLES);
+  } catch (err) {
+    console.error(
+      `[@openwisdom/catalog] ${err instanceof Error ? err.message : err}`,
+    );
+    process.exit(1);
+  }
 
   const catalog: CatalogIndex = catalogIndexSchema.parse({
     schemaVersion: SCHEMA_VERSION,
@@ -415,7 +511,7 @@ function main(): void {
     schemaVersion: SCHEMA_VERSION,
     generatedAt: new Date().toISOString(),
     gitSha: gitSha(monorepoRoot),
-    contentHash: contentHash(catalog.skills),
+    contentHash: contentHash(catalog.skills, monorepoRoot),
     skillCount: catalog.skills.length,
     cliMinVersion: CLI_MIN_VERSION,
     mcpMinVersion: CLI_MIN_VERSION,

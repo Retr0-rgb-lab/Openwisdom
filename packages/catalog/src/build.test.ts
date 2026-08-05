@@ -12,9 +12,13 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import {
+  assertContentHashParity,
+  assertReferencesExist,
   buildSkillEntry,
   collectCatalogSkills,
+  contentHash,
   findSkillMdFiles,
+  resolveBundles,
 } from "./build.js";
 
 const tmpDirs: string[] = [];
@@ -52,6 +56,40 @@ version: 0.1.0
 
 # Fixture Skill
 `;
+
+function writeOfficialSkill(
+  root: string,
+  id: string,
+  body: string,
+  frontmatterExtra = "",
+): string {
+  const skillDir = path.join(
+    root,
+    "skills",
+    "official",
+    "scenarios",
+    id,
+  );
+  mkdirSync(skillDir, { recursive: true });
+  const md = `---
+name: ${id}
+id: ${id}
+description: Test skill ${id}
+layer: scenario
+scope: official
+disciplines:
+  - psychology
+language: en
+tags:
+  - test
+version: 0.1.0
+${frontmatterExtra}---
+
+${body}
+`;
+  writeFileSync(path.join(skillDir, "SKILL.md"), md, "utf8");
+  return skillDir;
+}
 
 describe("collectCatalogSkills", () => {
   it("refuses missing skills root", () => {
@@ -141,5 +179,143 @@ describe("findSkillMdFiles", () => {
     writeFileSync(md, "# x\n", "utf8");
     expect(findSkillMdFiles(root).some((p) => existsSync(p))).toBe(true);
     expect(findSkillMdFiles(root)).toContain(md);
+  });
+});
+
+describe("contentHash", () => {
+  it("is stable under skill array reorder", () => {
+    const root = makeTmp();
+    writeOfficialSkill(root, "alpha-skill", "# Alpha\n");
+    writeOfficialSkill(root, "beta-skill", "# Beta\n");
+    const skills = collectCatalogSkills(path.join(root, "skills"), root);
+    const h1 = contentHash(skills, root);
+    const h2 = contentHash([...skills].reverse(), root);
+    expect(h1).toBe(h2);
+    expect(h1).toMatch(/^sha256-[a-f0-9]{64}$/);
+  });
+
+  it("changes when SKILL.md body changes without metadata change", () => {
+    const root = makeTmp();
+    const skillDir = writeOfficialSkill(root, "body-skill", "# Original body\n");
+    const skillsBefore = collectCatalogSkills(path.join(root, "skills"), root);
+    const hashBefore = contentHash(skillsBefore, root);
+
+    // Same frontmatter identity fields; only markdown body drifts
+    writeFileSync(
+      path.join(skillDir, "SKILL.md"),
+      `---
+name: body-skill
+id: body-skill
+description: Test skill body-skill
+layer: scenario
+scope: official
+disciplines:
+  - psychology
+language: en
+tags:
+  - test
+version: 0.1.0
+---
+
+# Drifted body content
+`,
+      "utf8",
+    );
+    const skillsAfter = collectCatalogSkills(path.join(root, "skills"), root);
+    const hashAfter = contentHash(skillsAfter, root);
+    expect(hashAfter).not.toBe(hashBefore);
+  });
+
+  it("changes when nested payload file is added", () => {
+    const root = makeTmp();
+    const skillDir = writeOfficialSkill(root, "asset-skill", "# With assets\n");
+    const skillsBefore = collectCatalogSkills(path.join(root, "skills"), root);
+    const hashBefore = contentHash(skillsBefore, root);
+
+    writeFileSync(path.join(skillDir, "notes.md"), "extra payload\n", "utf8");
+    const skillsAfter = collectCatalogSkills(path.join(root, "skills"), root);
+    const hashAfter = contentHash(skillsAfter, root);
+    expect(hashAfter).not.toBe(hashBefore);
+  });
+});
+
+describe("resolveBundles", () => {
+  it("emits bundles when all members present", () => {
+    const ids = new Set(["a", "b", "c"]);
+    const out = resolveBundles(ids, [
+      {
+        id: "pack",
+        title: "Pack",
+        description: "d",
+        skillIds: ["a", "c"],
+      },
+    ]);
+    expect(out).toHaveLength(1);
+    expect(out[0]!.skillIds).toEqual(["a", "c"]);
+  });
+
+  it("hard-fails when a bundle member is missing", () => {
+    const ids = new Set(["a"]);
+    expect(() =>
+      resolveBundles(ids, [
+        {
+          id: "broken",
+          title: "Broken",
+          description: "d",
+          skillIds: ["a", "missing-id"],
+        },
+      ]),
+    ).toThrow(/bundle "broken" missing skill\(s\): missing-id/);
+  });
+});
+
+describe("assertReferencesExist", () => {
+  it("passes when references resolve", () => {
+    const root = makeTmp();
+    writeOfficialSkill(root, "ref-target", "# Target\n");
+    writeOfficialSkill(
+      root,
+      "ref-source",
+      "# Source\n",
+      "references:\n  - ref-target\n",
+    );
+    const skills = collectCatalogSkills(path.join(root, "skills"), root);
+    const ids = new Set(skills.map((s) => s.id));
+    expect(() => assertReferencesExist(skills, ids)).not.toThrow();
+  });
+
+  it("hard-fails when references[] points at missing id", () => {
+    const root = makeTmp();
+    writeOfficialSkill(
+      root,
+      "lonely",
+      "# Lonely\n",
+      "references:\n  - does-not-exist\n",
+    );
+    const skills = collectCatalogSkills(path.join(root, "skills"), root);
+    const ids = new Set(skills.map((s) => s.id));
+    expect(() => assertReferencesExist(skills, ids)).toThrow(
+      /skill "lonely" references missing skill id\(s\): does-not-exist/,
+    );
+  });
+});
+
+describe("assertContentHashParity", () => {
+  it("passes when hashes match", () => {
+    expect(() =>
+      assertContentHashParity([
+        { label: "cli", contentHash: "sha256-abc" },
+        { label: "mcp", contentHash: "sha256-abc" },
+      ]),
+    ).not.toThrow();
+  });
+
+  it("throws on mismatch", () => {
+    expect(() =>
+      assertContentHashParity([
+        { label: "cli", contentHash: "sha256-a" },
+        { label: "web", contentHash: "sha256-b" },
+      ]),
+    ).toThrow(/contentHash mismatch/);
   });
 });

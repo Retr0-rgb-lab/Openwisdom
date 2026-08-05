@@ -94,14 +94,14 @@ const PSYCHOLOGY: CatalogEntry[] = [
   ext({
     slug: "study-strategy-selector",
     layer: "scenario",
-    disciplines: ["psychology"],
+    disciplines: ["psychology", "education"],
     featuredRank: 52,
     title: { zh: "学习策略选择器", en: "Study Strategy Selector" },
     summary: {
       zh: "按认知学习科学匹配检索练习、间隔与交错等高效用策略。",
       en: "Maps tasks to high-utility strategies (retrieval, spacing, interleaving) from learning science.",
     },
-    tags: ["metacognition", "learning-science", "self-regulated-learning"],
+    tags: ["metacognition", "learning-science", "self-regulated-learning", "education"],
     externalUrl:
       "https://github.com/GarethManning/education-agent-skills/tree/main/skills/self-regulated-learning/study-strategy-selector",
     license: "CC-BY-SA-4.0",
@@ -676,10 +676,301 @@ const ECONOMICS: CatalogEntry[] = [
   }),
 ];
 
+/**
+ * Education (SPE 34) — bilingual UI overlay for registry installables.
+ * Machine registry only has English name/description; zh titles live here
+ * so /zh locale does not show kebab-case English ids as the card name.
+ * (study-strategy-selector / socrates / socratic-method-skill already
+ *  overlaid elsewhere; remaining GarethManning + self-regulation packs below.)
+ */
+const EDUCATION: CatalogEntry[] = [
+  ext({
+    slug: "document-based-lesson-designer",
+    layer: "scenario",
+    disciplines: ["history", "education"],
+    featuredRank: 140,
+    title: {
+      zh: "文献探究课设计器",
+      en: "Document-Based Lesson Designer",
+    },
+    summary: {
+      zh: "按 Reading Like a Historian 四段结构设计完整史料探究课：背景、中心问题、文献轮次与全班讨论。",
+      en: "Design a complete document-based history lesson using the Reading Like a Historian four-part structure.",
+    },
+    tags: ["history", "historical-thinking", "education", "lesson-design"],
+    externalUrl:
+      "https://github.com/GarethManning/education-agent-skills/tree/main/skills/historical-thinking/document-based-lesson-designer",
+    license: "CC-BY-SA-4.0",
+    author: "Gareth Manning",
+    attribution: "GarethManning/education-agent-skills",
+  }),
+  ext({
+    slug: "central-historical-question-evaluator",
+    layer: "scenario",
+    disciplines: ["history", "education"],
+    featuredRank: 141,
+    title: {
+      zh: "中心历史问题评估",
+      en: "Central Historical Question Evaluator",
+    },
+    summary: {
+      zh: "评估教师拟定的中心历史问题是否能驱动真正的证据权衡，而非浅层应答。",
+      en: "Evaluate a teacher-drafted central historical question for genuine inquiry vs shallow responses.",
+    },
+    tags: ["history", "historical-thinking", "education", "question-design"],
+    externalUrl:
+      "https://github.com/GarethManning/education-agent-skills/tree/main/skills/historical-thinking/central-historical-question-evaluator",
+    license: "CC-BY-SA-4.0",
+    author: "Gareth Manning",
+    attribution: "GarethManning/education-agent-skills",
+  }),
+  ext({
+    slug: "historical-document-set-curator",
+    layer: "scenario",
+    disciplines: ["history", "education"],
+    featuredRank: 142,
+    title: {
+      zh: "历史文献集策展",
+      en: "Historical Document Set Curator",
+    },
+    summary: {
+      zh: "围绕中心问题挑选并排序史料，制造分析张力；避免文献集应答扁平。",
+      en: "Select and sequence sources for analytical tension around a central question.",
+    },
+    tags: ["history", "historical-thinking", "education", "sources"],
+    externalUrl:
+      "https://github.com/GarethManning/education-agent-skills/tree/main/skills/historical-thinking/historical-document-set-curator",
+    license: "CC-BY-SA-4.0",
+    author: "Gareth Manning",
+    attribution: "GarethManning/education-agent-skills",
+  }),
+  ext({
+    slug: "historical-source-adapter",
+    layer: "scenario",
+    disciplines: ["history", "education"],
+    featuredRank: 143,
+    title: {
+      zh: "历史史料课堂改编",
+      en: "Historical Source Adapter",
+    },
+    summary: {
+      zh: "在保留溯源/细读/互证特征的前提下，按学段调整史料难度与长度。",
+      en: "Adapt primary sources for classroom use while preserving sourcing, close reading, and corroboration features.",
+    },
+    tags: ["history", "historical-thinking", "education", "differentiation"],
+    externalUrl:
+      "https://github.com/GarethManning/education-agent-skills/tree/main/skills/historical-thinking/historical-source-adapter",
+    license: "CC-BY-SA-4.0",
+    author: "Gareth Manning",
+    attribution: "GarethManning/education-agent-skills",
+  }),
+  ext({
+    slug: "sourcing-skill-builder",
+    layer: "scenario",
+    disciplines: ["history", "education"],
+    featuredRank: 144,
+    title: {
+      zh: "史料溯源能力培养",
+      en: "Sourcing Skill Builder",
+    },
+    summary: {
+      zh: "培养学生阅读前先追问作者、时间、动机与可信度，而不是直接读正文。",
+      en: "Build capacity to interrogate authorship, date, purpose, and reliability before reading.",
+    },
+    tags: ["history", "historical-thinking", "education", "sourcing"],
+    externalUrl:
+      "https://github.com/GarethManning/education-agent-skills/tree/main/skills/historical-thinking/sourcing-skill-builder",
+    license: "CC-BY-SA-4.0",
+    author: "Gareth Manning",
+    attribution: "GarethManning/education-agent-skills",
+  }),
+  ext({
+    slug: "close-reading-skill-builder",
+    layer: "scenario",
+    disciplines: ["history", "education"],
+    featuredRank: 145,
+    title: {
+      zh: "史料细读能力培养",
+      en: "Close-Reading Skill Builder",
+    },
+    summary: {
+      zh: "培养学生关注用词、语气与修辞，从语言证据读出视角，而不是只做摘要。",
+      en: "Build close reading of word choice, tone, and rhetoric as evidence of perspective.",
+    },
+    tags: ["history", "historical-thinking", "education", "close-reading"],
+    externalUrl:
+      "https://github.com/GarethManning/education-agent-skills/tree/main/skills/historical-thinking/close-reading-skill-builder",
+    license: "CC-BY-SA-4.0",
+    author: "Gareth Manning",
+    attribution: "GarethManning/education-agent-skills",
+  }),
+  ext({
+    slug: "contextualisation-skill-builder",
+    layer: "scenario",
+    disciplines: ["history", "education"],
+    featuredRank: 146,
+    title: {
+      zh: "史料情境化能力培养",
+      en: "Contextualisation Skill Builder",
+    },
+    summary: {
+      zh: "培养学生把文献放回时代与社会语境中阅读，而不只是孤立读文本。",
+      en: "Build capacity to place documents in temporal and social context.",
+    },
+    tags: ["history", "historical-thinking", "education", "contextualisation"],
+    externalUrl:
+      "https://github.com/GarethManning/education-agent-skills/tree/main/skills/historical-thinking/contextualisation-skill-builder",
+    license: "CC-BY-SA-4.0",
+    author: "Gareth Manning",
+    attribution: "GarethManning/education-agent-skills",
+  }),
+  ext({
+    slug: "corroboration-skill-builder",
+    layer: "scenario",
+    disciplines: ["history", "education"],
+    featuredRank: 147,
+    title: {
+      zh: "史料互证能力培养",
+      en: "Corroboration Skill Builder",
+    },
+    summary: {
+      zh: "培养学生跨文献比较一致、矛盾与空白，而不是把单份文献当完整答案。",
+      en: "Build capacity to compare agreements, contradictions, and gaps across sources.",
+    },
+    tags: ["history", "historical-thinking", "education", "corroboration"],
+    externalUrl:
+      "https://github.com/GarethManning/education-agent-skills/tree/main/skills/historical-thinking/corroboration-skill-builder",
+    license: "CC-BY-SA-4.0",
+    author: "Gareth Manning",
+    attribution: "GarethManning/education-agent-skills",
+  }),
+  ext({
+    slug: "historical-thinking-strategy-modelling-guide",
+    layer: "scenario",
+    disciplines: ["history", "education"],
+    featuredRank: 148,
+    title: {
+      zh: "历史思维策略示范（出声思考）",
+      en: "Historical Thinking Strategy Modelling Guide",
+    },
+    summary: {
+      zh: "针对特定文献设计教师 think-aloud，示范历史思维策略，而非只走流程。",
+      en: "Design teacher think-alouds that model historical thinking with a specific document.",
+    },
+    tags: ["history", "historical-thinking", "education", "modelling"],
+    externalUrl:
+      "https://github.com/GarethManning/education-agent-skills/tree/main/skills/historical-thinking/historical-thinking-strategy-modelling-guide",
+    license: "CC-BY-SA-4.0",
+    author: "Gareth Manning",
+    attribution: "GarethManning/education-agent-skills",
+  }),
+  ext({
+    slug: "historical-thinking-assessment-designer",
+    layer: "scenario",
+    disciplines: ["history", "education"],
+    featuredRank: 149,
+    title: {
+      zh: "历史思维形成性评估设计",
+      en: "Historical Thinking Assessment Designer",
+    },
+    summary: {
+      zh: "设计让溯源/细读/情境化/互证可见的形成性评估与诊断。",
+      en: "Design formative assessments that make sourcing, close reading, contextualisation, and corroboration visible.",
+    },
+    tags: ["history", "historical-thinking", "education", "assessment"],
+    externalUrl:
+      "https://github.com/GarethManning/education-agent-skills/tree/main/skills/historical-thinking/historical-thinking-assessment-designer",
+    license: "CC-BY-SA-4.0",
+    author: "Gareth Manning",
+    attribution: "GarethManning/education-agent-skills",
+  }),
+  ext({
+    slug: "error-analysis-protocol",
+    layer: "scenario",
+    disciplines: ["education", "psychology"],
+    featuredRank: 150,
+    title: {
+      zh: "错因分析协议设计",
+      en: "Error Analysis Protocol",
+    },
+    summary: {
+      zh: "设计错因分析流程，诊断学生错误与迷思概念的根因并给出定向反馈。",
+      en: "Design error-analysis protocols to diagnose root causes of mistakes and misconceptions.",
+    },
+    tags: ["education", "feedback", "formative-assessment", "metacognition"],
+    externalUrl:
+      "https://github.com/GarethManning/education-agent-skills/tree/main/skills/self-regulated-learning/error-analysis-protocol",
+    license: "CC-BY-SA-4.0",
+    author: "Gareth Manning",
+    attribution: "GarethManning/education-agent-skills",
+  }),
+  ext({
+    slug: "goal-setting-protocol-designer",
+    layer: "scenario",
+    disciplines: ["education", "psychology"],
+    featuredRank: 151,
+    title: {
+      zh: "目标设定协议设计",
+      en: "Goal-Setting Protocol Designer",
+    },
+    summary: {
+      zh: "用 SMART 或实施意向框架为学生设计结构化目标设定流程。",
+      en: "Design structured goal-setting protocols using SMART or implementation-intention frameworks.",
+    },
+    tags: ["education", "self-regulation", "goal-setting", "metacognition"],
+    externalUrl:
+      "https://github.com/GarethManning/education-agent-skills/tree/main/skills/self-regulated-learning/goal-setting-protocol-designer",
+    license: "CC-BY-SA-4.0",
+    author: "Gareth Manning",
+    attribution: "GarethManning/education-agent-skills",
+  }),
+  ext({
+    slug: "metacognitive-prompt-library",
+    layer: "scenario",
+    disciplines: ["education", "psychology"],
+    featuredRank: 152,
+    title: {
+      zh: "元认知提示词库",
+      en: "Metacognitive Prompt Library",
+    },
+    summary: {
+      zh: "围绕计划、监控与评估为具体任务构建元认知提示库。",
+      en: "Build metacognitive prompt libraries targeting planning, monitoring, or evaluation for a task.",
+    },
+    tags: ["education", "metacognition", "self-regulated-learning"],
+    externalUrl:
+      "https://github.com/GarethManning/education-agent-skills/tree/main/skills/self-regulated-learning/metacognitive-prompt-library",
+    license: "CC-BY-SA-4.0",
+    author: "Gareth Manning",
+    attribution: "GarethManning/education-agent-skills",
+  }),
+  ext({
+    slug: "self-regulation-scaffold-generator",
+    layer: "scenario",
+    disciplines: ["education", "psychology"],
+    featuredRank: 153,
+    title: {
+      zh: "自我调节支架生成器",
+      en: "Self-Regulation Scaffold Generator",
+    },
+    summary: {
+      zh: "在计划—监控—评估各阶段生成支持学生自我调节的学习支架。",
+      en: "Generate scaffolds for student self-regulation across planning, monitoring, and evaluation.",
+    },
+    tags: ["education", "self-regulation", "scaffolding", "metacognition"],
+    externalUrl:
+      "https://github.com/GarethManning/education-agent-skills/tree/main/skills/self-regulated-learning/self-regulation-scaffold-generator",
+    license: "CC-BY-SA-4.0",
+    author: "Gareth Manning",
+    attribution: "GarethManning/education-agent-skills",
+  }),
+];
+
 export const DISCIPLINE_SEED: CatalogEntry[] = [
   ...PSYCHOLOGY,
   ...SOCIOLOGY,
   ...HISTORY,
   ...POLITICAL,
   ...ECONOMICS,
+  ...EDUCATION,
 ];

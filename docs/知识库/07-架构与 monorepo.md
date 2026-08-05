@@ -1,6 +1,6 @@
 # 架构与 monorepo
 
-> 蒸馏自原 Spec 01 / 20 / 24；现状以 [05](./05-系统现状与实现地图.md) 为准。
+> 蒸馏自原 Spec 01 / 20 / 24 / **36**；现状以 [05](./05-系统现状与实现地图.md) 为准。
 
 ---
 
@@ -25,11 +25,11 @@ Openwisdom/
 ├── apps/web/                 # Next.js 官网 + 目录 + docs
 ├── packages/
 │   ├── schema/               # @openwisdom/schema — zod
-│   ├── catalog/              # @openwisdom/catalog — build
+│   ├── catalog/              # @openwisdom/catalog — build + fan-out
 │   ├── providers/            # harness 路径表
-│   ├── core/                 # @openwisdom/core — 无 TTY 业务
-│   ├── cli/                  # openwisdom（npm 公开）
-│   └── mcp/                  # openwisdom-mcp（npm 公开）
+│   ├── core/                 # @openwisdom/core — 无 TTY 业务（无 *-snapshot 扇出）
+│   ├── cli/                  # openwisdom（npm 公开；含 catalog/skills-snapshot）
+│   └── mcp/                  # openwisdom-mcp（npm 公开；含 catalog/skills-snapshot）
 ├── skills/                   # ★ 内容真相源
 │   ├── official/{scenarios,references}/
 │   └── community/{scenarios,references}/
@@ -69,23 +69,35 @@ skills/official/scenarios/macro-scan/
 
 ---
 
-## 4. Catalog 管道（防漂移）
+## 4. Catalog 管道（防漂移 · SPE 36）
 
 ```text
 skills/**/SKILL.md
     → packages/catalog build
-    → catalog.json + manifest.json
-    → dual-write:
-         apps/web/public/registry/
-         packages/{cli,core,mcp}/catalog-snapshot/
-         packages/*/skills-snapshot/   # 安装载荷
+    → catalog.json + manifest.json + payload-index.json
+    → fan-out（dual-write 合同）:
+         packages/catalog/dist/                 # build 中间产物
+         packages/cli/catalog-snapshot/         # npm offline
+         packages/mcp/catalog-snapshot/         # npm offline
+         apps/web/public/registry/              # 远程 registry
+    → skills 载荷:
+         packages/{cli,mcp}/skills-snapshot/    # 仅 published bins
+         apps/web/public/registry/skills/**     # CDN per-skill 树
 ```
+
+| 目标 | 用途 | SPE 36 |
+|------|------|--------|
+| `packages/catalog/dist` | 本包检查 / 中间产物 | ✅ 保留 |
+| `packages/cli/*-snapshot` | npm `openwisdom` offline | ✅ 保留 |
+| `packages/mcp/*-snapshot` | npm `openwisdom-mcp` offline | ✅ 保留 |
+| `apps/web/public/registry` | 远程 catalog + skills 树 | ✅ 保留 |
+| `packages/core/*-snapshot` | 曾写入；core 为 private 且 CLI/MCP bundle core，runtime 用**宿主** packageRoot | ❌ **停写** |
 
 | 消费者 | 行为 |
 |--------|------|
 | Web | 构建/运行读 registry；UI 可 merge heat（**12**） |
 | CLI/MCP | 远程 registry（默认站点 `/registry`）→ 磁盘缓存 → 包内 snapshot；`OPENWISDOM_NO_REMOTE` 关远程（SPE 33） |
-| Install 载荷 | `OPENWISDOM_SKILLS_ROOT` → monorepo `skills/` → 远程 skill 树 → `skills-snapshot/` |
+| Install 载荷 | `OPENWISDOM_SKILLS_ROOT` → monorepo `skills/` → 远程 skill 树 → **宿主** `skills-snapshot/`（cli/mcp，非 core） |
 
 `catalog:build` 额外写出 `apps/web/public/registry/skills/**` 与 `payload-index.json` 供 CDN 安装。
 
@@ -99,7 +111,7 @@ pnpm catalog:sync-web      # materialize + build
 
 空 `skills/` 树时 build **应失败**，避免发布空包。
 
-### manifest.json（示意）
+### manifest.json（示意 · 与现网一致字段）
 
 ```json
 {
@@ -107,10 +119,13 @@ pnpm catalog:sync-web      # materialize + build
   "generatedAt": "…",
   "gitSha": "…",
   "contentHash": "sha256-…",
-  "skillCount": 89,
-  "cliMinVersion": "0.1.0"
+  "skillCount": 118,
+  "cliMinVersion": "0.1.0",
+  "mcpMinVersion": "0.1.0"
 }
 ```
+
+当前 machine `skillCount` 以 registry / cli / mcp 三面 manifest 为准（审计时 **118**；以 build 产物为准，勿在文档手改）。
 
 ### Catalog 根可选扩展（Handoff）
 
@@ -140,6 +155,8 @@ bundles?: Array<{
 **禁止 core：** citty/clack、`process.exit`、无条件 `console.log` 污染 MCP stdout。  
 日志经 `onLog`；TTY 由调用方注入（库默认非交互）。
 
+**SPE 36：** core **不再** dual-write catalog/skills snapshot；单测与 offline 载荷以 monorepo `skills/`、fixture、或宿主（cli/mcp）`packageRoot` 为准。
+
 ---
 
 ## 6. Web 技术栈
@@ -159,12 +176,15 @@ bundles?: Array<{
 | 项 | CLI | MCP |
 |----|-----|-----|
 | 包名 | `openwisdom` | `openwisdom-mcp` |
+| 版本真相 | `packages/cli/package.json` | `packages/mcp/package.json` |
 | 入口 | citty + clack | MCP SDK stdio |
 | 构建 | tsup 单文件 bundle | tsup 单文件 bundle |
 | Node | ≥ 20 | ≥ 20 |
 | 业务 | → core | → core |
+| Offline 载荷 | 本包 `catalog-snapshot` + `skills-snapshot` | 同左 |
 
-**不做：** LLM / `run` / Streamable HTTP 多租户（v1）。
+**不做：** LLM / `run` / analyze / recommend / Streamable HTTP 多租户（v1）。  
+**硬边界：** CLI 与 MCP 均为包管理表面，**不调模型 API**。
 
 ---
 
@@ -191,7 +211,15 @@ publish:
   → npm publish openwisdom + openwisdom-mcp
 ```
 
-建议：四路 `catalog.json` contentHash 一致再允许 publish（CLI/core/MCP/web registry）。
+建议：发布前 **三路** `contentHash` 一致再允许 publish：
+
+- `packages/cli/catalog-snapshot/manifest.json`
+- `packages/mcp/catalog-snapshot/manifest.json`
+- `apps/web/public/registry/manifest.json`
+
+（`packages/catalog/dist` 为中间产物，可同检；**不再**要求 `packages/core` snapshot。）  
+
+本地门禁：`pnpm catalog:check-hash` → `node scripts/check-catalog-hash.mjs`（cli + mcp + web registry 三面；**不含** core）。CI 强制接入仍可作 follow-up。
 
 ---
 

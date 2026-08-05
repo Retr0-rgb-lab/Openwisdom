@@ -16,12 +16,10 @@ import { writeSkillDir, type WriteOutcome } from "./copy-skill.js";
 import { loadCatalog, resolveBundle } from "./catalog.js";
 import { resolveSkillsRoot } from "./skills-root.js";
 import {
+  ensureCatalogForUse,
   resolveSkillPayloadDir,
 } from "./payload-resolve.js";
-import {
-  ensureRemoteCatalog,
-  type RegistryResolveOpts,
-} from "./registry.js";
+import type { RegistryResolveOpts } from "./registry.js";
 import {
   reportInstallSuccess,
   type TelemetrySource,
@@ -60,9 +58,15 @@ export type InstallOptions = {
    * CLI should pass `process.stdin.isTTY`.
    */
   isTty?: boolean;
-  /** Optional log sink; success noise is silent when omitted. Warn/error go to stderr if omitted. */
+  /**
+   * Optional log sink. When omitted, library is fully silent (no console).
+   * CLI/MCP adapters should inject onLog for human/agent-visible messages.
+   */
   onLog?: (level: LogLevel, message: string) => void;
-  /** Telemetry source channel; default "cli" */
+  /**
+   * Telemetry source channel. Callers (CLI/MCP) should pass explicitly.
+   * When omitted, payload uses `"unknown"` so MCP is never mislabeled as CLI.
+   */
   telemetrySource?: TelemetrySource;
   /** Client/package version for telemetry payload */
   clientVersion?: string;
@@ -153,13 +157,9 @@ function log(
   level: LogLevel,
   message: string,
 ): void {
+  // Library default: fully silent when onLog omitted (MCP / embedded hosts).
   if (opts.onLog) {
     opts.onLog(level, message);
-    return;
-  }
-  // Library default: silence info success noise; warn/error → stderr only
-  if (level === "warn" || level === "error") {
-    console.error(message);
   }
 }
 
@@ -274,9 +274,6 @@ export async function runInstall(opts: InstallOptions): Promise<InstallResult> {
   }
 
   const regOpts = registryOptsFromInstall(opts);
-  if (!opts.noRemote) {
-    await ensureRemoteCatalog(regOpts);
-  }
 
   let skillsRoot: string | undefined;
   try {
@@ -289,9 +286,11 @@ export async function runInstall(opts: InstallOptions): Promise<InstallResult> {
     skillsRoot = undefined;
   }
 
+  // Single catalog readiness path (SPE 35): remote refresh fail-open, then load.
+  // Load failure is fail-loud — do not swallow into empty skills[] (masks misconfig).
   let catalog: CatalogIndex;
   try {
-    catalog = loadCatalog({
+    const loaded = await ensureCatalogForUse({
       skillsRoot,
       cwd,
       env,
@@ -299,9 +298,19 @@ export async function runInstall(opts: InstallOptions): Promise<InstallResult> {
       catalogPath: opts.catalogPath,
       preferRegistryCache: opts.preferRegistryCache,
       registryCacheDir: opts.registryCacheDir,
-    }).index;
-  } catch {
-    catalog = { schemaVersion: 1, skills: [] };
+      noRemote: opts.noRemote,
+      registry: opts.registry,
+      forceRegistryRefresh: opts.forceRegistryRefresh,
+      fetchImpl: opts.fetchImpl,
+      onLog: opts.onLog,
+    });
+    catalog = loaded.index;
+  } catch (err) {
+    throw new RuntimeError(
+      err instanceof Error
+        ? `Catalog load failed: ${err.message}`
+        : "Catalog load failed.",
+    );
   }
 
   // Spec 33: bundle ∪ explicit ids, then expandWithDeps(references)
@@ -425,7 +434,8 @@ export async function runInstall(opts: InstallOptions): Promise<InstallResult> {
           {
             noTelemetryFlag: opts.noTelemetry,
             env,
-            source: opts.telemetrySource ?? "cli",
+            // Prefer explicit caller surface; never default to "cli" (MCP mislabel).
+            source: opts.telemetrySource ?? "unknown",
             clientVersion: opts.clientVersion,
           },
         );

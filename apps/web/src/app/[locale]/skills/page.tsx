@@ -3,8 +3,8 @@ import { Suspense } from "react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SkillsCatalog } from "@/components/skills/SkillsCatalog";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getCatalogWithHeat } from "@/data/catalog";
-import { fetchStats } from "@/lib/heat/fetch-stats";
+import { getCatalogWithHeat } from "@/data/catalog/server";
+import { getStatsInProcess } from "@/lib/heat/get-stats";
 
 type Params = Promise<{ locale: string }>;
 
@@ -37,8 +37,8 @@ function CatalogFallback() {
 }
 
 async function SkillsCatalogWithHeat() {
-  // Fail-open: missing /api/stats → null → no fake heat zeros
-  const stats = await fetchStats();
+  // In-process store read (no self-HTTP). Fail-open → null → no fake heat zeros.
+  const stats = await getStatsInProcess();
   const entries = getCatalogWithHeat(stats);
   return <SkillsCatalog entries={entries} />;
 }

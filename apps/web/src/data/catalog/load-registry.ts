@@ -13,8 +13,6 @@ import { catalogIndexSchema } from "@openwisdom/schema";
 import {
   getRegistryJson,
   loadRegistrySkillsLenient,
-  mapRegistryToEntry,
-  parseRegistrySkill,
   parseRegistrySkillsArray,
   type RegistrySkill,
 } from "./registry-source";

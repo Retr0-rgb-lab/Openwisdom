@@ -78,7 +78,7 @@ export const PHILOSOPHY_SEED: CatalogEntry[] = [
   ext({
     slug: "socratic-method-skill",
     layer: "scenario",
-    disciplines: ["philosophy", "psychology"],
+    disciplines: ["philosophy", "psychology", "education"],
     featuredRank: 111,
     title: {
       zh: "苏格拉底方法（助产式诘问）",
@@ -88,7 +88,7 @@ export const PHILOSOPHY_SEED: CatalogEntry[] = [
       zh: "六类问题引导自发现：澄清、假设、证据、视角、意涵、元问题。",
       en: "Six question types for discovery: clarification, assumption, evidence, perspective, implication, meta.",
     },
-    tags: ["socratic", "dialectic", "epistemology", "pedagogy"],
+    tags: ["socratic", "dialectic", "epistemology", "pedagogy", "education"],
     externalUrl: "https://github.com/malkreide/socratic-method-skill",
     license: "MIT",
     author: "Hayal Oezkan",

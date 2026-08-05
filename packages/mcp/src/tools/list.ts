@@ -1,5 +1,5 @@
 import {
-  ensureRemoteCatalog,
+  ensureCatalogForUse,
   loadCatalog,
   listInstalled,
   searchCatalog,
@@ -32,9 +32,24 @@ export type ListInput = {
   /** available default high enough for full catalog (≥50) */
   limit?: number;
   cwd?: string;
+  /** Remote registry base URL (or OPENWISDOM_REGISTRY env). */
+  registry?: string;
+  /** Skip remote registry; local skills/snapshot only. */
+  noRemote?: boolean;
 };
 
 const DEFAULT_AVAILABLE_LIMIT = 100;
+
+function catalogEnvOpts(input: ListInput): {
+  registry?: string;
+  noRemote: boolean;
+} {
+  const registry =
+    typeof input.registry === "string" && input.registry.trim()
+      ? input.registry.trim()
+      : undefined;
+  return { registry, noRemote: Boolean(input.noRemote) };
+}
 
 /** Pure handler — unit-testable without MCP transport. */
 export async function handleList(input: ListInput = {}): Promise<ToolResult> {
@@ -42,13 +57,15 @@ export async function handleList(input: ListInput = {}): Promise<ToolResult> {
     const mode = input.mode ?? "available";
     const cwd = resolveCwd(input.cwd);
     const packageRoot = getMcpPackageRoot();
+    const catalogOpts = catalogEnvOpts(input);
 
     if (mode === "available") {
-      await ensureRemoteCatalog({ env: process.env });
-      const { index, source } = loadCatalog({
+      const { index, source } = await ensureCatalogForUse({
         env: process.env,
         cwd,
         packageRoot,
+        registry: catalogOpts.registry,
+        noRemote: catalogOpts.noRemote,
       });
 
       const detail: DetailLevel = input.detail === "full" ? "full" : "card";
@@ -105,8 +122,11 @@ export async function handleList(input: ListInput = {}): Promise<ToolResult> {
 
     let catalogIds: string[] | undefined;
     try {
+      // Prefer same noRemote policy as available mode when enriching ids.
+      const env = { ...process.env };
+      if (catalogOpts.noRemote) env.OPENWISDOM_NO_REMOTE = "1";
       catalogIds = loadCatalog({
-        env: process.env,
+        env,
         cwd,
         packageRoot,
       }).index.skills.flatMap((s) => [s.id, s.name]);

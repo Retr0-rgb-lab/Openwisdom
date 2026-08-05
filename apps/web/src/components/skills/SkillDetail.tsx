@@ -19,11 +19,9 @@ import {
   isLinkOnlyEntry,
   pickLocalized,
 } from "@/data/catalog/types";
-import { getSkillBySlug } from "@/data/catalog";
 import { Link } from "@/i18n/navigation";
 import { copyText } from "@/lib/clipboard";
 import { reportWebHeat } from "@/lib/heat/client";
-import { cn } from "@/lib/utils";
 import { DISCIPLINE_CSS, SHAPE_ACCENT } from "./disciplineStyles";
 import { SkillCard } from "./SkillCard";
 
@@ -48,13 +46,17 @@ function downloadHref(skillId: string): string {
 export function SkillDetail({
   entry,
   related,
+  knownSlugs = [],
 }: {
   entry: CatalogEntry;
   related: CatalogEntry[];
+  /** Server-provided catalog slugs so references resolve without client getCatalog. */
+  knownSlugs?: string[];
 }) {
   const t = useTranslations("skills");
   const locale = useLocale();
   const [copied, setCopied] = useState(false);
+  const knownSlugSet = new Set(knownSlugs);
 
   const title = pickLocalized(entry.title, locale);
   const summary = pickLocalized(entry.summary, locale);
@@ -278,6 +280,7 @@ export function SkillDetail({
                 output={entry.output}
                 bias={entry.bias}
                 references={entry.references}
+                knownSlugSet={knownSlugSet}
                 accent={accent}
                 locale={locale}
               />
@@ -543,6 +546,7 @@ function ScenarioBody({
   output,
   bias,
   references,
+  knownSlugSet,
   accent,
   locale,
 }: {
@@ -551,6 +555,7 @@ function ScenarioBody({
   output?: CatalogEntry["output"];
   bias?: CatalogEntry["bias"];
   references?: string[];
+  knownSlugSet: Set<string>;
   accent: string;
   locale: string;
 }) {
@@ -632,7 +637,7 @@ function ScenarioBody({
           <ul className="mt-3 flex flex-wrap gap-2">
             {references.map((ref) => {
               // Live catalog hit → link; dangling id → mono label only
-              const live = getSkillBySlug(ref);
+              const live = knownSlugSet.has(ref);
               if (live) {
                 return (
                   <li key={ref}>

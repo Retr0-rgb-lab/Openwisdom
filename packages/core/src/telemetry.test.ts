@@ -98,6 +98,15 @@ describe("buildInstallSuccessPayload", () => {
     expect(payload.source).toBe("mcp");
     expect(payload.cliVersion).toBe("0.2.0");
   });
+
+  it("defaults source to unknown when omitted (never assumes cli)", () => {
+    const payload = buildInstallSuccessPayload(baseEvent, {
+      clientVersion: "0.1.0",
+      now: () => new Date("2026-07-29T12:00:00.000Z"),
+    });
+    expect(payload.source).toBe("unknown");
+    expect(payload.event).toBe("cli_install_success");
+  });
 });
 
 describe("reportInstallSuccess", () => {
@@ -167,6 +176,17 @@ describe("reportInstallSuccess", () => {
     });
     const [, init] = fetchImpl.mock.calls[0] as [string, RequestInit];
     expect(JSON.parse(String(init.body)).source).toBe("mcp");
+  });
+
+  it("POSTs source unknown when source omitted", async () => {
+    const fetchImpl = vi.fn().mockResolvedValue({ ok: true, status: 204 });
+    await reportInstallSuccess(baseEvent, {
+      env: { OPENWISDOM_TELEMETRY_URL: "https://example.com/api/telemetry" },
+      fetchImpl: fetchImpl as unknown as typeof fetch,
+      clientVersion: "0.1.0",
+    });
+    const [, init] = fetchImpl.mock.calls[0] as [string, RequestInit];
+    expect(JSON.parse(String(init.body)).source).toBe("unknown");
   });
 
   it("never rejects when fetch fails", async () => {

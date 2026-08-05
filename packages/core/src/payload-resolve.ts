@@ -104,10 +104,8 @@ function tryLoadSnapshot(snapshotPath: string): LoadedCatalog | null {
     const raw = JSON.parse(readFileSync(snapshotPath, "utf8"));
     const index = catalogIndexSchema.parse(raw);
     return { index, source: "snapshot", path: snapshotPath };
-  } catch (err) {
-    console.error(
-      `warn: catalog snapshot invalid (${snapshotPath}): ${err instanceof Error ? err.message : err}`,
-    );
+  } catch {
+    // Library default: silent on invalid snapshot (callers use onLog via ensure*).
     return null;
   }
 }
@@ -468,10 +466,8 @@ export function scanSkillsToCatalog(skillsRoot: string): CatalogSkill[] {
         entry.pipeline = fm.pipeline;
       }
       out.push(entry);
-    } catch (err) {
-      console.error(
-        `warn: skip skill at ${skillDir}: ${err instanceof Error ? err.message : err}`,
-      );
+    } catch {
+      // Skip unreadable / invalid SKILL.md; library default is silent (no console).
     }
   });
   out.sort((a, b) => a.id.localeCompare(b.id));

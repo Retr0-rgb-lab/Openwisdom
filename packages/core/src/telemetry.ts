@@ -1,6 +1,10 @@
 /**
  * Fail-open telemetry client (Spec 06 / Spec 22).
- * POSTs cli_install_success after successful install; never throws to caller.
+ * POSTs install success after successful install; never throws to caller.
+ *
+ * Event name remains `cli_install_success` for wire compatibility with the
+ * heat API (counts this event id). Channel is distinguished via `source`
+ * (`cli` | `mcp` | `unknown`). Callers should pass source explicitly.
  *
  * Skip when:
  * - --no-telemetry
@@ -10,7 +14,8 @@
  */
 import { CORE_VERSION } from "./version.js";
 
-export type TelemetrySource = "cli" | "mcp";
+/** Install surface; `"unknown"` when caller did not declare (never assume cli). */
+export type TelemetrySource = "cli" | "mcp" | "unknown";
 
 export type TelemetryEvent = {
   skillId: string;
@@ -18,9 +23,16 @@ export type TelemetryEvent = {
   scope: "project" | "global";
 };
 
+/**
+ * Wire event name kept as `cli_install_success` so existing heat ingest
+ * continues to score installs. Prefer reading `source` for channel.
+ * (Neutral rename to `install_success` needs coordinated web heat accept.)
+ */
+export type TelemetryEventName = "cli_install_success";
+
 export type TelemetryPayload = {
   schemaVersion: 1;
-  event: "cli_install_success";
+  event: TelemetryEventName;
   skillId: string;
   ts: string;
   source: TelemetrySource;
@@ -66,7 +78,8 @@ export function buildInstallSuccessPayload(
     event: "cli_install_success",
     skillId: event.skillId,
     ts,
-    source: opts?.source ?? "cli",
+    // Never default to "cli" — unspecified surface is "unknown" (MCP mislabel guard).
+    source: opts?.source ?? "unknown",
     cliVersion:
       opts?.clientVersion ?? opts?.cliVersion ?? CORE_VERSION,
     meta: {
@@ -111,6 +124,8 @@ export async function reportInstallSuccess(
       now: opts?.now,
     });
 
+    // Debug only when explicitly requested; still fail-open and never blocks install.
+    // Avoid unconditional library console noise for MCP/embedded hosts.
     if (env.OPENWISDOM_TELEMETRY_DEBUG === "1") {
       console.error(`[telemetry] POST ${url} ${JSON.stringify(payload)}`);
     }

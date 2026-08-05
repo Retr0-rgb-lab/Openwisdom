@@ -8,6 +8,7 @@ import {
   useMemo,
   useRef,
   useState,
+  useSyncExternalStore,
   type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
 import { useSearchParams } from "next/navigation";
@@ -21,7 +22,6 @@ import { Input } from "@/components/ui/input";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import {
   attachHeat,
-  getCatalog,
   pickLocalized,
   queryCatalog,
   type CatalogEntry,
@@ -56,13 +56,13 @@ function isMacPlatform() {
   return /Mac|iPhone|iPad|iPod/i.test(navigator.platform || navigator.userAgent);
 }
 
-/** SSR-safe: always start with Ctrl so server HTML matches first client paint. */
+/** SSR-safe: server snapshot false (Ctrl); client reads platform without effect setState. */
 function useIsMac() {
-  const [mac, setMac] = useState(false);
-  useEffect(() => {
-    setMac(isMacPlatform());
-  }, []);
-  return mac;
+  return useSyncExternalStore(
+    () => () => {},
+    () => isMacPlatform(),
+    () => false,
+  );
 }
 
 /** Prefill palette query from catalog URL (Spec 16: /skills?q=…). */
@@ -78,9 +78,12 @@ function prefillFromCatalogUrl(
 export function GlobalSearchTrigger({
   className,
   compact = false,
+  /** Slim server-built index — never call getCatalog on the client. */
+  catalogIndex,
 }: {
   className?: string;
   compact?: boolean;
+  catalogIndex: CatalogEntry[];
 }) {
   const t = useTranslations("shell.search");
   const pathname = usePathname();
@@ -162,6 +165,7 @@ export function GlobalSearchTrigger({
         open={open}
         onOpenChange={handleOpenChange}
         seedQ={seedQ}
+        catalogIndex={catalogIndex}
       />
     </>
   );
@@ -171,10 +175,12 @@ function CommandPalette({
   open,
   onOpenChange,
   seedQ,
+  catalogIndex,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   seedQ: string;
+  catalogIndex: CatalogEntry[];
 }) {
   const t = useTranslations("shell");
   const tSearch = useTranslations("shell.search");
@@ -214,8 +220,8 @@ function CommandPalette({
   }, []);
 
   const catalog = useMemo(
-    () => attachHeat(getCatalog(), stats),
-    [stats],
+    () => attachHeat(catalogIndex, stats),
+    [catalogIndex, stats],
   );
 
   const skillHits = useMemo(() => {
@@ -243,18 +249,14 @@ function CommandPalette({
     return out;
   }, [q, skillHits, featured]);
 
-  // Keep highlight index in range when result list shrinks
-  useEffect(() => {
-    setActive((i) => {
-      if (rows.length === 0) return 0;
-      return Math.min(i, rows.length - 1);
-    });
-  }, [rows.length]);
+  // Clamp highlight in render (avoid setState-in-effect when list shrinks)
+  const activeIdx =
+    rows.length === 0 ? 0 : Math.min(active, rows.length - 1);
 
   // Arrow-key navigation must keep active option visible in the scrollport
   useEffect(() => {
     if (!open || rows.length === 0) return;
-    const option = document.getElementById(`gs-opt-${active}`);
+    const option = document.getElementById(`gs-opt-${activeIdx}`);
     if (!option) return;
     // Prefer scrolling only the listbox (not the whole page / dialog)
     const list = listRef.current;
@@ -269,7 +271,7 @@ function CommandPalette({
       return;
     }
     option.scrollIntoView({ block: "nearest", inline: "nearest" });
-  }, [active, open, rows]);
+  }, [activeIdx, open, rows]);
 
   const goCatalogSearch = useCallback(
     (query: string) => {
@@ -311,7 +313,7 @@ function CommandPalette({
       setActive((i) => Math.max(i - 1, 0));
     } else if (e.key === "Enter") {
       e.preventDefault();
-      const row = rows[active];
+      const row = rows[activeIdx];
       if (row) activate(row);
       else if (q.trim()) goCatalogSearch(q.trim());
     }
@@ -320,7 +322,7 @@ function CommandPalette({
   const skillCount = q.trim() ? skillHits.length : featured.length;
   const listboxId = "gs-listbox";
   const activeOptionId =
-    rows.length > 0 ? `gs-opt-${active}` : undefined;
+    rows.length > 0 ? `gs-opt-${activeIdx}` : undefined;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -374,7 +376,7 @@ function CommandPalette({
 
           {rows.map((row, i) => {
             const optionId = `gs-opt-${i}`;
-            const selected = i === active;
+            const selected = i === activeIdx;
 
             if (row.kind === "skill") {
               const title = pickLocalized(row.entry.title, locale);

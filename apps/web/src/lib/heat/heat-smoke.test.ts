@@ -15,7 +15,7 @@ import {
 } from "./memory-store";
 import { isKnownSkillId } from "./skill-ids";
 import { validateTelemetryBody } from "./validate";
-import { checkRateLimit, resetRateLimitForTests } from "./rate-limit";
+import { checkMemoryRateLimit, resetRateLimitForTests } from "./rate-limit";
 
 describe("HeatStore memory + product rules", () => {
   beforeEach(() => {
@@ -128,9 +128,9 @@ describe("HeatStore memory + product rules", () => {
     resetRateLimitForTests();
     const ip = "203.0.113.9";
     for (let i = 0; i < 5; i++) {
-      assert.equal(checkRateLimit(ip, { limit: 5 }), true);
+      assert.equal(checkMemoryRateLimit(ip, { limit: 5 }), true);
     }
-    assert.equal(checkRateLimit(ip, { limit: 5 }), false);
+    assert.equal(checkMemoryRateLimit(ip, { limit: 5 }), false);
   });
 
   it("memory seed helper for old day buckets", async () => {

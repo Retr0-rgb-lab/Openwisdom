@@ -9,9 +9,14 @@ import {
   writeFileSync,
 } from "node:fs";
 import path from "node:path";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { loadCatalog, searchCatalog } from "./catalog.js";
-import { runInstall, resolveProviderIds, UsageError } from "./install.js";
+import {
+  runInstall,
+  resolveProviderIds,
+  UsageError,
+  RuntimeError,
+} from "./install.js";
 import { findMonorepoRoot, getPackageRoot } from "./paths.js";
 
 const packageRoot = getPackageRoot();
@@ -168,6 +173,68 @@ describe("resolveProviderIds", () => {
       isTty: false,
     });
     expect(ids).toEqual(["claude"]);
+  });
+});
+
+describe("runInstall catalog fail-loud", () => {
+  it("throws RuntimeError when catalog cannot be loaded (not empty skills[])", async () => {
+    const os = await import("node:os");
+    const emptyPkg = path.join(
+      os.tmpdir(),
+      `ow-nocat-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    );
+    const cwd = path.join(
+      os.tmpdir(),
+      `ow-nocat-cwd-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    );
+    mkdirSync(emptyPkg, { recursive: true });
+    mkdirSync(cwd, { recursive: true });
+    tmpDirs.push(emptyPkg, cwd);
+
+    let thrown: unknown;
+    try {
+      await runInstall({
+        skillIds: ["macro-scan"],
+        providers: "claude",
+        scope: "project",
+        cwd,
+        yes: true,
+        noTelemetry: true,
+        noRemote: true,
+        isTty: false,
+        packageRoot: emptyPkg,
+        // Isolate from monorepo skills + process env catalog roots
+        env: {
+          PATH: process.env.PATH,
+          TEMP: process.env.TEMP,
+          TMP: process.env.TMP,
+          OPENWISDOM_NO_REMOTE: "1",
+        },
+      });
+    } catch (err) {
+      thrown = err;
+    }
+    expect(thrown).toBeInstanceOf(RuntimeError);
+    expect((thrown as Error).message).toMatch(/Catalog load failed/i);
+  });
+
+  it("does not write to console when onLog omitted (library silent)", async () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const cwd = makeTmp();
+    const result = await runInstall({
+      skillIds: ["macro-scan"],
+      providers: "claude",
+      scope: "project",
+      cwd,
+      yes: true,
+      noTelemetry: true,
+      noRemote: true,
+      isTty: false,
+      env: { ...process.env, OPENWISDOM_SKILLS_ROOT: skillsRoot },
+    });
+    expect(result.exitCode).toBe(0);
+    expect(errorSpy).not.toHaveBeenCalled();
+    errorSpy.mockRestore();
   });
 });
 

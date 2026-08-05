@@ -22,7 +22,7 @@ async function loadCatalog() {
   const loaderPath = path.join(webRoot, "scripts/_tmp-load-catalog.mts");
   fs.writeFileSync(
     loaderPath,
-    `import { getCatalog } from "../src/data/catalog/index.ts";\nconsole.log(JSON.stringify(getCatalog()));\n`,
+    `import { getCatalog } from "../src/data/catalog/server.ts";\nconsole.log(JSON.stringify(getCatalog()));\n`,
   );
   try {
     const out = execSync(`pnpm exec tsx "${loaderPath}"`, {

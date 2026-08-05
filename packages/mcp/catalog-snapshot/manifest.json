@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-04T11:24:40.625Z",
-  "gitSha": "b739e2a26f5d824a16fce10335afae1c37168e0f",
-  "contentHash": "sha256-cc6a7428e3c61262550018743eeedee3e1475196c8113eda11dc5e5ab64bc024",
+  "generatedAt": "2026-08-05T07:26:01.692Z",
+  "gitSha": "0cf4cfa9ee4fbc45067a35f37d8340b450c01e77",
+  "contentHash": "sha256-3129183cdacb626def51193fab1361445d2d8fc8dad7d52fe217f97bff07dae2",
   "skillCount": 118,
   "cliMinVersion": "0.1.0",
   "mcpMinVersion": "0.1.0",

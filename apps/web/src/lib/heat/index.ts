@@ -23,8 +23,14 @@ export {
   lastNDaysUtc,
   emptySkillStats,
 } from "./aggregate";
-export { checkRateLimit, clientIp, resetRateLimitForTests } from "./rate-limit";
+export {
+  checkRateLimit,
+  checkMemoryRateLimit,
+  clientIp,
+  resetRateLimitForTests,
+} from "./rate-limit";
 export { validateTelemetryBody } from "./validate";
 export { hasUpstashEnv, getRateLimitPerMin } from "./config";
-export { fetchStats } from "./fetch-stats";
+export { fetchStats, fetchStatsHttp } from "./fetch-stats";
+// getStatsInProcess lives in ./get-stats (server-only) — import that path directly from RSC/API.
 export { mergeHeat, attachHeat } from "./merge-heat";

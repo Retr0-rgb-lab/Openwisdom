@@ -13,8 +13,8 @@ Uses **`@modelcontextprotocol/server` v2** (`McpServer` + `StdioServerTransport`
 
 | Tool | Role | CLI parity |
 |------|------|------------|
-| `openwisdom_list` | Browse full installable catalog (or installed); optional `tag` | `openwisdom list` |
-| `openwisdom_search` | Keywords / layer / scope / discipline / **tag**; optional `refresh` | `openwisdom search` |
+| `openwisdom_list` | Browse full installable catalog (or installed); optional `tag`, `registry`, `noRemote` | `openwisdom list` / `--registry` / `--no-remote` |
+| `openwisdom_search` | Keywords / layer / scope / discipline / **tag**; optional `refresh`, `registry`, `noRemote` | `openwisdom search` / `--registry` / `--no-remote` |
 | `openwisdom_get` | Open one skill: catalog row + **SKILL.md body** (read before install) | — |
 | `openwisdom_install` | Install skills and/or **`bundle`**; optional `registry`, `noRemote` (requires `providers[]`) | `openwisdom install` / `--bundle` / `--registry` / `--no-remote` |
 | `openwisdom_update` | Update installed skills; **`refreshOnly`**, optional `registry`, `noRemote` | `openwisdom update` / `--refresh-only` |
@@ -145,8 +145,9 @@ Or project `.mcp.json`:
 | `OPENWISDOM_NO_TELEMETRY=1` | Disable install telemetry |
 | `OPENWISDOM_TELEMETRY_URL` | Telemetry endpoint (unset = no report) |
 | `OPENWISDOM_SKILLS_ROOT` | Local skills tree (dev / monorepo) |
-| `OPENWISDOM_REGISTRY` | Remote registry base URL (override default; also `registry` tool field) |
-| `OPENWISDOM_NO_REMOTE=1` | Skip remote catalog/payload (also `noRemote: true` on install/update) |
+| `OPENWISDOM_REGISTRY` | Remote registry base URL (override default; also `registry` tool field on search/list/install/update) |
+| `OPENWISDOM_NO_REMOTE=1` | Skip remote catalog/payload (also `noRemote: true` on search/list/install/update) |
+| `OPENWISDOM_REQUIRE_SNAPSHOTS=1` | Tests hard-fail when catalog/skills snapshots missing (also when `CI=true`) |
 | `CLAUDE_PROJECT_DIR` | Default project cwd for installs |
 | `CI` | Treated as telemetry off (same as CLI) |
 

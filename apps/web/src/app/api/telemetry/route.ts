@@ -17,9 +17,9 @@ export async function OPTIONS(): Promise<Response> {
 }
 
 export async function POST(request: Request): Promise<Response> {
-  // Rate limit first
+  // Rate limit first (Upstash when configured; else process memory)
   const ip = clientIp(request);
-  if (!checkRateLimit(ip)) {
+  if (!(await checkRateLimit(ip))) {
     return Response.json(
       { error: "rate_limited" },
       withCors({ status: 429 }),

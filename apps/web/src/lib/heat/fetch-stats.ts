@@ -1,6 +1,9 @@
 /**
- * Server-side (or universal) stats fetch for catalog heat merge (Spec 29).
- * Fail-open: network / parse / empty API → null (UI hides heat).
+ * Stats loaders for catalog heat merge (Spec 29).
+ *
+ * - **RSC / server:** prefer `getStatsInProcess()` (no self-HTTP).
+ * - **Browser / external:** HTTP `fetchStatsHttp()` → GET /api/stats.
+ * - `fetchStats()` on server uses in-process; keeps fail-open everywhere.
  *
  * Stats shape lives in ./types only (SPE 37 G6) — re-exported here for callers.
  */
@@ -36,10 +39,9 @@ function isStatsResponse(data: unknown): data is StatsResponse {
 }
 
 /**
- * Fetch aggregate heat stats. Returns null on any failure so callers
- * never paint fake zeros across the catalog.
+ * HTTP fetch of aggregate heat stats (browser or remote). Fail-open → null.
  */
-export async function fetchStats(): Promise<StatsResponse | null> {
+export async function fetchStatsHttp(): Promise<StatsResponse | null> {
   try {
     const res = await fetch(resolveStatsUrl(), {
       method: "GET",
@@ -53,4 +55,20 @@ export async function fetchStats(): Promise<StatsResponse | null> {
   } catch {
     return null;
   }
+}
+
+/**
+ * Server-preferred stats: in-process HeatStore (no self-HTTP).
+ * On the client, uses HTTP. Fail-open → null (never invent metrics).
+ */
+export async function fetchStats(): Promise<StatsResponse | null> {
+  if (typeof window === "undefined") {
+    try {
+      const { getStatsInProcess } = await import("./get-stats");
+      return await getStatsInProcess();
+    } catch {
+      return null;
+    }
+  }
+  return fetchStatsHttp();
 }
